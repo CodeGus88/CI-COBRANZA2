@@ -42,7 +42,8 @@
         </select>
       </div>
     </div>
-
+    
+<!-- 
     <div class="form-row">
       <div class="form-group col-md-4">
         <label class="small mb-1" for="exampleFormControlSelect2">Seleccionar departamento</label>
@@ -80,11 +81,11 @@
           <?php endif ?>
         </select>
       </div>
-    </div>
+    </div> -->
 
     <div class="form-row">
       <div class="form-group col-md-4">
-        <label class="small mb-1" for="inputUsername">Ingresar direccion</label>
+        <label class="small mb-1" for="inputUsername">Ingresar dirección</label>
         <input class="form-control" id="inputUsername" type="text" name="address" value="<?php echo set_value('address', $this->input->post('address') ? $this->input->post('address') : $customer->address); ?>">
       </div>
       <div class="form-group col-md-4">
@@ -92,7 +93,7 @@
         <input class="form-control" id="inputUsername" type="text" name="mobile" value="<?php echo set_value('mobile', $this->input->post('mobile') ? $this->input->post('mobile') : $customer->mobile); ?>">
       </div>
       <div class="form-group col-md-4">
-        <label class="small mb-1" for="exampleFormControlTextarea1">Ingresar Telefono</label>
+        <label class="small mb-1" for="exampleFormControlTextarea1">Ingresar Teléfono</label>
         <input class="form-control" id="inputUsername" type="text" name="phone" value="<?php echo set_value('phone', $this->input->post('phone') ? $this->input->post('phone') : $customer->phone); ?>">
       </div>
     </div>

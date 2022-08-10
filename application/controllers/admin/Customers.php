@@ -23,13 +23,13 @@ class Customers extends CI_Controller {
   {
     if ($id) {
       $data['customer'] = $this->customers_m->get($id);
-      $data['provinces'] = $this->customers_m->get_editProvinces($data['customer']->department_id);
-      $data['districts'] = $this->customers_m->get_editDistricts($data['customer']->province_id);
+      // $data['provinces'] = $this->customers_m->get_editProvinces($data['customer']->department_id);
+      // $data['districts'] = $this->customers_m->get_editDistricts($data['customer']->province_id);
     } else {
       $data['customer'] = $this->customers_m->get_new();
     }
 
-    $data['departments'] = $this->customers_m->get_departments();
+    // $data['departments'] = $this->customers_m->get_departments();
 
     $rules = $this->customers_m->customer_rules;
    
@@ -37,7 +37,7 @@ class Customers extends CI_Controller {
 
     if ($this->form_validation->run() == TRUE) {
       
-      $cst_data = $this->customers_m->array_from_post(['dni','first_name', 'last_name', 'gender', 'department_id', 'province_id', 'district_id', 'mobile', 'address', 'phone', 'business_name', 'ruc', 'company']);
+      $cst_data = $this->customers_m->array_from_post(['dni','first_name', 'last_name', 'gender', 'mobile', 'address', 'phone', 'business_name', 'ruc', 'company']);
       
       $this->customers_m->save($cst_data, $id);
 
@@ -55,15 +55,15 @@ class Customers extends CI_Controller {
     $this->load->view('admin/_main_layout', $data);
   }
 
-  public function ajax_getProvinces($dp_id)
-  {
-    echo $this->customers_m->get_provinces($dp_id);
-  }
+  // public function ajax_getProvinces($dp_id)
+  // {
+  //   echo $this->customers_m->get_provinces($dp_id);
+  // }
 
-  public function ajax_getDistricts($pr_id)
-  {
-    echo $this->customers_m->get_districts($pr_id);
-  }
+  // public function ajax_getDistricts($pr_id)
+  // {
+  //   echo $this->customers_m->get_districts($pr_id);
+  // }
 
 }
 

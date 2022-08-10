@@ -23,7 +23,7 @@ $(document).ready(function() {
     var dni = $('#dni').val()
 
     if (dni == "") {
-      alert('ingresar dni')
+      alert('Ingresar Carnet de Identidad')
       return false
     } else {
 
@@ -141,7 +141,7 @@ $(document).ready(function() {
 
     if (dni_c == "") {
 
-      alert('ingresar dni')
+      alert('Ingresar Carnet de Identidad')
       return false
 
     } else {

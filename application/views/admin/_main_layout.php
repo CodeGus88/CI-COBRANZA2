@@ -19,6 +19,7 @@
 
     <!-- Custom styles for this template-->
     <link href="<?php echo site_url() ?>assets/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="<?php echo site_url() ?>assets/css/style-2.css" rel="stylesheet">
     <link href="<?php echo site_url() ?>assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
     <link href="<?php echo site_url() ?>assets/css/style.css" rel="stylesheet">
@@ -99,6 +100,7 @@
 
     <script type="text/javascript">base_url = '<?= base_url();?>'</script>
     <script src="<?php echo site_url(); ?>assets/js/script.js"></script>
+
 
 </body>
 
