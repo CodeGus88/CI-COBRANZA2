@@ -6,9 +6,13 @@
     <!-- <div class="sidebar-brand-icon rotate-n-15">
       <i class="fas fa-laugh-wink"></i>
     </div> -->
-    <img class="churacasa" src="<?php echo base_url();?>assets/img/logo.png" alt="logo" />
-    
-    <div class="sidebar-brand-text mx-3">Créditos ChuraCasa</div>
+        <img class="churacasa" src="<?php echo base_url();?>assets/img/logo.png" alt="logo" />
+        <div class="sidebar-brand-text mx-2 text-style">
+          <div class="text-style2">
+            Consultora:
+          </div>
+          CrediChura Casa
+        </div>
   </a>
 
   <!-- Divider -->
