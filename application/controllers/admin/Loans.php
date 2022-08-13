@@ -48,14 +48,14 @@ class Loans extends CI_Controller {
       $num_quota = 1; 
 
       foreach ($period as $date) {
-        //echo $date->format('Y-m-d');
-        $weekDay = $date->format('N'); // Representación numérica del día de la semana
 
+        $weekDay = $date->format('N'); // Representación numérica del día de la semana
+        $isSunday = false;
         if ($weekDay == '7') {
           $date->add(new DateInterval('P1D'));
           $fomattedDate = $date->format('Y-m-d');
           $isSunday = true;
-        } else {
+        } //else {
 
             if ($isSunday) {
               $date->add(new DateInterval('P1D'));
@@ -63,9 +63,8 @@ class Loans extends CI_Controller {
             } else {
               $fomattedDate = $date->format('Y-m-d');
             }
-        }
+       // }
 
-        //$fomattedDate = $date->format('Y-m-d');
 
         $items[] = array(
           'date' => $fomattedDate,
