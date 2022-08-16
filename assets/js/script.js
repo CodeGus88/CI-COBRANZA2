@@ -1,22 +1,22 @@
 $(document).ready(function() {
 
-  $("#department_id").change(function(){
+  // $("#department_id").change(function(){
   
-    dp_id = $("#department_id").val()
+  //   dp_id = $("#department_id").val()
   
-    $.get(base_url + "admin/customers/ajax_getProvinces/" + dp_id, function(data){
-      $("#province_id").html(data);
-    });
-  });
+  //   $.get(base_url + "admin/customers/ajax_getProvinces/" + dp_id, function(data){
+  //     $("#province_id").html(data);
+  //   });
+  // });
 
-  $("#province_id").change(function(){
+  // $("#province_id").change(function(){
 
-    pr_id = $("#province_id").val()
+  //   pr_id = $("#province_id").val()
   
-    $.get(base_url + "admin/customers/ajax_getDistricts/" + pr_id, function(data){
-      $("#district_id").html(data);
-    });
-  });
+  //   $.get(base_url + "admin/customers/ajax_getDistricts/" + pr_id, function(data){
+  //     $("#district_id").html(data);
+  //   });
+  // });
 
   var callback = function() {
 
@@ -49,20 +49,22 @@ $(document).ready(function() {
           if (data.loan_status == '0') {
             $("#customer").val(data.id);
             $("#dni_cst").val(data.dni);
-            $("#name_cst").val(data.first_name + ' ' +data.last_name);
+            $("#name_cst").val(data.first_name + ' ' + data.last_name);
           } else {
             alert('persona con prestamo pendiente')
             $("#dni_cst").val('');
             $("#name_cst").val('');
             $("#customer").val('');
           }
-          
         }
-        
       })
     }
 
   };
+
+
+
+
 
   $("#dni").keypress(function(event) {
     if (event.which == 13) callback();
@@ -70,6 +72,7 @@ $(document).ready(function() {
 
   $('#btn_buscar').click(callback);
 
+  // Realiza la suma de las cuotas seleccionadas al registrar un nuevo prestamo
   $('#calcular').on('click', function(){ 
     // var define una variable global o local en una función sin importar el ámbito del bloque
     var contador = 0
@@ -113,7 +116,7 @@ $(document).ready(function() {
     $('#valor_interes').val(interes_final.toFixed(2));
     $('#monto_total').val(monto_total.toFixed(2));
 
-  });
+  }); // fin Realiza la suma de las cuotas seleccionadas al registrar un nuevo prestamo
 
   $("#loan_form").submit(function () {  
     if($("#customer").val() == "") {  
@@ -134,7 +137,7 @@ $(document).ready(function() {
    
   })
 
-  // buscar cliente cobranza
+  // buscar cliente cobranza al cancelar prestamo
   var callback_cobranza = function() {
 
     var dni_c = $('#dni_c').val()
@@ -148,11 +151,12 @@ $(document).ready(function() {
 
       $.post(base_url + "admin/payments/ajax_searchCst/", {dni : dni_c}, function(data){
         
-        console.log('sin parse', data)
+        // console.log('sin parse', data)
 
         data = JSON.parse(data);
 
         console.log('con parse', data)
+        
 
         if (data.cst == null){
 
@@ -168,7 +172,6 @@ $(document).ready(function() {
           $("#quotas").dataTable().fnDestroy();
         }
         else {
-
           $("#dni_c").val('');
           $("#dni_cst").val(data.cst.dni);
           $("#name_cst").val(data.cst.cst_name);
@@ -177,24 +180,39 @@ $(document).ready(function() {
           $("#credit_amount").val(data.cst.credit_amount);
           $("#payment_m").val(data.cst.payment_m);
           $("#coin").val(data.cst.coin_name);
-
+          
+          // cargar tabla de cuotas
+        var  x = new Array(data.quote.length);
+        if(data.quote != null && data.quote.length > 0){
+            for(i=0; i < data.quote.length; i++){
+              x[i] = [
+                '<input type="checkbox" name="quota_id[]" '+ (data.quote[i].status==1? '' : 'disabled checked') + ' data-fee='+data.quote[i].fee_amount+' value='+data.quote[i].id+'>',
+                data.quote[i].num_quota,
+                data.quote[i].date,
+                data.quote[i].fee_amount,
+                '<button type="button" class="btn btn-sm ' + (data.quote[i].status == 1? 'btn-outline-danger' : 'btn-outline-success') + '">'+ (data.quote[i].status? 'Pendiente': 'Pagado') +'</button>'
+              ]
+              
+            }
+           // Fin función de calcular monto total a pagar al seleccionar
+        }
            // clear the table before populating it with more data
           $("#quotas").dataTable().fnDestroy();
 
           $('#quotas').dataTable({
-
             "bPaginate": false, //Ocultar paginación
             "scrollY": '50vh',
             "scrollCollapse": true,
-            "aaData": data[0],
-            
+            "aaData": x
           })
 
           $('input:checkbox').on('change',function (){
             // console.log('chand', $(this).val())
             var total = 0;
+            var totalChecks = 0;
             $('input:checkbox:enabled:checked').each(function(){
               total += isNaN(parseFloat($(this).attr('data-fee'))) ? 0 : parseFloat($(this).attr('data-fee'));
+              totalChecks++;
             });   
             
             $("#total_amount").val(total);
@@ -204,13 +222,18 @@ $(document).ready(function() {
             } else {
               $('#register_loan').attr('disabled', true);
             }
-
+            if(totalChecks == 1){
+              $('#total_amount').attr('disabled', false);
+            }else{
+              $('#total_amount').attr('disabled', true);
+            }
           });
         }
+
       })
     }
+  }; // fin buscar cliente cobranza al cancelar prestamo
 
-  };
 
   $("#dni_c").keypress(function() {
       if (event.which == 13) callback_cobranza();
@@ -258,8 +281,11 @@ $(document).ready(function() {
 
     });
   });
-
 })
+
+
+
+
 
 function imp_credits(imp1){
   var printContents = document.getElementById('imp1').innerHTML;

@@ -21,6 +21,7 @@
   </style>
 </head>
 <body>
+
   <div id="wrapper">
     <div id="receiptData" style="width: auto; max-width: 580px; min-width: 250px; margin: 0 auto;">
       <div id="receipt-data">

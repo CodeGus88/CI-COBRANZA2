@@ -16,7 +16,6 @@ class Payments extends CI_Controller {
   {
     $data['payments'] = $this->payments_m->get_payments();
     $data['subview'] = 'admin/payments/index';
-
     $this->load->view('admin/_main_layout', $data);
   }
 
@@ -26,7 +25,8 @@ class Payments extends CI_Controller {
     $this->load->view('admin/_main_layout', $data);
   }
 
-  function ajax_searchCst() 
+
+   function ajax_searchCst() 
   {
     $dni = $this->input->post('dni');
     $cst = $this->payments_m->get_searchCst($dni);
@@ -36,15 +36,14 @@ class Payments extends CI_Controller {
       $quota_data = $this->payments_m->get_quotasCst($cst->loan_id);
     } 
 
-    $search_data = ['cst' => $cst, $quota_data];
+    $search_data = ['cst' => $cst, 'quote'=>$quota_data];
 
-    echo json_encode($search_data);
+    echo json_encode($search_data); // datos leidos por javascript Ajax
   }
+
 
   function ticket()
   {
-    // print_r($_POST);
-    // print_r($this->input->post('quota_id'));
     $data['name_cst'] = $this->input->post('name_cst');
     $data['coin'] = $this->input->post('coin');
     $data['loan_id'] = $this->input->post('loan_id');

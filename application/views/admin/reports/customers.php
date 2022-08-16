@@ -7,7 +7,7 @@
       <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
         <thead>
           <tr>
-            <th>Dni</th>
+            <th>CI</th>
             <th>Nombre completo</th>
             <th>Acciones</th>
           </tr>

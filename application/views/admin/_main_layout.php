@@ -60,7 +60,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; TutosCoders 2021</span>
+                        <span>Copyright &copy; TiendasTec 2022</span>
                     </div>
                 </div>
             </footer>
@@ -100,8 +100,6 @@
 
     <script type="text/javascript">base_url = '<?= base_url();?>'</script>
     <script src="<?php echo site_url(); ?>assets/js/script.js"></script>
-
-
 </body>
 
 </html>

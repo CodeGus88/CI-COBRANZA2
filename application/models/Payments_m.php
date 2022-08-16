@@ -29,21 +29,8 @@ class Payments_m extends CI_Model {
   public function get_quotasCst($loan_id)
   {
     $this->db->where('loan_id', $loan_id);
-
     $query = $this->db->get('loan_items');
-    $data = [];
-
-    foreach ($query->result() as $row) {
-      $data[] = [
-        '<input type="checkbox" name="quota_id[]" '. ($row->status ? '' : 'disabled checked') . ' data-fee='.$row->fee_amount.' value='.$row->id.'>', 
-        $row->num_quota, 
-        $row->date, 
-        $row->fee_amount, 
-        '<button type="button" class="btn btn-sm ' . ($row->status ? 'btn-outline-danger' : 'btn-outline-success') . '">'. ($row->status ? 'Pendiente': 'Pagado') .'</button>',
-        ];
-    }
-
-    return $data;
+    return $query->result();
   }
 
   public function update_quota($data, $id)
