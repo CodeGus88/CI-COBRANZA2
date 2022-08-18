@@ -1,5 +1,7 @@
 <?php
 
+include(APPPATH."/controllers/User.php");
+
 class AuthUserData{
 
     private static function getData($data){
@@ -21,11 +23,21 @@ class AuthUserData{
 
 
     public static function getId(){
-        return AuthUserData::getData('user_id');
+        if(AuthUserData::getData('user_id') != null){
+            return AuthUserData::getData('user_id');
+        }else{
+            $sesion = new User();
+            $sesion->logout();
+        }
     }
 
     public static function getFullName(){
-        return AuthUserData::getData('full_name');
+        if(AuthUserData::getData('full_name') != null){
+            return AuthUserData::getData('full_name');
+        }else{
+            $sesion = new User();
+            $sesion->logout();
+        }
     }
 
 }
