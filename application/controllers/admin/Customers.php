@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+include(APPPATH."/tools/AuthUserData.php");
+
 class Customers extends CI_Controller {
 
   public function __construct()
@@ -14,7 +16,8 @@ class Customers extends CI_Controller {
 
   public function index()
   {
-    $data['customers'] = $this->customers_m->get();
+    // $data['customers'] = $this->customers_m->get_adviser_customers(AuthUserData::getId());
+    $data['customers'] = $this->customers_m->get_adviser_customers($this->session->userdata('user_id'));
     $data['subview'] = 'admin/customers/index';
     $this->load->view('admin/_main_layout', $data);
   }
@@ -22,14 +25,15 @@ class Customers extends CI_Controller {
   public function edit($id = NULL)
   {
     if ($id) {
-      $data['customer'] = $this->customers_m->get($id);
-      // $data['provinces'] = $this->customers_m->get_editProvinces($data['customer']->department_id);
-      // $data['districts'] = $this->customers_m->get_editDistricts($data['customer']->province_id);
+      // $data['customer'] = $this->customers_m->get($id);
+      $row = $this->customers_m->get_customer_by_id($this->session->userdata('user_id'), $id);
+      if($row != null)
+        $data['customer'] = $row;
+      else
+        $data['customer'] = $this->customers_m->get_new();
     } else {
       $data['customer'] = $this->customers_m->get_new();
     }
-
-    // $data['departments'] = $this->customers_m->get_departments();
 
     $rules = $this->customers_m->customer_rules;
    
@@ -37,15 +41,28 @@ class Customers extends CI_Controller {
 
     if ($this->form_validation->run() == TRUE) {
       
-      $cst_data = $this->customers_m->array_from_post(['dni','first_name', 'last_name', 'gender', 'mobile', 'address', 'phone', 'business_name', 'ruc', 'company']);
+      $cst_data = $this->customers_m->array_from_post(['dni','first_name', 'last_name', 'gender', 'mobile', 'address', 'phone', 'business_name', 'ruc', 'company', 'user_id']);
       
-      $this->customers_m->save($cst_data, $id);
-
-      if ($id) {
-        $this->session->set_flashdata('msg', 'Cliente editado correctamente');
-      } else {
-        $this->session->set_flashdata('msg', 'Cliente agregado correctamente');
+      $isSuccessfull = false;
+      if($cst_data['user_id']){
+        if(AuthUserData::permission($cst_data["user_id"])){
+          $isSuccessfull = $this->customers_m->save($cst_data, $id);
+        }
+      }else{
+        $cst_data['user_id'] = $this->session->userdata('user_id');
+        $isSuccessfull = $this->customers_m->save($cst_data, $id);
       }
+
+      if($isSuccessfull){
+        if ($id) {
+          $this->session->set_flashdata('msg', 'Cliente editado correctamente');
+        } else {
+          $this->session->set_flashdata('msg', 'Cliente agregado correctamente');
+        }
+      }else{
+        $this->session->set_flashdata('msg', 'Hubo un problema al agregar, intente nuevamente...');
+      }
+      
       
       redirect('admin/customers');
 

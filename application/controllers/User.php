@@ -27,10 +27,10 @@ class User extends CI_Controller {
         $this->session->set_flashdata('msg', 'Escribir correctamente su email o password');
         redirect('user/login', 'refresh');
       }
-      
     }
 
     $this->load->view('_login_layout');
+
   }
 
   public function logout()

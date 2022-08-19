@@ -40,4 +40,8 @@ class AuthUserData{
         }
     }
 
+    public static function permission($probable_author_id){
+        return $probable_author_id == AuthUserData::getData('user_id');
+    }
+
 }

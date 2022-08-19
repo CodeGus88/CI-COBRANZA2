@@ -63,6 +63,10 @@ class Reports_m extends CI_Model {
     $this->db->from('loans l');
     $this->db->join('customers c', 'c.id = l.customer_id', 'left');
     $this->db->join('coins co', 'co.id = l.coin_id', 'left');
+
+    // $this->db->join(); // < ---- trabajando en esto...
+    
+    
     $this->db->where('l.customer_id', $customer_id);
 
     return $this->db->get()->result(); 

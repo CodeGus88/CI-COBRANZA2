@@ -39,8 +39,7 @@ class User_m extends MY_Model {
       if($data['loggedin']){
         $_SESSION['user_id'] = $data['user_id'];
         $_SESSION['full_name'] = $data["first_name"] . " " . $data["last_name"];
-      } 
-
+      }
       return TRUE;
     }
   }

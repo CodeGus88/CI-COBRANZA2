@@ -133,7 +133,7 @@ class Reports extends CI_Controller {
     <td width="120" height="30"><b>Monto cuota:</b></td><td width="400" height="30">'.$rc->fee_amount.'</td><td width="120" height="30"><b>Estado credito:</b></td><td width="55" height="30">'.($rc->status ? "Pendiente" : "Cancelado").'</td>
     </tr>
     <tr>
-    <td width="120" height="30"><b>Tipo moneda:</b></td><td width="400" height="30">'.$rc->name.'('.$rc->short_name.')</td><td width="120" height="30"><b></b></td><td width="55" height="30"></td>
+    <td width="120" height="30"><b>Tipo moneda:</b></td><td width="400" height="30">'.$rc->name.' ('.$rc->short_name.')</td><td width="120" height="30"><b></b></td><td width="55" height="30"><b>Asesor:</b>' . "------------------------------" .'</td>
     </tr>
     </table>';
 

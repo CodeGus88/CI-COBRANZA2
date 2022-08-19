@@ -43,45 +43,7 @@
       </div>
     </div>
     
-<!-- 
-    <div class="form-row">
-      <div class="form-group col-md-4">
-        <label class="small mb-1" for="exampleFormControlSelect2">Seleccionar departamento</label>
-        <select class="form-control" id="department_id" name="department_id">
-          <?php if ($customer->department_id == 0): ?>
-            <option value = "" selected>Seleccionar departamento</option>
-          <?php endif ?>
-          <?php foreach ($departments as $dp): ?>
-            <option value="<?php echo $dp->id ?>" <?php if ($dp->id == $customer->department_id) echo "selected" ?>><?php echo $dp->name ?></option>
-          <?php endforeach ?>
-        </select>
-      </div>
-      <div class="form-group col-md-4">
-        <label class="small mb-1" for="exampleFormControlSelect2">Seleccionar provincia</label>
-        <select class="form-control" id="province_id" name="province_id">
-          <?php if ($customer->province_id == 0): ?>
-            <option value = "" selected>Seleccionar provincia</option>
-          <?php else: ?>
-            <?php foreach ($provinces as $pr): ?>
-              <option value="<?php echo $pr->id ?>" <?php if ($pr->id == $customer->province_id) echo "selected" ?>><?php echo $pr->name ?></option>
-            <?php endforeach ?>
-          <?php endif ?>
-        </select>
-      </div>
 
-      <div class="form-group col-md-4">
-        <label class="small mb-1" for="exampleFormControlSelect2">Seleccionar distrito</label>
-        <select class="form-control" id="district_id" name="district_id">
-          <?php if ($customer->district_id == 0): ?>
-            <option value = "" selected>Seleccionar distrito</option>
-          <?php else: ?>
-            <?php foreach ($districts as $ds): ?>
-              <option value="<?php echo $ds->id ?>" <?php if ($ds->id == $customer->district_id) echo "selected" ?>><?php echo $ds->name ?></option>
-            <?php endforeach ?>
-          <?php endif ?>
-        </select>
-      </div>
-    </div> -->
 
     <div class="form-row">
       <div class="form-group col-md-4">
@@ -110,6 +72,10 @@
       <div class="form-group col-md-4">
         <label class="small mb-1" for="inputUsername">Ingresar empresa</label>
         <input class="form-control" id="inputUsername" type="text" name="company" value="<?php echo set_value('company', $this->input->post('company') ? $this->input->post('company') : $customer->company); ?>">
+      </div>
+      <!-- user_id hidden readonly=true -->
+      <div class="form-group col-md-4"  >
+        <input class="form-control"   id="user_id" type="number" name="user_id" value="<?php echo set_value('user_id', $this->input->post('user_id') ? $this->input->post('user_id') : $customer->user_id); ?>">
       </div>
     </div>
     <button class="btn btn-primary" type="submit">Registrar cliente</button>

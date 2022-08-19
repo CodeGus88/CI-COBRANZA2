@@ -1,9 +1,13 @@
 <?php
+
+use LDAP\Result;
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Customers_m extends MY_Model {
 
   protected $_table_name = 'customers';
+  // private $id = 'id';
 
   public $customer_rules = array(
     array(
@@ -36,55 +40,24 @@ class Customers_m extends MY_Model {
     $customer->business_name = '';
     $customer->ruc = '';
     $customer->company = '';
-
+    $customer->user_id = '';
     return $customer;
   }
 
-  // public function get_departments()
-  // {
-  //   return $this->db->get('ubigeo_departments')->result();
-  // }
+  public function get_adviser_customers($adviser_id){
+    return $this->db->get_where("customers", array("user_id" => $adviser_id))->result();
+  }
 
-  // public function get_editProvinces($dp_id)
-  // {
-  //   $this->db->where('department_id', $dp_id);
-  //   return $this->db->get('ubigeo_provinces')->result();
-  // }
-
-  // public function get_editDistricts($pr_id)
-  // {
-  //   $this->db->where('province_id', $pr_id);
-  //   return $this->db->get('ubigeo_districts')->result();
-  // }
-
-  // public function get_provinces($dp_id)
-  // {
-  //   $this->db->where('department_id', $dp_id);
-
-  //   $query = $this->db->get('ubigeo_provinces'); //select * from ubigeo_proinces
-  //   $output1 = '<option value="0">Seleccionar provincia</option>';
-
-  //   foreach ($query->result() as $row) {
-  //     $output1 .= '<option value="'.$row->id.'">'.$row->name.'</option>';
-  //   }
-
-  //   return $output1;
-  // }
-
-  // public function get_districts($pr_id)
-  // {
-  //   $this->db->where('province_id', $pr_id);
-
-  //   $query = $this->db->get('ubigeo_districts'); //select * from ubigeo_proinces
-  //   $output1 = '<option value="0">Seleccionar distrito</option>';
-
-  //   foreach ($query->result() as $row) {
-  //     $output1 .= '<option value="'.$row->id.'">'.$row->name.'</option>';
-  //   }
-
-  //   return $output1;
-  // }
-
+  public function get_customer_by_id($user_id, $customer_id){
+    $this->db->select('*');
+    $this->db->from('customers');
+    $this->db->where("(user_id = $user_id AND id = $customer_id)");
+    $query = $this->db->get();
+    if ($query->num_rows() > 0)
+      return $query->row();
+    else
+      return null;
+  }
 }
 
 /* End of file Customers_m.php */
