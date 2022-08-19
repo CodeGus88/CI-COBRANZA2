@@ -74,8 +74,8 @@
         <input class="form-control" id="inputUsername" type="text" name="company" value="<?php echo set_value('company', $this->input->post('company') ? $this->input->post('company') : $customer->company); ?>">
       </div>
       <!-- user_id hidden readonly=true -->
-      <div class="form-group col-md-4"  >
-        <input class="form-control"   id="user_id" type="number" name="user_id" value="<?php echo set_value('user_id', $this->input->post('user_id') ? $this->input->post('user_id') : $customer->user_id); ?>">
+      <div class="form-group col-md-4" hidden >
+        <input class="form-control"  hidden readonly=true  id="user_id" type="number" name="user_id" value="<?php echo set_value('user_id', $this->input->post('user_id') ? $this->input->post('user_id') : $customer->user_id); ?>">
       </div>
     </div>
     <button class="btn btn-primary" type="submit">Registrar cliente</button>
