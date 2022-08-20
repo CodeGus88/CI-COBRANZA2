@@ -15,15 +15,16 @@ class Loans_m extends MY_Model {
     )
   );
 
-  public function get_loans()
+  public function get_loans($user_id)
   {
     $this->db->select("l.id, CONCAT(c.first_name, ' ', c.last_name) AS customer, l.credit_amount, l.interest_amount, co.short_name, l.status");
     $this->db->from('loans l');
     $this->db->join('customers c', 'c.id = l.customer_id', 'left');
     $this->db->join('coins co', 'co.id = l.coin_id', 'left');
+    $this->db->join('users u', 'u.id = c.user_id');
     $this->db->order_by('l.id', 'desc');
-
-    return $this->db->get()->result(); 
+    $this->db->where("u.id = $user_id");
+    return $this->db->get()->result();
   }
 
   public function get_coins()
@@ -31,9 +32,10 @@ class Loans_m extends MY_Model {
     return $this->db->get('coins')->result(); 
   }
 
-  public function get_searchCst($dni)
+  public function get_searchCst($user_id,$dni)
   {
     $this->db->where('dni', $dni);
+    $this->db->where('user_id', $user_id);
     return $this->db->get('customers')->row();
   }
 
@@ -56,22 +58,29 @@ class Loans_m extends MY_Model {
     return false;
   }
 
-  public function get_loan($loan_id)
+  public function get_loan($user_id, $loan_id)
   {
     $this->db->select("l.*, CONCAT(c.first_name, ' ', c.last_name) AS customer_name, co.short_name");
     $this->db->from('loans l');
     $this->db->join('customers c', 'c.id = l.customer_id', 'left');
     $this->db->join('coins co', 'co.id = l.coin_id', 'left');
+    $this->db->join('users u', 'u.id = c.user_id', 'left');
     $this->db->where('l.id', $loan_id);
+    $this->db->where('u.id', $user_id);
 
     return $this->db->get()->row(); 
   }
 
-  public function get_loanItems($loan_id)
+  public function get_loanItems($user_id, $loan_id)
   {
-    $this->db->where('loan_id', $loan_id);
-
-    return $this->db->get('loan_items')->result(); 
+    $this->db->select('*');
+    $this->db->from('loan_items li');
+    $this->db->join('loans l', 'l.id = li.loan_id');
+    $this->db->join('customers c', 'c.id = l.customer_id');
+    $this->db->join('users u', 'u.id = c.user_id');
+    $this->db->where('l.id', $loan_id);
+    $this->db->where('u.id', $user_id);
+    return $this->db->get()->result(); 
   }
 
 }

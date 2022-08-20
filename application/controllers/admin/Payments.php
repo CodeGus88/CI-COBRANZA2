@@ -25,7 +25,6 @@ class Payments extends CI_Controller {
     $this->load->view('admin/_main_layout', $data);
   }
 
-
    function ajax_searchCst() 
   {
     $dni = $this->input->post('dni');

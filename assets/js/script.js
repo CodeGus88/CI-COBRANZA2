@@ -1,23 +1,5 @@
 $(document).ready(function() {
 
-  // $("#department_id").change(function(){
-  
-  //   dp_id = $("#department_id").val()
-  
-  //   $.get(base_url + "admin/customers/ajax_getProvinces/" + dp_id, function(data){
-  //     $("#province_id").html(data);
-  //   });
-  // });
-
-  // $("#province_id").change(function(){
-
-  //   pr_id = $("#province_id").val()
-  
-  //   $.get(base_url + "admin/customers/ajax_getDistricts/" + pr_id, function(data){
-  //     $("#district_id").html(data);
-  //   });
-  // });
-
   var callback = function() {
 
     var dni = $('#dni').val()
@@ -32,8 +14,8 @@ $(document).ready(function() {
         console.log('sin parse', data)
 
         if (data == 'null'){
-          $("#dni").val('');
           alert('No existe el cliente');
+          $("#dni").val('');
           $("#dni_cst").val('');
           $("#name_cst").val('');
           $("#customer").val('');

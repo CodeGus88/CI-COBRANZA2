@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 20-08-2022 a las 03:07:05
+-- Tiempo de generación: 20-08-2022 a las 20:28:59
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.5
 
@@ -76,7 +76,7 @@ INSERT INTO `customers` (`id`, `dni`, `first_name`, `last_name`, `gender`, `addr
 (10, '12344', 'ruben', 'chavez', 'masculino', 'av el incas98', '', '', '', '', '', 1, 2),
 (11, '123451', 'diego', 'arnica', 'masculino', 'mariano cron 45', '', '', '', '', '', 1, 1),
 (12, '7654321', 'matilde', 'frisanc', 'femenino', 'choqwur n455', '', '', '', '', '', 0, 1),
-(13, '1223', 'pablo', 'moralesss', 'masculino', '', '', '', '', '', '', 1, 2),
+(13, '1223', 'pablo', 'moralesss', 'masculino', '', '', '', '', '', '', 0, 2),
 (14, '6565565', 'Pedro', 'Fernandez', 'masculino', 'Calle las calles', '7935689', '4856985', '', '', 'Xempresas', 0, 1),
 (15, '6547571', 'Sofía', 'Fuentes', 'femenino', 'Calle las palmas', '79356891', '4856958', '', '', ' Empresass', 1, 1),
 (16, '12131415', 'Ramiro', 'Fuentes', 'masculino', 'Calle X', '7564854', '', '', '', '', 0, 1);
@@ -284,13 +284,13 @@ ALTER TABLE `customers`
 -- AUTO_INCREMENT de la tabla `loans`
 --
 ALTER TABLE `loans`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT de la tabla `loan_items`
 --
 ALTER TABLE `loan_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
 
 --
 -- AUTO_INCREMENT de la tabla `micropayments`
@@ -318,14 +318,14 @@ ALTER TABLE `customers`
 -- Filtros para la tabla `loans`
 --
 ALTER TABLE `loans`
-  ADD CONSTRAINT `loans_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`),
-  ADD CONSTRAINT `loans_ibfk_2` FOREIGN KEY (`coin_id`) REFERENCES `coins` (`id`);
+  ADD CONSTRAINT `loans_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `loans_ibfk_2` FOREIGN KEY (`coin_id`) REFERENCES `coins` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `loan_items`
 --
 ALTER TABLE `loan_items`
-  ADD CONSTRAINT `loan_items_ibfk_1` FOREIGN KEY (`loan_id`) REFERENCES `loans` (`id`);
+  ADD CONSTRAINT `loan_items_ibfk_1` FOREIGN KEY (`loan_id`) REFERENCES `loans` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `micropayments`

@@ -7,6 +7,7 @@ class Loans extends CI_Controller {
   {
     parent::__construct();
     $this->load->model('loans_m');
+    $this->load->model('customers_m');
     $this->load->library('session');
     $this->load->library('form_validation');
     $this->session->userdata('loggedin') == TRUE || redirect('user/login');
@@ -14,7 +15,7 @@ class Loans extends CI_Controller {
 
   public function index()
   {
-    $data['loans'] = $this->loans_m->get_loans();
+    $data['loans'] = $this->loans_m->get_loans($this->session->userdata('user_id'));
     $data['subview'] = 'admin/loans/index';
     $this->load->view('admin/_main_layout', $data);
   }
@@ -74,12 +75,21 @@ class Loans extends CI_Controller {
       }
 
       $loan_data = $this->loans_m->array_from_post(['customer_id','credit_amount', 'interest_amount', 'num_fee', 'fee_amount', 'payment_m', 'coin_id', 'date']);
-
-      if ($this->loans_m->add_loan($loan_data, $items)) {
       
-        $this->session->set_flashdata('msg', 'Prestamo agregado correctamente');
+      $customer = $this->customers_m->get_customer_by_id(
+        $this->session->userdata('user_id'),
+        $loan_data['customer_id']
+      );
+      if($customer != null){
+        if ($this->loans_m->add_loan($loan_data, $items)) {
+          $this->session->set_flashdata('msg', 'Prestamo agregado correctamente');
+        }else{
+          $this->session->set_flashdata('msg_error', 'Ocurrió un error al guardar, intente nuevamente');
+        }
+      }else{
+        $this->session->set_flashdata('msg_error', '¡El cliente no existe!');
       }
-
+      
       redirect('admin/loans');
     }
 
@@ -90,15 +100,15 @@ class Loans extends CI_Controller {
   function ajax_searchCst() 
   {
     $dni = $this->input->post('dni');
-    $cst = $this->loans_m->get_searchCst($dni);
+    $cst = $this->loans_m->get_searchCst($this->session->userdata('user_id'), $dni);
     
     echo json_encode($cst);
   }
 
   function view($id) 
   {
-    $data['loan'] = $this->loans_m->get_loan($id);
-    $data['items'] = $this->loans_m->get_loanItems($id);
+    $data['loan'] = $this->loans_m->get_loan($this->session->userdata('user_id'), $id);
+    $data['items'] = $this->loans_m->get_loanItems($this->session->userdata('user_id'), $id);
 
     $this->load->view('admin/loans/view', $data);
   }
