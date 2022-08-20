@@ -2,10 +2,10 @@
 -- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Aug 11, 2022 at 04:10 PM
--- Server version: 10.4.11-MariaDB
--- PHP Version: 7.4.5
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 20-08-2022 a las 03:07:05
+-- Versión del servidor: 10.4.11-MariaDB
+-- Versión de PHP: 7.4.5
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `db_ci-cobranza2`
+-- Base de datos: `db_ci-cobranza2`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `coins`
+-- Estructura de tabla para la tabla `coins`
 --
 
 CREATE TABLE `coins` (
@@ -36,7 +36,7 @@ CREATE TABLE `coins` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
--- Dumping data for table `coins`
+-- Volcado de datos para la tabla `coins`
 --
 
 INSERT INTO `coins` (`id`, `name`, `short_name`, `symbol`, `description`) VALUES
@@ -47,7 +47,7 @@ INSERT INTO `coins` (`id`, `name`, `short_name`, `symbol`, `description`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `customers`
+-- Estructura de tabla para la tabla `customers`
 --
 
 CREATE TABLE `customers` (
@@ -56,36 +56,35 @@ CREATE TABLE `customers` (
   `first_name` varchar(150) COLLATE utf8_spanish_ci NOT NULL,
   `last_name` varchar(150) COLLATE utf8_spanish_ci NOT NULL,
   `gender` enum('masculino','femenino','','') COLLATE utf8_spanish_ci DEFAULT NULL,
-  `department_id` int(11) DEFAULT NULL,
-  `province_id` varchar(150) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `district_id` varchar(150) COLLATE utf8_spanish_ci DEFAULT NULL,
   `address` varchar(160) COLLATE utf8_spanish_ci DEFAULT NULL,
   `mobile` varchar(32) COLLATE utf8_spanish_ci DEFAULT NULL,
   `phone` varchar(20) COLLATE utf8_spanish_ci DEFAULT NULL,
   `business_name` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
   `ruc` varchar(20) COLLATE utf8_spanish_ci DEFAULT NULL,
   `company` varchar(150) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `loan_status` int(11) NOT NULL DEFAULT 0
+  `loan_status` int(11) NOT NULL DEFAULT 0,
+  `user_id` int(11) DEFAULT NULL COMMENT 'adviser_id'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
--- Dumping data for table `customers`
+-- Volcado de datos para la tabla `customers`
 --
 
-INSERT INTO `customers` (`id`, `dni`, `first_name`, `last_name`, `gender`, `department_id`, `province_id`, `district_id`, `address`, `mobile`, `phone`, `business_name`, `ruc`, `company`, `loan_status`) VALUES
-(8, '12345678', 'maria', 'chavez', 'masculino', NULL, NULL, NULL, '', '', '', '', '', '', 0),
-(9, '344555', 'mario', 'flores', 'femenino', 10, '1003', '100311', '', '', '', '', '', '', 1),
-(10, '12344', 'ruben', 'chavez', 'masculino', 10, '1002', '100202', 'av el incas98', '', '', '', '', '', 1),
-(11, '123451', 'diego', 'arnica', 'masculino', 12, '1203', '120303', 'mariano cron 45', '', '', '', '', '', 1),
-(12, '7654321', 'matilde', 'frisanc', 'femenino', 11, '1103', '110304', 'choqwur n455', '', '', '', '', '', 1),
-(13, '1223', 'pablo', 'moralesss', 'masculino', 10, '1002', '100202', '', '', '', '', '', '', 1),
-(14, '6565565', 'Pedro', 'Fernandez', 'masculino', NULL, NULL, NULL, 'Calle las calles', '7935689', '4856985', '', '', 'Xempresas', 0),
-(15, '6547571', 'Sofía', 'Fuentes', 'femenino', NULL, NULL, NULL, 'Calle las palmas', '79356891', '4856958', '', '', ' Empresass', 1);
+INSERT INTO `customers` (`id`, `dni`, `first_name`, `last_name`, `gender`, `address`, `mobile`, `phone`, `business_name`, `ruc`, `company`, `loan_status`, `user_id`) VALUES
+(8, '12345678', 'María', 'chavez', 'masculino', '', '', '', '', '', '', 0, 1),
+(9, '344555', 'mario', 'flores', 'femenino', '', '', '', '', '', '', 1, 1),
+(10, '12344', 'ruben', 'chavez', 'masculino', 'av el incas98', '', '', '', '', '', 1, 2),
+(11, '123451', 'diego', 'arnica', 'masculino', 'mariano cron 45', '', '', '', '', '', 1, 1),
+(12, '7654321', 'matilde', 'frisanc', 'femenino', 'choqwur n455', '', '', '', '', '', 0, 1),
+(13, '1223', 'pablo', 'moralesss', 'masculino', '', '', '', '', '', '', 1, 2),
+(14, '6565565', 'Pedro', 'Fernandez', 'masculino', 'Calle las calles', '7935689', '4856985', '', '', 'Xempresas', 0, 1),
+(15, '6547571', 'Sofía', 'Fuentes', 'femenino', 'Calle las palmas', '79356891', '4856958', '', '', ' Empresass', 1, 1),
+(16, '12131415', 'Ramiro', 'Fuentes', 'masculino', 'Calle X', '7564854', '', '', '', '', 0, 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `loans`
+-- Estructura de tabla para la tabla `loans`
 --
 
 CREATE TABLE `loans` (
@@ -102,21 +101,22 @@ CREATE TABLE `loans` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
--- Dumping data for table `loans`
+-- Volcado de datos para la tabla `loans`
 --
 
 INSERT INTO `loans` (`id`, `customer_id`, `credit_amount`, `interest_amount`, `num_fee`, `fee_amount`, `payment_m`, `coin_id`, `date`, `status`) VALUES
-(10, 11, '3000.00', '3.00', 4, '772.50', 'mensual', 1, '2021-07-04', b'1'),
-(11, 10, '3000.00', '4.00', 3, '1040.00', 'mensual', 1, '2021-07-18', b'1'),
+(10, 11, '3000.00', '3.00', 4, '772.50', 'mensual', 3, '2021-07-04', b'1'),
+(11, 10, '3000.00', '4.00', 3, '1040.00', 'mensual', 1, '2021-07-18', b'0'),
 (12, 9, '2000.00', '2.00', 3, '680.00', 'mensual', 1, '2021-07-18', b'1'),
 (13, 12, '1000.00', '2.00', 4, '255.00', 'mensual', 2, '2021-07-18', b'1'),
-(14, 13, '4000.00', '3.00', 4, '1030.00', 'mensual', 1, '2021-07-18', b'1'),
-(15, 15, '5000.00', '3.00', 5, '1030.00', 'mensual', 1, '2022-08-10', b'1');
+(14, 13, '4000.00', '3.00', 4, '1030.00', 'mensual', 3, '2021-07-18', b'1'),
+(15, 15, '5000.00', '3.00', 5, '1030.00', 'mensual', 1, '2022-08-10', b'0'),
+(16, 10, '10000.00', '1.00', 25, '404.00', 'mensual', 1, '2022-08-13', b'1');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `loan_items`
+-- Estructura de tabla para la tabla `loan_items`
 --
 
 CREATE TABLE `loan_items` (
@@ -130,17 +130,17 @@ CREATE TABLE `loan_items` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
--- Dumping data for table `loan_items`
+-- Volcado de datos para la tabla `loan_items`
 --
 
 INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `pay_date`, `status`) VALUES
 (41, 10, '2021-08-04', 1, '772.50', '2021-07-08 22:40:50', b'0'),
 (42, 10, '2021-09-04', 2, '772.50', '2021-07-08 22:40:50', b'0'),
-(43, 10, '2021-10-04', 3, '772.50', '2021-07-05 01:12:13', b'1'),
-(44, 10, '2021-11-04', 4, '772.50', '2021-07-05 01:12:13', b'1'),
-(45, 11, '2021-08-18', 1, '1040.00', '2021-07-19 00:56:48', b'0'),
-(46, 11, '2021-09-18', 2, '1040.00', '2021-07-19 00:55:17', b'1'),
-(47, 11, '2021-10-18', 3, '1040.00', '2021-07-19 00:55:17', b'1'),
+(43, 10, '2021-10-04', 3, '772.50', '2022-08-12 23:06:25', b'0'),
+(44, 10, '2021-11-04', 4, '772.50', '2022-08-12 23:06:30', b'0'),
+(45, 11, '2021-08-18', 1, '1040.00', '2022-08-12 23:14:38', b'1'),
+(46, 11, '2021-09-18', 2, '1040.00', '2022-08-12 23:14:41', b'1'),
+(47, 11, '2021-10-18', 3, '1040.00', '2022-08-12 23:14:44', b'1'),
 (48, 12, '2021-08-18', 1, '680.00', '2021-07-19 02:09:52', b'1'),
 (49, 12, '2021-09-18', 2, '680.00', '2021-07-19 02:09:53', b'1'),
 (50, 12, '2021-10-18', 3, '680.00', '2021-07-19 02:09:53', b'1'),
@@ -150,18 +150,56 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (54, 13, '2021-11-18', 4, '255.00', '2021-07-19 02:10:53', b'1'),
 (55, 14, '2021-08-18', 1, '1030.00', '2021-07-19 02:26:15', b'0'),
 (56, 14, '2021-09-18', 2, '1030.00', '2021-07-19 02:26:16', b'0'),
-(57, 14, '2021-10-18', 3, '1030.00', '2021-07-19 02:23:32', b'1'),
+(57, 14, '2021-10-18', 3, '1030.00', '2022-08-13 23:41:07', b'0'),
 (58, 14, '2021-11-18', 4, '1030.00', '2021-07-19 02:23:32', b'1'),
 (59, 15, '2022-09-10', 1, '1030.00', '2022-08-10 19:54:18', b'1'),
 (60, 15, '2022-10-10', 2, '1030.00', '2022-08-10 19:54:18', b'1'),
 (61, 15, '2022-11-10', 3, '1030.00', '2022-08-10 19:54:18', b'1'),
 (62, 15, '2022-12-10', 4, '1030.00', '2022-08-10 19:54:18', b'1'),
-(63, 15, '2023-01-10', 5, '1030.00', '2022-08-10 19:54:19', b'1');
+(63, 15, '2023-01-10', 5, '1030.00', '2022-08-10 19:54:19', b'1'),
+(64, 16, '2022-09-13', 1, '404.00', '2022-08-12 23:32:09', b'1'),
+(65, 16, '2022-10-13', 2, '404.00', '2022-08-12 23:32:09', b'1'),
+(66, 16, '2022-11-14', 3, '404.00', '2022-08-12 23:32:09', b'1'),
+(67, 16, '2022-12-14', 4, '404.00', '2022-08-12 23:32:09', b'1'),
+(68, 16, '2023-01-14', 5, '404.00', '2022-08-12 23:32:09', b'1'),
+(69, 16, '2023-02-14', 6, '404.00', '2022-08-12 23:32:09', b'1'),
+(70, 16, '2023-03-14', 7, '404.00', '2022-08-12 23:32:09', b'1'),
+(71, 16, '2023-04-14', 8, '404.00', '2022-08-12 23:32:09', b'1'),
+(72, 16, '2023-05-14', 9, '404.00', '2022-08-12 23:32:10', b'1'),
+(73, 16, '2023-06-14', 10, '404.00', '2022-08-12 23:32:10', b'1'),
+(74, 16, '2023-07-14', 11, '404.00', '2022-08-12 23:32:10', b'1'),
+(75, 16, '2023-08-14', 12, '404.00', '2022-08-12 23:32:10', b'1'),
+(76, 16, '2023-09-14', 13, '404.00', '2022-08-12 23:32:10', b'1'),
+(77, 16, '2023-10-14', 14, '404.00', '2022-08-12 23:32:10', b'1'),
+(78, 16, '2023-11-14', 15, '404.00', '2022-08-12 23:32:10', b'1'),
+(79, 16, '2023-12-14', 16, '404.00', '2022-08-12 23:32:10', b'1'),
+(80, 16, '2024-01-14', 17, '404.00', '2022-08-12 23:32:10', b'1'),
+(81, 16, '2024-02-14', 18, '404.00', '2022-08-12 23:32:10', b'1'),
+(82, 16, '2024-03-14', 19, '404.00', '2022-08-12 23:32:10', b'1'),
+(83, 16, '2024-04-14', 20, '404.00', '2022-08-12 23:32:10', b'1'),
+(84, 16, '2024-05-14', 21, '404.00', '2022-08-12 23:32:10', b'1'),
+(85, 16, '2024-06-14', 22, '404.00', '2022-08-12 23:32:10', b'1'),
+(86, 16, '2024-07-14', 23, '404.00', '2022-08-12 23:32:10', b'1'),
+(87, 16, '2024-08-14', 24, '404.00', '2022-08-12 23:32:10', b'1'),
+(88, 16, '2024-09-14', 25, '404.00', '2022-08-12 23:32:10', b'1');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Estructura de tabla para la tabla `micropayments`
+--
+
+CREATE TABLE `micropayments` (
+  `id` bigint(20) NOT NULL,
+  `loan_item_id` int(11) DEFAULT NULL,
+  `mount` decimal(25,2) DEFAULT NULL,
+  `pay_date` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `users`
 --
 
 CREATE TABLE `users` (
@@ -173,30 +211,33 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
--- Dumping data for table `users`
+-- Volcado de datos para la tabla `users`
 --
 
 INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `password`) VALUES
-(1, 'Fulano', 'Fulanes', 'admin@gmail.com', 'ad57cb3de9c53c1fc7de94665f6f1db2dfbcaaf73063769fed0b3011466eba602c2f423c4725c6dfacdc2973a518a18e0784e848ca3aabd7cadfd140df1df447');
+(1, 'Fulano', 'Fulanes', 'admin@gmail.com', 'ad57cb3de9c53c1fc7de94665f6f1db2dfbcaaf73063769fed0b3011466eba602c2f423c4725c6dfacdc2973a518a18e0784e848ca3aabd7cadfd140df1df447'),
+(2, 'Gerardo', 'Gomez', 'adminuser@gmail.com', 'ad57cb3de9c53c1fc7de94665f6f1db2dfbcaaf73063769fed0b3011466eba602c2f423c4725c6dfacdc2973a518a18e0784e848ca3aabd7cadfd140df1df447');
 
 --
--- Indexes for dumped tables
+-- Índices para tablas volcadas
 --
 
 --
--- Indexes for table `coins`
+-- Indices de la tabla `coins`
 --
 ALTER TABLE `coins`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `customers`
+-- Indices de la tabla `customers`
 --
 ALTER TABLE `customers`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `dni` (`dni`),
+  ADD KEY `FK_customers_users` (`user_id`);
 
 --
--- Indexes for table `loans`
+-- Indices de la tabla `loans`
 --
 ALTER TABLE `loans`
   ADD PRIMARY KEY (`id`),
@@ -204,68 +245,93 @@ ALTER TABLE `loans`
   ADD KEY `coin_id` (`coin_id`);
 
 --
--- Indexes for table `loan_items`
+-- Indices de la tabla `loan_items`
 --
 ALTER TABLE `loan_items`
   ADD PRIMARY KEY (`id`),
   ADD KEY `loan_id` (`loan_id`);
 
 --
--- Indexes for table `users`
+-- Indices de la tabla `micropayments`
+--
+ALTER TABLE `micropayments`
+  ADD KEY `id` (`id`),
+  ADD KEY `FK__loan_items` (`loan_item_id`);
+
+--
+-- Indices de la tabla `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT for table `coins`
+-- AUTO_INCREMENT de la tabla `coins`
 --
 ALTER TABLE `coins`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `customers`
+-- AUTO_INCREMENT de la tabla `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
--- AUTO_INCREMENT for table `loans`
+-- AUTO_INCREMENT de la tabla `loans`
 --
 ALTER TABLE `loans`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
--- AUTO_INCREMENT for table `loan_items`
+-- AUTO_INCREMENT de la tabla `loan_items`
 --
 ALTER TABLE `loan_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT de la tabla `micropayments`
+--
+ALTER TABLE `micropayments`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- Constraints for dumped tables
+-- Restricciones para tablas volcadas
 --
 
 --
--- Constraints for table `loans`
+-- Filtros para la tabla `customers`
+--
+ALTER TABLE `customers`
+  ADD CONSTRAINT `FK_customers_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `loans`
 --
 ALTER TABLE `loans`
   ADD CONSTRAINT `loans_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`),
   ADD CONSTRAINT `loans_ibfk_2` FOREIGN KEY (`coin_id`) REFERENCES `coins` (`id`);
 
 --
--- Constraints for table `loan_items`
+-- Filtros para la tabla `loan_items`
 --
 ALTER TABLE `loan_items`
   ADD CONSTRAINT `loan_items_ibfk_1` FOREIGN KEY (`loan_id`) REFERENCES `loans` (`id`);
+
+--
+-- Filtros para la tabla `micropayments`
+--
+ALTER TABLE `micropayments`
+  ADD CONSTRAINT `FK__loan_items` FOREIGN KEY (`loan_item_id`) REFERENCES `loan_items` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
