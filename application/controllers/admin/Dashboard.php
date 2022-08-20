@@ -13,11 +13,11 @@ class Dashboard extends CI_Controller {
 
   public function index()
   {
-    $data['qCts'] = $this->config_m->get_countCts();
-    $data['qLoans'] = $this->config_m->get_countLoans();
-    $data['qPaids'] = $this->config_m->get_countPaids();
+    $data['qCts'] = $this->config_m->get_countCts($this->session->userdata('user_id'));
+    $data['qLoans'] = $this->config_m->get_countLoans($this->session->userdata('user_id'));
+    $data['qPaids'] = $this->config_m->get_countPaids($this->session->userdata('user_id'));
 
-    $count_lc = $this->config_m->get_countLC();
+    $count_lc = $this->config_m->get_countLC($this->session->userdata('user_id'));
 
     $data_lc = [];
  
