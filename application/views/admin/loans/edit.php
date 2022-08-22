@@ -17,7 +17,6 @@
           <div class="input-group">
             <input type="text" id="dni" class="form-control">
             <input type="hidden" name="customer_id" id="customer">
-            <input type="hidden" name="user_id" id="user_id">
             <div class="input-group-append">
               <button type="button" id="btn_buscar" class="btn btn-primary">
                 <i class="fa fa-search"></i>

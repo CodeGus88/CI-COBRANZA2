@@ -172,7 +172,7 @@ $(document).ready(function() {
                 data.quote[i].num_quota,
                 data.quote[i].date,
                 data.quote[i].fee_amount,
-                '<button type="button" class="btn btn-sm ' + (data.quote[i].status == 1? 'btn-outline-danger' : 'btn-outline-success') + '">'+ (data.quote[i].status? 'Pendiente': 'Pagado') +'</button>'
+                '<button type="button" class="btn btn-sm ' + (data.quote[i].status==1? 'btn-outline-danger' : 'btn-outline-success') + '">'+ (data.quote[i].status==1? 'Pendiente': 'Pagado') +'</button>'
               ]
               
             }
