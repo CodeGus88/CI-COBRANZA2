@@ -89,10 +89,8 @@ class Loans extends CI_Controller {
       }else{
         $this->session->set_flashdata('msg_error', '¡El cliente no existe!');
       }
-      
       redirect('admin/loans');
     }
-
     $data['subview'] = 'admin/loans/edit';
     $this->load->view('admin/_main_layout', $data);
   }
@@ -101,7 +99,6 @@ class Loans extends CI_Controller {
   {
     $dni = $this->input->post('dni');
     $cst = $this->loans_m->get_searchCst($this->session->userdata('user_id'), $dni);
-    
     echo json_encode($cst);
   }
 
@@ -109,7 +106,6 @@ class Loans extends CI_Controller {
   {
     $data['loan'] = $this->loans_m->get_loan($this->session->userdata('user_id'), $id);
     $data['items'] = $this->loans_m->get_loanItems($this->session->userdata('user_id'), $id);
-
     $this->load->view('admin/loans/view', $data);
   }
 

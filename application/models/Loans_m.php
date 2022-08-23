@@ -73,14 +73,14 @@ class Loans_m extends MY_Model {
 
   public function get_loanItems($user_id, $loan_id)
   {
-    $this->db->select('*');
+    $this->db->select('li.id, li.loan_id, li.date, li.num_quota, li.fee_amount, li.pay_date, li.status');
     $this->db->from('loan_items li');
     $this->db->join('loans l', 'l.id = li.loan_id');
     $this->db->join('customers c', 'c.id = l.customer_id');
     $this->db->join('users u', 'u.id = c.user_id');
     $this->db->where('l.id', $loan_id);
     $this->db->where('u.id', $user_id);
-    return $this->db->get()->result(); 
+    return $this->db->get()->result();
   }
 
 }

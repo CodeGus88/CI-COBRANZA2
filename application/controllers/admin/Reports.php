@@ -111,7 +111,7 @@ class Reports extends CI_Controller {
     $pdf->AddPage('P','A4',0);
     $pdf->SetFont('Arial','B',13);
     $pdf->Ln(7);
-    $pdf->Cell(0,0,'Reporte de prestamos por cliente - '.$reportCst[0]->customer_name,0,1,'C');
+    $pdf->Cell(0,0,'Reporte de prestamos por cliente - ' . utf8_decode($reportCst[0]->customer_name),0,1,'C');
 
     $pdf->Ln(8);
   
@@ -133,7 +133,7 @@ class Reports extends CI_Controller {
     <td width="120" height="30"><b>Monto cuota:</b></td><td width="400" height="30">'.$rc->fee_amount.'</td><td width="120" height="30"><b>Estado credito:</b></td><td width="55" height="30">'.($rc->status ? "Pendiente" : "Cancelado").'</td>
     </tr>
     <tr>
-    <td width="120" height="30"><b>Tipo moneda:</b></td><td width="400" height="30">'.$rc->name.' ('.$rc->short_name.')</td><td width="120" height="30"><b></b></td><td width="55" height="30"><b>Asesor:</b>' . $rc->user_name .'</td>
+    <td width="120" height="30"><b>Tipo moneda:</b></td><td width="400" height="30">'.$rc->name.' ('.$rc->short_name.')</td><td width="120" height="30"><b></b></td><td width="55" height="30"><b>Asesor:</b>' . utf8_decode($rc->user_name) .'</td>
     </tr>
     </table>';
 

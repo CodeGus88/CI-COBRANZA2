@@ -11,7 +11,7 @@
     <?php endif ?>
     <?php if ($this->session->flashdata('msg-error')): ?>
       <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
-        <?= $this->session->flashdata('msg-error') ?>
+        <?= $this->session->flashdata('msg_error') ?>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -29,11 +29,11 @@
       <div class="form-row">
         <div class="form-group col-md-4">
           <label class="small mb-1" for="inputUsername">Ingresar Nombre</label>
-          <input class="form-control" id="inputUsername" type="text" name="first_name" value="<?php echo set_value('first_name', $this->input->post('first_name') ? $this->input->post('first_name') : $user->first_name); ?>">
+          <input class="form-control" id="inputUsername" style="text-transform:uppercase" type="text" name="first_name" value="<?php echo set_value('first_name', $this->input->post('first_name') ? $this->input->post('first_name') : $user->first_name); ?>">
         </div>
         <div class="form-group col-md-4">
           <label class="small mb-1" for="exampleFormControlTextarea1">Ingresar Apellidos</label>
-          <input class="form-control" id="inputUsername" type="text" name="last_name" value="<?php echo set_value('last_name', $this->input->post('last_name') ? $this->input->post('last_name') : $user->last_name); ?>">
+          <input class="form-control" id="inputUsername" style="text-transform:uppercase" type="text" name="last_name" value="<?php echo set_value('last_name', $this->input->post('last_name') ? $this->input->post('last_name') : $user->last_name); ?>">
         </div>
         <div class="form-group col-md-4">
           <label class="small mb-1" for="exampleFormControlTextarea1">Ingresar correo</label>

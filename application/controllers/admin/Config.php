@@ -23,7 +23,8 @@ class Config extends CI_Controller {
     if ($this->form_validation->run() == TRUE) {
 
       $user_data = $this->config_m->array_from_post(['first_name', 'last_name', 'email']);
-      
+      $user_data['first_name'] = strtoupper($user_data['first_name']);
+      $user_data['last_name'] = strtoupper($user_data['last_name']);
       $this->config_m->save($user_data, $this->session->userdata('user_id'));
 
       $this->session->set_flashdata('msg', 'usuario editado correctamente');
@@ -43,7 +44,7 @@ class Config extends CI_Controller {
     $this->form_validation->set_rules($rules);
 
     if ($this->form_validation->run() == TRUE) {
-
+      
       $password_data = ['password' => $this->config_m->hash($this->input->post('new_password'))];
       
       $this->config_m->save($password_data, $this->session->userdata('user_id'));

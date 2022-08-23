@@ -16,7 +16,6 @@ class Customers extends CI_Controller {
 
   public function index()
   {
-    // $data['customers'] = $this->customers_m->get_adviser_customers(AuthUserData::getId());
     $data['customers'] = $this->customers_m->get_adviser_customers($this->session->userdata('user_id'));
     $data['subview'] = 'admin/customers/index';
     $this->load->view('admin/_main_layout', $data);
@@ -25,7 +24,6 @@ class Customers extends CI_Controller {
   public function edit($id = NULL)
   {
     if ($id) {
-      // $data['customer'] = $this->customers_m->get($id);
       $row = $this->customers_m->get_customer_by_id($this->session->userdata('user_id'), $id);
       if($row != null)
         $data['customer'] = $row;
@@ -44,6 +42,8 @@ class Customers extends CI_Controller {
       $cst_data = $this->customers_m->array_from_post(['dni','first_name', 'last_name', 'gender', 'mobile', 'address', 'phone', 'business_name', 'ruc', 'company', 'user_id']);
       
       $isSuccessfull = false;
+      $cst_data['first_name'] = strtoupper($cst_data['first_name']);
+      $cst_data['last_name'] = strtoupper($cst_data['last_name']);
       if($cst_data['user_id']){
         if(AuthUserData::permission($cst_data["user_id"])){
           $isSuccessfull = $this->customers_m->save($cst_data, $id);
@@ -60,9 +60,8 @@ class Customers extends CI_Controller {
           $this->session->set_flashdata('msg', 'Cliente agregado correctamente');
         }
       }else{
-        $this->session->set_flashdata('msg', 'Hubo un problema al agregar, intente nuevamente...');
+        $this->session->set_flashdata('msg_error', 'Hubo un problema al procesar los datos, intente nuevamente...');
       }
-      
       
       redirect('admin/customers');
 
@@ -71,16 +70,6 @@ class Customers extends CI_Controller {
     $data['subview'] = 'admin/customers/edit';
     $this->load->view('admin/_main_layout', $data);
   }
-
-  // public function ajax_getProvinces($dp_id)
-  // {
-  //   echo $this->customers_m->get_provinces($dp_id);
-  // }
-
-  // public function ajax_getDistricts($pr_id)
-  // {
-  //   echo $this->customers_m->get_districts($pr_id);
-  // }
 
 }
 

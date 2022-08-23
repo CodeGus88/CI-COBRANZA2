@@ -19,11 +19,11 @@
       </div>
       <div class="form-group col-md-3">
         <label class="small mb-1" for="inputUsername">Ingresar Nombre</label>
-        <input class="form-control" id="inputUsername" type="text" name="first_name" value="<?php echo set_value('first_name', $this->input->post('first_name') ? $this->input->post('first_name') : $customer->first_name); ?>">
+        <input class="form-control" id="inputUsername" style="text-transform:uppercase" type="text" name="first_name" value="<?php echo set_value('first_name', $this->input->post('first_name') ? $this->input->post('first_name') : $customer->first_name); ?>">
       </div>
       <div class="form-group col-md-3">
         <label class="small mb-1" for="exampleFormControlTextarea1">Ingresar Apellidos</label>
-        <input class="form-control" id="inputUsername" type="text" name="last_name" value="<?php echo set_value('last_name', $this->input->post('last_name') ? $this->input->post('last_name') : $customer->last_name); ?>">
+        <input class="form-control" id="inputUsername" style="text-transform:uppercase" type="text" name="last_name" value="<?php echo set_value('last_name', $this->input->post('last_name') ? $this->input->post('last_name') : $customer->last_name); ?>">
       </div>
       <div class="form-group col-md-3">
         <label class="small mb-1" for="exampleFormControlSelect2">Seleccionar Genero</label>

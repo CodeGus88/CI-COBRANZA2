@@ -204,11 +204,11 @@ $(document).ready(function() {
             } else {
               $('#register_loan').attr('disabled', true);
             }
-            if(totalChecks == 1){
-              $('#total_amount').attr('disabled', false);
-            }else{
-              $('#total_amount').attr('disabled', true);
-            }
+            // if(totalChecks == 1){
+            //   $('#total_amount').attr('disabled', false);
+            // }else{
+            //   $('#total_amount').attr('disabled', true);
+            // }
           });
         }
 

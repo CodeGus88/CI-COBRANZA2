@@ -66,8 +66,7 @@
         </div>
         <div class="form-group col-12 col-md-4 text-center">
           <label class="small mb-1" for="exampleFormControlTextarea1">Monto total a pagar</label>
-          <input class="form-control mb-3 text-center" style="font-weight: bold; font-size: 1.2rem;"  id="total_amount" type="number" disabled>
-
+          <input class="form-control mb-3 text-center" style="font-weight: bold; font-size: 1.2rem;"  id="total_amount" type="number" step="any" disabled>
           <div class="row">
             <div class="col-6">
               <button class="btn btn-success btn-block" id="register_loan" type="submit" disabled>Registrar Pago</button>
