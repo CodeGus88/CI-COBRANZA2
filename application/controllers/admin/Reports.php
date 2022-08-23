@@ -22,7 +22,8 @@ class Reports extends CI_Controller {
 
   public function ajax_getCredits($coin_id)
   {
-    $data['credits'] = $this->reports_m->get_reportLoan($coin_id);
+    // $data['credits'] = $this->reports_m->get_reportLoanAll($coin_id); // usar para el daministrador
+    $data['credits'] = $this->reports_m->get_reportLoan($this->session->userdata('user_id'), $coin_id);
 
     echo json_encode($data);
   }
@@ -60,10 +61,8 @@ class Reports extends CI_Controller {
     </table>';
 
     $pdf->WriteHTML($html);
-
-    // $reportsDates = $this->reports_m->get_reportDates(1,'2021-03-07','2021-05-13');
-    // print_r($reportsDates);
-    $reportsDates = $this->reports_m->get_reportDates($coin_id,$start_d,$end_d);
+    // $reportsDates = $this->reports_m->get_reportDatesAll($coin_id,$start_d,$end_d); // para el administrador
+    $reportsDates = $this->reports_m->get_reportDates($this->session->userdata('user_id'), $coin_id,$start_d,$end_d);
 
     $pdf->Ln(7);
     $pdf->SetFont('Arial','',10);
@@ -95,7 +94,8 @@ class Reports extends CI_Controller {
 
   public function customers()
   {
-    $data['customers'] = $this->reports_m->get_reportCsts();
+    // $data['customers'] = $this->reports_m->get_reportCstsAll(); // para el admministrador
+    $data['customers'] = $this->reports_m->get_reportCsts($this->session->userdata('user_id'));
     $data['subview'] = 'admin/reports/customers';
     $this->load->view('admin/_main_layout', $data);
   }
@@ -104,8 +104,8 @@ class Reports extends CI_Controller {
   {
     require_once APPPATH.'third_party/fpdf183/html_table.php';
 
-    $reportCst = $this->reports_m->get_reportLC($customer_id);
-    //print_r($reportCst[0]->customer_name);
+    // $reportCst = $this->reports_m->get_reportLCAll($customer_id); // para el administrador
+    $reportCst = $this->reports_m->get_reportLC($this->session->userdata('user_id'), $customer_id);
 
     $pdf = new PDF();
     $pdf->AddPage('P','A4',0);
@@ -133,7 +133,7 @@ class Reports extends CI_Controller {
     <td width="120" height="30"><b>Monto cuota:</b></td><td width="400" height="30">'.$rc->fee_amount.'</td><td width="120" height="30"><b>Estado credito:</b></td><td width="55" height="30">'.($rc->status ? "Pendiente" : "Cancelado").'</td>
     </tr>
     <tr>
-    <td width="120" height="30"><b>Tipo moneda:</b></td><td width="400" height="30">'.$rc->name.' ('.$rc->short_name.')</td><td width="120" height="30"><b></b></td><td width="55" height="30"><b>Asesor:</b>' . "------------------------------" .'</td>
+    <td width="120" height="30"><b>Tipo moneda:</b></td><td width="400" height="30">'.$rc->name.' ('.$rc->short_name.')</td><td width="120" height="30"><b></b></td><td width="55" height="30"><b>Asesor:</b>' . $rc->user_name .'</td>
     </tr>
     </table>';
 
@@ -148,7 +148,8 @@ class Reports extends CI_Controller {
     <td width="120" height="30"><b>Nro Cuota</b></td><td width="120" height="30"><b>Fecha pago</b></td><td width="120" height="30"><b>Total pagar</b></td><td width="120" height="30"><b>Estado</b></td>
     </tr>';
 
-    $loanItems = $this->reports_m->get_reportLI($rc->id);
+    // $loanItems = $this->reports_m->get_reportLIAll($rc->id); // Usar para el administrador
+    $loanItems = $this->reports_m->get_reportLI($this->session->userdata('user_id'), $rc->id);
     foreach ($loanItems as $li) {
       $html1 .= '
     <tr>
