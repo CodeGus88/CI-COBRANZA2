@@ -51,7 +51,8 @@ class Config extends CI_Controller {
       $this->session->set_flashdata('msg', 'constraseña editada correctamente');
       
       redirect('admin/config/change_password');
-
+    }else{
+      $this->session->set_flashdata('msg_error', '¡Ocurrió un error al procesar!');
     }
 
     $data['subview'] = 'admin/config/change_password';

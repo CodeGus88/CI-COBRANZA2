@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Config_m extends MY_Model {
 
-  // protected $_table_name = 'users';
+  protected $_table_name = 'users';
 
   public $config_rules = array(
     array(

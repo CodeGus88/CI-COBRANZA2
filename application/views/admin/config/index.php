@@ -9,6 +9,14 @@
         </button>
       </div>
     <?php endif ?>
+    <?php if ($this->session->flashdata('msg-error')): ?>
+      <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+        <?= $this->session->flashdata('msg-error') ?>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    <?php endif ?>
     <?php if(validation_errors()) { ?>
       <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <?php echo validation_errors('<li>', '</li>'); ?>
