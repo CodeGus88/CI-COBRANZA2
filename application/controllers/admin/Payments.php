@@ -58,6 +58,7 @@ class Payments extends CI_Controller {
       }
 
       $data['quotasPaid'] = $this->payments_m->get_quotasPaid($this->input->post('quota_id'));
+      $data['userFulName'] = $this->session->userdata('first_name') . " " . $this->session->userdata('last_name');
 
       $this->load->view('admin/payments/ticket', $data);
     }else{
