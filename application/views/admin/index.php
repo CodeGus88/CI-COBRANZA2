@@ -7,7 +7,7 @@
           <div class="col mr-2">
             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
             Número clientes</div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $qCts->cantidad ?></div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo isset($qCts->cantidad)?$qCts->cantidad:0 ?></div>
           </div>
           <div class="col-auto">
             <i class="fas fa-user fa-2x text-gray-300"></i>
@@ -25,7 +25,7 @@
           <div class="col mr-2">
             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
             Número Prestamos</div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $qLoans->cantidad ?></div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo isset($qLoans->cantidad)?$qLoans->cantidad:0?></div>
           </div>
           <div class="col-auto">
             <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
@@ -43,7 +43,7 @@
           <div class="col mr-2">
             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Número cobranzas
             </div>
-            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php echo $qPaids->cantidad ?></div>
+            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php echo isset($qPaids->cantidad)?$qPaids->cantidad:0 ?></div>
           </div>
           <div class="col-auto">
             <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
