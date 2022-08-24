@@ -34,11 +34,16 @@
       <span>Clientes</span></a>
   </li>
 
-  <li class="nav-item">
-    <a class="nav-link" href="<?php echo site_url('admin/coins'); ?>">
-      <i class="fas fa-fw fa-money-bill"></i>
-      <span>Monedas</span></a>
-  </li>
+  <?php
+    if(FALSE){// Habilitar sólo si es admmin ?>
+      <li class="nav-item">
+      <a class="nav-link" href="<?php echo site_url('admin/coins'); ?>">
+        <i class="fas fa-fw fa-money-bill"></i>
+        <span>Monedas</span></a>
+    </li>
+    <?php } ?>
+  
+  
 
   <li class="nav-item">
     <a class="nav-link" href="<?php echo site_url('admin/loans'); ?>">
