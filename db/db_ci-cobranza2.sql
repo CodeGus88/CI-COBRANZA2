@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 20-08-2022 a las 20:28:59
+-- Tiempo de generación: 24-08-2022 a las 21:00:11
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.5
 
@@ -52,7 +52,7 @@ INSERT INTO `coins` (`id`, `name`, `short_name`, `symbol`, `description`) VALUES
 
 CREATE TABLE `customers` (
   `id` int(11) NOT NULL,
-  `dni` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
+  `dni` varchar(20) COLLATE utf8_spanish_ci NOT NULL COMMENT 'ci',
   `first_name` varchar(150) COLLATE utf8_spanish_ci NOT NULL,
   `last_name` varchar(150) COLLATE utf8_spanish_ci NOT NULL,
   `gender` enum('masculino','femenino','','') COLLATE utf8_spanish_ci DEFAULT NULL,
@@ -60,7 +60,7 @@ CREATE TABLE `customers` (
   `mobile` varchar(32) COLLATE utf8_spanish_ci DEFAULT NULL,
   `phone` varchar(20) COLLATE utf8_spanish_ci DEFAULT NULL,
   `business_name` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `ruc` varchar(20) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `ruc` varchar(20) COLLATE utf8_spanish_ci DEFAULT NULL COMMENT 'nit',
   `company` varchar(150) COLLATE utf8_spanish_ci DEFAULT NULL,
   `loan_status` int(11) NOT NULL DEFAULT 0,
   `user_id` int(11) DEFAULT NULL COMMENT 'adviser_id'
@@ -72,14 +72,30 @@ CREATE TABLE `customers` (
 
 INSERT INTO `customers` (`id`, `dni`, `first_name`, `last_name`, `gender`, `address`, `mobile`, `phone`, `business_name`, `ruc`, `company`, `loan_status`, `user_id`) VALUES
 (8, '12345678', 'María', 'chavez', 'masculino', '', '', '', '', '', '', 0, 1),
-(9, '344555', 'mario', 'flores', 'femenino', '', '', '', '', '', '', 1, 1),
-(10, '12344', 'ruben', 'chavez', 'masculino', 'av el incas98', '', '', '', '', '', 1, 2),
-(11, '123451', 'diego', 'arnica', 'masculino', 'mariano cron 45', '', '', '', '', '', 1, 1),
+(9, '344555', 'mario', 'flores', 'femenino', '', '', '', '', '', '', 0, 1),
+(10, '12344', 'RUBEN', 'CHAVEZ', 'masculino', 'av el incas98', '', '', '', '', '', 1, 2),
+(11, '123451', 'diego', 'arnica', 'masculino', 'mariano cron 45', '', '', '', '', '', 0, 1),
 (12, '7654321', 'matilde', 'frisanc', 'femenino', 'choqwur n455', '', '', '', '', '', 0, 1),
-(13, '1223', 'pablo', 'moralesss', 'masculino', '', '', '', '', '', '', 0, 2),
+(13, '1223', 'PABLO', 'MORALESSS', 'masculino', '', '', '', '', '', '', 0, 2),
 (14, '6565565', 'Pedro', 'Fernandez', 'masculino', 'Calle las calles', '7935689', '4856985', '', '', 'Xempresas', 0, 1),
-(15, '6547571', 'Sofía', 'Fuentes', 'femenino', 'Calle las palmas', '79356891', '4856958', '', '', ' Empresass', 1, 1),
-(16, '12131415', 'Ramiro', 'Fuentes', 'masculino', 'Calle X', '7564854', '', '', '', '', 0, 1);
+(15, '6547571', 'Sofía', 'Fuentes', 'femenino', 'Calle las palmas', '79356891', '4856958', '', '', ' Empresass', 0, 1),
+(16, '12131415', 'Ramiro', 'Fuentes', 'masculino', 'Calle X', '7564854', '', '', '', '', 0, 1),
+(17, '454125', 'CLARIZA', 'PRADO', 'femenino', 'Calle y dirección', '7935689', '4856958', '', '', '', 0, 1),
+(18, '548967', 'DANIEL', 'FERNANDEZ', 'masculino', 'calle x', '7935689', '', '', '', '', 0, 2),
+(19, '5569949', 'JHESICA', 'PRADO CáRDENAS', 'femenino', 'Calle X Y', '7935689', '', '', '', '', 0, 2),
+(21, '1213212', 'JAIME', 'OMONTE', 'masculino', '', '', '', '', '', '', 0, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `guarantors`
+--
+
+CREATE TABLE `guarantors` (
+  `id` bigint(20) DEFAULT NULL,
+  `loan_id` int(11) DEFAULT NULL,
+  `customer_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -105,13 +121,14 @@ CREATE TABLE `loans` (
 --
 
 INSERT INTO `loans` (`id`, `customer_id`, `credit_amount`, `interest_amount`, `num_fee`, `fee_amount`, `payment_m`, `coin_id`, `date`, `status`) VALUES
-(10, 11, '3000.00', '3.00', 4, '772.50', 'mensual', 3, '2021-07-04', b'1'),
-(11, 10, '3000.00', '4.00', 3, '1040.00', 'mensual', 1, '2021-07-18', b'0'),
-(12, 9, '2000.00', '2.00', 3, '680.00', 'mensual', 1, '2021-07-18', b'1'),
+(10, 11, '3000.00', '3.00', 4, '772.50', 'mensual', 3, '2021-07-04', b'0'),
+(11, 10, '3000.00', '4.00', 3, '1040.00', 'mensual', 1, '2021-07-18', b'1'),
+(12, 9, '2000.00', '2.00', 3, '680.00', 'mensual', 1, '2021-07-18', b'0'),
 (13, 12, '1000.00', '2.00', 4, '255.00', 'mensual', 2, '2021-07-18', b'1'),
 (14, 13, '4000.00', '3.00', 4, '1030.00', 'mensual', 3, '2021-07-18', b'1'),
 (15, 15, '5000.00', '3.00', 5, '1030.00', 'mensual', 1, '2022-08-10', b'0'),
-(16, 10, '10000.00', '1.00', 25, '404.00', 'mensual', 1, '2022-08-13', b'1');
+(16, 10, '10000.00', '1.00', 25, '404.00', 'mensual', 1, '2022-08-13', b'1'),
+(20, 14, '1500.00', '18.00', 3, '770.00', 'diario', 1, '2022-08-24', b'0');
 
 -- --------------------------------------------------------
 
@@ -134,16 +151,16 @@ CREATE TABLE `loan_items` (
 --
 
 INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `pay_date`, `status`) VALUES
-(41, 10, '2021-08-04', 1, '772.50', '2021-07-08 22:40:50', b'0'),
+(41, 10, '2021-08-04', 1, '772.50', '2022-08-23 19:44:00', b'0'),
 (42, 10, '2021-09-04', 2, '772.50', '2021-07-08 22:40:50', b'0'),
 (43, 10, '2021-10-04', 3, '772.50', '2022-08-12 23:06:25', b'0'),
 (44, 10, '2021-11-04', 4, '772.50', '2022-08-12 23:06:30', b'0'),
-(45, 11, '2021-08-18', 1, '1040.00', '2022-08-12 23:14:38', b'1'),
+(45, 11, '2021-08-18', 1, '1040.00', '2022-08-22 13:50:24', b'0'),
 (46, 11, '2021-09-18', 2, '1040.00', '2022-08-12 23:14:41', b'1'),
 (47, 11, '2021-10-18', 3, '1040.00', '2022-08-12 23:14:44', b'1'),
-(48, 12, '2021-08-18', 1, '680.00', '2021-07-19 02:09:52', b'1'),
-(49, 12, '2021-09-18', 2, '680.00', '2021-07-19 02:09:53', b'1'),
-(50, 12, '2021-10-18', 3, '680.00', '2021-07-19 02:09:53', b'1'),
+(48, 12, '2021-08-18', 1, '680.00', '2022-08-22 21:56:36', b'0'),
+(49, 12, '2021-09-18', 2, '680.00', '2022-08-23 00:08:48', b'0'),
+(50, 12, '2021-10-18', 3, '680.00', '2022-08-23 19:54:47', b'0'),
 (51, 13, '2021-08-18', 1, '255.00', '2021-07-19 02:10:53', b'1'),
 (52, 13, '2021-09-18', 2, '255.00', '2021-07-19 02:10:53', b'1'),
 (53, 13, '2021-10-18', 3, '255.00', '2021-07-19 02:10:53', b'1'),
@@ -157,7 +174,7 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (61, 15, '2022-11-10', 3, '1030.00', '2022-08-10 19:54:18', b'1'),
 (62, 15, '2022-12-10', 4, '1030.00', '2022-08-10 19:54:18', b'1'),
 (63, 15, '2023-01-10', 5, '1030.00', '2022-08-10 19:54:19', b'1'),
-(64, 16, '2022-09-13', 1, '404.00', '2022-08-12 23:32:09', b'1'),
+(64, 16, '2022-09-13', 1, '404.00', '2022-08-23 19:33:16', b'0'),
 (65, 16, '2022-10-13', 2, '404.00', '2022-08-12 23:32:09', b'1'),
 (66, 16, '2022-11-14', 3, '404.00', '2022-08-12 23:32:09', b'1'),
 (67, 16, '2022-12-14', 4, '404.00', '2022-08-12 23:32:09', b'1'),
@@ -181,7 +198,10 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (85, 16, '2024-06-14', 22, '404.00', '2022-08-12 23:32:10', b'1'),
 (86, 16, '2024-07-14', 23, '404.00', '2022-08-12 23:32:10', b'1'),
 (87, 16, '2024-08-14', 24, '404.00', '2022-08-12 23:32:10', b'1'),
-(88, 16, '2024-09-14', 25, '404.00', '2022-08-12 23:32:10', b'1');
+(88, 16, '2024-09-14', 25, '404.00', '2022-08-12 23:32:10', b'1'),
+(102, 20, '2022-08-25', 1, '770.00', '2022-08-24 18:04:00', b'0'),
+(103, 20, '2022-08-26', 2, '770.00', '2022-08-24 18:18:43', b'0'),
+(104, 20, '2022-08-27', 3, '770.00', '2022-08-24 18:18:43', b'0');
 
 -- --------------------------------------------------------
 
@@ -215,8 +235,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `password`) VALUES
-(1, 'Fulano', 'Fulanes', 'admin@gmail.com', 'ad57cb3de9c53c1fc7de94665f6f1db2dfbcaaf73063769fed0b3011466eba602c2f423c4725c6dfacdc2973a518a18e0784e848ca3aabd7cadfd140df1df447'),
-(2, 'Gerardo', 'Gomez', 'adminuser@gmail.com', 'ad57cb3de9c53c1fc7de94665f6f1db2dfbcaaf73063769fed0b3011466eba602c2f423c4725c6dfacdc2973a518a18e0784e848ca3aabd7cadfd140df1df447');
+(1, 'Fulano', 'Fulanes Dábalos', 'admin@gmail.com', 'ad57cb3de9c53c1fc7de94665f6f1db2dfbcaaf73063769fed0b3011466eba602c2f423c4725c6dfacdc2973a518a18e0784e848ca3aabd7cadfd140df1df447'),
+(2, 'GERARDO', 'GOMEZ', 'adminuser@gmail.com', 'ad57cb3de9c53c1fc7de94665f6f1db2dfbcaaf73063769fed0b3011466eba602c2f423c4725c6dfacdc2973a518a18e0784e848ca3aabd7cadfd140df1df447'),
+(3, 'FERNANDO', 'QUEQUES', 'user@gmail.com', 'ad57cb3de9c53c1fc7de94665f6f1db2dfbcaaf73063769fed0b3011466eba602c2f423c4725c6dfacdc2973a518a18e0784e848ca3aabd7cadfd140df1df447');
 
 --
 -- Índices para tablas volcadas
@@ -235,6 +256,14 @@ ALTER TABLE `customers`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `dni` (`dni`),
   ADD KEY `FK_customers_users` (`user_id`);
+
+--
+-- Indices de la tabla `guarantors`
+--
+ALTER TABLE `guarantors`
+  ADD KEY `Índice 1` (`id`),
+  ADD KEY `FK__loans` (`loan_id`),
+  ADD KEY `FK__customers` (`customer_id`);
 
 --
 -- Indices de la tabla `loans`
@@ -278,19 +307,19 @@ ALTER TABLE `coins`
 -- AUTO_INCREMENT de la tabla `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT de la tabla `loans`
 --
 ALTER TABLE `loans`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT de la tabla `loan_items`
 --
 ALTER TABLE `loan_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=105;
 
 --
 -- AUTO_INCREMENT de la tabla `micropayments`
@@ -302,7 +331,7 @@ ALTER TABLE `micropayments`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Restricciones para tablas volcadas
@@ -313,6 +342,13 @@ ALTER TABLE `users`
 --
 ALTER TABLE `customers`
   ADD CONSTRAINT `FK_customers_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `guarantors`
+--
+ALTER TABLE `guarantors`
+  ADD CONSTRAINT `FK__customers` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK__loans` FOREIGN KEY (`loan_id`) REFERENCES `loans` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `loans`
