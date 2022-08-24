@@ -238,28 +238,28 @@ $(document).ready(function() {
       } else {
         var sum_credit = data.credits[0].sum_credit + ' ' + (data.credits[0].short_name).toUpperCase()
       }
-      $("#cr").html(sum_credit)
+      $("#cr").html(sum_credit) // id= cr -> total crédito
 
       if (data.credits[1].cr_interest == null) {
         var cr_interest = '0 ' + symbol.toUpperCase()
       } else {
         var cr_interest = data.credits[1].cr_interest + ' ' + (data.credits[1].short_name).toUpperCase()
       }
-      $("#cr_interest").html(cr_interest)
+      $("#cr_interest").html(cr_interest) // id="cr_interest" -> Crédito con interes
 
       if (data.credits[2].cr_interestPaid == null) {
         var cr_interestPaid = '0 ' + symbol.toUpperCase()
       }else{
         var cr_interestPaid = data.credits[2].cr_interestPaid + ' ' + data.credits[2].short_name.toUpperCase()
       }
-      $("#cr_interestPaid").html(cr_interestPaid)
+      $("#cr_interestPaid").html(cr_interestPaid) // id="cr_interestPaid" -> Total Credito cancelado con intere
 
       if (data.credits[3].cr_interestPay == null) {
         var cr_interestPay = '0 ' + symbol.toUpperCase()
       } else {
         var cr_interestPay = data.credits[3].cr_interestPay + ' ' + (data.credits[3].short_name).toUpperCase()
       }
-      $("#cr_interestPay").html(cr_interestPay)
+      $("#cr_interestPay").html(cr_interestPay) // id="cr_interestPay" -> Total Credito por cobrar con interes
 
     });
   });
@@ -283,7 +283,7 @@ function reportPDF(){
   var coin_t = $("#coin_type2").val();
 
   if (start_d == '' || end_d == '') {
-    alert('ingrese las fechas')
+    alert('Ingrese las fechas')
   }else{
     window.open(base_url+'admin/reports/dates_pdf/'+coin_t+'/'+start_d+'/'+end_d)
   }

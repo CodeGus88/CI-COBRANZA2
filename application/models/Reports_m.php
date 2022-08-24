@@ -41,7 +41,7 @@ class Reports_m extends CI_Model {
     $cr = $this->db->get('loans l')->row();
 
     $this->db->select('c.short_name, sum(TRUNCATE(l.credit_amount*(l.interest_amount/100) + l.credit_amount,2)) AS cr_interest');
-    $this->db->join('coins c', 'c.id = l.coin_id', 'left');
+    $this->db->join('coins c', 'c.id = l.coin_id');
     $this->db->join('customers cu', 'cu.id = l.customer_id');
     $this->db->join('users u', 'u.id = cu.user_id');
     $this->db->where('l.coin_id', $coin_id);
@@ -49,7 +49,7 @@ class Reports_m extends CI_Model {
     $cr_interest = $this->db->get('loans l')->row();
 
     $this->db->select('c.short_name, sum(TRUNCATE(l.credit_amount*(l.interest_amount/100) + l.credit_amount,2)) AS cr_interestPaid');
-    $this->db->join('coins c', 'c.id = l.coin_id', 'left');
+    $this->db->join('coins c', 'c.id = l.coin_id');
     $this->db->join('customers cu', 'cu.id = l.customer_id');
     $this->db->join('users u', 'u.id = cu.user_id');
     $this->db->where(['l.coin_id' => $coin_id, 'l.status' => 0]);
@@ -57,7 +57,7 @@ class Reports_m extends CI_Model {
     $cr_interestPaid = $this->db->get('loans l')->row();
 
     $this->db->select('c.short_name, sum(TRUNCATE(l.credit_amount*(l.interest_amount/100) + l.credit_amount,2)) AS cr_interestPay');
-    $this->db->join('coins c', 'c.id = l.coin_id', 'left');
+    $this->db->join('coins c', 'c.id = l.coin_id');
     $this->db->join('customers cu', 'cu.id = l.customer_id');
     $this->db->join('users u', 'u.id = cu.user_id');
     $this->db->where(['l.coin_id' => $coin_id, 'l.status' => 1]);

@@ -93,7 +93,7 @@ class Loans extends CI_Controller {
     }
     $data['subview'] = 'admin/loans/edit';
     $this->load->view('admin/_main_layout', $data);
-  }
+  } // fin edit
 
   function ajax_searchCst() 
   {
