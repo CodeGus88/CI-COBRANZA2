@@ -88,15 +88,15 @@ $(document).ready(function() {
     }
     // let permite almacenar los datos de una forma más eficiente
     let monto = parseFloat($('#cr_amount').val());
-    let interes = $('#in_amount').val();
     let num_cuotas = $('#fee').val();
-    let interes_final = monto * (interes / 100);
-    let monto_total = interes_final + monto;
+    let i = ($('#in_amount').val() / 100);
+    let I = monto * i * num_cuotas;
+    let monto_total = I + monto;
     let cuota = monto_total / num_cuotas;
 
-    $('#valor_cuota').val(cuota.toFixed(2));
-    $('#valor_interes').val(interes_final.toFixed(2));
-    $('#monto_total').val(monto_total.toFixed(2));
+    $('#valor_cuota').val(cuota.toFixed(1));
+    $('#valor_interes').val(I.toFixed(1));
+    $('#monto_total').val(monto_total.toFixed(1));
 
   }); // fin Realiza la suma de las cuotas seleccionadas al registrar un nuevo prestamo
 
