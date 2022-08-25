@@ -71,12 +71,6 @@ $(document).ready(function() {
       $("#in_amount").focus()
       return false;
     }
-    if ($("#fee").val()=="") {
-      contador=1 
-      alert("Ingresar cuotas")
-      $("#fee").focus()
-      return false;
-    }
     if ($("#date").val()=="") {
       contador=1 
       alert("Ingresar fecha emision")
@@ -87,6 +81,19 @@ $(document).ready(function() {
       $('#register_loan').attr('disabled', false);
     }
     // let permite almacenar los datos de una forma más eficiente
+    let time = parseFloat($('#time').val()); // n meses
+    let period = $('#period').val(); // mensual, quincenal, semanal, diario
+    if(period.toLowerCase()=='mensual'){
+      $('#fee').val(time*1);
+    }else if(period.toLowerCase()=='quincenal'){
+      $('#fee').val(time*2);
+    }else if(period.toLowerCase()=='semanal'){
+      $('#fee').val(time*4);
+    }else if(period.toLowerCase()=='diario'){
+      $('#fee').val(time*30);
+    }else{
+      $('#fee').val(0);
+    }
     let monto = parseFloat($('#cr_amount').val());
     let num_cuotas = $('#fee').val();
     let i = ($('#in_amount').val() / 100);
@@ -174,7 +181,6 @@ $(document).ready(function() {
                 data.quote[i].fee_amount,
                 '<button type="button" class="btn btn-sm ' + (data.quote[i].status==1? 'btn-outline-danger' : 'btn-outline-success') + '">'+ (data.quote[i].status==1? 'Pendiente': 'Pagado') +'</button>'
               ]
-              
             }
            // Fin función de calcular monto total a pagar al seleccionar
         }
@@ -191,10 +197,10 @@ $(document).ready(function() {
           $('input:checkbox').on('change',function (){
             // console.log('chand', $(this).val())
             var total = 0;
-            var totalChecks = 0;
+            // var totalChecks = 0;
             $('input:checkbox:enabled:checked').each(function(){
               total += isNaN(parseFloat($(this).attr('data-fee'))) ? 0 : parseFloat($(this).attr('data-fee'));
-              totalChecks++;
+              // totalChecks++;
             });   
             
             $("#total_amount").val(total);
@@ -263,6 +269,7 @@ $(document).ready(function() {
 
     });
   });
+
 })
 
 
@@ -289,4 +296,3 @@ function reportPDF(){
   }
 
 }
-

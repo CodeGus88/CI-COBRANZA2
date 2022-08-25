@@ -38,8 +38,8 @@ class Loans extends CI_Controller {
         $p = 'P15D';
       if ($this->input->post('payment_m') == 'mensual')
         $p = 'P1M';
-      
       // definir periodo de fechas
+      echo "Numero de periodos: " . $this->input->post('num_fee');
       $period = new DatePeriod( 
                     new DateTime($this->input->post('date')), // Donde empezamos a contar el periodo
                     new DateInterval($p), // Definimos el periodo a 1 día, 1mes
@@ -102,7 +102,7 @@ class Loans extends CI_Controller {
     echo json_encode($cst);
   }
 
-  function view($id) 
+  function view($id)
   {
     $data['loan'] = $this->loans_m->get_loan($this->session->userdata('user_id'), $id);
     $data['items'] = $this->loans_m->get_loanItems($this->session->userdata('user_id'), $id);
