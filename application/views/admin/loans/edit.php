@@ -1,3 +1,7 @@
+
+
+
+
 <div class="card shadow mb-4">
   <div class="card-header py-3">Crear préstamo </div>
   <div class="card-body">
@@ -13,30 +17,19 @@
 
       <div class="form-row">
         <div class="form-group col-12 col-md-8">
-          <label class="small mb-1" for="exampleFormControlSelect2">Buscar cliente por CI</label>
+          <label class="small mb-1" for="exampleFormControlSelect2">Cliente</label>
           <div class="input-group">
-            <input type="text" id="dni" class="form-control">
-            <input type="hidden" name="customer_id" id="customer">
-            <div class="input-group-append">
-              <button type="button" id="btn_buscar" class="btn btn-primary">
-                <i class="fa fa-search"></i>
-              </button>
-            </div>
+            <select id="search" class="form-control" name="customer_id">
+              <option value="0" selected="selected">...</option>
+              <?php foreach ($customers as $customer): ?>
+              <option value="<?php echo $customer->id ?>">
+                <?php echo  $customer->dni . " || " . $customer->fullname?> 
+              </option>
+              <?php endforeach ?>
+            </select>
           </div>
+          <span class="small mb-1"><small>(Solo aparecen en la lista los clientes que no tienen cuentas pendientes)</small></span>
         </div>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group col-12 col-md-4">
-          <label class="small mb-1" for="inputUsername">CI</label>
-          <input class="form-control" id="dni_cst" type="text" disabled>
-        </div>
-        <div class="form-group col-12 col-md-4">
-          <label class="small mb-1" for="inputUsername">Nombre completo</label>
-          <input class="form-control" id="name_cst" type="text" disabled>
-        </div>
-
-        
       </div>
 
       <div class="form-row">
@@ -122,3 +115,9 @@
       
     </div>
   </div>
+
+  <script>
+    $("#search").select2({
+      tags: false
+    });
+  </script>

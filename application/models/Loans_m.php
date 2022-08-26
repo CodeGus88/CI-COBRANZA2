@@ -83,6 +83,14 @@ class Loans_m extends MY_Model {
     return $this->db->get()->result();
   }
 
+  public function get_customers($user_id){
+    $this->db->select("c.id, c.dni, CONCAT(c.first_name, ' ', c.last_name) as fullname");
+    $this->db->from('customers c');
+    $this->db->where("c.user_id = $user_id");
+    $this->db->where("c.loan_status = FALSE");
+    return $this->db->get()->result();
+  }
+
 }
 
 /* End of file Loans_m.php */

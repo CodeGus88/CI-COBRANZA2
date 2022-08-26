@@ -23,6 +23,7 @@ class Loans extends CI_Controller {
   public function edit()
   {
     $data['coins'] = $this->loans_m->get_coins();
+    $data['customers'] = $this->loans_m->get_customers($this->session->userdata('user_id'));
 
     $rules = $this->loans_m->loan_rules;
 
@@ -39,7 +40,6 @@ class Loans extends CI_Controller {
       if ($this->input->post('payment_m') == 'mensual')
         $p = 'P1M';
       // definir periodo de fechas
-      echo "Numero de periodos: " . $this->input->post('num_fee');
       $period = new DatePeriod( 
                     new DateTime($this->input->post('date')), // Donde empezamos a contar el periodo
                     new DateInterval($p), // Definimos el periodo a 1 día, 1mes
@@ -75,19 +75,22 @@ class Loans extends CI_Controller {
       }
 
       $loan_data = $this->loans_m->array_from_post(['customer_id','credit_amount', 'interest_amount', 'num_fee', 'fee_amount', 'payment_m', 'coin_id', 'date']);
-      
-      $customer = $this->customers_m->get_customer_by_id(
-        $this->session->userdata('user_id'),
-        $loan_data['customer_id']
-      );
-      if($customer != null){
-        if ($this->loans_m->add_loan($loan_data, $items)) {
-          $this->session->set_flashdata('msg', 'Prestamo agregado correctamente');
+      if($loan_data['customer_id'] > 0){
+        $customer = $this->customers_m->get_customer_by_id(
+          $this->session->userdata('user_id'),
+          $loan_data['customer_id']
+        );
+        if($customer != null){
+          if ($this->loans_m->add_loan($loan_data, $items)) {
+            $this->session->set_flashdata('msg', 'Prestamo agregado correctamente');
+          }else{
+            $this->session->set_flashdata('msg_error', 'Ocurrió un error al guardar, intente nuevamente');
+          }
         }else{
-          $this->session->set_flashdata('msg_error', 'Ocurrió un error al guardar, intente nuevamente');
+          $this->session->set_flashdata('msg_error', '¡El cliente no existe!');
         }
       }else{
-        $this->session->set_flashdata('msg_error', '¡El cliente no existe!');
+        $this->session->set_flashdata('msg_error', '¡No se seleccionó un cliente!');
       }
       redirect('admin/loans');
     }
@@ -95,12 +98,12 @@ class Loans extends CI_Controller {
     $this->load->view('admin/_main_layout', $data);
   } // fin edit
 
-  function ajax_searchCst() 
-  {
-    $dni = $this->input->post('dni');
-    $cst = $this->loans_m->get_searchCst($this->session->userdata('user_id'), $dni);
-    echo json_encode($cst);
-  }
+  // function ajax_searchCst() 
+  // {
+  //   $dni = $this->input->post('dni');
+  //   $cst = $this->loans_m->get_searchCst($this->session->userdata('user_id'), $dni);
+  //   echo json_encode($cst);
+  // }
 
   function view($id)
   {

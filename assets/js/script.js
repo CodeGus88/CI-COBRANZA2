@@ -1,63 +1,66 @@
 $(document).ready(function() {
 
-  var callback = function() {
+  // var callback = function() {
 
-    var dni = $('#dni').val()
+  //   var dni = $('#dni').val()
 
-    if (dni == "") {
-      alert('Ingresar Carnet de Identidad')
-      return false
-    } else {
+  //   if (dni == "") {
+  //     alert('Ingresar Carnet de Identidad')
+  //     return false
+  //   } else {
 
-      $.post(base_url + "admin/loans/ajax_searchCst/", {dni : dni}, function(data){
+  //     $.post(base_url + "admin/loans/ajax_searchCst/", {dni : dni}, function(data){
 
-        console.log('sin parse', data)
+  //       console.log('sin parse', data)
 
-        if (data == 'null'){
-          alert('No existe el cliente');
-          $("#dni").val('');
-          $("#dni_cst").val('');
-          $("#name_cst").val('');
-          $("#customer").val('');
-        }
-        else
-        {
-          $("#dni").val('');
-          // debes validar/procesar esa cadena como JSON (con JSON.parse) y entonces podrás acceder a los datos de manera sencilla.
-          data = JSON.parse(data);    
+  //       if (data == 'null'){
+  //         alert('No existe el cliente');
+  //         $("#dni").val('');
+  //         $("#dni_cst").val('');
+  //         $("#name_cst").val('');
+  //         $("#customer").val('');
+  //       }
+  //       else
+  //       {
+  //         $("#dni").val('');
+  //         // debes validar/procesar esa cadena como JSON (con JSON.parse) y entonces podrás acceder a los datos de manera sencilla.
+  //         data = JSON.parse(data);    
          
-          console.log('con parse', data)
+  //         console.log('con parse', data)
           
-          if (data.loan_status == '0') {
-            $("#customer").val(data.id);
-            $("#dni_cst").val(data.dni);
-            $("#name_cst").val(data.first_name + ' ' + data.last_name);
-          } else {
-            alert('persona con prestamo pendiente')
-            $("#dni_cst").val('');
-            $("#name_cst").val('');
-            $("#customer").val('');
-          }
-        }
-      })
-    }
+  //         if (data.loan_status == '0') {
+  //           $("#customer").val(data.id);
+  //           $("#dni_cst").val(data.dni);
+  //           $("#name_cst").val(data.first_name + ' ' + data.last_name);
+  //         } else {
+  //           alert('persona con prestamo pendiente')
+  //           $("#dni_cst").val('');
+  //           $("#name_cst").val('');
+  //           $("#customer").val('');
+  //         }
+  //       }
+  //     })
+  //   }
 
-  };
+  // };
 
+  // $("#dni").keypress(function(event) {
+  //   if (event.which == 13) callback();
+  // });
 
-
-
-
-  $("#dni").keypress(function(event) {
-    if (event.which == 13) callback();
-  });
-
-  $('#btn_buscar').click(callback);
+  // $('#btn_buscar').click(callback);
 
   // Realiza la suma de las cuotas seleccionadas al registrar un nuevo prestamo
   $('#calcular').on('click', function(){ 
     // var define una variable global o local en una función sin importar el ámbito del bloque
     var contador = 0
+
+    if ($("#search").val()=="0" || $("#search").val()=="") {
+      contador=1  
+      alert("Selecciona un cliente")
+      $("#search").focus()
+      return false;
+    }
 
     if ($("#cr_amount").val()=="") {
       contador=1  
@@ -65,6 +68,13 @@ $(document).ready(function() {
       $("#cr_amount").focus()
       return false;
     }
+    if ($("#time").val()=="") {
+      contador=1  
+      alert("Ingresar tiempo")
+      $("#time").focus()
+      return false;
+    }
+    
     if ($("#in_amount").val()=="") {
       contador=1 
       alert("Ingresar interes")
@@ -106,7 +116,7 @@ $(document).ready(function() {
     $('#valor_interes').val(I.toFixed(1));
     $('#monto_total').val(monto_total.toFixed(1));
 
-  }); // fin Realiza la suma de las cuotas seleccionadas al registrar un nuevo prestamo
+  }); // Fin realiza la suma de las cuotas seleccionadas al registrar un nuevo prestamo
 
   $("#loan_form").submit(function () {  
     if($("#customer").val() == "") {  
@@ -229,6 +239,7 @@ $(document).ready(function() {
 
   $('#btn_buscar_c').click(callback_cobranza);
 
+
   $("#coin_type").change(function(){
     
     var coin_id = $("#coin_type").val()
@@ -296,3 +307,10 @@ function reportPDF(){
   }
 
 }
+
+
+
+function load_loans(){
+
+}
+  
