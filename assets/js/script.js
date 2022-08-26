@@ -82,14 +82,14 @@ $(document).ready(function() {
     }
     // let permite almacenar los datos de una forma más eficiente
     let time = parseFloat($('#time').val()); // n meses
-    let period = $('#period').val(); // mensual, quincenal, semanal, diario
-    if(period.toLowerCase()=='mensual'){
+    let payment = $('#payment').val(); // mensual, quincenal, semanal, diario
+    if(payment.toLowerCase()=='mensual'){
       $('#fee').val(time*1);
-    }else if(period.toLowerCase()=='quincenal'){
+    }else if(payment.toLowerCase()=='quincenal'){
       $('#fee').val(time*2);
-    }else if(period.toLowerCase()=='semanal'){
+    }else if(payment.toLowerCase()=='semanal'){
       $('#fee').val(time*4);
-    }else if(period.toLowerCase()=='diario'){
+    }else if(payment.toLowerCase()=='diario'){
       $('#fee').val(time*30);
     }else{
       $('#fee').val(0);
@@ -97,7 +97,8 @@ $(document).ready(function() {
     let monto = parseFloat($('#cr_amount').val());
     let num_cuotas = $('#fee').val();
     let i = ($('#in_amount').val() / 100);
-    let I = monto * i * num_cuotas;
+    // let I = monto * i * num_cuotas;
+    let I = monto * i * time;
     let monto_total = I + monto;
     let cuota = monto_total / num_cuotas;
 
@@ -112,7 +113,6 @@ $(document).ready(function() {
       alert("Buscar un cliente");  
       return false;  
     }  
-    
   });
 
   $(document).on("click", '[data-toggle="ajax-modal"]', function (t) {

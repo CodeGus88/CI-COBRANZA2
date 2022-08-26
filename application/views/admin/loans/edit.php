@@ -59,8 +59,8 @@
         </div>
       
         <div class="form-group col-12 col-md-4">
-          <label class="small mb-1" for="exampleFormControlSelect2">Periodo</label>
-            <select class="form-control" id="period" name="payment_m">
+          <label class="small mb-1" for="exampleFormControlSelect2">Modalidad de pago</label>
+            <select class="form-control" id="payment" name="payment_m">
               <option value="diario">Diario</option>
               <option value="semanal">Semanal</option>
               <option value="quincenal" selected="selected">Quincenal</option>
