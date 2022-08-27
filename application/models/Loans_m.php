@@ -39,7 +39,7 @@ class Loans_m extends MY_Model {
     return $this->db->get('customers')->row();
   }
 
-  public function add_loan($data, $items) {
+  public function add_loan($data, $items, $guarantors) {
 
     if ($this->db->insert('loans', $data)) {
       $loan_id = $this->db->insert_id();
@@ -52,6 +52,13 @@ class Loans_m extends MY_Model {
         $this->db->insert('loan_items', $item);
       }
 
+      if($guarantors!=null){
+        foreach ($guarantors as $customer_id) {
+          $datax['customer_id'] = $customer_id;
+          $datax['loan_id'] = $loan_id;
+          $this->db->insert('guarantors', $datax);
+        }
+      }
       return true;
     }
 
