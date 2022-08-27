@@ -18,9 +18,12 @@
           <select id="search" class="form-control" name="customer_id">
             <option value="0" selected="selected">...</option>
             <?php foreach ($customers as $customer) : ?>
+              <?php if($customer->loan_status == FALSE) :?>
               <option value="<?php echo $customer->id ?>">
-                <?php echo  $customer->dni . " | " . $customer->fullname ?>
+                <?php 
+                echo  $customer->dni . " | " . $customer->fullname?>
               </option>
+              <?php endif?>
             <?php endforeach ?>
           </select>
         </div>

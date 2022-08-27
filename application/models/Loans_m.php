@@ -91,10 +91,10 @@ class Loans_m extends MY_Model {
   }
 
   public function get_customers($user_id){
-    $this->db->select("c.id, c.dni, CONCAT(c.first_name, ' ', c.last_name) as fullname");
+    $this->db->select("c.id, c.dni, CONCAT(c.first_name, ' ', c.last_name) as fullname, c.loan_status");
     $this->db->from('customers c');
     $this->db->where("c.user_id = $user_id");
-    $this->db->where("c.loan_status = FALSE");
+    // $this->db->where("c.loan_status = FALSE");
     return $this->db->get()->result();
   }
 
