@@ -22,28 +22,28 @@ class Payments extends CI_Controller {
 
   public function edit()
   {
+    $data['customers'] = $this->payments_m->get_customers($this->session->userdata('user_id'));
     $data['subview'] = 'admin/payments/edit';
     $this->load->view('admin/_main_layout', $data);
   }
 
-   function ajax_searchCst() 
+  function ajax_get_loan($customer_id) 
   {
-    $dni = $this->input->post('dni');
-    $cst = $this->payments_m->get_searchCst($this->session->userdata('user_id'), $dni);
-    $quota_data = '';
+    $quota_data = $this->payments_m->get_loan($this->session->userdata('user_id'), $customer_id);
+    $search_data = ['loan'=>$quota_data];
+    echo json_encode($search_data); // datos leidos por javascript Ajax
+  }
 
-    if ($cst != null) {
-      $quota_data = $this->payments_m->get_quotasCst($this->session->userdata('user_id'), $cst->loan_id);
-    } 
-
-    $search_data = ['cst' => $cst, 'quote'=>$quota_data];
-
+  function ajax_get_loan_items($loan_id) 
+  {
+    $quota_data = $this->payments_m->get_loan_items($this->session->userdata('user_id'), $loan_id);
+    $search_data = ['quotas'=>$quota_data];
     echo json_encode($search_data); // datos leidos por javascript Ajax
   }
 
   function ticket()
   {
-    $data['name_cst'] = $this->input->post('name_cst');
+    $data['customerName'] = $this->payments_m->get_customer_by_id($this->input->post('customer_id'));
     $data['coin'] = $this->input->post('coin');
     $data['loan_id'] = $this->input->post('loan_id');
     $probable_user_id = $this->payments_m->get_loan_adviser_user_id($this->input->post('loan_id'))->id;
