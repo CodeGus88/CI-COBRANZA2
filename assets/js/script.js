@@ -87,47 +87,55 @@ $(document).ready(function () {
   })
 
   $("#coin_type").change(function () {
-
-    var coin_id = $("#coin_type").val()
-    var symbol = $('#coin_type option:selected').data("symbol");
-
-    $.get(base_url + "admin/reports/ajax_getCredits/" + coin_id, function (data) {
-
-      data = JSON.parse(data);
-      console.log('con parse', data)
-
-      if (data.credits[0].sum_credit == null) {
-        var sum_credit = '0 ' + symbol.toUpperCase()
-      } else {
-        var sum_credit = data.credits[0].sum_credit + ' ' + (data.credits[0].short_name).toUpperCase()
-      }
-      $("#cr").html(sum_credit) // id= cr -> total crédito
-
-      if (data.credits[1].cr_interest == null) {
-        var cr_interest = '0 ' + symbol.toUpperCase()
-      } else {
-        var cr_interest = data.credits[1].cr_interest + ' ' + (data.credits[1].short_name).toUpperCase()
-      }
-      $("#cr_interest").html(cr_interest) // id="cr_interest" -> Crédito con interes
-
-      if (data.credits[2].cr_interestPaid == null) {
-        var cr_interestPaid = '0 ' + symbol.toUpperCase()
-      } else {
-        var cr_interestPaid = data.credits[2].cr_interestPaid + ' ' + data.credits[2].short_name.toUpperCase()
-      }
-      $("#cr_interestPaid").html(cr_interestPaid) // id="cr_interestPaid" -> Total Credito cancelado con intere
-
-      if (data.credits[3].cr_interestPay == null) {
-        var cr_interestPay = '0 ' + symbol.toUpperCase()
-      } else {
-        var cr_interestPay = data.credits[3].cr_interestPay + ' ' + (data.credits[3].short_name).toUpperCase()
-      }
-      $("#cr_interestPay").html(cr_interestPay) // id="cr_interestPay" -> Total Credito por cobrar con interes
-
-    });
+    loadGeneralReport()
   });
+  // $("#coin_type").change(loadGeneralReport());
 
 })
+
+// loadGeneralReport();
+
+// Cargar 
+function loadGeneralReport(){
+  var coin_id = $("#coin_type").val()
+  var symbol = $('#coin_type option:selected').data("symbol");
+
+  $.get(base_url + "admin/reports/ajax_getCredits/" + coin_id, function (data) {
+
+    data = JSON.parse(data);
+    console.log('con parse', data)
+
+    if (data.credits[0].sum_credit == null) {
+      var sum_credit = '0 ' + symbol
+    } else {
+      var sum_credit = data.credits[0].sum_credit + ' ' + (data.credits[0].short_name).toUpperCase()
+    }
+    $("#cr").html(sum_credit) // id= cr -> total crédito
+
+    if (data.credits[1].cr_interest == null) {
+      var cr_interest = '0 ' + symbol
+    } else {
+      var cr_interest = data.credits[1].cr_interest + ' ' + (data.credits[1].short_name).toUpperCase()
+    }
+    $("#cr_interest").html(cr_interest) // id="cr_interest" -> Crédito con interes
+
+    if (data.credits[2].cr_interestPaid == null) {
+      var cr_interestPaid = '0 ' + symbol
+    } else {
+      var cr_interestPaid = data.credits[2].cr_interestPaid + ' ' + data.credits[2].short_name.toUpperCase()
+    }
+    $("#cr_interestPaid").html(cr_interestPaid) // id="cr_interestPaid" -> Total Credito cancelado con intere
+
+    if (data.credits[3].cr_interestPay == null) {
+      var cr_interestPay = '0 ' + symbol
+    } else {
+      var cr_interestPay = data.credits[3].cr_interestPay + ' ' + (data.credits[3].short_name).toUpperCase()
+    }
+    $("#cr_interestPay").html(cr_interestPay) // id="cr_interestPay" -> Total Credito por cobrar con interes
+
+  });
+}
+
 
 
 function imp_credits(imp1) {
