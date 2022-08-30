@@ -155,7 +155,8 @@ function reportPDF() {
 function load_loan() {
   // alert("Este es un mensaje de javaScript: " + document.getElementById("search").value)
   customer_id = document.getElementById("search").value
-  fetch(base_url + "admin/payments/ajax_get_loan/" + customer_id)
+  if(customer_id>0){
+    fetch(base_url + "admin/payments/ajax_get_loan/" + customer_id)
     .then(response => response.json())
     .then(data => {
       console.log(data);
@@ -166,17 +167,34 @@ function load_loan() {
         $("#payment_m").val(data.loan.payment_m);
         $("#coin").val(data.loan.coin_name);
         load_loan_items(data.loan.id);
+        load_guarantors(data.loan.id);
       }
       else {
-        console.log('no existen prestamos...')
-        $("#credit_amount").val('');
-        $("#payment_m").val('');
-        $("#coin").val('');
-        $("#quotas").html('');
         alert('No se encontró un préstamo asociado al cliente seleccionado');
         window.location.reload();
       }
     })
+  }else{
+    document.getElementById("guarantors_container").style.display = "none"
+    $('#register_loan').attr('disabled', true);
+    clearform();
+  }
+  
+}
+
+
+function clearform(){
+  $("#credit_amount").val('');
+  $("#payment_m").val('');
+  $("#coin").val('');
+  $("#total_amount").val('');
+  $("#quotas").dataTable().fnDestroy();
+  $('#quotas').dataTable({
+    "bPaginate": false, //Ocultar paginación
+    "scrollY": '50vh',
+    "scrollCollapse": true,
+    "aaData": []
+  })
 }
 
 
@@ -214,9 +232,9 @@ function load_loan_items(loan_id) {
           total += isNaN(parseFloat($(this).attr('data-fee'))) ? 0 : parseFloat($(this).attr('data-fee'));
         });
 
-        $("#total_amount").val(total);
+        $("#total_amount").val(total.toFixed(1));
 
-        if (total != 0) {
+        if (total != 0 && $("#search").val()!=0) {
           $('#register_loan').attr('disabled', false);
         } else {
           $('#register_loan').attr('disabled', true);
@@ -224,4 +242,23 @@ function load_loan_items(loan_id) {
       });
     }
   });
+}
+
+function load_guarantors(loan_id){
+  fetch(base_url + "admin/payments/ajax_get_guarantors/" + loan_id)
+    .then(response => response.json())
+    .then(x => {
+      console.log(x);
+      if (x.guarantors != null) {
+        var options = "";
+        x.guarantors.forEach(element => {
+          var option = '<button type="button" class="btn btn-secondary margin-right" >' + element.ci + " | " + element.guarantor_name + '</button>';
+        
+          options += option;
+        });
+        document.getElementById("guarantors_container").style.display = (x.guarantors.length>0)?"":"none"
+        $("#guarantors_contend").html("");
+        $("#guarantors_contend").html(options);
+      }
+    })
 }

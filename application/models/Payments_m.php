@@ -95,9 +95,19 @@ class Payments_m extends CI_Model {
     return $this->db->get()->row();
   }
 
-  public function get_customer_by_id($customer_id){
+  public function get_guarantors($user_id, $loan_id){
+    $this->db->select("g.id, c.dni ci, CONCAT(c.first_name, ' ', c.last_name) guarantor_name");
+    $this->db->from('customers c');
+    $this->db->join('guarantors g', 'g.customer_id = c.id');
+    $this->db->where(['g.loan_id'=>$loan_id, 'c.user_id'=>$user_id]);
+    return $this->db->get()->result();
+  }
+
+  public function get_customer_by_id($user_id, $customer_id){
     $this->db->select("CONCAT(c.first_name, ' ', c.last_name) customer_name")
               ->from('customers c')
+              ->join('users u', 'u.id = c.user_id')
+              ->where('u.id', $user_id)
               ->where('c.id', $customer_id);
     return $this->db->get()->row();
   }

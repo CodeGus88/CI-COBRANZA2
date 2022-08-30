@@ -22,7 +22,6 @@ class Reports extends CI_Controller {
 
   public function ajax_getCredits($coin_id)
   {
-    // $data['credits'] = $this->reports_m->get_reportLoanAll($coin_id); // usar para el daministrador
     $data['credits'] = $this->reports_m->get_reportLoan($this->session->userdata('user_id'), $coin_id);
 
     echo json_encode($data);
@@ -45,8 +44,8 @@ class Reports extends CI_Controller {
     $pdf = new PDF();
     $pdf->AddPage('P','A4',0);
     $pdf->SetFont('Arial','B',13);
-    $pdf->Ln(7);
-    $pdf->Cell(0,0,'Reporte de prestamos por rango de fechas',0,1,'C');
+    $pdf->Ln(3);
+    $pdf->Cell(0,0,'PRESTAMOS POR RANGO DE FECHAS',0,1,'C');
 
     $pdf->Ln(8);
     
@@ -110,8 +109,10 @@ class Reports extends CI_Controller {
     $pdf = new PDF();
     $pdf->AddPage('P','A4',0);
     $pdf->SetFont('Arial','B',13);
-    $pdf->Ln(7);
-    $pdf->Cell(0,0,'Reporte de prestamos por cliente - ' . utf8_decode($reportCst[0]->customer_name),0,1,'C');
+    $pdf->Ln(3);
+    $pdf->Cell(0,0,utf8_decode('PRÉSTAMOS POR CLIENTE'),0,1,'C');
+    // $pdf->Ln(8);
+    // $pdf->Cell(0,0,utf8_decode($reportCst[0]->customer_name),0,1,'C');
 
     $pdf->Ln(8);
   
@@ -119,9 +120,13 @@ class Reports extends CI_Controller {
 
     foreach ($reportCst as $rc) {
 
-    $html = '<table border="0">
+    $html = 
+    '<table border="0">
     <tr>
-    <td width="120" height="30"><b>Monto credito:</b></td><td width="400" height="30">'.$rc->credit_amount.'</td><td width="120" height="30"><b>Numero Credito:</b></td><td width="55" height="30">'.$rc->id.'</td>
+    <td width="120" height="30"><b>Cliente:</b></td><td width="400" height="30">'.utf8_decode($rc->customer_name)." (".$rc->ci.")".'</td><td width="120" height="30"><b>Tipo moneda:</b></td><td width="55" height="30">'.$rc->name.' ('.$rc->short_name.')</td>
+    </tr>
+    <tr>
+    <td width="120" height="30"><b>Credito:</b></td><td width="400" height="30">'.$rc->credit_amount.'</td><td width="120" height="30"><b>Numero Credito:</b></td><td width="55" height="30">'.$rc->id.'</td>
     </tr>
     <tr>
     <td width="120" height="30"><b>Interes credito:</b></td><td width="400" height="30">'.$rc->interest_amount.' %</td><td width="120" height="30"><b>Forma pago:</b></td><td width="55" height="30">'.$rc->payment_m.'</td>
@@ -133,19 +138,20 @@ class Reports extends CI_Controller {
     <td width="120" height="30"><b>Monto cuota:</b></td><td width="400" height="30">'.$rc->fee_amount.'</td><td width="120" height="30"><b>Estado credito:</b></td><td width="55" height="30">'.($rc->status ? "Pendiente" : "Cancelado").'</td>
     </tr>
     <tr>
-    <td width="120" height="30"><b>Tipo moneda:</b></td><td width="400" height="30">'.$rc->name.' ('.$rc->short_name.')</td><td width="120" height="30"><b></b></td><td width="55" height="30"><b>Asesor:</b>' . utf8_decode($rc->user_name) .'</td>
+    <td width="120" height="30"><b>Asesor:</b></td><td width="400" height="30">' . utf8_decode($rc->user_name) .'</td><td width="120" height="30"><b></b></td><td width="55" height="30"><b></b>' . ' ' .'</td>
     </tr>
     </table>';
-
+    
     $pdf->WriteHTML($html);
+    
 
     $pdf->Ln(7);
     $pdf->SetFont('Arial','',10);
 
     $html1 = '';
-    $html1 .= '<table border="1">
+    $html1 .= '<table border="1" style="text-align:center">
     <tr>
-    <td width="120" height="30"><b>Nro Cuota</b></td><td width="120" height="30"><b>Fecha pago</b></td><td width="120" height="30"><b>Total pagar</b></td><td width="120" height="30"><b>Estado</b></td>
+    <td width="75" height="30"><b>Nro Cuota</b></td><td width="120" height="30"><b>Fecha pago</b></td><td width="120" height="30"><b>Total pagar</b></td><td width="120" height="30"><b>Estado</b></td>
     </tr>';
 
     // $loanItems = $this->reports_m->get_reportLIAll($rc->id); // Usar para el administrador
@@ -153,7 +159,7 @@ class Reports extends CI_Controller {
     foreach ($loanItems as $li) {
       $html1 .= '
     <tr>
-    <td width="120" height="30">'.$li->num_quota.'</td><td width="120" height="30">'.$li->date.'</td><td width="120" height="30">'.($li->status ? $li->fee_amount : "0.00").'</td><td width="120" height="30">'.($li->status ? "Pendiente" : "Cancelado").'</td>
+    <td width="75" height="30">'.$li->num_quota.'</td><td width="120" height="30">'.$li->date.'</td><td width="120" height="30">'.($li->status ? $li->fee_amount : "0.00").'</td><td width="120" height="30">'.($li->status ? "Pendiente" : "Cancelado").'</td>
     </tr>';
     }
 
@@ -163,6 +169,19 @@ class Reports extends CI_Controller {
 
     $pdf->Ln(7);
 
+
+    // // // Inicio garantes
+    $guarantors = $this->reports_m->get_guarantors($this->session->userdata('user_id'), $rc->id);
+    if($guarantors != null){
+      $var = "";
+      for($i = 0; $i < sizeof($guarantors); $i++){
+        $separator = $i==(sizeof($guarantors)-2)?" y ":(($i==(sizeof($guarantors)-1))?".":", ");
+        $var .= $guarantors[$i]->fullname . " (" . $guarantors[$i]->ci .")".$separator;
+      }
+      $pdf->WriteHTML('<span border-radius="10px 0px 39px 22px"><b>Garantes: </b>' . $var .'</span>');
+    }
+    // // Fin garantes
+    // $pdf->AddPage('P','A4',0);
     }
 
     $pdf->Output('reporte_global_cliente.pdf', 'I');

@@ -41,9 +41,16 @@ class Payments extends CI_Controller {
     echo json_encode($search_data); // datos leidos por javascript Ajax
   }
 
+  function ajax_get_guarantors($loan_id) 
+  {
+    $guarantors = $this->payments_m->get_guarantors($this->session->userdata('user_id'), $loan_id);
+    $search_datax = ['guarantors'=>$guarantors];
+    echo json_encode($search_datax); // datos leidos por javascript Ajax
+  }
+
   function ticket()
   {
-    $data['customerName'] = $this->payments_m->get_customer_by_id($this->input->post('customer_id'));
+    $data['customerName'] = $this->payments_m->get_customer_by_id($this->session->userdata('user_id'), $this->input->post('customer_id'));
     $data['coin'] = $this->input->post('coin');
     $data['loan_id'] = $this->input->post('loan_id');
     $probable_user_id = $this->payments_m->get_loan_adviser_user_id($this->input->post('loan_id'))->id;

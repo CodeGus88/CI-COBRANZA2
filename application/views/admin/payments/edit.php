@@ -20,6 +20,17 @@
           <span class="small mb-1"><small>(Solo aparecen en la lista los clientes que tienen cuentas pendientes)</small></span>
         </div>
       </div>
+      <!-- garantes -->
+        <div class="form-row" id="guarantors_container" >
+          <div class="form-group col-12 col-md-16">
+            <label class="small mb-1" for="exampleFormControlSelect2">Garantes</label>
+            <div class="input-group" id="guarantors_contend">
+              
+            </div>
+            <span class="small mb-1"><small>Garantes del préstamo</small></span>
+          </div>
+        </div>
+    <!-- Fin garantes -->
 
       <div class="form-row">
         <div class="form-group col-12 col-md-4">
