@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 27-08-2022 a las 21:26:08
+-- Tiempo de generación: 30-08-2022 a las 22:36:57
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.5
 
@@ -29,20 +29,18 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `coins` (
   `id` int(11) NOT NULL,
-  `name` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
-  `short_name` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
-  `symbol` varchar(11) COLLATE utf8_spanish_ci NOT NULL,
-  `description` varchar(70) COLLATE utf8_spanish_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+  `name` varchar(20) COLLATE utf8_spanish2_ci NOT NULL,
+  `short_name` varchar(50) COLLATE utf8_spanish2_ci NOT NULL,
+  `symbol` varchar(11) COLLATE utf8_spanish2_ci NOT NULL,
+  `description` varchar(70) COLLATE utf8_spanish2_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
 -- Volcado de datos para la tabla `coins`
 --
 
 INSERT INTO `coins` (`id`, `name`, `short_name`, `symbol`, `description`) VALUES
-(1, 'bolivianos', 'Bs', 'b', 'Moneda nacional'),
-(2, 'dolar', 'usd', '$', 'dolar estadounidense'),
-(3, 'euros', 'eu', 'e', 'moneda europea');
+(1, 'Bolivianos', 'Bs', 'b', 'Moneda nacional');
 
 -- --------------------------------------------------------
 
@@ -52,19 +50,19 @@ INSERT INTO `coins` (`id`, `name`, `short_name`, `symbol`, `description`) VALUES
 
 CREATE TABLE `customers` (
   `id` int(11) NOT NULL,
-  `dni` varchar(20) COLLATE utf8_spanish_ci NOT NULL COMMENT 'ci',
-  `first_name` varchar(150) COLLATE utf8_spanish_ci NOT NULL,
-  `last_name` varchar(150) COLLATE utf8_spanish_ci NOT NULL,
-  `gender` enum('masculino','femenino','','') COLLATE utf8_spanish_ci DEFAULT NULL,
-  `address` varchar(160) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `mobile` varchar(32) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `phone` varchar(20) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `business_name` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `ruc` varchar(20) COLLATE utf8_spanish_ci DEFAULT NULL COMMENT 'nit',
-  `company` varchar(150) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `dni` varchar(20) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'ci',
+  `first_name` varchar(150) COLLATE utf8_spanish2_ci NOT NULL,
+  `last_name` varchar(150) COLLATE utf8_spanish2_ci NOT NULL,
+  `gender` enum('masculino','femenino','','') COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `address` varchar(160) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `mobile` varchar(32) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `phone` varchar(20) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `business_name` varchar(100) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `ruc` varchar(20) COLLATE utf8_spanish2_ci DEFAULT NULL COMMENT 'nit',
+  `company` varchar(150) COLLATE utf8_spanish2_ci DEFAULT NULL,
   `loan_status` int(11) NOT NULL DEFAULT 0,
   `user_id` int(11) DEFAULT NULL COMMENT 'adviser_id'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
 -- Volcado de datos para la tabla `customers`
@@ -74,15 +72,18 @@ INSERT INTO `customers` (`id`, `dni`, `first_name`, `last_name`, `gender`, `addr
 (8, '12345678', 'María', 'chavez', 'masculino', '', '', '', '', '', '', 1, 1),
 (9, '344555', 'mario', 'flores', 'femenino', '', '', '', '', '', '', 1, 1),
 (10, '12344', 'RUBEN', 'CHAVEZ', 'masculino', 'av el incas98', '', '', '', '', '', 1, 2),
-(11, '123451', 'diego', 'arnica', 'masculino', 'mariano cron 45', '', '', '', '', '', 0, 1),
-(12, '7654321', 'matilde', 'frisanc', 'femenino', 'choqwur n455', '', '', '', '', '', 0, 1),
+(11, '123451', 'diego', 'arnica', 'masculino', 'mariano cron 45', '', '', '', '', '', 1, 1),
+(12, '7654321', 'matilde', 'frisanc', 'femenino', 'choqwur n455', '', '', '', '', '', 1, 1),
 (13, '1223', 'PABLO', 'MORALESSS', 'masculino', '', '', '', '', '', '', 1, 2),
-(14, '6565565', 'Pedro', 'Fernandez', 'masculino', 'Calle las calles', '7935689', '4856985', '', '', 'Xempresas', 0, 1),
-(16, '12131415', 'Ramiro', 'Fuentes', 'masculino', 'Calle X', '7564854', '', '', '', '', 0, 1),
+(14, '6565565', 'Pedro', 'Fernandez', 'masculino', 'Calle las calles', '7935689', '4856985', '', '', 'Xempresas', 1, 1),
+(16, '12131415', 'Ramiro', 'Fuentes', 'masculino', 'Calle X', '7564854', '', '', '', '', 1, 1),
 (17, '454125', 'CLARIZA', 'PRADO', 'femenino', 'Calle y dirección', '7935689', '4856958', '', '', '', 1, 1),
-(18, '548967', 'DANIEL', 'FERNANDEZ', 'masculino', 'calle x', '7935689', '', '', '', '', 0, 2),
-(19, '5569949', 'JHESICA', 'PRADO CáRDENAS', 'femenino', 'Calle X Y', '7935689', '', '', '', '', 0, 2),
-(21, '1213212', 'JAIME', 'OMONTE', 'masculino', '', '', '', '', '', '', 0, 2);
+(18, '548967', 'DANIEL', 'FERNANDEZ', 'masculino', 'calle x', '7935689', '', '', '', '', 1, 2),
+(19, '5569949', 'JHESICA', 'PRADO CÁRDENAS', 'femenino', 'Calle X Y', '7935689', '', '', '', '', 1, 2),
+(21, '1213212', 'JAIME', 'OMONTE', 'masculino', '', '', '', '', '', '', 1, 2),
+(22, '542136', 'GONZALO', 'FERNANDÉZ OCHOA', 'masculino', 'Calle X entre Y y Z', '75485462', '7548565', '', '', '', 1, 2),
+(23, '5452135', 'DANIEL', 'GOMéZ', 'masculino', 'dirección', '7935689', '', '', '', '', 0, 2),
+(24, '78411364', 'DAVID', 'MERCEDéZ GOMéZ', 'masculino', 'calle fg', '', '', '', '', '', 0, 2);
 
 -- --------------------------------------------------------
 
@@ -94,7 +95,7 @@ CREATE TABLE `guarantors` (
   `id` bigint(20) NOT NULL,
   `loan_id` int(11) NOT NULL,
   `customer_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
 -- Volcado de datos para la tabla `guarantors`
@@ -106,7 +107,12 @@ INSERT INTO `guarantors` (`id`, `loan_id`, `customer_id`) VALUES
 (10, 38, 14),
 (11, 38, 16),
 (12, 39, 18),
-(13, 39, 19);
+(13, 39, 19),
+(14, 40, 13),
+(15, 42, 10),
+(16, 42, 13),
+(17, 45, 8),
+(18, 45, 14);
 
 -- --------------------------------------------------------
 
@@ -118,25 +124,22 @@ CREATE TABLE `loans` (
   `id` int(11) NOT NULL,
   `customer_id` int(11) NOT NULL,
   `credit_amount` decimal(15,2) NOT NULL,
-  `interest_amount` decimal(15,2) NOT NULL,
+  `interest_amount` decimal(15,2) NOT NULL COMMENT 'interest_rate',
   `num_fee` int(3) NOT NULL,
   `fee_amount` decimal(10,2) NOT NULL,
-  `payment_m` varchar(15) COLLATE utf8_spanish_ci NOT NULL,
+  `payment_m` varchar(15) COLLATE utf8_spanish2_ci NOT NULL,
   `coin_id` int(11) NOT NULL,
   `date` date NOT NULL,
   `status` bit(1) NOT NULL DEFAULT b'1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
 -- Volcado de datos para la tabla `loans`
 --
 
 INSERT INTO `loans` (`id`, `customer_id`, `credit_amount`, `interest_amount`, `num_fee`, `fee_amount`, `payment_m`, `coin_id`, `date`, `status`) VALUES
-(10, 11, '3000.00', '3.00', 4, '772.50', 'mensual', 3, '2021-07-04', b'0'),
 (11, 10, '3000.00', '4.00', 3, '1040.00', 'mensual', 1, '2021-07-18', b'1'),
 (12, 9, '2000.00', '2.00', 3, '680.00', 'mensual', 1, '2021-07-18', b'0'),
-(13, 12, '1000.00', '2.00', 4, '255.00', 'mensual', 2, '2021-07-18', b'0'),
-(14, 13, '4000.00', '3.00', 4, '1030.00', 'mensual', 3, '2021-07-18', b'1'),
 (16, 10, '10000.00', '1.00', 25, '404.00', 'mensual', 1, '2022-08-13', b'1'),
 (20, 14, '1500.00', '18.00', 3, '770.00', 'diario', 1, '2022-08-24', b'0'),
 (22, 16, '4000.00', '17.00', 8, '1180.00', 'quincenal', 1, '2022-08-25', b'0'),
@@ -156,7 +159,14 @@ INSERT INTO `loans` (`id`, `customer_id`, `credit_amount`, `interest_amount`, `n
 (36, 8, '500.00', '14.00', 2, '285.00', 'quincenal', 1, '2022-08-27', b'1'),
 (37, 17, '10000.00', '14.00', 2, '5700.00', 'quincenal', 1, '2022-08-27', b'1'),
 (38, 9, '4000.00', '14.00', 2, '2280.00', 'quincenal', 1, '2022-08-27', b'1'),
-(39, 13, '5000.00', '14.00', 4, '1600.00', 'quincenal', 1, '2022-08-27', b'1');
+(39, 13, '5000.00', '14.00', 4, '1600.00', 'quincenal', 1, '2022-08-27', b'1'),
+(40, 18, '6000.00', '14.00', 4, '1920.00', 'quincenal', 1, '2022-08-27', b'1'),
+(42, 21, '4000.00', '14.00', 2, '2560.00', 'mensual', 1, '2022-08-28', b'1'),
+(43, 22, '500.00', '14.00', 4, '160.00', 'quincenal', 1, '2022-08-29', b'1'),
+(44, 12, '2000.00', '14.00', 8, '320.00', 'semanal', 1, '2022-08-30', b'1'),
+(45, 11, '1000.00', '18.00', 8, '215.00', 'quincenal', 1, '2022-08-30', b'1'),
+(46, 14, '15005.00', '14.00', 4, '4801.60', 'quincenal', 1, '2022-08-30', b'1'),
+(47, 16, '500.00', '14.00', 10, '85.00', 'quincenal', 1, '2022-08-30', b'1');
 
 -- --------------------------------------------------------
 
@@ -172,31 +182,19 @@ CREATE TABLE `loan_items` (
   `fee_amount` decimal(25,2) NOT NULL,
   `pay_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `status` bit(1) NOT NULL DEFAULT b'1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
 -- Volcado de datos para la tabla `loan_items`
 --
 
 INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `pay_date`, `status`) VALUES
-(41, 10, '2021-08-04', 1, '772.50', '2022-08-23 19:44:00', b'0'),
-(42, 10, '2021-09-04', 2, '772.50', '2021-07-08 22:40:50', b'0'),
-(43, 10, '2021-10-04', 3, '772.50', '2022-08-12 23:06:25', b'0'),
-(44, 10, '2021-11-04', 4, '772.50', '2022-08-12 23:06:30', b'0'),
 (45, 11, '2021-08-18', 1, '1040.00', '2022-08-22 13:50:24', b'0'),
 (46, 11, '2021-09-18', 2, '1040.00', '2022-08-12 23:14:41', b'1'),
 (47, 11, '2021-10-18', 3, '1040.00', '2022-08-12 23:14:44', b'1'),
 (48, 12, '2021-08-18', 1, '680.00', '2022-08-22 21:56:36', b'0'),
 (49, 12, '2021-09-18', 2, '680.00', '2022-08-23 00:08:48', b'0'),
 (50, 12, '2021-10-18', 3, '680.00', '2022-08-23 19:54:47', b'0'),
-(51, 13, '2021-08-18', 1, '255.00', '2022-08-27 02:50:38', b'0'),
-(52, 13, '2021-09-18', 2, '255.00', '2022-08-27 02:55:18', b'0'),
-(53, 13, '2021-10-18', 3, '255.00', '2022-08-27 02:58:31', b'0'),
-(54, 13, '2021-11-18', 4, '255.00', '2022-08-27 02:58:31', b'0'),
-(55, 14, '2021-08-18', 1, '1030.00', '2021-07-19 02:26:15', b'0'),
-(56, 14, '2021-09-18', 2, '1030.00', '2021-07-19 02:26:16', b'0'),
-(57, 14, '2021-10-18', 3, '1030.00', '2022-08-13 23:41:07', b'0'),
-(58, 14, '2021-11-18', 4, '1030.00', '2021-07-19 02:23:32', b'1'),
 (64, 16, '2022-09-13', 1, '404.00', '2022-08-23 19:33:16', b'0'),
 (65, 16, '2022-10-13', 2, '404.00', '2022-08-12 23:32:09', b'1'),
 (66, 16, '2022-11-14', 3, '404.00', '2022-08-12 23:32:09', b'1'),
@@ -425,16 +423,56 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (310, 35, '2023-02-23', 12, '707.10', '2022-08-27 18:05:28', b'1'),
 (311, 35, '2023-03-10', 13, '707.10', '2022-08-27 18:05:28', b'1'),
 (312, 35, '2023-03-25', 14, '707.10', '2022-08-27 18:05:28', b'1'),
-(313, 36, '2022-09-13', 1, '285.00', '2022-08-27 18:10:57', b'1'),
+(313, 36, '2022-09-13', 1, '285.00', '2022-08-29 21:28:12', b'0'),
 (314, 36, '2022-09-26', 2, '285.00', '2022-08-27 18:10:57', b'1'),
 (315, 37, '2022-09-13', 1, '5700.00', '2022-08-27 18:19:11', b'1'),
 (316, 37, '2022-09-26', 2, '5700.00', '2022-08-27 18:19:11', b'1'),
 (317, 38, '2022-09-13', 1, '2280.00', '2022-08-27 18:30:54', b'1'),
 (318, 38, '2022-09-26', 2, '2280.00', '2022-08-27 18:30:55', b'1'),
-(319, 39, '2022-09-13', 1, '1600.00', '2022-08-27 19:25:22', b'1'),
+(319, 39, '2022-09-13', 1, '1600.00', '2022-08-29 14:32:09', b'0'),
 (320, 39, '2022-09-26', 2, '1600.00', '2022-08-27 19:25:22', b'1'),
 (321, 39, '2022-10-11', 3, '1600.00', '2022-08-27 19:25:22', b'1'),
-(322, 39, '2022-10-26', 4, '1600.00', '2022-08-27 19:25:22', b'1');
+(322, 39, '2022-10-26', 4, '1600.00', '2022-08-27 19:25:22', b'1'),
+(323, 40, '2022-09-13', 1, '1920.00', '2022-08-27 19:36:34', b'1'),
+(324, 40, '2022-09-26', 2, '1920.00', '2022-08-27 19:36:34', b'1'),
+(325, 40, '2022-10-11', 3, '1920.00', '2022-08-27 19:36:34', b'1'),
+(326, 40, '2022-10-26', 4, '1920.00', '2022-08-27 19:36:34', b'1'),
+(331, 42, '2022-09-28', 1, '2560.00', '2022-08-29 02:16:48', b'1'),
+(332, 42, '2022-10-28', 2, '2560.00', '2022-08-29 02:16:48', b'1'),
+(333, 43, '2022-09-13', 1, '160.00', '2022-08-29 14:15:13', b'1'),
+(334, 43, '2022-09-28', 2, '160.00', '2022-08-29 14:15:13', b'1'),
+(335, 43, '2022-10-13', 3, '160.00', '2022-08-29 14:15:13', b'1'),
+(336, 43, '2022-10-28', 4, '160.00', '2022-08-29 14:15:14', b'1'),
+(337, 44, '2022-09-06', 1, '320.00', '2022-08-30 16:04:37', b'1'),
+(338, 44, '2022-09-13', 2, '320.00', '2022-08-30 16:04:37', b'1'),
+(339, 44, '2022-09-20', 3, '320.00', '2022-08-30 16:04:37', b'1'),
+(340, 44, '2022-09-27', 4, '320.00', '2022-08-30 16:04:37', b'1'),
+(341, 44, '2022-10-04', 5, '320.00', '2022-08-30 16:04:37', b'1'),
+(342, 44, '2022-10-11', 6, '320.00', '2022-08-30 16:04:37', b'1'),
+(343, 44, '2022-10-18', 7, '320.00', '2022-08-30 16:04:37', b'1'),
+(344, 44, '2022-10-25', 8, '320.00', '2022-08-30 16:04:37', b'1'),
+(345, 45, '2022-09-14', 1, '215.00', '2022-08-30 20:08:27', b'1'),
+(346, 45, '2022-09-29', 2, '215.00', '2022-08-30 20:08:27', b'1'),
+(347, 45, '2022-10-14', 3, '215.00', '2022-08-30 20:08:27', b'1'),
+(348, 45, '2022-10-29', 4, '215.00', '2022-08-30 20:08:27', b'1'),
+(349, 45, '2022-11-15', 5, '215.00', '2022-08-30 20:08:27', b'1'),
+(350, 45, '2022-11-28', 6, '215.00', '2022-08-30 20:08:27', b'1'),
+(351, 45, '2022-12-13', 7, '215.00', '2022-08-30 20:08:27', b'1'),
+(352, 45, '2022-12-28', 8, '215.00', '2022-08-30 20:08:27', b'1'),
+(353, 46, '2022-09-14', 1, '4801.60', '2022-08-30 20:16:49', b'1'),
+(354, 46, '2022-09-29', 2, '4801.60', '2022-08-30 20:16:49', b'1'),
+(355, 46, '2022-10-14', 3, '4801.60', '2022-08-30 20:16:49', b'1'),
+(356, 46, '2022-10-29', 4, '4801.60', '2022-08-30 20:16:49', b'1'),
+(357, 47, '2022-09-14', 1, '85.00', '2022-08-30 20:31:24', b'1'),
+(358, 47, '2022-09-29', 2, '85.00', '2022-08-30 20:31:24', b'1'),
+(359, 47, '2022-10-14', 3, '85.00', '2022-08-30 20:31:24', b'1'),
+(360, 47, '2022-10-29', 4, '85.00', '2022-08-30 20:31:24', b'1'),
+(361, 47, '2022-11-15', 5, '85.00', '2022-08-30 20:31:24', b'1'),
+(362, 47, '2022-11-28', 6, '85.00', '2022-08-30 20:31:24', b'1'),
+(363, 47, '2022-12-13', 7, '85.00', '2022-08-30 20:31:24', b'1'),
+(364, 47, '2022-12-28', 8, '85.00', '2022-08-30 20:31:24', b'1'),
+(365, 47, '2023-01-12', 9, '85.00', '2022-08-30 20:31:24', b'1'),
+(366, 47, '2023-01-27', 10, '85.00', '2022-08-30 20:31:24', b'1');
 
 -- --------------------------------------------------------
 
@@ -447,7 +485,7 @@ CREATE TABLE `micropayments` (
   `loan_item_id` int(11) DEFAULT NULL,
   `mount` decimal(25,2) DEFAULT NULL,
   `pay_date` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 -- --------------------------------------------------------
 
@@ -457,11 +495,11 @@ CREATE TABLE `micropayments` (
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
-  `first_name` varchar(150) COLLATE utf8_spanish_ci NOT NULL,
-  `last_name` varchar(200) COLLATE utf8_spanish_ci NOT NULL,
-  `email` varchar(150) COLLATE utf8_spanish_ci NOT NULL,
-  `password` varchar(250) COLLATE utf8_spanish_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+  `first_name` varchar(150) COLLATE utf8_spanish2_ci NOT NULL,
+  `last_name` varchar(200) COLLATE utf8_spanish2_ci NOT NULL,
+  `email` varchar(150) COLLATE utf8_spanish2_ci NOT NULL,
+  `password` varchar(250) COLLATE utf8_spanish2_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
 -- Volcado de datos para la tabla `users`
@@ -540,25 +578,25 @@ ALTER TABLE `coins`
 -- AUTO_INCREMENT de la tabla `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT de la tabla `guarantors`
 --
 ALTER TABLE `guarantors`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de la tabla `loans`
 --
 ALTER TABLE `loans`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT de la tabla `loan_items`
 --
 ALTER TABLE `loan_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=323;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=367;
 
 --
 -- AUTO_INCREMENT de la tabla `micropayments`
