@@ -39,16 +39,27 @@
         <tbody>
           <?php if(count($loans)): foreach($loans as $loan): ?>
             <tr>
+                <?php
+                  $time = 0; // en meses
+                  if(strtolower($loan->payment_m)=='mensual'){
+                    $time = $loan->num_fee/1;
+                  }else if(strtolower($loan->payment_m)=='quincenal'){
+                    $time = $loan->num_fee/2;
+                  }else if(strtolower($loan->payment_m)=='semanal'){
+                    $time = $loan->num_fee/4;
+                  }else if(strtolower($loan->payment_m)=='diario'){
+                    $time = $loan->num_fee/30;
+                  }
+                  $I = $loan->credit_amount * ($loan->interest_amount/100)*$time;
+                  $total = $loan->credit_amount + $I;
+                ?>
               <td><?php echo $loan->id ?></td>
               <td><?php echo $loan->customer ?></td>
-              <td><?php echo $loan->credit_amount ?></td>
+              <td><?php echo round($loan->credit_amount,1) ?></td>
               <td>
-                <?php
-                  $monto_interes = number_format($loan->credit_amount * ($loan->interest_amount/100), 2);
-                  echo $monto_interes;
-                ?>
+                <?php echo round($I, 1); ?>
               </td>
-              <td><?php echo $loan->credit_amount + (float)$monto_interes ?></td>
+              <td><?php echo round($total, 1); ?></td>
               <td style="text-transform:uppercase;"><?php echo $loan->short_name ?></td>
               <td>
                 <button type="button" class="btn btn-sm <?php echo $loan->status ? 'btn-outline-danger': 'btn-outline-success' ?> status-check"><?php echo $loan->status ? 'Pendiente': 'Pagado' ?></button>
