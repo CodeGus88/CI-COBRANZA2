@@ -74,6 +74,7 @@ class Loans extends CI_Controller {
 
       $loan_data = $this->loans_m->array_from_post(['customer_id','credit_amount', 'interest_amount', 'num_fee', 'fee_amount', 'payment_m', 'coin_id', 'date']);
       $guarantors_list = $this->input->post('guarantors');
+      if($guarantors_list!=null)
       for($i = 0; $i < sizeof($guarantors_list); $i++){
         if($guarantors_list[$i] != $loan_data["customer_id"] )
           $guarantors[$i] = $this->input->post('guarantors')[$i];

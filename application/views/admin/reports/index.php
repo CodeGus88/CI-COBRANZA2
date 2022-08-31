@@ -10,7 +10,6 @@
 
         <label class="small mb-1" for="exampleFormControlSelect2">Tipo de moneda</label>
         <select class="form-control" id="coin_type" name="coin_type">
-          <!-- <option value="0"> Seleccionar moneda</option> -->
           <?php foreach ($coins as $c): ?>
             <option value="<?php echo $c->id ?>" data-symbol="<?php echo $c->short_name ?>"><?php echo $c->name.' ('.strtoupper($c->short_name).')' ?></option>
           <?php endforeach ?>
