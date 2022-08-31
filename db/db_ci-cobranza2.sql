@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 31-08-2022 a las 17:52:15
+-- Tiempo de generación: 31-08-2022 a las 18:01:02
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.5
 
@@ -30,10 +30,17 @@ SET time_zone = "+00:00";
 CREATE TABLE `coins` (
   `id` int(11) NOT NULL,
   `name` varchar(20) COLLATE utf8_spanish2_ci NOT NULL,
-  `short_name` varchar(50) COLLATE utf8_spanish2_ci NOT NULL,
+  `short_name` varchar(10) COLLATE utf8_spanish2_ci NOT NULL,
   `symbol` varchar(11) COLLATE utf8_spanish2_ci NOT NULL,
   `description` varchar(70) COLLATE utf8_spanish2_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `coins`
+--
+
+INSERT INTO `coins` (`id`, `name`, `short_name`, `symbol`, `description`) VALUES
+(1, 'Bolivianos', 'Bs', 'BO', 'Moneda nacional');
 
 -- --------------------------------------------------------
 
@@ -206,7 +213,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `coins`
 --
 ALTER TABLE `coins`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `customers`
