@@ -23,6 +23,7 @@ class Loans extends CI_Controller {
   public function edit()
   {
     $data['coins'] = $this->loans_m->get_coins();
+    $data['customers'] = $this->loans_m->get_customers($this->session->userdata('user_id'));
 
     $rules = $this->loans_m->loan_rules;
 
@@ -38,7 +39,6 @@ class Loans extends CI_Controller {
         $p = 'P15D';
       if ($this->input->post('payment_m') == 'mensual')
         $p = 'P1M';
-      
       // definir periodo de fechas
       $period = new DatePeriod( 
                     new DateTime($this->input->post('date')), // Donde empezamos a contar el periodo
@@ -49,60 +49,62 @@ class Loans extends CI_Controller {
       $num_quota = 1; 
 
       foreach ($period as $date) {
-
         $weekDay = $date->format('N'); // Representación numérica del día de la semana
         $isSunday = false;
         if ($weekDay == '7') {
           $date->add(new DateInterval('P1D'));
           $fomattedDate = $date->format('Y-m-d');
           $isSunday = true;
-        } //else {
+        } 
 
-            if ($isSunday) {
-              $date->add(new DateInterval('P1D'));
-              $fomattedDate = $date->format('Y-m-d');
-            } else {
-              $fomattedDate = $date->format('Y-m-d');
-            }
-       // }
-
+        if ($isSunday) {
+          $date->add(new DateInterval('P1D'));
+          $fomattedDate = $date->format('Y-m-d');
+        } else {
+          $fomattedDate = $date->format('Y-m-d');
+        }
 
         $items[] = array(
           'date' => $fomattedDate,
           'num_quota' => $num_quota++,
           'fee_amount' => $this->input->post('fee_amount')
         );
+    
       }
 
       $loan_data = $this->loans_m->array_from_post(['customer_id','credit_amount', 'interest_amount', 'num_fee', 'fee_amount', 'payment_m', 'coin_id', 'date']);
-      
-      $customer = $this->customers_m->get_customer_by_id(
-        $this->session->userdata('user_id'),
-        $loan_data['customer_id']
-      );
-      if($customer != null){
-        if ($this->loans_m->add_loan($loan_data, $items)) {
-          $this->session->set_flashdata('msg', 'Prestamo agregado correctamente');
+      $guarantors_list = $this->input->post('guarantors');
+      if($guarantors_list!=null)
+      for($i = 0; $i < sizeof($guarantors_list); $i++){
+        if($guarantors_list[$i] != $loan_data["customer_id"] )
+          $guarantors[$i] = $this->input->post('guarantors')[$i];
+      }
+      if($loan_data['customer_id'] > 0){
+        $customer = $this->customers_m->get_customer_by_id(
+          $this->session->userdata('user_id'),
+          $loan_data['customer_id']
+        );
+        if($customer != null){
+          if ($this->loans_m->add_loan($loan_data, $items, $guarantors)) {
+            $this->session->set_flashdata('msg', 'Prestamo agregado correctamente');
+          }else{
+            $this->session->set_flashdata('msg_error', 'Ocurrió un error al guardar, intente nuevamente');
+          }
         }else{
-          $this->session->set_flashdata('msg_error', 'Ocurrió un error al guardar, intente nuevamente');
+          $this->session->set_flashdata('msg_error', '¡El cliente no existe!');
         }
       }else{
-        $this->session->set_flashdata('msg_error', '¡El cliente no existe!');
+        $this->session->set_flashdata('msg_error', '¡No se seleccionó un cliente!');
       }
       redirect('admin/loans');
+    }else{
+      $data['subview'] = 'admin/loans/edit';
+      $this->load->view('admin/_main_layout', $data);
     }
-    $data['subview'] = 'admin/loans/edit';
-    $this->load->view('admin/_main_layout', $data);
+    
   } // fin edit
 
-  function ajax_searchCst() 
-  {
-    $dni = $this->input->post('dni');
-    $cst = $this->loans_m->get_searchCst($this->session->userdata('user_id'), $dni);
-    echo json_encode($cst);
-  }
-
-  function view($id) 
+  function view($id)
   {
     $data['loan'] = $this->loans_m->get_loan($this->session->userdata('user_id'), $id);
     $data['items'] = $this->loans_m->get_loanItems($this->session->userdata('user_id'), $id);

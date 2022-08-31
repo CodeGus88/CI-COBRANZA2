@@ -6,33 +6,35 @@
 
       <div class="form-row">
         <div class="form-group col-12 col-md-8">
-          <label class="small mb-1" for="exampleFormControlSelect2">Buscar cliente por CI</label>
+          <label class="small mb-1" for="exampleFormControlSelect2">Cliente</label>
           <div class="input-group">
-            <input type="text" id="dni_c" placeholder="Ingresa el carnet de identidad" class="form-control">
-            <input type="hidden" name="loan_id" id="loan_id">
-            <input type="hidden" name="customer_id" id="customer_id">
-            <div class="input-group-append">
-              <button type="button" id="btn_buscar_c" class="btn btn-primary">
-                <i class="fa fa-search"></i>
-              </button>
+            <select id="search" class="form-control" name="customer_id" onChange="load_loan()">
+              <option value="0" selected="selected">...</option>
+              <?php foreach ($customers as $customer): ?>
+              <option value="<?php echo $customer->id ?>">
+                <?php echo  $customer->dni . " | " . $customer->fullname?> 
+              </option>
+              <?php endforeach ?>
+            </select>
+          </div>
+          <span class="small mb-1"><small>(Solo aparecen en la lista los clientes que tienen cuentas pendientes)</small></span>
+        </div>
+      </div>
+      <!-- garantes -->
+        <div class="form-row" id="guarantors_container" >
+          <div class="form-group col-12 col-md-16">
+            <label class="small mb-1" for="exampleFormControlSelect2">Garantes</label>
+            <div class="input-group" id="guarantors_contend">
+              
             </div>
+            <span class="small mb-1"><small>Garantes del préstamo</small></span>
           </div>
         </div>
-      </div>
+    <!-- Fin garantes -->
 
       <div class="form-row">
         <div class="form-group col-12 col-md-4">
-          <label class="small mb-1" for="inputUsername">CI</label>
-          <input class="form-control" id="dni_cst" type="text" disabled>
-        </div>
-        <div class="form-group col-12 col-md-4">
-          <label class="small mb-1" for="inputUsername">Nombre completo</label>
-          <input class="form-control" id="name_cst" name="name_cst" type="text" readonly>
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group col-12 col-md-4">
+          <input type="hidden" name="loan_id" id="loan_id">
           <label class="small mb-1" for="inputUsername">Monto prestado</label>
           <input class="form-control" id="credit_amount" type="text" readonly>
         </div>
@@ -52,16 +54,12 @@
             <thead>
               <tr>
                 <th><input type="checkbox" disabled></th>
-                <!-- <th>Sel</th> -->
                 <th id='ncuota'>N° cuota</th>
                 <th>Fecha de pago</th>
                 <th>Monto cuota</th>
                 <th>Estado</th>
               </tr>
             </thead>
-            <!-- <tbody">
-              lo ejecuta script.js 
-            </tbody> -->
           </table>
         </div>
         <div class="form-group col-12 col-md-4 text-center">
@@ -82,3 +80,10 @@
 
     </div>
   </div>
+
+
+  <script>
+    $("#search").select2({
+      tags: false
+    });
+  </script>

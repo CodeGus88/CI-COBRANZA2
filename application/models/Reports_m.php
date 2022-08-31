@@ -135,7 +135,7 @@ class Reports_m extends CI_Model {
   public function get_reportLC($user_id, $customer_id)
   {
     $this->db->select("l.*, CONCAT(c.first_name, ' ', c.last_name) AS customer_name, co.short_name, co.name,
-    CONCAT(u.first_name, ' ', u.last_name) AS user_name");
+    CONCAT(u.first_name, ' ', u.last_name) AS user_name, c.dni ci");
     $this->db->from('loans l');
     $this->db->join('customers c', 'c.id = l.customer_id', 'left');
     $this->db->join('users u', 'u.id = c.user_id', 'left');
@@ -164,6 +164,16 @@ class Reports_m extends CI_Model {
     $this->db->where('u.id', $user_id);
 
     return $this->db->get()->result(); 
+  }
+
+  public function get_guarantors($user_id, $loan_id){
+    $this->db->select('c.id, CONCAT(c.first_name, " ", c.last_name) as fullname, c.dni ci');
+    $this->db->from('customers c');
+    $this->db->join('guarantors g', "g.customer_id = c.id");
+    $this->db->join('loans l', "l.id = g.loan_id");
+    $this->db->where('l.id', $loan_id);
+    $this->db->where('c.user_id', $user_id);
+    return $this->db->get()->result();
   }
 
 }

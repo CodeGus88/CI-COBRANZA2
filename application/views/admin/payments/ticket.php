@@ -29,8 +29,8 @@
             <p style="text-align:center;"><strong>Pago Realizado</strong>                               
             <p>
               Fecha/hora:  <?php echo $quotasPaid[0]->pay_date; $total = 0; ?><br>
-              N° Prestamo: <?php echo $loan_id; ?> <br>
-              Cliente: <?php echo $name_cst; ?> <br>
+              N° Préstamo: <?php echo $loan_id; ?> <br>
+              Cliente: <?php echo $customerName->customer_name; ?> <br>
               Asesor: <?php echo $userFulName; ?> <br>
               Tipo moneda: <?php echo $coin; ?><br>
             </p>
@@ -38,7 +38,7 @@
             <table class="table table-condensed">
               <thead>
                 <tr>
-                  <th class="text-center" style="width: 50%; border-bottom: 2px solid #ddd;">Descripcion</th>
+                  <th class="text-center" style="width: 50%; border-bottom: 2px solid #ddd;">Descripción</th>
                   <th class="text-center" style="width: 24%; border-bottom: 2px solid #ddd;">Monto Cancelado</th>
                   <th class="text-center" style="width: 26%; border-bottom: 2px solid #ddd;">Subtotal</th>
                 </tr>
@@ -62,7 +62,7 @@
               <table class="table table-striped table-condensed" style="margin-top:10px;">
                 <tbody>
                   <tr>
-                    <td class="text-center">Pagado por : Efectivo</td>
+                    <td class="text-center">Pagado en: Efectivo</td>
                   </tr>
 
                 </tbody>

@@ -24,6 +24,17 @@
 
     <link href="<?php echo site_url() ?>assets/css/style.css" rel="stylesheet">
 
+    <!-- AGREGAR SELECT 2  SELECT CON BUSCADOR-->
+    <script src="<?php echo site_url() ?>assets/js/jquery-3.6.0.min.js"></script>
+    <!-- CDN de SELECT2 sin CDN (incorporado en el proyecto) -->
+    <link href="<?php echo site_url() ?>assets/select2-4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
+    <script src="<?php echo site_url(); ?>assets/select2-4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <!-- CDN de JQUERY -->
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script> -->
+    <!-- Select2 sin CDN (incorporado en el proyecto) -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> -->
+
 </head>
 
 <body id="page-top">
