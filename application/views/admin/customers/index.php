@@ -49,7 +49,7 @@
                 </td>
                 <td>
                   <a href="<?php echo site_url('admin/customers/edit/' . $ct->id); ?>" class="btn btn-sm btn-info shadow-sm"><i class="fas fa-edit fa-sm"></i> Editar</a>
-                  <a href="<?php echo site_url('admin/customers/delete/' . $ct->id);?>" onclick="return confirm('Confirmar','¿Quiere eliminar el registro?');"  class="btn btn-sm btn-danger shadow-sm">Eliminar</a>
+                  <a href="<?php echo site_url('admin/customers/delete/' . $ct->id);?>" onclick="return confirm('¡Se eliminará el registro permanentemente!\nCédula de Identidad: <?php echo $ct->dni?>\nNombre: <?php echo $ct->first_name.' '. $ct->last_name?>');"  class="btn btn-sm btn-danger shadow-sm">Eliminar</a>
                 </td>
               </tr>
             <?php endforeach; ?>
