@@ -96,7 +96,7 @@ $(document).ready(function () {
 // loadGeneralReport();
 
 // Cargar 
-function loadGeneralReport(){
+function loadGeneralReport() {
   var coin_id = $("#coin_type").val()
   var symbol = $('#coin_type option:selected').data("symbol");
 
@@ -163,35 +163,35 @@ function reportPDF() {
 function load_loan() {
   // alert("Este es un mensaje de javaScript: " + document.getElementById("search").value)
   customer_id = document.getElementById("search").value
-  if(customer_id>0){
+  if (customer_id > 0) {
     fetch(base_url + "admin/payments/ajax_get_loan/" + customer_id)
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
-      if (data.loan != null) {
-        $("#customer_id").val(data.loan.customer_id);
-        $("#loan_id").val(data.loan.id);
-        $("#credit_amount").val(data.loan.credit_amount);
-        $("#payment_m").val(data.loan.payment_m);
-        $("#coin").val(data.loan.coin_name);
-        load_loan_items(data.loan.id);
-        load_guarantors(data.loan.id);
-      }
-      else {
-        alert('No se encontró un préstamo asociado al cliente seleccionado');
-        window.location.reload();
-      }
-    })
-  }else{
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        if (data.loan != null) {
+          $("#customer_id").val(data.loan.customer_id);
+          $("#loan_id").val(data.loan.id);
+          $("#credit_amount").val(data.loan.credit_amount);
+          $("#payment_m").val(data.loan.payment_m);
+          $("#coin").val(data.loan.coin_name);
+          load_loan_items(data.loan.id);
+          load_guarantors(data.loan.id);
+        }
+        else {
+          alert('No se encontró un préstamo asociado al cliente seleccionado');
+          window.location.reload();
+        }
+      })
+  } else {
     document.getElementById("guarantors_container").style.display = "none"
     $('#register_loan').attr('disabled', true);
     clearform();
   }
-  
+
 }
 
 
-function clearform(){
+function clearform() {
   $("#credit_amount").val('');
   $("#payment_m").val('');
   $("#coin").val('');
@@ -209,50 +209,50 @@ function clearform(){
 function load_loan_items(loan_id) {
   // Consultar cuotas del préstamo
   fetch(base_url + "admin/payments/ajax_get_loan_items/" + loan_id)
-  .then(responsex => responsex.json())
-  .then(datax => {
-    console.log(datax)
-    if (datax.quotas != null) { // Cargar tabla
-      // cargar tabla de cuotas
-      var x = new Array(datax.quotas.length);
-      if (datax.quotas.length > 0) {
-        for (i = 0; i < datax.quotas.length; i++) {
-          x[i] = [
-            '<input type="checkbox" name="quota_id[]" ' + (datax.quotas[i].status == 1 ? '' : 'disabled checked') + ' data-fee=' + datax.quotas[i].fee_amount + ' value=' + datax.quotas[i].id + '>',
-            datax.quotas[i].num_quota,
-            datax.quotas[i].date,
-            datax.quotas[i].fee_amount,
-            '<button type="button" class="btn btn-sm ' + (datax.quotas[i].status == 1 ? 'btn-outline-danger' : 'btn-outline-success') + '">' + (datax.quotas[i].status == 1 ? 'Pendiente' : 'Pagado') + '</button>'
-          ]
+    .then(responsex => responsex.json())
+    .then(datax => {
+      console.log(datax)
+      if (datax.quotas != null) { // Cargar tabla
+        // cargar tabla de cuotas
+        var x = new Array(datax.quotas.length);
+        if (datax.quotas.length > 0) {
+          for (i = 0; i < datax.quotas.length; i++) {
+            x[i] = [
+              '<input type="checkbox" name="quota_id[]" ' + (datax.quotas[i].status == 1 ? '' : 'disabled checked') + ' data-fee=' + datax.quotas[i].fee_amount + ' value=' + datax.quotas[i].id + '>',
+              datax.quotas[i].num_quota,
+              datax.quotas[i].date,
+              datax.quotas[i].fee_amount,
+              '<button type="button" class="btn btn-sm ' + (datax.quotas[i].status == 1 ? 'btn-outline-danger' : 'btn-outline-success') + '">' + (datax.quotas[i].status == 1 ? 'Pendiente' : 'Pagado') + '</button>'
+            ]
+          }
         }
-      }
-      // clear the table before populating it with more data
-      $("#quotas").dataTable().fnDestroy();
-      $('#quotas').dataTable({
-        "bPaginate": false, //Ocultar paginación
-        "scrollY": '50vh',
-        "scrollCollapse": true,
-        "aaData": x
-      })
-      $('input:checkbox').on('change', function () {
-        var total = 0;
-        $('input:checkbox:enabled:checked').each(function () {
-          total += isNaN(parseFloat($(this).attr('data-fee'))) ? 0 : parseFloat($(this).attr('data-fee'));
+        // clear the table before populating it with more data
+        $("#quotas").dataTable().fnDestroy();
+        $('#quotas').dataTable({
+          "bPaginate": false, //Ocultar paginación
+          "scrollY": '50vh',
+          "scrollCollapse": true,
+          "aaData": x
+        })
+        $('input:checkbox').on('change', function () {
+          var total = 0;
+          $('input:checkbox:enabled:checked').each(function () {
+            total += isNaN(parseFloat($(this).attr('data-fee'))) ? 0 : parseFloat($(this).attr('data-fee'));
+          });
+
+          $("#total_amount").val(total.toFixed(1));
+
+          if (total != 0 && $("#search").val() != 0) {
+            $('#register_loan').attr('disabled', false);
+          } else {
+            $('#register_loan').attr('disabled', true);
+          }
         });
-
-        $("#total_amount").val(total.toFixed(1));
-
-        if (total != 0 && $("#search").val()!=0) {
-          $('#register_loan').attr('disabled', false);
-        } else {
-          $('#register_loan').attr('disabled', true);
-        }
-      });
-    }
-  });
+      }
+    });
 }
 
-function load_guarantors(loan_id){
+function load_guarantors(loan_id) {
   fetch(base_url + "admin/payments/ajax_get_guarantors/" + loan_id)
     .then(response => response.json())
     .then(x => {
@@ -261,12 +261,25 @@ function load_guarantors(loan_id){
         var options = "";
         x.guarantors.forEach(element => {
           var option = '<button type="button" class="btn btn-secondary margin-right" >' + element.ci + " | " + element.guarantor_name + '</button>';
-        
+
           options += option;
         });
-        document.getElementById("guarantors_container").style.display = (x.guarantors.length>0)?"":"none"
+        document.getElementById("guarantors_container").style.display = (x.guarantors.length > 0) ? "" : "none"
         $("#guarantors_contend").html("");
         $("#guarantors_contend").html(options);
       }
     })
+}
+
+
+
+
+function removeCustomer(id){
+  if (confirm("¿Está seguro que desea eliminar el registro?")) {
+    fetch(base_url + "admin/customers/delete/" + id,{
+      method: 'DELETE'
+    })
+    .then(res => res.text()) // or res.json()
+    .then(res => console.log(res))
+  }
 }

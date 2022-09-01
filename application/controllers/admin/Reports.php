@@ -45,7 +45,7 @@ class Reports extends CI_Controller {
     $pdf->AddPage('P','A4',0);
     $pdf->SetFont('Arial','B',13);
     $pdf->Ln(3);
-    $pdf->Cell(0,0,'PRESTAMOS POR RANGO DE FECHAS',0,1,'C');
+    $pdf->Cell(0,0,utf8_decode('PRÉSTAMOS POR RANGO DE FECHAS'),0,1,'C');
 
     $pdf->Ln(8);
     
@@ -111,8 +111,6 @@ class Reports extends CI_Controller {
     $pdf->SetFont('Arial','B',13);
     $pdf->Ln(3);
     $pdf->Cell(0,0,utf8_decode('PRÉSTAMOS POR CLIENTE'),0,1,'C');
-    // $pdf->Ln(8);
-    // $pdf->Cell(0,0,utf8_decode($reportCst[0]->customer_name),0,1,'C');
 
     $pdf->Ln(8);
   
@@ -126,19 +124,16 @@ class Reports extends CI_Controller {
     <td width="120" height="30"><b>Cliente:</b></td><td width="400" height="30">'.utf8_decode($rc->customer_name)." (".$rc->ci.")".'</td><td width="120" height="30"><b>Tipo moneda:</b></td><td width="55" height="30">'.$rc->name.' ('.$rc->short_name.')</td>
     </tr>
     <tr>
-    <td width="120" height="30"><b>Credito:</b></td><td width="400" height="30">'.$rc->credit_amount.'</td><td width="120" height="30"><b>Numero Credito:</b></td><td width="55" height="30">'.$rc->id.'</td>
+    <td width="120" height="30"><b>'.utf8_decode("Crédito:").'</b></td><td width="400" height="30">'.$rc->credit_amount.'</td><td width="120" height="30"><b>'.utf8_decode("Código:").'</b></td><td width="55" height="30">'.$rc->id.'</td>
     </tr>
     <tr>
-    <td width="120" height="30"><b>Interes credito:</b></td><td width="400" height="30">'.$rc->interest_amount.' %</td><td width="120" height="30"><b>Forma pago:</b></td><td width="55" height="30">'.$rc->payment_m.'</td>
+    <td width="120" height="30"><b>Nro cuotas:</b></td><td width="400" height="30">'.$rc->num_fee.'</td><td width="120" height="30"><b>Forma pago:</b></td><td width="55" height="30">'.$rc->payment_m.'</td>
     </tr>
     <tr>
-    <td width="120" height="30"><b>Nro cuotas:</b></td><td width="400" height="30">'.$rc->num_fee.'</td><td width="120" height="30"><b>Fecha credito:</b></td><td width="55" height="30">'.$rc->date.'</td>
+    <td width="120" height="30"><b>Monto cuota:</b></td><td width="400" height="30">'.$rc->fee_amount.'</td><td width="120" height="30"><b>'.utf8_decode("Fecha crédito:").'</b></td><td width="55" height="30">'.$rc->date.'</td>
     </tr>
     <tr>
-    <td width="120" height="30"><b>Monto cuota:</b></td><td width="400" height="30">'.$rc->fee_amount.'</td><td width="120" height="30"><b>Estado credito:</b></td><td width="55" height="30">'.($rc->status ? "Pendiente" : "Cancelado").'</td>
-    </tr>
-    <tr>
-    <td width="120" height="30"><b>Asesor:</b></td><td width="400" height="30">' . utf8_decode($rc->user_name) .'</td><td width="120" height="30"><b></b></td><td width="55" height="30"><b></b>' . ' ' .'</td>
+    <td width="120" height="30"><b>Asesor:</b></td><td width="400" height="30">' . utf8_decode($rc->user_name) .'</td><td width="120" height="30"><b>'.utf8_decode("Estado crédito:").'</b></td><td width="55" height="30">'.($rc->status ? "Pendiente" : "Cancelado").'</td>
     </tr>
     </table>';
     
@@ -181,7 +176,6 @@ class Reports extends CI_Controller {
       $pdf->WriteHTML('<span border-radius="10px 0px 39px 22px"><b>Garantes: </b>' . $var .'</span>');
     }
     // // Fin garantes
-    // $pdf->AddPage('P','A4',0);
     }
 
     $pdf->Output('reporte_global_cliente.pdf', 'I');

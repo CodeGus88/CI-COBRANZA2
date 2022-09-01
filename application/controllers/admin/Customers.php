@@ -71,6 +71,22 @@ class Customers extends CI_Controller {
     $this->load->view('admin/_main_layout', $data);
   }
 
+  public function delete($id){
+    $permission = true; // Verificar si es administrador o author
+    if($permission){
+      if($this->customers_m->delete($id)){
+        $this->session->set_flashdata('msg', 'Se eliminó correctamente');
+      }else{
+        $this->session->set_flashdata('msg_error', '!Ops, algo salió mal¡');
+      }
+      // $this->index();
+      redirect('/admin/customers/');
+    }else{
+      $this->session->set_flashdata('msg_error', 'Persmiso denegado');
+      $this->index();
+    }
+  }
+
 }
 
 /* End of file Customers.php */

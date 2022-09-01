@@ -58,6 +58,11 @@ class Customers_m extends MY_Model {
     else
       return null;
   }
+
+  public function delete($customer_id){
+    return $this->db->delete('customers', array('id'=>$customer_id));
+  }
+
 }
 
 /* End of file Customers_m.php */
