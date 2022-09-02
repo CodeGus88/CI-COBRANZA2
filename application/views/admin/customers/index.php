@@ -53,13 +53,13 @@
                   <a onclick="return deleteConfirm('¿Estas seguro?','¡No podrás revertir esto!  Eliminar cliente: (<?php echo $ct->dni?>) <?php echo $ct->first_name.' '. $ct->last_name?>')"  class="btn btn-sm btn-danger shadow-sm">
                     Eliminar<a href="<?php echo site_url('admin/customers/delete/' . $ct->id);?>" id="delete" hidden></a>
                   </a>
-                 <?php endif ?>
+                  <?php endif ?>
                 </td>
               </tr>
             <?php endforeach; ?>
           <?php else : ?>
             <tr>
-              <td colspan="7" class="text-center">No existen Clientes, agregar un nuevo cliente.</td>
+              <td colspan="7" class="text-center">No existen clientes para mostrar.</td>
             </tr>
           <?php endif; ?>
         </tbody>

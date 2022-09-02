@@ -12,8 +12,8 @@ class Customers_m extends MY_Model {
   public $customer_rules = array(
     array(
       'field' => 'dni',
-      'label' => 'dni',
-      'rules' => 'trim|required'
+      'label' => 'CI',
+      'rules' => 'trim|required|is_unique[customers.dni]',
     ),
     array(
       'field' => 'first_name',

@@ -272,18 +272,6 @@ function load_guarantors(loan_id) {
 }
 
 
-
-
-function removeCustomer(id){
-  if (confirm("¿Está seguro que desea eliminar el registro?")) {
-    fetch(base_url + "admin/customers/delete/" + id,{
-      method: 'DELETE'
-    })
-    .then(res => res.text()) // or res.json()
-    .then(res => console.log(res))
-  }
-}
-
 function deleteConfirm (title, message){
   Swal.fire({
     title: title,
@@ -298,7 +286,6 @@ function deleteConfirm (title, message){
     if (result.isConfirmed) {
       btndelete = document.getElementById('delete');
       btndelete.click();
-      
     }
   })
 }
