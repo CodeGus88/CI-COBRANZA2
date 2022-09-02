@@ -283,3 +283,22 @@ function removeCustomer(id){
     .then(res => console.log(res))
   }
 }
+
+function deleteConfirm (title, message){
+  Swal.fire({
+    title: title,
+    text: message,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Sí, ¡Eliminar esto!',
+    cancelButtonText: 'Cancelar'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      btndelete = document.getElementById('delete');
+      btndelete.click();
+      
+    }
+  })
+}
