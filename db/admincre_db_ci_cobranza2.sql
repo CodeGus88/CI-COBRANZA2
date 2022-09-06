@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-09-2022 a las 01:07:08
+-- Tiempo de generación: 06-09-2022 a las 17:30:55
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.5
 
@@ -1075,8 +1075,59 @@ CREATE TABLE `micropayments` (
 
 CREATE TABLE `permissions` (
   `id` int(11) NOT NULL,
-  `name` varchar(15) NOT NULL DEFAULT ''
+  `name` varchar(50) NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `permissions`
+--
+
+INSERT INTO `permissions` (`id`, `name`) VALUES
+(1, 'AUTHOR_CRUD'),
+(2, 'PERMISSION_CREATE'),
+(3, 'PERMISSION_READ'),
+(4, 'PERMISSION_UPDATE'),
+(5, 'PERMISSION_DELETE'),
+(6, 'ROLE_PERMISION_CREATE'),
+(7, 'ROLE_PERMISION_READ'),
+(8, 'ROLE_PERMISION_UPDATE'),
+(9, 'ROLE_PERMISION_DELETE'),
+(10, 'ROLE_CREATE'),
+(11, 'ROLE_READ'),
+(12, 'ROLE_UPDATE'),
+(13, 'ROLE_DELETE'),
+(14, 'USER_ROLE_CREATE'),
+(15, 'USER_ROLE_READ'),
+(16, 'USER_ROLE_UPDATE'),
+(17, 'USER_ROLE_DELETE'),
+(18, 'USER_CREATE'),
+(19, 'USER_READ'),
+(20, 'USER_UPDATE'),
+(21, 'USER_DELETE'),
+(22, 'CUSTOMER_CREATE'),
+(23, 'CUSTOMER_READ'),
+(24, 'CUSTOMER_UPDATE'),
+(25, 'CUSTOMER_DELETE'),
+(26, 'LOAN_CREATE'),
+(27, 'LOAN_READ'),
+(28, 'LOAN_UPDATE'),
+(29, 'LOAN_DELETE'),
+(30, 'LOAN_ITEM_CREATE'),
+(31, 'LOAN_ITEM_READ'),
+(32, 'LOAN_ITEM_UPDATE'),
+(33, 'LOAN_ITEM_DELETE'),
+(34, 'GUARANTOR_CREATE'),
+(35, 'GUARANTOR_READ'),
+(36, 'GUARANTOR_UPDATE'),
+(37, 'GUARANTOR_DELETE'),
+(38, 'MICROPAIMENT_CREATE'),
+(39, 'MICROPAIMENT_READ'),
+(40, 'MICROPAIMENT_UPDATE'),
+(41, 'MICROPAIMENT_DELETE'),
+(42, 'COIN_CREATE'),
+(43, 'COIN_READ'),
+(44, 'COIN_UPDATE'),
+(45, 'COIN_DELETE');
 
 -- --------------------------------------------------------
 
@@ -1089,6 +1140,13 @@ CREATE TABLE `roles` (
   `name` varchar(15) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Volcado de datos para la tabla `roles`
+--
+
+INSERT INTO `roles` (`id`, `name`) VALUES
+(1, 'ADMIN');
+
 -- --------------------------------------------------------
 
 --
@@ -1100,6 +1158,57 @@ CREATE TABLE `roles_permissions` (
   `role_id` int(11) DEFAULT NULL,
   `permission_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `roles_permissions`
+--
+
+INSERT INTO `roles_permissions` (`id`, `role_id`, `permission_id`) VALUES
+(1, 1, 1),
+(2, 1, 2),
+(3, 1, 3),
+(4, 1, 4),
+(5, 1, 5),
+(6, 1, 6),
+(7, 1, 7),
+(8, 1, 8),
+(9, 1, 9),
+(10, 1, 10),
+(11, 1, 11),
+(12, 1, 12),
+(13, 1, 13),
+(14, 1, 14),
+(15, 1, 15),
+(16, 1, 16),
+(17, 1, 17),
+(18, 1, 18),
+(19, 1, 19),
+(20, 1, 20),
+(21, 1, 21),
+(22, 1, 22),
+(23, 1, 23),
+(24, 1, 24),
+(25, 1, 25),
+(26, 1, 26),
+(27, 1, 27),
+(28, 1, 28),
+(29, 1, 29),
+(30, 1, 30),
+(31, 1, 31),
+(32, 1, 32),
+(33, 1, 33),
+(34, 1, 34),
+(35, 1, 35),
+(36, 1, 36),
+(37, 1, 37),
+(38, 1, 38),
+(39, 1, 39),
+(40, 1, 40),
+(41, 1, 41),
+(42, 1, 42),
+(43, 1, 43),
+(44, 1, 44),
+(45, 1, 45);
 
 -- --------------------------------------------------------
 
@@ -1139,6 +1248,13 @@ CREATE TABLE `users_roles` (
   `user_id` int(11) DEFAULT NULL,
   `role_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `users_roles`
+--
+
+INSERT INTO `users_roles` (`id`, `user_id`, `role_id`) VALUES
+(1, 1, 1);
 
 --
 -- Índices para tablas volcadas
@@ -1266,19 +1382,19 @@ ALTER TABLE `micropayments`
 -- AUTO_INCREMENT de la tabla `permissions`
 --
 ALTER TABLE `permissions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `roles_permissions`
 --
 ALTER TABLE `roles_permissions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
@@ -1290,7 +1406,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `users_roles`
 --
 ALTER TABLE `users_roles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Restricciones para tablas volcadas
