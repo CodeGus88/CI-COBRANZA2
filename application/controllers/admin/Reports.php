@@ -1,46 +1,57 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+include(APPPATH."/tools/UserPermission.php");
 
 class Reports extends CI_Controller {
+
+  private $permission;
+  private $user_id;
 
   public function __construct()
   {
     parent::__construct();
     $this->load->model('coins_m');
     $this->load->model('reports_m');
+    $this->load->model('permission_m');
     $this->load->library('session');
     $this->session->userdata('loggedin') == TRUE || redirect('user/login');
+    $this->user_id = $this->session->userdata('user_id');
+    $this->permission = new Permission($this->permission_m);
   }
 
   public function index()
   {
+    $this->permission->getPermission($this->user_id, [AUTHOR_CRUD, COIN_READ], TRUE);
     $data['coins'] = $this->coins_m->get();
     $data['subview'] = 'admin/reports/index';
-
     $this->load->view('admin/_main_layout', $data);
   }
 
   public function ajax_getCredits($coin_id)
   {
-    $data['credits'] = $this->reports_m->get_reportLoan($this->session->userdata('user_id'), $coin_id);
-
+    if($this->permission->getPermission($this->user_id, [LOAN_READ], FALSE)) // leer todo
+      $data['credits'] = $this->reports_m->get_reportLoan($this->user_id, $coin_id);
+    else if($this->permission->getPermission($this->user_id, [AUTHOR_CRUD], FALSE) ) // leer solo del usuario
+      $data['credits'] = $this->reports_m->get_reportLoanAll($coin_id);
     echo json_encode($data);
   }
 
   public function dates()
   {
+    $this->permission->getPermission($this->user_id, [COIN_READ, AUTHOR_CRUD], TRUE);
     $data['coins'] = $this->coins_m->get();
     $data['subview'] = 'admin/reports/dates';
-    
     $this->load->view('admin/_main_layout', $data);
   }
 
   public function dates_pdf($coin_id, $start_d, $end_d)
   {
     require_once APPPATH.'third_party/fpdf183/html_table.php';
-
-    $reportCoin = $this->reports_m->get_reportCoin($coin_id);
-
+    $reportCoin = ['name'=>'undefined', 'short_name'=>'ud'];
+    if($this->permission->getPermission($this->user_id, [COIN_READ, AUTHOR_CRUD], FALSE)){
+      $reportCoin = $this->reports_m->get_reportCoin($coin_id);
+    }
+    
     $pdf = new PDF();
     $pdf->AddPage('P','A4',0);
     $pdf->SetFont('Arial','B',13);
@@ -60,8 +71,11 @@ class Reports extends CI_Controller {
     </table>';
 
     $pdf->WriteHTML($html);
-    // $reportsDates = $this->reports_m->get_reportDatesAll($coin_id,$start_d,$end_d); // para el administrador
-    $reportsDates = $this->reports_m->get_reportDates($this->session->userdata('user_id'), $coin_id,$start_d,$end_d);
+    if($this->permission->getPermission($this->user_id, [LOAN_READ], FALSE)){
+      $reportsDates = $this->reports_m->get_reportDatesAll($coin_id,$start_d,$end_d);
+    }else if($this->permission->getPermission($this->user_id, [AUTHOR_CRUD], FALSE)){
+      $reportsDates = $this->reports_m->get_reportDates($this->user_id, $coin_id,$start_d,$end_d);
+    }
 
     $pdf->Ln(7);
     $pdf->SetFont('Arial','',10);
@@ -93,8 +107,11 @@ class Reports extends CI_Controller {
 
   public function customers()
   {
-    // $data['customers'] = $this->reports_m->get_reportCstsAll(); // para el admministrador
-    $data['customers'] = $this->reports_m->get_reportCsts($this->session->userdata('user_id'));
+    if($this->permission->getPermission($this->user_id, [CUSTOMER_READ], FALSE)){
+      $data['customers'] = $this->reports_m->get_reportCstsAll(); // para el admministrador
+    }else if($this->permission->getPermission($this->user_id, [AUTHOR_CRUD], FALSE)){
+      $data['customers'] = $this->reports_m->get_reportCsts($this->session->userdata('user_id'));
+    }
     $data['subview'] = 'admin/reports/customers';
     $this->load->view('admin/_main_layout', $data);
   }
@@ -103,8 +120,11 @@ class Reports extends CI_Controller {
   {
     require_once APPPATH.'third_party/fpdf183/html_table.php';
 
-    // $reportCst = $this->reports_m->get_reportLCAll($customer_id); // para el administrador
-    $reportCst = $this->reports_m->get_reportLC($this->session->userdata('user_id'), $customer_id);
+    if($this->permission->getPermissionX($this->user_id, [CUSTOMER_READ, LOAN_READ, COIN_READ], FALSE)){
+      $reportCst = $this->reports_m->get_reportLCAll($customer_id); // para el administrador
+    }else if($this->permission->getPermission($this->user_id, [AUTHOR_CRUD], FALSE)){
+      $reportCst = $this->reports_m->get_reportLC($this->user_id, $customer_id);
+    }
 
     $pdf = new PDF();
     $pdf->AddPage('P','A4',0);
@@ -149,8 +169,13 @@ class Reports extends CI_Controller {
     <td width="75" height="30"><b>Nro Cuota</b></td><td width="120" height="30"><b>Fecha pago</b></td><td width="120" height="30"><b>Total pagar</b></td><td width="120" height="30"><b>Estado</b></td>
     </tr>';
 
-    // $loanItems = $this->reports_m->get_reportLIAll($rc->id); // Usar para el administrador
-    $loanItems = $this->reports_m->get_reportLI($this->session->userdata('user_id'), $rc->id);
+    if($this->permission->getPermission($this->user_id, [LOAN_ITEM_READ], FALSE)){
+      $loanItems = $this->reports_m->get_reportLIAll($rc->id);
+    }elseif($this->permission->getPermission($this->user_id, [AUTHOR_CRUD], FALSE)){
+      $loanItems = $this->reports_m->get_reportLI($this->session->userdata('user_id'), $rc->id);
+    }
+    
+    
     foreach ($loanItems as $li) {
       $html1 .= '
     <tr>
@@ -159,23 +184,27 @@ class Reports extends CI_Controller {
     }
 
     $html1 .= '</table>';
-
     $pdf->WriteHTML($html1);
 
     $pdf->Ln(7);
 
-
     // // // Inicio garantes
-    $guarantors = $this->reports_m->get_guarantors($this->session->userdata('user_id'), $rc->id);
+    if($this->permission->getPermissionX($this->user_id, [CUSTOMER_READ, GUARANTOR_READ], FALSE)){
+      $guarantors = $this->reports_m->get_guarantorsAll($rc->id);
+    }elseif($this->permission->getPermission($this->user_id, [AUTHOR_CRUD], TRUE)){
+      $guarantors = $this->reports_m->get_guarantors($this->user_id, $rc->id);
+    }
+    
     if($guarantors != null){
       $var = "";
       for($i = 0; $i < sizeof($guarantors); $i++){
         $separator = $i==(sizeof($guarantors)-2)?" y ":(($i==(sizeof($guarantors)-1))?".":", ");
         $var .= $guarantors[$i]->fullname . " (" . $guarantors[$i]->ci .")".$separator;
       }
+      $pdf->Cell(7);
       $pdf->WriteHTML('<span border-radius="10px 0px 39px 22px"><b>Garantes: </b>' . $var .'</span>');
     }
-    // // Fin garantes
+    // Fin garantes
     }
 
     $pdf->Output('reporte_global_cliente.pdf', 'I');
