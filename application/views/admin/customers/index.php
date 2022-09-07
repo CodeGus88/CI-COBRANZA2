@@ -1,7 +1,9 @@
 <div class="card shadow mb-4">
   <div class="card-header d-flex align-items-center justify-content-between py-3">
     <h6 class="m-0 font-weight-bold text-primary">Lista de clientes</h6>
+    <?php if($CUSTOMER_CREATE || $AUTHOR_CRUD) : ?>
     <a class="d-sm-inline-block btn btn-sm btn-success shadow-sm" href="<?php echo site_url('admin/customers/edit'); ?>"><i class="fas fa-plus-circle fa-sm"></i> Nuevo cliente</a>
+    <?php endif ?>
   </div>
 
   <div class="card-body">

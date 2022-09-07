@@ -26,6 +26,7 @@ class Customers extends CI_Controller
     // permisos del usuario [para la vista]
     $data[CUSTOMER_UPDATE] = $this->permission->getPermission($this->user_id, [CUSTOMER_UPDATE], FALSE);
     $data[CUSTOMER_DELETE] = $this->permission->getPermission($this->user_id, [CUSTOMER_DELETE], FALSE);
+    $data[CUSTOMER_CREATE] = $this->permission->getPermission($this->user_id, [CUSTOMER_CREATE], FALSE);
     $data[AUTHOR_CRUD] = $this->permission->getPermission($this->user_id, [AUTHOR_CRUD], FALSE);
     // fin permisos del usuario [para la vista]
     $data['customers'] = Array();
