@@ -21,7 +21,6 @@ class AuthUserData{
         return $propertie;
     }
 
-
     public static function getId(){
         if(AuthUserData::getData('user_id') != null){
             return AuthUserData::getData('user_id');
@@ -40,9 +39,22 @@ class AuthUserData{
         }
     }
 
-    public static function permission($probable_author_id){
+    public static function isAuthor($probable_author_id){
         if($probable_author_id != null){
             return $probable_author_id == AuthUserData::getData('user_id');
+        }else{
+            return FALSE;
+        }
+    }
+
+    public static function isAuthorX($model, $model_id){
+        $query = $model->getAuthorId($model_id);
+        $id = NULL;
+        if($query != NULL){
+            $id = $model->getAuthorId($model_id)->user_id;
+        }
+        if($id != NULL){
+            return $id == AuthUserData::getData('user_id');
         }else{
             return FALSE;
         }

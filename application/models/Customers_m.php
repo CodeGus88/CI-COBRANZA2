@@ -1,19 +1,38 @@
 <?php
 
 use LDAP\Result;
+include(APPPATH."/models/IAuthor.php");
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Customers_m extends MY_Model {
+class Customers_m extends MY_Model implements IAuthor {
 
   protected $_table_name = 'customers';
-  // private $id = 'id';
+  protected $id = 'id';
 
   public $customer_rules = array(
     array(
       'field' => 'dni',
       'label' => 'CI',
       'rules' => 'trim|required|is_unique[customers.dni]',
+    ),
+    array(
+      'field' => 'first_name',
+      'label' => 'nombre(s)',
+      'rules' => 'trim|required'
+    ),
+    array(
+      'field' => 'last_name',
+      'label' => 'apellido(s)',
+      'rules' => 'trim|required'
+    )
+  );
+
+  public $customer_rules_x = array(
+    array(
+      'field' => 'dni',
+      'label' => 'CI',
+      'rules' => 'trim|required',
     ),
     array(
       'field' => 'first_name',
@@ -43,6 +62,9 @@ class Customers_m extends MY_Model {
     $customer->user_id = '';
     return $customer;
   }
+  public function getCustomers(){
+    return $this->db->from('customers')->get()->result();
+  }
 
   public function get_adviser_customers($adviser_id){
     return $this->db->get_where("customers", array("user_id" => $adviser_id))->result();
@@ -61,6 +83,13 @@ class Customers_m extends MY_Model {
 
   public function delete($customer_id){
     return $this->db->delete('customers', array('id'=>$customer_id));
+  }
+
+  public function getAuthorId($model_id){
+    $this->db->select('c.user_id');
+    $this->db->from('customers c');
+    $this->db->where('id', $model_id);
+    return $this->db->get()->row();
   }
 
 }

@@ -55,7 +55,7 @@ class Payments extends CI_Controller {
     $data['loan_id'] = $this->input->post('loan_id');
     $probable_user_id = $this->payments_m->get_loan_adviser_user_id($this->input->post('loan_id'))->id;
     
-    if(AuthUserData::permission($probable_user_id)){
+    if(AuthUserData::isAuthor($probable_user_id)){
       foreach ($this->input->post('quota_id') as $q) {
         $this->payments_m->update_quota(['status' => 0], $q);
       }

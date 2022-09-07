@@ -28,7 +28,7 @@
             <th>CI</th>
             <th>Nombres</th>
             <th>Apellidos</th>
-            <th>Genero</th>
+            <th>Género</th>
             <th>Celular</th>
             <th>Empresa</th>
             <th>Estado</th>
@@ -48,8 +48,10 @@
                   <button type="button" class="btn btn-sm <?php echo $ct->loan_status ? 'btn-outline-danger' : 'btn-outline-success' ?> status-check"><?php echo $ct->loan_status ? 'Con Crédito' : 'Sin Crédito' ?></button>
                 </td>
                 <td>
+                  <?php if($CUSTOMER_UPDATE || ($AUTHOR_CRUD && $ct->user_id == $this->session->userdata('user_id'))) :?>
                   <a href="<?php echo site_url('admin/customers/edit/' . $ct->id); ?>" class="btn btn-sm btn-info shadow-sm"><i class="fas fa-edit fa-sm"></i> Editar</a>
-                  <?php if($this->session->userdata("user_id")==1): ?>
+                  <?php endif?>
+                  <?php if($CUSTOMER_DELETE || ($AUTHOR_CRUD && $ct->user_id == $this->session->userdata('user_id'))) : ?>
                   <a onclick="return deleteConfirm('¿Estas seguro?','¡No podrás revertir esto!  Eliminar cliente: (<?php echo $ct->dni?>) <?php echo $ct->first_name.' '. $ct->last_name?>')"  class="btn btn-sm btn-danger shadow-sm">
                     Eliminar<a href="<?php echo site_url('admin/customers/delete/' . $ct->id);?>" id="delete" hidden></a>
                   </a>

@@ -1,22 +1,39 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-include(APPPATH."/tools/AuthUserData.php");
+include(APPPATH . "/tools/UserPermission.php");
 
-class Customers extends CI_Controller {
+class Customers extends CI_Controller
+{
+
+  private $user_id;
+  private $permission;
 
   public function __construct()
   {
     parent::__construct();
     $this->load->model('customers_m');
+    $this->load->model('permission_m');
     $this->load->library('form_validation');
     $this->load->library('session');
     $this->session->userdata('loggedin') == TRUE || redirect('user/login');
+    $this->user_id = $this->session->userdata('user_id');
+    $this->permission = new Permission($this->permission_m);
   }
 
   public function index()
   {
-    $data['customers'] = $this->customers_m->get_adviser_customers($this->session->userdata('user_id'));
+    // permisos del usuario [para la vista]
+    $data[CUSTOMER_UPDATE] = $this->permission->getPermission($this->user_id, [CUSTOMER_UPDATE], FALSE);
+    $data[CUSTOMER_DELETE] = $this->permission->getPermission($this->user_id, [CUSTOMER_DELETE], FALSE);
+    $data[AUTHOR_CRUD] = $this->permission->getPermission($this->user_id, [AUTHOR_CRUD], FALSE);
+    // fin permisos del usuario [para la vista]
+    $data['customers'] = Array();
+    if($this->permission->getPermission($this->user_id, [CUSTOMER_READ], FALSE)){
+      $data['customers'] = $this->customers_m->getCustomers();
+    }elseif($this->permission->getPermission($this->user_id, [AUTHOR_CRUD], FALSE)){
+      $data['customers'] = $this->customers_m->get_adviser_customers($this->user_id);
+    }
     $data['subview'] = 'admin/customers/index';
     $this->load->view('admin/_main_layout', $data);
   }
@@ -25,68 +42,85 @@ class Customers extends CI_Controller {
   {
     if ($id) {
       $row = $this->customers_m->get_customer_by_id($this->session->userdata('user_id'), $id);
-      if($row != null)
+      if ($row != null)
         $data['customer'] = $row;
       else
         $data['customer'] = $this->customers_m->get_new();
-    } else {
+    }else {
       $data['customer'] = $this->customers_m->get_new();
     }
 
-    $rules = $this->customers_m->customer_rules;
-   
-    $this->form_validation->set_rules($rules);
+    $this->form_validation->set_rules($this->customers_m->customer_rules_x);
 
-    if ($this->form_validation->run() == TRUE) {
-      
-      $cst_data = $this->customers_m->array_from_post(['dni','first_name', 'last_name', 'gender', 'mobile', 'address', 'phone', 'business_name', 'ruc', 'company', 'user_id']);
-      
+    if ($this->form_validation->run()) {
+
+      $cst_data = $this->customers_m->array_from_post(['dni', 'first_name', 'last_name', 'gender', 'mobile', 'address', 'phone', 'business_name', 'ruc', 'company', 'user_id']);
+
       $isSuccessfull = false;
       $cst_data['first_name'] = strtoupper($cst_data['first_name']);
       $cst_data['last_name'] = strtoupper($cst_data['last_name']);
-      if($cst_data['user_id']){
-        if(AuthUserData::permission($cst_data["user_id"])){
-          $isSuccessfull = $this->customers_m->save($cst_data, $id);
+      if ($cst_data['user_id']) { // EDITAR REGISTRO
+        if ($this->permission->getPermission($this->user_id, [CUSTOMER_UPDATE], FALSE)) {
+          $this->form_validation->set_rules($this->customers_m->customer_rules_x);
+          if ($this->form_validation->run())
+            $isSuccessfull = $this->customers_m->save($cst_data, $id);
+        } elseif ($this->permission->getPermission($this->user_id, [AUTHOR_CRUD], FALSE)) {
+          $this->form_validation->set_rules($this->customers_m->customer_rules_x);
+          if ($this->form_validation->run())
+            if (AuthUserData::isAuthor($cst_data["user_id"])) {
+              $isSuccessfull = $this->customers_m->save($cst_data, $id);
+            }
+        } else {
+          $this->session->set_flashdata('msg_error', 'Permiso denegado...');
         }
-      }else{
-        $cst_data['user_id'] = $this->session->userdata('user_id');
-        $isSuccessfull = $this->customers_m->save($cst_data, $id);
+      } else { // NUEVO REGISTRO
+        if ($this->permission->getPermission($this->user_id, [AUTHOR_CRUD, CUSTOMER_CREATE], FALSE)) {
+          if ($this->form_validation->run() == TRUE) {
+            $this->form_validation->set_rules($this->customers_m->customer_rules);
+            if ($this->form_validation->run() == TRUE)
+              $cst_data['user_id'] = $this->user_id;
+            $isSuccessfull = $this->customers_m->save($cst_data, $id);
+          }
+        } else {
+          $this->session->set_flashdata('msg_error', 'Permiso denegado...');
+        }
       }
 
-      if($isSuccessfull){
+      if ($isSuccessfull) {
         if ($id) {
           $this->session->set_flashdata('msg', 'Cliente editado correctamente');
         } else {
           $this->session->set_flashdata('msg', 'Cliente agregado correctamente');
         }
-      }else{
+      } else {
         $this->session->set_flashdata('msg_error', 'Hubo un problema al procesar los datos, intente nuevamente...');
       }
-      
-      redirect('admin/customers');
 
+      redirect('admin/customers');
     }
 
     $data['subview'] = 'admin/customers/edit';
     $this->load->view('admin/_main_layout', $data);
   }
 
-  public function delete($id){
-    $permission = true; // Verificar si es administrador o author
-    if($permission){
-      if($this->customers_m->delete($id)){
+  public function delete($id)
+  {
+    if ($this->permission->getPermission($this->user_id, [CUSTOMER_DELETE], FALSE)) {
+      if ($this->customers_m->delete($id)) {
         $this->session->set_flashdata('msg', 'Se eliminó correctamente');
-      }else{
+      } else {
         $this->session->set_flashdata('msg_error', '!Ops, algo salió mal¡');
       }
-      // $this->index();
-      redirect('/admin/customers/');
-    }else{
-      $this->session->set_flashdata('msg_error', 'Persmiso denegado');
-      $this->index();
-    }
+    } elseif ($this->permission->getPermission($this->user_id, [AUTHOR_CRUD], FALSE)) {
+      if (AuthUserData::isAuthorX($this->customers_m, $id)) {
+        if ($this->customers_m->delete($id)) $this->session->set_flashdata('msg', 'Se eliminó correctamente');
+        else $this->session->set_flashdata('msg_error', '!Ops, algo salió mal¡');
+      } else {
+        $this->session->set_flashdata('msg_error', 'Persmiso denegado...');
+      }
+    } else $this->session->set_flashdata('msg_error', 'Persmiso denegado...');
+    $this->index();
   }
-
 }
 
 /* End of file Customers.php */

@@ -29,9 +29,9 @@ class Reports extends CI_Controller {
 
   public function ajax_getCredits($coin_id)
   {
-    if($this->permission->getPermission($this->user_id, [LOAN_READ], FALSE)) // leer todo
+    if($this->permission->getPermission($this->user_id, [LOAN_READ], FALSE)) 
       $data['credits'] = $this->reports_m->get_reportLoan($this->user_id, $coin_id);
-    else if($this->permission->getPermission($this->user_id, [AUTHOR_CRUD], FALSE) ) // leer solo del usuario
+    else if($this->permission->getPermission($this->user_id, [AUTHOR_CRUD], FALSE) ) 
       $data['credits'] = $this->reports_m->get_reportLoanAll($coin_id);
     echo json_encode($data);
   }
@@ -108,7 +108,7 @@ class Reports extends CI_Controller {
   public function customers()
   {
     if($this->permission->getPermission($this->user_id, [CUSTOMER_READ], FALSE)){
-      $data['customers'] = $this->reports_m->get_reportCstsAll(); // para el admministrador
+      $data['customers'] = $this->reports_m->get_reportCstsAll();
     }else if($this->permission->getPermission($this->user_id, [AUTHOR_CRUD], FALSE)){
       $data['customers'] = $this->reports_m->get_reportCsts($this->session->userdata('user_id'));
     }
@@ -121,7 +121,7 @@ class Reports extends CI_Controller {
     require_once APPPATH.'third_party/fpdf183/html_table.php';
 
     if($this->permission->getPermissionX($this->user_id, [CUSTOMER_READ, LOAN_READ, COIN_READ], FALSE)){
-      $reportCst = $this->reports_m->get_reportLCAll($customer_id); // para el administrador
+      $reportCst = $this->reports_m->get_reportLCAll($customer_id);
     }else if($this->permission->getPermission($this->user_id, [AUTHOR_CRUD], FALSE)){
       $reportCst = $this->reports_m->get_reportLC($this->user_id, $customer_id);
     }
