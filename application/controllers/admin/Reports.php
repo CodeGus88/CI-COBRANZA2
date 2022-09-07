@@ -16,12 +16,12 @@ class Reports extends CI_Controller {
     $this->load->library('session');
     $this->session->userdata('loggedin') == TRUE || redirect('user/login');
     $this->user_id = $this->session->userdata('user_id');
-    $this->permission = new Permission($this->permission_m);
+    $this->permission = new Permission($this->permission_m, $this->user_id);
   }
 
   public function index()
   {
-    $this->permission->getPermission($this->user_id, [AUTHOR_CRUD, COIN_READ], TRUE);
+    $this->permission->getPermission([AUTHOR_CRUD, COIN_READ], TRUE);
     $data['coins'] = $this->coins_m->get();
     $data['subview'] = 'admin/reports/index';
     $this->load->view('admin/_main_layout', $data);
@@ -29,16 +29,16 @@ class Reports extends CI_Controller {
 
   public function ajax_getCredits($coin_id)
   {
-    if($this->permission->getPermission($this->user_id, [LOAN_READ], FALSE)) 
+    if($this->permission->getPermission([LOAN_READ], FALSE)) 
       $data['credits'] = $this->reports_m->get_reportLoan($this->user_id, $coin_id);
-    else if($this->permission->getPermission($this->user_id, [AUTHOR_CRUD], FALSE) ) 
+    else if($this->permission->getPermission([AUTHOR_CRUD], FALSE) ) 
       $data['credits'] = $this->reports_m->get_reportLoanAll($coin_id);
     echo json_encode($data);
   }
 
   public function dates()
   {
-    $this->permission->getPermission($this->user_id, [COIN_READ, AUTHOR_CRUD], TRUE);
+    $this->permission->getPermission([COIN_READ, AUTHOR_CRUD], TRUE);
     $data['coins'] = $this->coins_m->get();
     $data['subview'] = 'admin/reports/dates';
     $this->load->view('admin/_main_layout', $data);
@@ -48,7 +48,7 @@ class Reports extends CI_Controller {
   {
     require_once APPPATH.'third_party/fpdf183/html_table.php';
     $reportCoin = ['name'=>'undefined', 'short_name'=>'ud'];
-    if($this->permission->getPermission($this->user_id, [COIN_READ, AUTHOR_CRUD], FALSE)){
+    if($this->permission->getPermission([COIN_READ, AUTHOR_CRUD], FALSE)){
       $reportCoin = $this->reports_m->get_reportCoin($coin_id);
     }
     
@@ -71,9 +71,9 @@ class Reports extends CI_Controller {
     </table>';
 
     $pdf->WriteHTML($html);
-    if($this->permission->getPermission($this->user_id, [LOAN_READ], FALSE)){
+    if($this->permission->getPermission([LOAN_READ], FALSE)){
       $reportsDates = $this->reports_m->get_reportDatesAll($coin_id,$start_d,$end_d);
-    }else if($this->permission->getPermission($this->user_id, [AUTHOR_CRUD], FALSE)){
+    }else if($this->permission->getPermission([AUTHOR_CRUD], FALSE)){
       $reportsDates = $this->reports_m->get_reportDates($this->user_id, $coin_id,$start_d,$end_d);
     }
 
@@ -107,9 +107,9 @@ class Reports extends CI_Controller {
 
   public function customers()
   {
-    if($this->permission->getPermission($this->user_id, [CUSTOMER_READ], FALSE)){
+    if($this->permission->getPermission([CUSTOMER_READ], FALSE)){
       $data['customers'] = $this->reports_m->get_reportCstsAll();
-    }else if($this->permission->getPermission($this->user_id, [AUTHOR_CRUD], FALSE)){
+    }else if($this->permission->getPermission([AUTHOR_CRUD], FALSE)){
       $data['customers'] = $this->reports_m->get_reportCsts($this->session->userdata('user_id'));
     }
     $data['subview'] = 'admin/reports/customers';
@@ -120,9 +120,9 @@ class Reports extends CI_Controller {
   {
     require_once APPPATH.'third_party/fpdf183/html_table.php';
 
-    if($this->permission->getPermissionX($this->user_id, [CUSTOMER_READ, LOAN_READ, COIN_READ], FALSE)){
+    if($this->permission->getPermissionX([CUSTOMER_READ, LOAN_READ, COIN_READ], FALSE)){
       $reportCst = $this->reports_m->get_reportLCAll($customer_id);
-    }else if($this->permission->getPermission($this->user_id, [AUTHOR_CRUD], FALSE)){
+    }else if($this->permission->getPermission([AUTHOR_CRUD], FALSE)){
       $reportCst = $this->reports_m->get_reportLC($this->user_id, $customer_id);
     }
 
@@ -169,9 +169,9 @@ class Reports extends CI_Controller {
     <td width="75" height="30"><b>Nro Cuota</b></td><td width="120" height="30"><b>Fecha pago</b></td><td width="120" height="30"><b>Total pagar</b></td><td width="120" height="30"><b>Estado</b></td>
     </tr>';
 
-    if($this->permission->getPermission($this->user_id, [LOAN_ITEM_READ], FALSE)){
+    if($this->permission->getPermission([LOAN_ITEM_READ], FALSE)){
       $loanItems = $this->reports_m->get_reportLIAll($rc->id);
-    }elseif($this->permission->getPermission($this->user_id, [AUTHOR_CRUD], FALSE)){
+    }elseif($this->permission->getPermission([AUTHOR_CRUD], FALSE)){
       $loanItems = $this->reports_m->get_reportLI($this->session->userdata('user_id'), $rc->id);
     }
     
@@ -189,9 +189,9 @@ class Reports extends CI_Controller {
     $pdf->Ln(7);
 
     // // // Inicio garantes
-    if($this->permission->getPermissionX($this->user_id, [CUSTOMER_READ, GUARANTOR_READ], FALSE)){
+    if($this->permission->getPermissionX([CUSTOMER_READ, GUARANTOR_READ], FALSE)){
       $guarantors = $this->reports_m->get_guarantorsAll($rc->id);
-    }elseif($this->permission->getPermission($this->user_id, [AUTHOR_CRUD], TRUE)){
+    }elseif($this->permission->getPermission([AUTHOR_CRUD], TRUE)){
       $guarantors = $this->reports_m->get_guarantors($this->user_id, $rc->id);
     }
     

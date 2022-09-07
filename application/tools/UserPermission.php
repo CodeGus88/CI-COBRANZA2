@@ -51,15 +51,17 @@ const PERMISSION_DENIED_MESSAGE = "Permiso denegado";
 class Permission {
 
     private $model;
+    private $user_id;
     
-    public function __construct($model){
+    public function __construct($model, $user_id){
         $this->model = $model;
+        $this->user_id = $user_id;
     }
 
-    public function getPermission($user_id, $permissions, $redirect){
+    public function getPermission($permissions, $redirect){
         $permit = FALSE;
         foreach($permissions as $permission){
-            $permit = $permit || $this->model->getAuthorization($user_id, $permission);
+            $permit = $permit || $this->model->getAuthorization($this->user_id, $permission);
         }
         if($redirect){
             if(!$permit){
@@ -72,10 +74,10 @@ class Permission {
         }
     }
 
-    public function getPermissionX($user_id, $permissions, $redirect){
+    public function getPermissionX($permissions, $redirect){
         $permit = TRUE;
         foreach($permissions as $permission){
-            $permit = $permit && $this->model->getAuthorization($user_id, $permission);
+            $permit = $permit && $this->model->getAuthorization($this->user_id, $permission);
         }
         if($redirect){
             if(!$permit){

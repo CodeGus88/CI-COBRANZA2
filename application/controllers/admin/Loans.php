@@ -1,16 +1,23 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+include(APPPATH . "/tools/UserPermission.php");
 
 class Loans extends CI_Controller {
+
+  private $permission;
+  private $user_id;
 
   public function __construct()
   {
     parent::__construct();
     $this->load->model('loans_m');
     $this->load->model('customers_m');
+    $this->load->model('permission_m');
     $this->load->library('session');
     $this->load->library('form_validation');
     $this->session->userdata('loggedin') == TRUE || redirect('user/login');
+    $this->user_id = $this->session->userdata('user_id');
+    $this->permission = new Permission($this->permission_m, $this->user_id);
   }
 
   public function index()

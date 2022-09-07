@@ -15,6 +15,17 @@ class Loans_m extends MY_Model {
     )
   );
 
+  public function getLoansAll()
+  {
+    $this->db->select("l.id, CONCAT(c.first_name, ' ', c.last_name) AS customer, l.credit_amount, l.interest_amount, co.short_name, l.status, l.payment_m, l.num_fee");
+    $this->db->from('loans l');
+    $this->db->join('customers c', 'c.id = l.customer_id', 'left');
+    $this->db->join('coins co', 'co.id = l.coin_id', 'left');
+    $this->db->join('users u', 'u.id = c.user_id');
+    $this->db->order_by('l.id', 'desc');
+    return $this->db->get()->result();
+  }
+
   public function get_loans($user_id)
   {
     $this->db->select("l.id, CONCAT(c.first_name, ' ', c.last_name) AS customer, l.credit_amount, l.interest_amount, co.short_name, l.status, l.payment_m, l.num_fee");
