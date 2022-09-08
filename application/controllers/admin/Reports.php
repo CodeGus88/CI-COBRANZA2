@@ -21,7 +21,7 @@ class Reports extends CI_Controller {
 
   public function index()
   {
-    $this->permission->getPermission([AUTHOR_CRUD, COIN_READ], TRUE);
+    $this->permission->getPermission([AUTHOR_CRUD], TRUE);
     $data['coins'] = $this->coins_m->get();
     $data['subview'] = 'admin/reports/index';
     $this->load->view('admin/_main_layout', $data);
@@ -38,7 +38,7 @@ class Reports extends CI_Controller {
 
   public function dates()
   {
-    $this->permission->getPermission([COIN_READ, AUTHOR_CRUD], TRUE);
+    $this->permission->getPermission([AUTHOR_CRUD], TRUE);
     $data['coins'] = $this->coins_m->get();
     $data['subview'] = 'admin/reports/dates';
     $this->load->view('admin/_main_layout', $data);
@@ -48,7 +48,7 @@ class Reports extends CI_Controller {
   {
     require_once APPPATH.'third_party/fpdf183/html_table.php';
     $reportCoin = ['name'=>'undefined', 'short_name'=>'ud'];
-    if($this->permission->getPermission([COIN_READ, AUTHOR_CRUD], FALSE)){
+    if($this->permission->getPermission([AUTHOR_CRUD], FALSE)){
       $reportCoin = $this->reports_m->get_reportCoin($coin_id);
     }
     
@@ -120,7 +120,7 @@ class Reports extends CI_Controller {
   {
     require_once APPPATH.'third_party/fpdf183/html_table.php';
 
-    if($this->permission->getPermissionX([CUSTOMER_READ, LOAN_READ, COIN_READ], FALSE)){
+    if($this->permission->getPermissionX([CUSTOMER_READ, LOAN_READ], FALSE)){
       $reportCst = $this->reports_m->get_reportLCAll($customer_id);
     }else if($this->permission->getPermission([AUTHOR_CRUD], FALSE)){
       $reportCst = $this->reports_m->get_reportLC($this->user_id, $customer_id);

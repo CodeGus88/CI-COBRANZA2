@@ -26,7 +26,7 @@
         <input class="form-control" id="inputUsername" style="text-transform:uppercase" type="text" name="last_name" value="<?php echo set_value('last_name', $this->input->post('last_name') ? $this->input->post('last_name') : $customer->last_name); ?>">
       </div>
       <div class="form-group col-md-3">
-        <label class="small mb-1" for="exampleFormControlSelect2">Seleccionar Genero</label>
+        <label class="small mb-1" for="exampleFormControlSelect2">Seleccionar Género</label>
         <select class="form-control" id="exampleFormControlSelect2" name="gender">
 
           <?php if ($customer->gender == 'none'): ?>

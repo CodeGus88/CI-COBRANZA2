@@ -70,6 +70,17 @@ class Customers_m extends MY_Model implements IAuthor {
     return $this->db->get_where("customers", array("user_id" => $adviser_id))->result();
   }
 
+  public function getCustomerByIdInAll($customer_id){
+    $this->db->select('*');
+    $this->db->from('customers');
+    $this->db->where("id" ,$customer_id);
+    $query = $this->db->get();
+    if ($query->num_rows() > 0)
+      return $query->row();
+    else
+      return null;
+  }
+
   public function get_customer_by_id($user_id, $customer_id){
     $this->db->select('*');
     $this->db->from('customers');

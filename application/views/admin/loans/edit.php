@@ -12,42 +12,44 @@
     <?php echo form_open('admin/loans/edit', 'id="loan_form"'); ?>
 
     <div class="form-row">
-      <div class="form-group col-12 col-md-8">
+      <div class="form-group col-12 col-md-12">
         <label class="small mb-1" for="exampleFormControlSelect2">Cliente</label>
         <div class="input-group">
-          <select id="search" class="form-control" name="customer_id">
+          <select id="search" class="form-control" name="customer_id" onchange="loadGuarantorsOptions()">
             <option value="0" selected="selected">...</option>
             <?php foreach ($customers as $customer) : ?>
-              <?php if($customer->loan_status == FALSE) :?>
-              <option value="<?php echo $customer->id ?>">
-                <?php 
-                echo  $customer->dni . " | " . $customer->fullname?>
-              </option>
-              <?php endif?>
+              <?php if ($customer->loan_status == FALSE) : ?>
+                <option value="<?php echo $customer->id ?>">
+                  <?php
+                  echo  $customer->dni . " | " . $customer->fullname ?>
+                </option>
+              <?php endif ?>
             <?php endforeach ?>
           </select>
-        </div>
-        <span class="small mb-1"><small>(Solo aparecen en la lista los clientes que no tienen cuentas pendientes)</small></span>
+        </div col-12 col-md-12>
+        <span class="small mb-1"><small id="customerRectriction">Solo aparecen en la lista los clientes que no tienen cuentas pendientes.</small></span>
       </div>
     </div>
 
     <!-- garantes -->
     <div class="form-row">
-      <div class="form-group col-12 col-md-8">
+      <div class="form-group col-12 col-md-12">
         <label class="small mb-1" for="exampleFormControlSelect2">Garantes</label>
         <div class="input-group">
           <select id="guarantors" class="form-control" name="guarantors[]" multiple="multiple">
-            <?php foreach ($customers as $customer) : ?>
-              <option value="<?php echo $customer->id ?>">
-                <?php echo  $customer->dni . " | " . $customer->fullname ?>
-              </option>
-            <?php endforeach ?>
+            <!-- options -->
           </select>
         </div>
-        <span class="small mb-1"><small>Máximo 9 garantes</small></span>
+        <span class="small mb-1"><small id="guarantorsRestriction">Máximo 9 garantes.</small></span>
       </div>
     </div>
     <!-- Fin garantes -->
+    <div class="form-row">
+      <div class="form-group col-12 col-md-12">
+        <label class="small mb-1" for="exampleFormControlTextarea1">Asesor de grupo</label>
+        <input class="form-control" id="user_name" type="text" readonly>
+      </div>
+    </div>
 
     <div class="form-row">
       <div class="form-group col-12 col-md-4">
@@ -132,7 +134,9 @@
 
   </div>
 </div>
-
+<script>
+  customerList = <?php echo json_encode($customers); ?>
+</script>
 <script>
   $("#search").select2({
     tags: false
@@ -142,7 +146,7 @@
 <script>
   $('#guarantors').select2({
     tags: false,
-    tokenSeparators: [',', ' '],
+    tokenSeparators: [' | '],
     maximumSelectionLength: 9
   })
 </script>

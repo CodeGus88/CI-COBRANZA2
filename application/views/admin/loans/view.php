@@ -1,12 +1,11 @@
-
 <div class="modal-dialog">
   <div class="modal-content">
     <div class="modal-header">
       <h5 class="modal-title" id="staticBackdropLabel">
-        Prestamo # <?php echo $loan->id ?>
+        ID prestamo # <?php if ($loan) echo $loan->id ?>
         <br>
-        cliente: <?= $loan->customer_name; ?>
-        </h5>
+        Cliente: <?php if ($loan) echo $loan->customer_name; ?>
+      </h5>
       <div class="d-flex flex-row-reverse">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fas fa-times fa-sm"></i></button>
         <button type="button" class="close" onclick="window.print();"><i class="fas fa-print fa-sm"></i></button>
@@ -16,26 +15,30 @@
       <div class="row">
         <div class="col-md-12">
           <div class="table-responsive">
+          <?php if ($loan != null) : ?>
             <div class="clearfix mb-2">
-              <div class="float-left">
-                Monto Credito: <?= $loan->credit_amount; ?>
-                <br>
-                Interes Credito: <?= $loan->interest_amount.'%'; ?>
-                <br>
-                Nro cuotas: <?= $loan->num_fee; ?>
-                <br>
-                Monto cuota: <?= $loan->fee_amount; ?>
-                <br>
-                tipo moneda: <?= strtoupper($loan->short_name); ?>
-                <br>
-              </div>
-              <div class="float-right">
-                Fecha Credito: <?= $loan->date; ?>
-                <br>
-                Forma Pago: <?= $loan->payment_m; ?>
-                <br>
-                Estado Credito: <?= $loan->status ? 'Pendiente': 'Pagado'; ?>
-              </div>
+              
+                <div class="float-left">
+
+                  Monto Credito: <?= $loan->credit_amount; ?>
+                  <br>
+                  Interes Credito: <?= $loan->interest_amount . '%'; ?>
+                  <br>
+                  Nro cuotas: <?= $loan->num_fee; ?>
+                  <br>
+                  Monto cuota: <?= $loan->fee_amount; ?>
+                  <br>
+                  tipo moneda: <?= strtoupper($loan->short_name); ?>
+                  <br>
+                </div>
+                <div class="float-right">
+                  Fecha Credito: <?= $loan->date; ?>
+                  <br>
+                  Forma Pago: <?= $loan->payment_m; ?>
+                  <br>
+                  Estado Credito: <?= $loan->status ? 'Pendiente' : 'Pagado'; ?>
+                </div>
+              
             </div>
 
             <div class="table-responsive">
@@ -54,11 +57,11 @@
                     $i = 0;
                     foreach ($items as $item) {
                       echo '<tr>';
-                      echo '<td>'.++$i.'</td>';
-                      echo '<td>'.$item->date.'</td>';
-                      echo '<td class="text-right">'.$item->fee_amount.'</td>';
-                      $status = ($item->status) ? 'Pendiente' : 'Cancelado' ;
-                      echo '<td class="text-center">'.$status.'</td>';
+                      echo '<td>' . ++$i . '</td>';
+                      echo '<td>' . $item->date . '</td>';
+                      echo '<td class="text-right">' . $item->fee_amount . '</td>';
+                      $status = ($item->status) ? 'Pendiente' : 'Cancelado';
+                      echo '<td class="text-center">' . $status . '</td>';
                       echo '</tr>';
                     }
                   }
@@ -67,6 +70,7 @@
               </table>
             </div>
           </div>
+          <?php endif ?>
         </div>
       </div>
     </div>

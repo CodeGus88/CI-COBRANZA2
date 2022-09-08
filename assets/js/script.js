@@ -272,7 +272,7 @@ function load_guarantors(loan_id) {
 }
 
 
-function deleteConfirm (title, message){
+function deleteConfirm(title, message) {
   Swal.fire({
     title: title,
     text: message,
@@ -288,4 +288,27 @@ function deleteConfirm (title, message){
       btndelete.click();
     }
   })
+}
+
+
+
+
+function loadGuarantorsOptions() {
+  guarantorsItems = document.getElementById('guarantors');
+  while (guarantorsItems.firstChild) {
+    guarantorsItems.removeChild(guarantorsItems.firstChild);
+  };
+  user_name = document.getElementById('user_name');
+  user_name.value = '';
+  id = document.getElementById('search').value;
+  if (id != 0) {
+    x = customerList.find(x => x.id == id);
+    user_name.value = x.user_name;
+    customerList.forEach(element => {
+      if (x.user_id == element.user_id && element.id != id) {
+        let option = "<option value='" + element.id + "'>" + element.dni + " | " + element.fullname + "</option>";
+        guarantorsItems.insertAdjacentHTML("beforeend", option);
+      }
+    });
+  }
 }
