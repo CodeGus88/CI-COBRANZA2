@@ -107,20 +107,17 @@ class Customers extends CI_Controller
   public function delete($id)
   {
     if ($this->permission->getPermission([CUSTOMER_DELETE], FALSE)) {
-      if ($this->customers_m->delete($id)) {
-        $this->session->set_flashdata('msg', 'Se eliminó correctamente');
-      } else {
-        $this->session->set_flashdata('msg_error', '!Ops, algo salió mal¡');
-      }
+      if ($this->customers_m->delete($id)==TRUE) $this->session->set_flashdata('msg', 'Se eliminó correctamente');
+      else $this->session->set_flashdata('msg_error', '!Ops, algo salió mal¡');
     } elseif ($this->permission->getPermission([AUTHOR_CRUD], FALSE)) {
       if (AuthUserData::isAuthorX($this->customers_m, $id)) {
-        if ($this->customers_m->delete($id)) $this->session->set_flashdata('msg', 'Se eliminó correctamente');
+        if ($this->customers_m->delete($id)==TRUE) $this->session->set_flashdata('msg', 'Se eliminó correctamente');
         else $this->session->set_flashdata('msg_error', '!Ops, algo salió mal¡');
       } else {
         $this->session->set_flashdata('msg_error', 'Persmiso denegado...');
       }
     } else $this->session->set_flashdata('msg_error', 'Persmiso denegado...');
-    $this->index();
+    redirect('admin/customers');
   }
 }
 
