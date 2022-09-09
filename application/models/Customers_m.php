@@ -81,7 +81,7 @@ class Customers_m extends MY_Model implements IAuthor {
       return null;
   }
 
-  public function get_customer_by_id($user_id, $customer_id){
+  public function getCustomerById($user_id, $customer_id){
     $this->db->select('*');
     $this->db->from('customers');
     $this->db->where("(user_id = $user_id AND id = $customer_id)");

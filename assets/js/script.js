@@ -89,7 +89,6 @@ $(document).ready(function () {
   $("#coin_type").change(function () {
     loadGeneralReport()
   });
-  // $("#coin_type").change(loadGeneralReport());
 
 })
 
@@ -132,11 +131,8 @@ function loadGeneralReport() {
       var cr_interestPay = data.credits[3].cr_interestPay + ' ' + (data.credits[3].short_name).toUpperCase()
     }
     $("#cr_interestPay").html(cr_interestPay) // id="cr_interestPay" -> Total Credito por cobrar con interes
-
   });
 }
-
-
 
 function imp_credits(imp1) {
   var printContents = document.getElementById('imp1').innerHTML;
@@ -156,7 +152,6 @@ function reportPDF() {
   } else {
     window.open(base_url + 'admin/reports/dates_pdf/' + coin_t + '/' + start_d + '/' + end_d)
   }
-
 }
 
 //  Funcion para cargar las cuotas de credito de un cliente al cobrar credito
@@ -167,13 +162,14 @@ function load_loan() {
     fetch(base_url + "admin/payments/ajax_get_loan/" + customer_id)
       .then(response => response.json())
       .then(data => {
-        console.log(data);
+        // console.log(data);
         if (data.loan != null) {
           $("#customer_id").val(data.loan.customer_id);
           $("#loan_id").val(data.loan.id);
           $("#credit_amount").val(data.loan.credit_amount);
           $("#payment_m").val(data.loan.payment_m);
           $("#coin").val(data.loan.coin_name);
+          $("#adviser").val(data.loan.user_name);
           load_loan_items(data.loan.id);
           load_guarantors(data.loan.id);
         }
@@ -187,9 +183,7 @@ function load_loan() {
     $('#register_loan').attr('disabled', true);
     clearform();
   }
-
 }
-
 
 function clearform() {
   $("#credit_amount").val('');
@@ -211,7 +205,7 @@ function load_loan_items(loan_id) {
   fetch(base_url + "admin/payments/ajax_get_loan_items/" + loan_id)
     .then(responsex => responsex.json())
     .then(datax => {
-      console.log(datax)
+      // console.log(datax)
       if (datax.quotas != null) { // Cargar tabla
         // cargar tabla de cuotas
         var x = new Array(datax.quotas.length);
@@ -239,15 +233,21 @@ function load_loan_items(loan_id) {
           $('input:checkbox:enabled:checked').each(function () {
             total += isNaN(parseFloat($(this).attr('data-fee'))) ? 0 : parseFloat($(this).attr('data-fee'));
           });
-
           $("#total_amount").val(total.toFixed(1));
-
           if (total != 0 && $("#search").val() != 0) {
             $('#register_loan').attr('disabled', false);
           } else {
             $('#register_loan').attr('disabled', true);
           }
         });
+      }else{
+        $("#quotas").dataTable().fnDestroy();
+        $('#quotas').dataTable({
+          "bPaginate": false, //Ocultar paginación
+          "scrollY": '50vh',
+          "scrollCollapse": true,
+          "aaData": null
+        })
       }
     });
 }
@@ -256,7 +256,7 @@ function load_guarantors(loan_id) {
   fetch(base_url + "admin/payments/ajax_get_guarantors/" + loan_id)
     .then(response => response.json())
     .then(x => {
-      console.log(x);
+      // console.log(x);
       if (x.guarantors != null) {
         var options = "";
         x.guarantors.forEach(element => {
@@ -264,8 +264,8 @@ function load_guarantors(loan_id) {
 
           options += option;
         });
-        document.getElementById("guarantors_container").style.display = (x.guarantors.length > 0) ? "" : "none"
         $("#guarantors_contend").html("");
+        document.getElementById("guarantors_container").style.display = (x.guarantors.length > 0) ? "" : "none"
         $("#guarantors_contend").html(options);
       }
     })
@@ -289,8 +289,6 @@ function deleteConfirm(title, message) {
     }
   })
 }
-
-
 
 
 function loadGuarantorsOptions() {

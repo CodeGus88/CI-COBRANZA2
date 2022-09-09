@@ -31,7 +31,7 @@
               Fecha/hora:  <?php echo $quotasPaid[0]->pay_date; $total = 0; ?><br>
               N° Préstamo: <?php echo $loan_id; ?> <br>
               Cliente: <?php echo $customerName->customer_name; ?> <br>
-              Asesor: <?php echo $userFulName; ?> <br>
+              Asesor: <?php echo $customerAdvisorName; ?> <br>
               Tipo moneda: <?php echo $coin; ?><br>
             </p>
             <div style="clear:both;"></div>

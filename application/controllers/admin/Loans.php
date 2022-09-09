@@ -24,6 +24,7 @@ class Loans extends CI_Controller
   public function index()
   {
     $data[LOAN_CREATE] = $this->permission->getPermission([LOAN_CREATE], FALSE);
+    $data[LOAN_ITEM_CREATE] = $this->permission->getPermission([LOAN_ITEM_CREATE], FALSE);
     $data[AUTHOR_CRUD] = $this->permission->getPermission([AUTHOR_CRUD], FALSE);
     $data[LOAN_ITEM_READ] = $this->permission->getPermission([LOAN_ITEM_READ], FALSE);
     $data['loans'] = array();
@@ -40,10 +41,10 @@ class Loans extends CI_Controller
   {
     if (
       $this->permission->getPermission([AUTHOR_CRUD], FALSE) ||
-      $this->permission->getPermissionX([LOAN_CREATE], FALSE)
+      $this->permission->getPermissionX([LOAN_CREATE, LOAN_ITEM_CREATE], FALSE)
     ) {
       $data['coins'] = $this->loans_m->getCoins();
-      if ($this->permission->getPermissionX([LOAN_CREATE], FALSE)) {
+      if ($this->permission->getPermissionX([LOAN_CREATE, LOAN_ITEM_CREATE], FALSE)) {
         $data['customers'] = $this->loans_m->getCustomersAll();
       } else {
         $data['customers'] = $this->loans_m->getCustomers($this->user_id);
@@ -103,14 +104,14 @@ class Loans extends CI_Controller
               $guarantors[$i] = $this->input->post('guarantors')[$i];
           }
         if ($loan_data['customer_id'] > 0) {
-          if ($this->permission->getPermissionX([LOAN_CREATE], FALSE))
-            $customer = $this->customers_m->get_customer_by_id_in_all($loan_data['customer_id']);
+          if ($this->permission->getPermissionX([LOAN_CREATE, LOAN_ITEM_CREATE], FALSE))
+            $customer = $this->customers_m->getCustomerByIdInAll($loan_data['customer_id']);
           elseif ($this->permission->getPermissionX([AUTHOR_CRUD], FALSE))
-            $customer = $this->customers_m->get_customer_by_id($this->user_id, $loan_data['customer_id']);
+            $customer = $this->customers_m->getCustomerById($this->user_id, $loan_data['customer_id']);
           if ($customer != null) {
             if ($this->guarantorsValidation($customer->user_id, $guarantors)) {
               if ($this->loans_m->addLoan($loan_data, $items, $guarantors)) {
-                $this->session->set_flashdata('msg', 'Prestamo agregado correctamente');
+                $this->session->set_flashdata('msg', 'Préstamo agregado correctamente');
               } else {
                 $this->session->set_flashdata('msg_error', 'Ocurrió un error al guardar, intente nuevamente');
               }

@@ -47,10 +47,15 @@ const COIN_READ = 'COIN_READ';
 const COIN_UPDATE = 'COIN_UPDATE';
 const COIN_DELETE = 'COIN_DELETE';
 const PERMISSION_DENIED_MESSAGE =  "<script> 
-// Swal.fire({icon: 'error', title: 'Oops...', text: '¡Permiso denegado!', footer: '<a ></a>' });  
 alert('Permiso denegado...');
 window.history.back();
-</script>";//"<script>alert('Permiso denegado...'); window.history.back();</script>";
+</script>";
+
+function loadErrorMessage($message){
+    return "<script>alert('$message');
+    window.history.back();
+    </script>";
+}
 
 class Permission {
 
@@ -67,24 +72,26 @@ class Permission {
         foreach($permissions as $permission){
             $permit = $permit || $this->model->getAuthorization($this->user_id, $permission);
         }
-        if($redirect){
-            if(!$permit){
-                redirect('/admin/dashboard','refresh');
-            }else{
-                return $permit;
-            }
-        }else{
-            return $permit;
-        }
+        return $this->denyAndRedirect($redirect, $permit);
     }
 
     public function getPermissionX($permissions, $redirect){
-        $permit = TRUE;
+        $permit = $permissions==NULL? FALSE : (sizeof($permissions)>0? TRUE : FALSE);
         foreach($permissions as $permission){
             $permit = $permit && $this->model->getAuthorization($this->user_id, $permission);
         }
+        return $this->denyAndRedirect($redirect, $permit);
+    }
+
+    public function getPermissionY($permission, $redirect){
+        $permit = $permission;
+        return $this->denyAndRedirect($redirect, $permit);
+    }
+
+    private function denyAndRedirect($redirect, $permit){
         if($redirect){
             if(!$permit){
+                echo PERMISSION_DENIED_MESSAGE;
                 redirect('/admin/dashboard','refresh');
             }else{
                 return $permit;

@@ -1,7 +1,7 @@
 <div class="card shadow mb-4">
   <div class="card-header d-flex align-items-center justify-content-between py-3">
     <h6 class="m-0 font-weight-bold text-primary">Lista de prestamos</h6>
-    <?php if($LOAN_CREATE) : ?>
+    <?php if($LOAN_CREATE && $LOAN_ITEM_CREATE) : ?>
       <a class="d-sm-inline-block btn btn-sm btn-success shadow-sm" href="<?php echo site_url('admin/loans/edit'); ?>"><i class="fas fa-plus-circle fa-sm"></i> Nuevo prestamo</a>
     <?php endif ?>
   </div>
