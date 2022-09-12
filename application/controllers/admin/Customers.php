@@ -42,7 +42,10 @@ class Customers extends CI_Controller
   public function edit($id = NULL)
   {
     if ($id) {
-      $row = $this->customers_m->getCustomerById($this->session->userdata('user_id'), $id);
+      if($this->permission->getPermission([CUSTOMER_UPDATE], FALSE))
+        $row = $this->customers_m->getCustomerByIdInAll($id);
+      else
+        $row = $this->customers_m->getCustomerById($this->user_id, $id);
       if ($row != null)
         $data['customer'] = $row;
       else
