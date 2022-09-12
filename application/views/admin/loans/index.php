@@ -77,7 +77,7 @@
           <?php endforeach; ?>
           <?php else: ?>
             <tr>
-              <td colspan="8" class="text-center">No existen prestamos para mostrar.</td>
+              <td colspan="8" class="text-center">No existen prestamos para mostrar</td>
             </tr>
           <?php endif; ?>
         </tbody>

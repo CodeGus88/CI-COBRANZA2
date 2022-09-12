@@ -41,6 +41,13 @@ class Config_m extends MY_Model {
     )
   );
 
+  public function get_countCtsAll()
+  {
+    $this->db->select("count(*) as cantidad");
+    $this->db->from('customers');
+    return $this->db->get()->row(); 
+  }
+
   public function get_countCts($user_id)
   {
     $this->db->select("count(*) as cantidad");
@@ -49,14 +56,34 @@ class Config_m extends MY_Model {
     return $this->db->get()->row(); 
   }
 
+  public function get_countLoansAll()
+  {
+    return $this->get_count_loans_state_all(TRUE);
+  }
+
   public function get_countLoans($user_id)
   {
     return $this->get_count_loans_state($user_id, TRUE);
   }
 
+  public function get_countPaidsAll()
+  {
+    return $this->get_count_loans_state_all(FALSE);
+  }
+
   public function get_countPaids($user_id)
   {
     return $this->get_count_loans_state($user_id, FALSE);
+  }
+
+  public function get_countLCAll()
+  {
+    $this->db->select("c.name, c.short_name, count(l.id) as total");
+    $this->db->from('loans l');
+    $this->db->join('coins c', 'c.id = l.coin_id');
+    $this->db->join('customers cu', 'cu.id = l.customer_id');
+    $this->db->group_by('l.coin_id');
+    return $this->db->get()->result();
   }
 
   public function get_countLC($user_id)
@@ -69,6 +96,14 @@ class Config_m extends MY_Model {
     $this->db->group_by('l.coin_id');
     $this->db->where("u.id = $user_id");
     return $this->db->get()->result();
+  }
+
+  private function get_count_loans_state_all($status){
+    $status = $status?'TRUE':'FALSE';
+    $this->db->select("count(*) as cantidad");
+    $this->db->from("loans l");
+    $this->db->where("l.status = $status");
+    return $this->db->get()->row();
   }
 
   private function get_count_loans_state($user_id, $status){

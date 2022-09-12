@@ -13,7 +13,7 @@
           </tr>
         </thead>
         <tbody>
-          <?php if(count($customers)): foreach($customers as $ct): ?>
+          <?php if(isset($customers)): foreach($customers as $ct): ?>
             <tr>
               <td><?php echo $ct->dni ?></td>
               <td><?php echo $ct->customer ?></td>
@@ -24,9 +24,9 @@
           <?php endforeach; ?>
           <?php else: ?>
             <tr>
-              <td colspan="7" class="text-center">No existen Clientes con prestamo</td>
+              <td colspan="7" class="text-center">No existen clientes con prestamo para mostrar</td>
             </tr>
-          <?php endif; ?>
+          <?php endif ?>
         </tbody>
       </table>
     </div>
