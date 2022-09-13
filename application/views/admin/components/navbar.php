@@ -45,15 +45,23 @@
     <!-- Nav Item - User Information -->
     <li class="nav-item dropdown no-arrow">
       <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $this->session->userdata('first_name'). ' '.$this->session->userdata('last_name'); ?></span>
-        <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+        <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $this->session->userdata('academic_degree'). ' ' . $this->session->userdata('first_name'). ' '.$this->session->userdata('last_name'); ?></span>
+        <!-- <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60"> -->
+        <!-- <img class="img-profile rounded-circle" src="https://cdn3.iconfinder.com/data/icons/cool-avatars-2/190/00-07-2-512.png"> -->
+        <?php 
+        if($this->session->userdata('avatar') != null)
+          $file =  site_url() .'assets/img/user-icons/' . $this->session->userdata('avatar');
+        else $file = site_url() .'assets/img/user-icons/employee_default.png';
+        ?>
+        <img class="img-profile rounded-circle" src="<?php echo $file ?>">
+        
       </a>
       <!-- Dropdown - User Information -->
       <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" href="<?php echo site_url('user/logout'); ?>">
           <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-          Salir
+          CERRAR SESIÓN
         </a>
       </div>
     </li>

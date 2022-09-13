@@ -29,8 +29,10 @@ class User_m extends MY_Model {
       
       $data = [
         'user_id' => $user->id,
+        'academic_degree' => $user->academic_degree,
         'first_name' => $user->first_name,
         'last_name' => $user->last_name,
+        'avatar' => $user->avatar,
         'loggedin' => TRUE
       ];
 

@@ -45,7 +45,7 @@ class Payments_m extends CI_Model {
 
   public function getLoanAll($customer_id)
   {
-    $this->db->select("l.id, l.customer_id, l.credit_amount, l.payment_m, co.name as coin_name, CONCAT(u.first_name, ' ', u.last_name) as user_name");
+    $this->db->select("l.id, l.customer_id, l.credit_amount, l.payment_m, co.name as coin_name, CONCAT(u.academic_degree, ' ', u.first_name, ' ', u.last_name) as user_name");
     $this->db->from('loans l');
     $this->db->join('customers c', 'c.id = l.customer_id', 'left');
     $this->db->join('users u', 'u.id = c.user_id', 'left');
@@ -56,7 +56,7 @@ class Payments_m extends CI_Model {
 
   public function get_loan($user_id, $customer_id)
   {
-    $this->db->select("l.id, l.customer_id, l.credit_amount, l.payment_m, co.name as coin_name, CONCAT(u.first_name, ' ', u.last_name) as user_name");
+    $this->db->select("l.id, l.customer_id, l.credit_amount, l.payment_m, co.name as coin_name, CONCAT(u.academic_degree, ' ', u.first_name, ' ', u.last_name) as user_name");
     $this->db->from('loans l');
     $this->db->join('customers c', 'c.id = l.customer_id', 'left');
     $this->db->join('users u', 'u.id = c.user_id', 'left');
@@ -170,7 +170,7 @@ class Payments_m extends CI_Model {
   }
 
   public function getCustomerAdvisorName($customer_id){
-    $this->db->select("CONCAT(u.first_name, ' ', u.last_name) user_name");
+    $this->db->select("CONCAT(u.academic_degree, ' ', u.first_name, ' ', u.last_name) user_name");
     $this->db->from('users u');
     $this->db->join('customers c', 'c.user_id = u.id');
     $this->db->where('c.id', $customer_id);

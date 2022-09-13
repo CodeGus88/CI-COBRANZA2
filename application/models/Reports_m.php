@@ -122,7 +122,7 @@ class Reports_m extends CI_Model {
   public function get_reportLCAll($customer_id)
   {
     $this->db->select("l.*, CONCAT(c.first_name, ' ', c.last_name) AS customer_name, co.short_name, co.name,
-    CONCAT(u.first_name, ' ', u.last_name) AS user_name, c.dni ci");
+    CONCAT(u.academic_degree, ' ', u.first_name, ' ', u.last_name) AS user_name, c.dni ci");
     $this->db->from('loans l');
     $this->db->join('customers c', 'c.id = l.customer_id', 'left');
     $this->db->join('coins co', 'co.id = l.coin_id', 'left');
@@ -135,7 +135,7 @@ class Reports_m extends CI_Model {
   public function get_reportLC($user_id, $customer_id)
   {
     $this->db->select("l.*, CONCAT(c.first_name, ' ', c.last_name) AS customer_name, co.short_name, co.name,
-    CONCAT(u.first_name, ' ', u.last_name) AS user_name, c.dni ci");
+    CONCAT(u.academic_degree, ' ', u.first_name, ' ', u.last_name) AS user_name, c.dni ci");
     $this->db->from('loans l');
     $this->db->join('customers c', 'c.id = l.customer_id', 'left');
     $this->db->join('users u', 'u.id = c.user_id', 'left');

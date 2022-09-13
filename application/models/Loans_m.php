@@ -43,7 +43,7 @@ class Loans_m extends MY_Model {
     return $this->db->get('coins')->result(); 
   }
 
-  public function getSearchCst($user_id,$dni)
+  public function getSearchCst($user_id, $dni)
   {
     $this->db->where('dni', $dni);
     $this->db->where('user_id', $user_id);
@@ -123,14 +123,14 @@ class Loans_m extends MY_Model {
   }
 
   public function getCustomersAll(){
-    $this->db->select("c.id, c.dni, CONCAT(c.first_name, ' ', c.last_name) as fullname, c.loan_status, c.user_id, CONCAT(u.first_name, ' ', u.last_name) as user_name");
+    $this->db->select("c.id, c.dni, CONCAT(c.first_name, ' ', c.last_name) as fullname, c.loan_status, c.user_id, CONCAT(u.academic_degree, ' ', u.first_name, ' ', u.last_name) as user_name");
     $this->db->from('customers c');
     $this->db->join('users u', 'u.id = c.user_id');
     return $this->db->get()->result();
   }
 
   public function getCustomers($user_id){
-    $this->db->select("c.id, c.dni, CONCAT(c.first_name, ' ', c.last_name) as fullname, c.loan_status, c.user_id, CONCAT(u.first_name, ' ', u.last_name) as user_name");
+    $this->db->select("c.id, c.dni, CONCAT(c.first_name, ' ', c.last_name) as fullname, c.loan_status, c.user_id, CONCAT(u.academic_degree, ' ', u.first_name, ' ', u.last_name) as user_name");
     $this->db->from('customers c');
     $this->db->join('users u', 'u.id = c.user_id');
     $this->db->where("c.user_id = $user_id");
