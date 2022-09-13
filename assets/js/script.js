@@ -92,7 +92,6 @@ $(document).ready(function () {
 
 })
 
-// loadGeneralReport();
 
 // Cargar 
 function loadGeneralReport() {
@@ -102,7 +101,7 @@ function loadGeneralReport() {
   $.get(base_url + "admin/reports/ajax_getCredits/" + coin_id, function (data) {
 
     data = JSON.parse(data);
-    console.log('con parse', data)
+    // console.log('con parse', data)
 
     if (data.credits[0].sum_credit == null) {
       var sum_credit = '0 ' + symbol
@@ -134,13 +133,14 @@ function loadGeneralReport() {
   });
 }
 
-function imp_credits(imp1) {
-  var printContents = document.getElementById('imp1').innerHTML;
-  w = window.open();
-  w.document.write(printContents);
-  w.print();
-  w.close();
-}
+// function imp_credits(imp1) {
+// function imp_credits() {
+//   var printContents = document.getElementById('imp1').innerHTML;
+//   w = window.open(' ', 'popimpr');
+//   w.document.write(printContents);
+//   w.print();
+//   w.close();
+// }
 
 function reportPDF() {
   var start_d = $("#start_d").val();
@@ -310,3 +310,29 @@ function loadGuarantorsOptions() {
     });
   }
 }
+
+
+
+// imprimir
+async function printElementById(name, title) {
+  var printContents = document.getElementById(name)
+  var ventana = window.open(' ', 'PRINT'); // 'height=400,width=600'
+  ventana.document.write('<html><head><title>' + document.title + '</title>');
+  ventana.document.write('<link rel="stylesheet" href="'+print_style+'">');
+  ventana.document.write('</head><body >');
+  ventana.document.write('<center><small><i>Chura Casa - Reportes</small></i></center><hr>');
+  if(title != null && title != ''){
+    ventana.document.write('<center><h5>'+title+'</h5></center>');
+  }
+  ventana.document.write(printContents.innerHTML);
+  ventana.document.write('</body></html>');
+  ventana.document.close();
+  ventana.focus();
+  ventana.onload = function() {
+    ventana.print();
+    ventana.close();
+  };
+  // return true;
+}
+
+

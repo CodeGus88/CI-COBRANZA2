@@ -1,3 +1,8 @@
+<?php 
+  $ci = &get_instance();
+  $ci->load->model("permission_m"); 
+ $COIN_READ = $ci->permission_m->getAuthorization($this->session->userdata('user_id'), COIN_READ);
+ ?>
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
@@ -35,13 +40,16 @@
   </li>
 
   <?php
-    if(FALSE){// Habilitar sólo si es admmin ?>
+    $ci = &get_instance();
+    // $permission = new Permission($ci->load->model("permission_m"), $this->session->userdata('user_id'));
+    if( $COIN_READ ) :// Habilitar sólo si es admin 
+    ?>
       <li class="nav-item">
       <a class="nav-link" href="<?php echo site_url('admin/coins'); ?>">
         <i class="fas fa-fw fa-money-bill"></i>
         <span>Monedas</span></a>
     </li>
-    <?php } ?>
+    <?php endif?>
   
   
 

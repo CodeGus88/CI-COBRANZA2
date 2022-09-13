@@ -5,7 +5,7 @@ class Permission_m extends CI_Model {
 
     /** Verifica si el usuario  tiene el permmiso */
     public function getAuthorization($user_id, $permission){
-        $this->db->select('p.*');
+        $this->db->select('COUNT(*) count');
         $this->db->from('permissions p');
         $this->db->join('roles_permissions rp', "rp.permission_id = p.id");
         $this->db->join('roles r', "r.id = rp.role_id");
@@ -13,7 +13,7 @@ class Permission_m extends CI_Model {
         $this->db->join('users u', "u.id = ur.user_id");
         $this->db->where('p.name', $permission);
         $this->db->where('u.id', $user_id);
-        if($this->db->get()->num_rows() > 0){
+        if($this->db->get()->row()->count > 0){
             return true;
         }else {
             return false;

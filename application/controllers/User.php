@@ -3,6 +3,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class User extends CI_Controller {
 
+  private $permission;
+
   public function __construct()
   {
     parent::__construct();
@@ -24,13 +26,12 @@ class User extends CI_Controller {
       if ($this->user_m->login() == TRUE) {
         redirect($dashboard);
       }else{
-        $this->session->set_flashdata('msg', 'Escribir correctamente su email o password');
+        $this->session->set_flashdata('msg', 'Escriba correctamente su email y/o password');
         redirect('user/login', 'refresh');
       }
     }
 
     $this->load->view('_login_layout');
-
   }
 
   public function logout()

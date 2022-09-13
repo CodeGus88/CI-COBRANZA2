@@ -1,19 +1,28 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+include(APPPATH . "/tools/UserPermission.php");
 
 class Coins extends CI_Controller {
+
+  private $user_id;
+  private $permission;
 
   public function __construct()
   {
     parent::__construct();
     $this->load->model('coins_m');
+    $this->load->model('permission_m');
     $this->load->library('session');
     $this->load->library('form_validation');
     $this->session->userdata('loggedin') == TRUE || redirect('user/login');
+    $this->user_id = $this->session->userdata('user_id');
+    $this->permission = new Permission($this->permission_m, $this->user_id);
   }
 
   public function index()
   {
+    $this->permission->getPermission([COIN_READ], TRUE);
+    $data[COIN_UPDATE] = $this->permission->getPermission([COIN_UPDATE], FALSE);
     $data['coins'] = $this->coins_m->get();
     $data['subview'] = 'admin/coins/index';
 
@@ -22,6 +31,7 @@ class Coins extends CI_Controller {
 
   public function edit($id = NULL)
   {
+    $this->permission->getPermission([COIN_READ, COIN_CREATE], TRUE);
     if ($id) {
       $data['coin'] = $this->coins_m->get($id);
     } else {
@@ -35,13 +45,21 @@ class Coins extends CI_Controller {
     if ($this->form_validation->run() == TRUE) {
 
       $coin_data = $this->coins_m->array_from_post(['name','short_name', 'symbol', 'description']);
-      
-      $this->coins_m->save($coin_data, $id);
 
       if ($id) {
-        $this->session->set_flashdata('msg', 'Moneda editado correctamente');
-      } else {
-        $this->session->set_flashdata('msg', 'Moneda agregado correctamente');
+        if($this->permission->getPermission([COIN_UPDATE], FALSE)){
+          if($this->coins_m->save($coin_data, $id))
+            $this->session->set_flashdata('msg', 'Moneda editada correctamente');
+          else $this->session->set_flashdata('msg', 'Ecurrió un error durante el proceso');
+        }else{
+          $this->session->set_flashdata('msg_error', '¡No tiene permiso para modificar monedas!');
+        }  
+      } elseif($this->permission->getPermission([COIN_CREATE], FALSE)) {
+        if($this->coins_m->save($coin_data, $id))
+          $this->session->set_flashdata('msg', 'Moneda agregado correctamente');
+        else $this->session->set_flashdata('msg', 'Ecurrió un error durante el proceso');
+      }else{
+        $this->session->set_flashdata('msg_error', '¡No tiene permiso para crear monedas!');
       }
       
       redirect('admin/coins');

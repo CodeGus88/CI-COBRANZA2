@@ -12,6 +12,16 @@
         </button>
       </div>
     <?php endif ?>
+    
+    <?php if ($this->session->flashdata('msg_error')) : ?>
+      <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+        <?= $this->session->flashdata('msg_error') ?>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    <?php endif ?>
+
     <div class="table-responsive">
       <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
         <thead>
@@ -31,7 +41,9 @@
               <td><?php echo $coin->symbol ?></td>
               <td><?php echo $coin->description ?></td>
               <td>
+                <?php if($COIN_UPDATE) : ?>
                 <a href="<?php echo site_url('admin/coins/edit/'.$coin->id); ?>" class="btn btn-sm btn-info shadow-sm"><i class="fas fa-edit fa-sm"></i> Editar</a>
+                <?php endif ?>
               </td>
             </tr>
           <?php endforeach; ?>

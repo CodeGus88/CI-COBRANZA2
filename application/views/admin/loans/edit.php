@@ -96,9 +96,8 @@
       <div class="form-group col-12 col-md-4">
         <label class="small mb-1" for="exampleFormControlSelect2">Tipo moneda</label>
         <select class="form-control" id="exampleFormControlSelect2" name="coin_id">
-
           <?php foreach ($coins as $coin) : ?>
-            <option value="<?php echo $coin->id ?>"><?php echo $coin->short_name ?></option>
+            <option <?php if(strtolower($coin->name)=='bolivianos') echo 'selected' ?> value="<?php echo $coin->id ?>"><?php echo $coin->short_name ?></option>
           <?php endforeach ?>
         </select>
       </div>

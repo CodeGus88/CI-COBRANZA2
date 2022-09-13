@@ -21,8 +21,9 @@
     <link href="<?php echo site_url() ?>assets/css/sb-admin-2.min.css" rel="stylesheet">
     <link href="<?php echo site_url() ?>assets/css/style-2.css" rel="stylesheet">
     <link href="<?php echo site_url() ?>assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-
     <link href="<?php echo site_url() ?>assets/css/style.css" rel="stylesheet">
+    <!-- cargar url para leer css para impresiones -->  
+    <script> var print_style = "<?php  echo site_url()?>assets/css/print.css" </script>
 
     <!-- AGREGAR sweetalert2-11.4.29 (Alertas con estilos)-->
     <script src="<?php echo site_url() ?>assets/libs/sweetalert2-11.4.29/dist/sweetalert2.min.js"></script>
