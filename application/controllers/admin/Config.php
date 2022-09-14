@@ -1,5 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+include(APPPATH . "/tools/Variables.php");
 
 class Config extends CI_Controller {
 
@@ -49,11 +50,9 @@ class Config extends CI_Controller {
       
       $this->config_m->save($password_data, $this->session->userdata('user_id'));
 
-      $this->session->set_flashdata('msg', 'constraseña editada correctamente');
+      $this->session->set_flashdata('msg', 'Constraseña editada correctamente');
       
       redirect('admin/config/change_password');
-    }else{
-      $this->session->set_flashdata('msg_error', '¡Ocurrió un error al procesar!');
     }
 
     $data['subview'] = 'admin/config/change_password';

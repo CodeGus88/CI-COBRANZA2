@@ -318,7 +318,7 @@ function printElementById(name, title) {
   ventana.document.write('<html><head><title>Chura Casa - Reportes</title>');
   // ventana.document.write('<html><head><title>' + document.title + '</title>');
   ventana.document.write('<link rel="stylesheet" href="'+print_style+'">');
-  ventana.document.write('</head><body >');
+  ventana.document.write('</head><body>');
   if(title != null && title != ''){
     ventana.document.write('<center><h5>'+title+'</h5></center>');
   }

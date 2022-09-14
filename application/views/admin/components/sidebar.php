@@ -1,7 +1,8 @@
 <?php 
   $ci = &get_instance();
   $ci->load->model("permission_m"); 
- $COIN_READ = $ci->permission_m->getAuthorization($this->session->userdata('user_id'), COIN_READ);
+  
+  $COIN_READ = $ci->permission_m->getAuthorization($this->session->userdata('user_id'), COIN_READ);
  ?>
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
@@ -42,7 +43,7 @@
   <?php
     $ci = &get_instance();
     // $permission = new Permission($ci->load->model("permission_m"), $this->session->userdata('user_id'));
-    if( $COIN_READ ) :// Habilitar sólo si es admin 
+    if( $COIN_READ ) :// Habilitar sólo si tiene permisos 
     ?>
       <li class="nav-item">
       <a class="nav-link" href="<?php echo site_url('admin/coins'); ?>">

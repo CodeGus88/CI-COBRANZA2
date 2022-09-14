@@ -21,7 +21,7 @@ class Reports extends CI_Controller {
 
   public function index()
   {
-    $this->permission->getPermission([AUTHOR_CRUD], TRUE);
+    $this->permission->getPermission([AUTHOR_CRUD, LOAN_READ], TRUE);
     $data['coins'] = $this->coins_m->get();
     $data['subview'] = 'admin/reports/index';
     $this->load->view('admin/_main_layout', $data);
@@ -38,7 +38,7 @@ class Reports extends CI_Controller {
 
   public function dates()
   {
-    $this->permission->getPermission([AUTHOR_CRUD], TRUE);
+    $this->permission->getPermission([AUTHOR_CRUD, LOAN_READ], TRUE);
     $data['coins'] = $this->coins_m->get();
     $data['subview'] = 'admin/reports/dates';
     $this->load->view('admin/_main_layout', $data);
@@ -47,10 +47,7 @@ class Reports extends CI_Controller {
   public function dates_pdf($coin_id, $start_d, $end_d)
   {
     require_once APPPATH.'third_party/fpdf183/html_table.php';
-    $reportCoin = ['name'=>'undefined', 'short_name'=>'ud'];
-    if($this->permission->getPermission([AUTHOR_CRUD], FALSE)){
-      $reportCoin = $this->reports_m->get_reportCoin($coin_id);
-    }
+    $reportCoin = $this->reports_m->get_reportCoin($coin_id);
     
     $pdf = new PDF();
     $pdf->AddPage('P','A4',0);
@@ -72,9 +69,11 @@ class Reports extends CI_Controller {
 
     $pdf->WriteHTML($html);
     if($this->permission->getPermission([LOAN_READ], FALSE)){
-      $reportsDates = $this->reports_m->get_reportDatesAll($coin_id,$start_d,$end_d);
+      $reportsDates = $this->reports_m->get_reportDatesAll($coin_id, $start_d, $end_d);
     }else if($this->permission->getPermission([AUTHOR_CRUD], FALSE)){
-      $reportsDates = $this->reports_m->get_reportDates($this->user_id, $coin_id,$start_d,$end_d);
+      $reportsDates = $this->reports_m->get_reportDates($this->user_id, $coin_id, $start_d, $end_d);
+    }else{
+      $reportsDates = [];
     }
 
     $pdf->Ln(7);
@@ -107,10 +106,12 @@ class Reports extends CI_Controller {
 
   public function customers()
   {
-    if($this->permission->getPermission([CUSTOMER_READ], FALSE)){
+    if($this->permission->getPermissionX([LOAN_READ, LOAN_ITEM_READ], FALSE)){
       $data['customers'] = $this->reports_m->get_reportCstsAll();
     }else if($this->permission->getPermission([AUTHOR_CRUD], FALSE)){
       $data['customers'] = $this->reports_m->get_reportCsts($this->session->userdata('user_id'));
+    }else{
+      $this->permission->getPermissionX([], TRUE);
     }
     $data['subview'] = 'admin/reports/customers';
     $this->load->view('admin/_main_layout', $data);
@@ -120,10 +121,13 @@ class Reports extends CI_Controller {
   {
     require_once APPPATH.'third_party/fpdf183/html_table.php';
 
-    if($this->permission->getPermissionX([CUSTOMER_READ, LOAN_READ], FALSE)){
+    $reportCst = [];
+    if($this->permission->getPermissionX([LOAN_READ, LOAN_ITEM_READ], FALSE)){
       $reportCst = $this->reports_m->get_reportLCAll($customer_id);
     }else if($this->permission->getPermission([AUTHOR_CRUD], FALSE)){
       $reportCst = $this->reports_m->get_reportLC($this->user_id, $customer_id);
+    }else{
+      $this->permission->getPermissionX([], TRUE);
     }
 
     $pdf = new PDF();
@@ -175,7 +179,6 @@ class Reports extends CI_Controller {
       $loanItems = $this->reports_m->get_reportLI($this->session->userdata('user_id'), $rc->id);
     }
     
-    
     foreach ($loanItems as $li) {
       $html1 .= '
     <tr>
@@ -189,7 +192,7 @@ class Reports extends CI_Controller {
     $pdf->Ln(7);
 
     // // // Inicio garantes
-    if($this->permission->getPermissionX([CUSTOMER_READ, GUARANTOR_READ], FALSE)){
+    if($this->permission->getPermissionX([LOAN_READ, LOAN_ITEM_READ], FALSE)){
       $guarantors = $this->reports_m->get_guarantorsAll($rc->id);
     }elseif($this->permission->getPermission([AUTHOR_CRUD], TRUE)){
       $guarantors = $this->reports_m->get_guarantors($this->user_id, $rc->id);
