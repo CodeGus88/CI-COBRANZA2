@@ -63,7 +63,7 @@
             <?php endforeach; ?>
           <?php else : ?>
             <tr>
-              <td colspan="7" class="text-center">No existen clientes para mostrar.</td>
+              <td colspan="7" class="text-center">No existen clientes para mostrar</td>
             </tr>
           <?php endif; ?>
         </tbody>

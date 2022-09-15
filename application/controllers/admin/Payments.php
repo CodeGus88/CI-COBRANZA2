@@ -22,11 +22,12 @@ class Payments extends CI_Controller
 
   public function index()
   {
-    $data[LOAN_UPDATE] = $this->permission->getPermission([LOAN_UPDATE], FALSE);
+    $data[LOAN_UPDATE] =  $this->permission->getPermission([LOAN_UPDATE], FALSE);
     $data[LOAN_ITEM_UPDATE] = $this->permission->getPermission([LOAN_ITEM_UPDATE], FALSE);
     $data[AUTHOR_CRUD] = $this->permission->getPermission([AUTHOR_CRUD], FALSE);
     $data['payments'] = array();
-    if ($this->permission->getPermissionX([LOAN_ITEM_READ, LOAN_ITEM_UPDATE], FALSE)) {
+    // if ($this->permission->getPermissionX([LOAN_ITEM_READ, LOAN_ITEM_UPDATE], FALSE)) {
+      if ($this->permission->getPermissionX([LOAN_READ, LOAN_ITEM_READ], FALSE)) {
       $data['payments'] = $this->payments_m->getPaymentsAll();
     } elseif ($this->permission->getPermission([AUTHOR_CRUD], FALSE)) {
       $data['payments'] = $this->payments_m->getPayments($this->user_id);

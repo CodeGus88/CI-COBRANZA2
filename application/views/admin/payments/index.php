@@ -31,7 +31,7 @@
           <?php endforeach; ?>
           <?php else: ?>
             <tr>
-              <td colspan="6" class="text-center">No existen pagos, registrar un nuevo pago.</td>
+              <td colspan="6" class="text-center">No existen pagos para mostrar</td>
             </tr>
           <?php endif; ?>
         </tbody>

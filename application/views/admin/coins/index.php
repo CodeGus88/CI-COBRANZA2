@@ -49,7 +49,7 @@
           <?php endforeach; ?>
           <?php else: ?>
             <tr>
-              <td colspan="5" class="text-center">No existen Monedas, agregar una nueva moneda.</td>
+              <td colspan="5" class="text-center">No existen monedas para mostrar</td>
             </tr>
           <?php endif; ?>
         </tbody>
