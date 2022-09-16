@@ -29,7 +29,7 @@ class Dashboard extends CI_Controller {
       $data['qLoans'] = $this->config_m->get_countLoansAll();
       $data['qPaids'] = $this->config_m->get_countPaidsAll();
       $count_lc = $this->config_m->get_countLCAll();
-    }elseif($this->permission->getPermission([AUTHOR_CRUD], FALSE)){
+    }elseif($this->permission->getPermission([AUTHOR_LOAN_READ], FALSE)){
       $data['qCts'] = $this->config_m->get_countCts($this->user_id);
       $data['qLoans'] = $this->config_m->get_countLoans($this->user_id);
       $data['qPaids'] = $this->config_m->get_countPaids($this->user_id);

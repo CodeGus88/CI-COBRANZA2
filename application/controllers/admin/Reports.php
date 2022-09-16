@@ -21,7 +21,7 @@ class Reports extends CI_Controller {
 
   public function index()
   {
-    $this->permission->getPermission([AUTHOR_CRUD, LOAN_READ], TRUE);
+    $this->permission->getPermission([AUTHOR_LOAN_READ, LOAN_READ], TRUE);
     $data['coins'] = $this->coins_m->get();
     $data['subview'] = 'admin/reports/index';
     $this->load->view('admin/_main_layout', $data);
@@ -30,15 +30,15 @@ class Reports extends CI_Controller {
   public function ajax_getCredits($coin_id)
   {
     if($this->permission->getPermission([LOAN_READ], FALSE)) 
-      $data['credits'] = $this->reports_m->get_reportLoan($this->user_id, $coin_id);
-    else if($this->permission->getPermission([AUTHOR_CRUD], FALSE) ) 
       $data['credits'] = $this->reports_m->get_reportLoanAll($coin_id);
+    else if($this->permission->getPermission([AUTHOR_LOAN_READ], FALSE) ) 
+    $data['credits'] = $this->reports_m->get_reportLoan($this->user_id, $coin_id);
     echo json_encode($data);
   }
 
   public function dates()
   {
-    $this->permission->getPermission([AUTHOR_CRUD, LOAN_READ], TRUE);
+    $this->permission->getPermission([AUTHOR_LOAN_READ, LOAN_READ], TRUE);
     $data['coins'] = $this->coins_m->get();
     $data['subview'] = 'admin/reports/dates';
     $this->load->view('admin/_main_layout', $data);
@@ -70,7 +70,7 @@ class Reports extends CI_Controller {
     $pdf->WriteHTML($html);
     if($this->permission->getPermission([LOAN_READ], FALSE)){
       $reportsDates = $this->reports_m->get_reportDatesAll($coin_id, $start_d, $end_d);
-    }else if($this->permission->getPermission([AUTHOR_CRUD], FALSE)){
+    }else if($this->permission->getPermission([AUTHOR_LOAN_READ], FALSE)){
       $reportsDates = $this->reports_m->get_reportDates($this->user_id, $coin_id, $start_d, $end_d);
     }else{
       $reportsDates = [];
@@ -108,7 +108,7 @@ class Reports extends CI_Controller {
   {
     if($this->permission->getPermissionX([LOAN_READ, LOAN_ITEM_READ], FALSE)){
       $data['customers'] = $this->reports_m->get_reportCstsAll();
-    }else if($this->permission->getPermission([AUTHOR_CRUD], FALSE)){
+    }else if($this->permission->getPermissionX([AUTHOR_LOAN_READ, AUTHOR_LOAN_ITEM_READ], FALSE)){
       $data['customers'] = $this->reports_m->get_reportCsts($this->session->userdata('user_id'));
     }else{
       $this->permission->getPermissionX([], TRUE);
@@ -124,7 +124,7 @@ class Reports extends CI_Controller {
     $reportCst = [];
     if($this->permission->getPermissionX([LOAN_READ, LOAN_ITEM_READ], FALSE)){
       $reportCst = $this->reports_m->get_reportLCAll($customer_id);
-    }else if($this->permission->getPermission([AUTHOR_CRUD], FALSE)){
+    }else if($this->permission->getPermission([AUTHOR_LOAN_READ, AUTHOR_LOAN_ITEM_READ], FALSE)){
       $reportCst = $this->reports_m->get_reportLC($this->user_id, $customer_id);
     }else{
       $this->permission->getPermissionX([], TRUE);
@@ -175,7 +175,7 @@ class Reports extends CI_Controller {
 
     if($this->permission->getPermission([LOAN_ITEM_READ], FALSE)){
       $loanItems = $this->reports_m->get_reportLIAll($rc->id);
-    }elseif($this->permission->getPermission([AUTHOR_CRUD], FALSE)){
+    }elseif($this->permission->getPermission([AUTHOR_LOAN_ITEM_READ], FALSE)){
       $loanItems = $this->reports_m->get_reportLI($this->session->userdata('user_id'), $rc->id);
     }
     
@@ -194,7 +194,7 @@ class Reports extends CI_Controller {
     // // // Inicio garantes
     if($this->permission->getPermissionX([LOAN_READ, LOAN_ITEM_READ], FALSE)){
       $guarantors = $this->reports_m->get_guarantorsAll($rc->id);
-    }elseif($this->permission->getPermission([AUTHOR_CRUD], TRUE)){
+    }elseif($this->permission->getPermissionX([AUTHOR_LOAN_READ, AUTHOR_LOAN_ITEM_READ], TRUE)){
       $guarantors = $this->reports_m->get_guarantors($this->user_id, $rc->id);
     }
     

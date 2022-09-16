@@ -1,7 +1,7 @@
 <div class="card shadow mb-4">
   <div class="card-header d-flex align-items-center justify-content-between py-3">
     <h6 class="m-0 font-weight-bold text-primary">Lista de clientes</h6>
-    <?php if($CUSTOMER_CREATE || $AUTHOR_CRUD) : ?>
+    <?php if($CUSTOMER_CREATE || $AUTHOR_CUSTOMER_CREATE) : ?>
     <a class="d-sm-inline-block btn btn-sm btn-success shadow-sm" href="<?php echo site_url('admin/customers/edit'); ?>"><i class="fas fa-plus-circle fa-sm"></i> Nuevo cliente</a>
     <?php endif ?>
   </div>
@@ -50,12 +50,12 @@
                   <button type="button" class="btn btn-sm <?php echo $ct->loan_status ? 'btn-outline-danger' : 'btn-outline-success' ?> status-check"><?php echo $ct->loan_status ? 'Con Crédito' : 'Sin Crédito' ?></button>
                 </td>
                 <td>
-                  <?php if($CUSTOMER_UPDATE || ($AUTHOR_CRUD && $ct->user_id == $this->session->userdata('user_id'))) :?>
+                  <?php if($CUSTOMER_UPDATE || ($AUTHOR_CUSTOMER_UPDATE && $ct->user_id == $this->session->userdata('user_id'))) :?>
                   <a href="<?php echo site_url('admin/customers/edit/' . $ct->id); ?>" class="btn btn-sm btn-info shadow-sm"><i class="fas fa-edit fa-sm"></i> Editar</a>
                   <?php endif?>
-                  <?php if($CUSTOMER_DELETE || ($AUTHOR_CRUD && $ct->user_id == $this->session->userdata('user_id'))) : ?>
-                  <a onclick="return deleteConfirm('¿Estas seguro?','¡No podrás revertir esto!  Eliminar cliente: (<?php echo $ct->dni?>) <?php echo $ct->first_name.' '. $ct->last_name?>')"  class="btn btn-sm btn-danger shadow-sm">
-                    Eliminar<a href="<?php echo site_url('admin/customers/delete/' . $ct->id);?>" id="delete" hidden></a>
+                  <?php if($CUSTOMER_DELETE || ($AUTHOR_CUSTOMER_DELETE && $ct->user_id == $this->session->userdata('user_id'))) : ?>
+                  <a onclick="return deleteConfirm(<?php echo $ct->id ?>, '¿Estas seguro?','¡No podrás revertir esto!  Eliminar cliente: (<?php echo $ct->dni?>) <?php echo $ct->first_name.' '. $ct->last_name?>')"  class="btn btn-sm btn-danger shadow-sm">
+                    Eliminar<a href="<?php echo site_url('admin/customers/delete/' . $ct->id);?>" id="delete<?php echo $ct->id ?>" hidden></a>
                   </a>
                   <?php endif ?>
                 </td>

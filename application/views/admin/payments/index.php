@@ -1,7 +1,7 @@
 <div class="card shadow mb-4">
   <div class="card-header d-flex align-items-center justify-content-between py-3">
     <h6 class="m-0 font-weight-bold text-primary">Lista de pagos</h6>
-    <?php if($AUTHOR_CRUD || ($LOAN_UPDATE && $LOAN_ITEM_UPDATE)) : ?>
+    <?php if(($AUTHOR_LOAN_UPDATE && $AUTHOR_LOAN_ITEM_UPDATE) || ($LOAN_UPDATE && $LOAN_ITEM_UPDATE)) : ?>
     <a class="d-sm-inline-block btn btn-sm btn-success shadow-sm" href="<?php echo site_url('admin/payments/edit'); ?>"><i class="fas fa-plus-circle fa-sm"></i> Realizar Pago</a>
     <?php endif ?>
   </div>

@@ -57,7 +57,6 @@ $(document).ready(function () {
     let monto = parseFloat($('#cr_amount').val());
     let num_cuotas = $('#fee').val();
     let i = ($('#in_amount').val() / 100);
-    // let I = monto * i * num_cuotas;
     let I = monto * i * time;
     let monto_total = I + monto;
     let cuota = monto_total / num_cuotas;
@@ -272,7 +271,7 @@ function load_guarantors(loan_id) {
 }
 
 
-function deleteConfirm(title, message) {
+function deleteConfirm(id, title, message) {
   Swal.fire({
     title: title,
     text: message,
@@ -284,7 +283,7 @@ function deleteConfirm(title, message) {
     cancelButtonText: 'Cancelar'
   }).then((result) => {
     if (result.isConfirmed) {
-      btndelete = document.getElementById('delete');
+      btndelete = document.getElementById('delete'+id);
       btndelete.click();
     }
   })
