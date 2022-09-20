@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-include(APPPATH . "/tools/Variables.php");
+include(APPPATH . "/tools/Constants.php");
 
 class Config extends CI_Controller {
 

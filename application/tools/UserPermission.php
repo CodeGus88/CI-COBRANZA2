@@ -1,6 +1,6 @@
 <?php
 include(APPPATH."/tools/AuthUserData.php");
-include(APPPATH."/tools/Variables.php");
+include(APPPATH."/tools/Constants.php");
 
 function loadErrorMessage($message){
     return "<script>alert('$message');
