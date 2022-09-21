@@ -200,6 +200,22 @@ class Loans extends CI_Controller
       }
     return $valid;
   }
+
+
+  /**
+   * Muestra las cuotas proximas y la que ya están con mora
+   * https://www.delftstack.com/es/howto/php/how-to-get-the-current-date-and-time-in-php/
+   * https://www.php.net/manual/en/timezones.america.php
+   */
+  function quotes_week()
+  {
+    date_default_timezone_set('America/Caracas');
+    $start_date = date("Y-m-d", time());
+    $end_date = date("Y-m-d", strtotime($start_date.' + 7 days'));
+    $data['items'] = $this->loans_m->quotesWeekAll($start_date, $end_date);
+    $this->load->view('admin/loans/quotes_week', $data);
+  }
+
 }
 
 /* End of file Loans.php */

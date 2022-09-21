@@ -1,9 +1,14 @@
 <div class="card shadow mb-4">
+
   <div class="card-header d-flex align-items-center justify-content-between py-3">
     <h6 class="m-0 font-weight-bold text-primary">Lista de prestamos</h6>
+    <div>
+    <a href="<?php echo site_url('admin/loans/quotes_week')?>" class="btn btn-sm btn-info shadow-sm" data-toggle="ajax-modal"><i class="fas fa-eye fa-sm"></i> Semana</a>
+    <!-- <a class="d-sm-inline-block btn btn-sm btn-success shadow-sm" href="<?php echo site_url('admin/loans/next_payments'); ?>"><i class="fas fa-sm"></i>Semana</a> -->
     <?php if(($LOAN_CREATE && $LOAN_ITEM_CREATE) || ($AUTHOR_LOAN_CREATE && $AUTHOR_LOAN_ITEM_CREATE)) : ?>
-      <a class="d-sm-inline-block btn btn-sm btn-success shadow-sm" href="<?php echo site_url('admin/loans/edit'); ?>"><i class="fas fa-plus-circle fa-sm"></i> Nuevo prestamo</a>
+      <a class="d-sm-inline-block btn btn-sm btn-success shadow-sm" href="<?php echo site_url('admin/loans/edit'); ?>"><i class="fas fa-plus-circle fa-sm"></i> Nuevo préstamo</a>
     <?php endif ?>
+    </div>
   </div>
   <div class="card-body">
     <?php if ($this->session->flashdata('msg')): ?>
