@@ -143,7 +143,7 @@ class Loans_m extends MY_Model {
    * Obtiene las cuotas de la última semana
    */
   public function quotesWeekAll($start_date, $end_date){
-    $this->db->select('c.dni, c.first_name, c.last_name, li.date, li.status');
+    $this->db->select('c.dni, CONCAT(c.first_name, " " , c.last_name) customer_name, CONCAT(u.academic_degree, " ", u.first_name, " " , u.last_name) user_name, li.date, li.status');
     $this->db->from('customers c');
     $this->db->join('users u', 'u.id = c.user_id');
     $this->db->join('loans l', 'c.id = l.customer_id');
@@ -157,31 +157,15 @@ class Loans_m extends MY_Model {
    * Obtiene las cuotas de la última semana del usuario
    */
   public function quotesWeek($user_id, $start_date, $end_date){
-    $this->db->select('c.dni, c.first_name, c.last_name, li.date');
-    $this->db->from('customers c', 'u.id = c.user_id');
+    $this->db->select('c.dni, CONCAT(c.first_name, " " , c.last_name) customer_name, CONCAT(u.academic_degree, " ", u.first_name, " " , u.last_name) user_name, li.date, li.status');
+    $this->db->from('customers c');
     $this->db->join('users u', 'u.id = c.user_id');
     $this->db->join('loans l', 'c.id = l.customer_id');
     $this->db->join('loan_items li', 'l.id = li.loan_id');
-    $this->db->where('u.id',$user_id);
-    $this->db->where('li.status', TRUE);
-    $$this->db->where("(li.date BETWEEN '{$start_date}' AND '{$end_date}' AND li.status = TRUE) OR (li.date < '{$start_date}' AND li.status = TRUE)");
-    $this->db->orderby('li.date');
+    $this->db->where("((li.date BETWEEN '{$start_date}' AND '{$end_date}' AND li.status = TRUE) OR (li.date < '{$start_date}' AND li.status = TRUE)) and u.id = $user_id");
+    $this->db->order_by('li.date');
     return $this->db->get()->result(); 
   }
-
-
-
-
-  // public function get_reportDatesAll($coin_id, $start_date, $end_date)
-  // {
-  //   $this->db->select("l.id, l.date, l.credit_amount, l.interest_amount, l.num_fee, l.payment_m,
-  //    (l.num_fee*l.fee_amount) AS total_int, l.status");
-  //   $this->db->from('loans l');
-  //   $this->db->where('coin_id', $coin_id);
-  //   $this->db->where("date BETWEEN '{$start_date}' AND '{$end_date}'");
-
-  //   return $this->db->get()->result(); 
-  // }
 
 }
 

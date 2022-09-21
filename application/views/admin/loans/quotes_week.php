@@ -39,9 +39,9 @@
                     if ($items) {
                         $i = 0;
                         foreach ($items as $item) {
-                          echo '<tr>';
+                          echo '<tr title="Asesor: '.$item->user_name.' ">';
                             echo '<td>' . $item->dni. '</td>';
-                            echo '<td>' . $item->first_name. " " . $item->last_name . '</td>';
+                            echo '<td>' . $item->customer_name . '</td>';
                             echo '<td>' . $item->date . '</td>';
                             $pay_url = '#';// site_url('admin/payments/edit');
                             if( $item->date == date("Y-m-d") ){
