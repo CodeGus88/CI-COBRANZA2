@@ -4,15 +4,15 @@
     <?php if($CUSTOMER_CREATE || $AUTHOR_CUSTOMER_CREATE) : ?>
       <div>
       <?php
-        // echo form_open('admin/customers');
-        echo '<select class="form-select" onchange="customersFilter()" id="user_id" name="user_id">';
-        echo '<option value="0">TODOS</option>';
-          if(isset($users))
-          foreach($users as $user) :
-          echo "<option value='$user->id'>$user->academic_degree $user->first_name $user_last_name </option>";
-          endforeach;
-        echo "</select>";
-        // echo form_close()
+        if($CUSTOMER_READ) :
+          echo '<select class="form-select" onchange="customersFilter()" id="user_id" name="user_id">';
+          echo '<option value="0">TODOS</option>';
+            if(isset($users))
+            foreach($users as $user) :
+            echo "<option value='$user->id'>$user->academic_degree $user->first_name $user->last_name </option>";
+            endforeach;
+          echo "</select>";
+        endif
       ?>
       <a class="d-sm-inline-block btn btn-sm btn-success shadow-sm" href="<?php echo site_url('admin/customers/edit'); ?>"><i class="fas fa-plus-circle fa-sm"></i> Nuevo cliente</a>
       </div>

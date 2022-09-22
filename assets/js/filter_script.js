@@ -4,7 +4,7 @@ function customersFilter(){
     fetch(base_url + "admin/customers/ajax_filter_customers_by_user/" + select.value)
     .then(res => res.json())
     .then(datax => {
-      console.log(datax)
+      // console.log(datax)
       if (datax.customers != null) { // Cargar tabla
         // cargar tabla de cuotas
         var x = new Array(datax.customers.length);
@@ -59,17 +59,12 @@ function customersFilter(){
       }else{
         $("#dataTable").dataTable().fnDestroy();
         $('#dataTable').dataTable({
-          "bPaginate": false, //Ocultar paginación
-          "scrollY": '50vh',
-          "scrollCollapse": true,
+          "bPaginate": true, //Ocultar paginación
+          // "scrollY": '50vh',
+          "scrollCollapse": false,
           "aaData": null
         })
       }
     });
   
 }
-
-// console.log('CUSTOMER_UPDATE: ' + CUSTOMER_UPDATE);
-// console.log('AUTHOR_CUSTOMER_UPDATE: ' + AUTHOR_CUSTOMER_UPDATE);
-// console.log('CUSTOMER_DELETE: ' + CUSTOMER_DELETE);
-// console.log('AUTHOR_CUSTOMER_DELETE: ' + AUTHOR_CUSTOMER_DELETE);

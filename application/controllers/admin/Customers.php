@@ -25,6 +25,7 @@ class Customers extends CI_Controller
   {
     // permisos del usuario [para la vista]
     $data[CUSTOMER_UPDATE] = $this->permission->getPermission([CUSTOMER_UPDATE], FALSE);
+    $data[CUSTOMER_READ] = $this->permission->getPermission([CUSTOMER_READ], FALSE);
     $data[CUSTOMER_DELETE] = $this->permission->getPermission([CUSTOMER_DELETE], FALSE);
     $data[CUSTOMER_CREATE] = $this->permission->getPermission([CUSTOMER_CREATE], FALSE);
     $data[AUTHOR_CUSTOMER_UPDATE] = $this->permission->getPermission([AUTHOR_CUSTOMER_UPDATE], FALSE);
@@ -43,12 +44,17 @@ class Customers extends CI_Controller
   }
 
   public function ajax_filter_customers_by_user($user_id){
-    if($user_id == 0)
+    if($this->permission->getPermission([CUSTOMER_READ], FALSE)){
+      if($user_id == 0)
       $data['customers'] = $this->customers_m->getCustomers();
     else
       $data['customers'] = $this->customers_m->get_adviser_customers($user_id);
 
     echo json_encode($data); // datos leidos por javascript Ajax
+    }else{
+      $data['customers'] = null;
+      echo json_encode($data);
+    }
   }
 
   public function edit($id = NULL)
