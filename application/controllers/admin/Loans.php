@@ -183,7 +183,7 @@ class Loans extends CI_Controller
       $data['items'] = $this->loans_m->getLoanItems($this->session->userdata('user_id'), $id);
     }
     $this->load->view('admin/loans/view', $data);
-    
+
   }
 
   // Valida que todos los garantes sean del mismo asesor que el cliente

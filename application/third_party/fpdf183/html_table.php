@@ -286,7 +286,7 @@ function Header()
 	$this->Image(FCPATH . 'assets/img/logoinv.png',170,10, 25, 14,'PNG',"http://www.admincredichuracasa.com");
 	$this->SetFont('Arial', 'I', 10);
 	$this->Cell(7);
-	$this->Cell(178.5, 14, 'Chura Casa - Reportes', 1, 0, 'C');
+	$this->Cell(178.5, 14, 'CrediChura Casa - Reportes', 1, 0, 'C');
 	$this->Ln(20);
 }
 

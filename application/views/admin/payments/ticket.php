@@ -32,6 +32,7 @@
               N° Préstamo: <?php echo $loan_id; ?> <br>
               Cliente: <?php echo $customerName->customer_name; ?> <br>
               Asesor: <?php echo $customerAdvisorName; ?> <br>
+              Usuario: <?php echo $payment_user_name; ?> <br>
               Tipo moneda: <?php echo $coin; ?><br>
             </p>
             <div style="clear:both;"></div>

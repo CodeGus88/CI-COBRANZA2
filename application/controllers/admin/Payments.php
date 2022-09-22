@@ -120,7 +120,7 @@ class Payments extends CI_Controller
   private function updateState($loan_id, $quota_id, $customer_id, $data)
   {
     foreach ($quota_id as $q) {
-      $this->payments_m->update_quota(['status' => 0], $q);
+      $this->payments_m->update_quota(['status' => 0, 'payment_user_id' => $this->user_id], $q);
     }
 
     if (!$this->payments_m->check_cstLoan($loan_id)) {
@@ -129,6 +129,9 @@ class Payments extends CI_Controller
 
     $data['quotasPaid'] = $this->payments_m->get_quotasPaid($quota_id);
     $data['customerAdvisorName'] = $this->payments_m->getCustomerAdvisorName($customer_id)->user_name;
+    $data['payment_user_name'] = $this->session->userdata('academic_degree') . 
+    " " .$this->session->userdata('first_name') . 
+    " ".$this->session->userdata('last_name');
     $this->load->view('admin/payments/ticket', $data);
   }
 }

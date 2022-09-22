@@ -33,12 +33,22 @@ class Customers extends CI_Controller
     // fin permisos del usuario [para la vista]
     $data['customers'] = Array();
     if($this->permission->getPermission([CUSTOMER_READ], FALSE)){
+      $data['users'] = $this->db->order_by('id')->get('users')->result();
       $data['customers'] = $this->customers_m->getCustomers();
     }elseif($this->permission->getPermission([AUTHOR_CUSTOMER_READ], FALSE)){
       $data['customers'] = $this->customers_m->get_adviser_customers($this->user_id);
     }
     $data['subview'] = 'admin/customers/index';
     $this->load->view('admin/_main_layout', $data);
+  }
+
+  public function ajax_filter_customers_by_user($user_id){
+    if($user_id == 0)
+      $data['customers'] = $this->customers_m->getCustomers();
+    else
+      $data['customers'] = $this->customers_m->get_adviser_customers($user_id);
+
+    echo json_encode($data); // datos leidos por javascript Ajax
   }
 
   public function edit($id = NULL)
@@ -125,6 +135,7 @@ class Customers extends CI_Controller
     redirect('admin/customers');
   }
 }
+
 
 /* End of file Customers.php */
 /* Location: ./application/controllers/admin/Customers.php */

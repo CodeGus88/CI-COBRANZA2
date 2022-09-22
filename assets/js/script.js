@@ -271,7 +271,7 @@ function load_guarantors(loan_id) {
 }
 
 
-function deleteConfirm(id, title, message) {
+function deleteConfirm(elementId, title, message) {
   Swal.fire({
     title: title,
     text: message,
@@ -283,7 +283,7 @@ function deleteConfirm(id, title, message) {
     cancelButtonText: 'Cancelar'
   }).then((result) => {
     if (result.isConfirmed) {
-      btndelete = document.getElementById('delete'+id);
+      btndelete = document.getElementById('delete'+elementId);
       btndelete.click();
     }
   })
@@ -314,7 +314,7 @@ function loadGuarantorsOptions() {
 function printElementById(name, title) {
   var printContents = document.getElementById(name)
   var ventana = window.open(' ', 'PRINT'); // 'height=400,width=600'
-  ventana.document.write('<html><head><title>Chura Casa - Reportes</title>');
+  ventana.document.write('<html><head><title>CrediChura Casa - Reportes</title>');
   // ventana.document.write('<html><head><title>' + document.title + '</title>');
   ventana.document.write('<link rel="stylesheet" href="'+print_style+'">');
   ventana.document.write('</head><body>');
