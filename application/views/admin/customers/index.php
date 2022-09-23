@@ -5,7 +5,7 @@
         <?php
         if (isset($users)) :
           if (sizeof($users) > 0) :
-            echo '<select onchange="location = this.value;">';
+            echo '<select class="custom-select-sm btn-outline-secondary" onchange="location = this.value;">';
             $url = site_url('admin/customers');
             $selected = (0 == $user->id) ? 'selected' : '';
             echo "<option value='$url' $selected>TODOS</option>";

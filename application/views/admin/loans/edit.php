@@ -15,7 +15,7 @@
       <div class="form-group col-12 col-md-12">
         <label class="small mb-1" for="exampleFormControlSelect2">Cliente</label>
         <div class="input-group">
-          <select id="search" class="form-control" name="customer_id" onchange="loadGuarantorsOptions()">
+          <select id="search" class="form-control form-select" name="customer_id" onchange="loadGuarantorsOptions()">
             <option value="0" selected="selected">...</option>
             <?php foreach ($customers as $customer) : ?>
               <?php if ($customer->loan_status == FALSE) : ?>
@@ -36,7 +36,7 @@
       <div class="form-group col-12 col-md-12">
         <label class="small mb-1" for="exampleFormControlSelect2">Garantes</label>
         <div class="input-group">
-          <select id="guarantors" class="form-control" name="guarantors[]" multiple="multiple">
+          <select id="guarantors" class="form-control form-select" name="guarantors[]" multiple="multiple">
             <!-- options -->
           </select>
         </div>
