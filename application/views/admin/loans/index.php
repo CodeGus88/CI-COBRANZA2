@@ -1,12 +1,26 @@
 <div class="card shadow mb-4">
 
   <div class="card-header d-flex align-items-center justify-content-between py-3">
-    <h6 class="m-0 font-weight-bold text-primary">Lista de prestamos</h6>
+    <h6 class="m-0 font-weight-bold text-primary">Lista de préstamos</h6>
     <div>
-    <?php if (($LOAN_ITEM_READ) || ($AUTHOR_LOAN_ITEM_READ)) : ?>
-      <a href="<?php echo site_url('admin/loans/quotes_week') ?>" class="btn btn-sm btn-info shadow-sm" data-toggle="ajax-modal"><i class="fas fa-eye fa-sm"></i> Semana</a>
+      <?php if (isset($users)) : if (sizeof($users) > 0) :
+          echo "<select class='custom-select-sm btn-outline-secondary' onchange='location = this.value;'>";
+            $url = site_url('admin/loans');
+            $selected = ($selected_user_id == 0)?'selected':'';
+            echo "<option value='$url' $selected>TODOS</option>";
+            foreach($users as $user){
+              $url = site_url("admin/loans/index/$user->id");
+              $selected = ($selected_user_id == $user->id)?'selected':'';
+              $user_name = "$user->academic_degree $user->first_name $user->last_name";
+              echo "<option value='$url' $selected>$user_name</option>";
+            }
+          echo "</select>";
+      endif; endif ?>
+      <?php if (($LOAN_ITEM_READ) || ($AUTHOR_LOAN_ITEM_READ)) : 
+        $parameter = ($selected_user_id != 0)?$selected_user_id:'';  
+      ?>
+        <a href="<?php echo site_url("admin/loans/quotes_week/$parameter") ?>" class="btn btn-sm btn-info shadow-sm" data-toggle="ajax-modal"><i class="fas fa-eye fa-sm"></i> Semana</a>
       <?php endif ?>
-      <!-- <a class="d-sm-inline-block btn btn-sm btn-success shadow-sm" href="<?php echo site_url('admin/loans/next_payments'); ?>"><i class="fas fa-sm"></i>Semana</a> -->
       <?php if (($LOAN_CREATE && $LOAN_ITEM_CREATE) || ($AUTHOR_LOAN_CREATE && $AUTHOR_LOAN_ITEM_CREATE)) : ?>
         <a class="d-sm-inline-block btn btn-sm btn-success shadow-sm" href="<?php echo site_url('admin/loans/edit'); ?>"><i class="fas fa-plus-circle fa-sm"></i> Nuevo préstamo</a>
       <?php endif ?>

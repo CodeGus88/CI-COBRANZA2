@@ -21,7 +21,7 @@ class Loans extends CI_Controller
     $this->permission = new Permission($this->permission_m, $this->user_id);
   }
 
-  public function index()
+  public function index($user_id = 0)
   {
     $data[LOAN_CREATE] = $this->permission->getPermission([LOAN_CREATE], FALSE);
     $data[LOAN_ITEM_CREATE] = $this->permission->getPermission([LOAN_ITEM_CREATE], FALSE);
@@ -31,7 +31,13 @@ class Loans extends CI_Controller
     $data[AUTHOR_LOAN_ITEM_READ] = $this->permission->getPermission([AUTHOR_LOAN_ITEM_READ], FALSE);
     $data['loans'] = array();
     if ($this->permission->getPermission([LOAN_READ], FALSE)) {
-      $data['loans'] = $this->loans_m->getLoansAll();
+      $data['users'] = $this->db->order_by('id')->get('users')->result();
+      // $data['users'] = $this->db->where('id', -1)->order_by('id')->get('users')->result();
+      $data['selected_user_id'] = $user_id;
+      if ($user_id == 0)
+        $data['loans'] = $this->loans_m->getLoansAll();
+      else
+        $data['loans'] = $this->loans_m->getLoans($user_id);
     } elseif ($this->permission->getPermission([AUTHOR_LOAN_READ], FALSE)) {
       $data['loans'] = $this->loans_m->getLoans($this->user_id);
     }
@@ -112,13 +118,13 @@ class Loans extends CI_Controller
             $customer = $this->customers_m->getCustomerById($this->user_id, $loan_data['customer_id']);
           if ($customer != null) {
             if ($this->guarantorsValidation($customer->user_id, $guarantors)) {
-              if($this->formValidation($this->input)){
+              if ($this->formValidation($this->input)) {
                 if ($this->loans_m->addLoan($loan_data, $items, $guarantors)) {
                   $this->session->set_flashdata('msg', 'Préstamo agregado correctamente');
                 } else {
                   $this->session->set_flashdata('msg_error', 'Ocurrió un error al guardar, intente nuevamente');
                 }
-              }else{
+              } else {
                 $this->session->set_flashdata('msg_error', 'ERROR: ¡La información del formulario enviado no es consistente, intente nuevamente!');
               }
             } else {
@@ -144,7 +150,8 @@ class Loans extends CI_Controller
    * Valida los datos de entrada, para constatar de que el cálculo es correcto
    * Criterios de validación (num_fee, fee_amount)
    */
-  private function formValidation($input){
+  private function formValidation($input)
+  {
     $credit_amount = $input->post('credit_amount');
     $payment = $input->post('payment_m');
     $time = $input->post('time');
@@ -165,10 +172,9 @@ class Loans extends CI_Controller
     $I = $credit_amount * $i * $time;
     $monto_total = $I + $credit_amount;
     $cuota = round($monto_total / $num_fee, 1);
-    if($cuota == $input->post('fee_amount') && $num_fee == $input->post('num_fee')){
-     return true;
-    }
-    else{
+    if ($cuota == $input->post('fee_amount') && $num_fee == $input->post('num_fee')) {
+      return true;
+    } else {
       return false;
     }
   }
@@ -178,12 +184,11 @@ class Loans extends CI_Controller
     if ($this->permission->getPermissionX([LOAN_READ, LOAN_ITEM_READ], FALSE)) {
       $data['loan'] = $this->loans_m->getLoanInAll($id);
       $data['items'] = $this->loans_m->getLoanItemsInAll($id);
-    } elseif($this->permission->getPermissionX([AUTHOR_LOAN_READ, AUTHOR_LOAN_ITEM_READ], FALSE)) {
+    } elseif ($this->permission->getPermissionX([AUTHOR_LOAN_READ, AUTHOR_LOAN_ITEM_READ], FALSE)) {
       $data['loan'] = $this->loans_m->getLoan($this->session->userdata('user_id'), $id);
       $data['items'] = $this->loans_m->getLoanItems($this->session->userdata('user_id'), $id);
     }
     $this->load->view('admin/loans/view', $data);
-
   }
 
   // Valida que todos los garantes sean del mismo asesor que el cliente
@@ -208,21 +213,23 @@ class Loans extends CI_Controller
    * https://www.delftstack.com/es/howto/php/how-to-get-the-current-date-and-time-in-php/
    * https://www.php.net/manual/en/timezones.america.php
    */
-  function quotes_week()
+  function quotes_week($user_id = 0)
   {
     date_default_timezone_set('America/Caracas');
     $start_date = date("Y-m-d", time());
-    $end_date = date("Y-m-d", strtotime($start_date.' + 7 days'));
-    if($this->permission->getPermission([LOAN_ITEM_READ], FALSE)){
-      $data['items'] = $this->loans_m->quotesWeekAll($start_date, $end_date);
-    }elseif($this->permission->getPermission([AUTHOR_LOAN_ITEM_READ], FALSE)){
+    $end_date = date("Y-m-d", strtotime($start_date . ' + 7 days'));
+    if ($this->permission->getPermission([LOAN_ITEM_READ], FALSE)) {
+      if($user_id == 0)
+        $data['items'] = $this->loans_m->quotesWeekAll($start_date, $end_date);
+      else
+        $data['items'] = $this->loans_m->quotesWeek($user_id, $start_date, $end_date);
+    } elseif ($this->permission->getPermission([AUTHOR_LOAN_ITEM_READ], FALSE)) {
       $data['items'] = $this->loans_m->quotesWeek($this->user_id, $start_date, $end_date);
-    }else{
+    } else {
       $data['items'] = [];
     }
     $this->load->view('admin/loans/quotes_week', $data);
   }
-
 }
 
 /* End of file Loans.php */
