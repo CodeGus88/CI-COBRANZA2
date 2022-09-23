@@ -104,10 +104,16 @@ class Reports extends CI_Controller {
     $pdf->Output('reporteFechas.pdf' , 'I');
   }
 
-  public function customers()
+  public function customers($user_id = 0)
   {
     if($this->permission->getPermissionX([LOAN_READ, LOAN_ITEM_READ], FALSE)){
-      $data['customers'] = $this->reports_m->get_reportCstsAll();
+      $data['users'] = $this->db->order_by('id')->get('users')->result();
+      if($user_id==0){
+        $data['customers'] = $this->reports_m->get_reportCstsAll();
+      }else{
+        $data['customers'] = $this->reports_m->get_reportCsts($user_id);
+        $data['selected_user_id'] = $user_id;
+      }
     }else if($this->permission->getPermissionX([AUTHOR_LOAN_READ, AUTHOR_LOAN_ITEM_READ], FALSE)){
       $data['customers'] = $this->reports_m->get_reportCsts($this->session->userdata('user_id'));
     }else{

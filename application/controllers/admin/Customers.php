@@ -21,11 +21,10 @@ class Customers extends CI_Controller
     $this->permission = new Permission($this->permission_m, $this->user_id);
   }
 
-  public function index()
+  public function index($user_id = 0)
   {
     // permisos del usuario [para la vista]
     $data[CUSTOMER_UPDATE] = $this->permission->getPermission([CUSTOMER_UPDATE], FALSE);
-    $data[CUSTOMER_READ] = $this->permission->getPermission([CUSTOMER_READ], FALSE);
     $data[CUSTOMER_DELETE] = $this->permission->getPermission([CUSTOMER_DELETE], FALSE);
     $data[CUSTOMER_CREATE] = $this->permission->getPermission([CUSTOMER_CREATE], FALSE);
     $data[AUTHOR_CUSTOMER_UPDATE] = $this->permission->getPermission([AUTHOR_CUSTOMER_UPDATE], FALSE);
@@ -35,26 +34,17 @@ class Customers extends CI_Controller
     $data['customers'] = Array();
     if($this->permission->getPermission([CUSTOMER_READ], FALSE)){
       $data['users'] = $this->db->order_by('id')->get('users')->result();
-      $data['customers'] = $this->customers_m->getCustomers();
+      $data['selected_user_id'] = $user_id;
+      if($user_id==0){
+        $data['customers'] = $this->customers_m->getCustomers();
+      }else{
+        $data['customers'] = $this->customers_m->get_adviser_customers($user_id);
+      }
     }elseif($this->permission->getPermission([AUTHOR_CUSTOMER_READ], FALSE)){
       $data['customers'] = $this->customers_m->get_adviser_customers($this->user_id);
     }
     $data['subview'] = 'admin/customers/index';
     $this->load->view('admin/_main_layout', $data);
-  }
-
-  public function ajax_filter_customers_by_user($user_id){
-    if($this->permission->getPermission([CUSTOMER_READ], FALSE)){
-      if($user_id == 0)
-      $data['customers'] = $this->customers_m->getCustomers();
-    else
-      $data['customers'] = $this->customers_m->get_adviser_customers($user_id);
-
-    echo json_encode($data); // datos leidos por javascript Ajax
-    }else{
-      $data['customers'] = null;
-      echo json_encode($data);
-    }
   }
 
   public function edit($id = NULL)

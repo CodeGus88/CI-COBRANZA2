@@ -30,7 +30,7 @@
         <select class="form-control" id="exampleFormControlSelect2" name="gender">
 
           <?php if ($customer->gender == 'none'): ?>
-            <option value = "" selected>Seleccionar genero</option>
+            <option value = "" selected>Seleccionar género</option>
           <?php endif ?>
 
           <option value="masculino" <?php if ($customer->gender == 'masculino') echo "selected" ?>>
