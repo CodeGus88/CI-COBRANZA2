@@ -20,16 +20,21 @@ class Payments extends CI_Controller
     $this->permission = new Permission($this->permission_m, $this->user_id);
   }
 
-  public function index()
+  public function index($user_id = 0)
   {
     $data[LOAN_UPDATE] =  $this->permission->getPermission([LOAN_UPDATE], FALSE);
     $data[LOAN_ITEM_UPDATE] = $this->permission->getPermission([LOAN_ITEM_UPDATE], FALSE);
     $data[AUTHOR_LOAN_UPDATE] =  $this->permission->getPermission([AUTHOR_LOAN_UPDATE], FALSE);
     $data[AUTHOR_LOAN_ITEM_UPDATE] = $this->permission->getPermission([AUTHOR_LOAN_ITEM_UPDATE], FALSE);
     $data['payments'] = array();
-    // if ($this->permission->getPermissionX([LOAN_ITEM_READ, LOAN_ITEM_UPDATE], FALSE)) {
-      if ($this->permission->getPermissionX([LOAN_READ, LOAN_ITEM_READ], FALSE)) {
-      $data['payments'] = $this->payments_m->getPaymentsAll();
+    if ($this->permission->getPermissionX([LOAN_READ, LOAN_ITEM_READ], FALSE)) {
+      $data['users'] = $this->db->get('users')->result();
+      $data['selected_user_id'] = $user_id;
+      if($user_id == 0){
+        $data['payments'] = $this->payments_m->getPaymentsAll();
+      }else{
+        $data['payments'] = $this->payments_m->getPayments($user_id);
+      }
     } elseif ($this->permission->getPermissionx([AUTHOR_LOAN_READ, AUTHOR_LOAN_ITEM_READ], FALSE)) {
       $data['payments'] = $this->payments_m->getPayments($this->user_id);
     }
@@ -54,7 +59,6 @@ class Payments extends CI_Controller
 
   function ajax_get_loan($customer_id)
   {
-    // $quota_data = Array();
     if ($this->permission->getPermissionX([LOAN_UPDATE, LOAN_ITEM_UPDATE], FALSE))
       $quota_data = $this->payments_m->getLoanAll($customer_id);
     elseif ($this->permission->getPermissionX([AUTHOR_LOAN_UPDATE, AUTHOR_LOAN_ITEM_UPDATE], FALSE))
@@ -122,16 +126,14 @@ class Payments extends CI_Controller
     foreach ($quota_id as $q) {
       $this->payments_m->update_quota(['status' => 0, 'payment_user_id' => $this->user_id], $q);
     }
-
     if (!$this->payments_m->check_cstLoan($loan_id)) {
       $this->payments_m->update_cstLoan($loan_id, $customer_id);
     }
-
     $data['quotasPaid'] = $this->payments_m->get_quotasPaid($quota_id);
     $data['customerAdvisorName'] = $this->payments_m->getCustomerAdvisorName($customer_id)->user_name;
-    $data['payment_user_name'] = $this->session->userdata('academic_degree') . 
-    " " .$this->session->userdata('first_name') . 
-    " ".$this->session->userdata('last_name');
+    $data['payment_user_name'] = $this->session->userdata('academic_degree') .
+      " " . $this->session->userdata('first_name') .
+      " " . $this->session->userdata('last_name');
     $this->load->view('admin/payments/ticket', $data);
   }
 }

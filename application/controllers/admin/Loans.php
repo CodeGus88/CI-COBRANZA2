@@ -32,7 +32,6 @@ class Loans extends CI_Controller
     $data['loans'] = array();
     if ($this->permission->getPermission([LOAN_READ], FALSE)) {
       $data['users'] = $this->db->order_by('id')->get('users')->result();
-      // $data['users'] = $this->db->where('id', -1)->order_by('id')->get('users')->result();
       $data['selected_user_id'] = $user_id;
       if ($user_id == 0)
         $data['loans'] = $this->loans_m->getLoansAll();
