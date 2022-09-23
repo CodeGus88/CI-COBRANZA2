@@ -54,8 +54,25 @@
   </div>
 </div>
 <div class="card shadow mb-4">
-    <div class="card-header py-3">
+<!-- card-header d-flex align-items-center justify-content-between py-3 -->
+<!-- card-header py-3 -->
+    <div class="card-header d-flex py-3 justify-content-between">
       <h6 class="m-0 font-weight-bold text-primary">BIENVENIDO <?php echo $this->session->userdata('first_name'). ' '.$this->session->userdata('last_name'); ?></h6>
+      <div>
+        <?php if(isset($users)) : if(sizeof($users) > 0):
+          echo "<select class='custom-select-sm btn-outline-secondary' onchange='location = this.value;'>";
+          $url = site_url("admin/dashboard");
+          $selected = ($selected_user_id == 0)?'selected':'';
+          echo "<option value='$url' $selected>TODO</option>";
+            foreach($users as $user) :
+              $url = site_url("admin/dashboard/index/$user->id");
+              $selected = ($selected_user_id == $user->id)?'selected':'';
+              $user_name = "$user->academic_degree $user->first_name $user->last_name";
+              echo "<option value='$url' $selected>$user_name</option>";
+            endforeach;
+          echo "</select>";
+        endif; endif;?>
+      </div>
     </div>
     <div class="card-body">
       <p class="text-center h5 mb-4">Total de prestamos por tipo de moneda</p>

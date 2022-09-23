@@ -18,17 +18,26 @@ class Dashboard extends CI_Controller {
     $this->permission = new Permission($this->permission_m, $this->user_id);
   }
 
-  public function index()
+  public function index($user_id = 0)
   {
     $data['qCts'] = [];
     $data['qLoans'] = [];
     $data['qPaids'] = [];
     $count_lc = [];
     if($this->permission->getPermission([LOAN_READ], FALSE)){
-      $data['qCts'] = $this->config_m->get_countCtsAll();
-      $data['qLoans'] = $this->config_m->get_countLoansAll();
-      $data['qPaids'] = $this->config_m->get_countPaidsAll();
-      $count_lc = $this->config_m->get_countLCAll();
+      $data['users'] = $this->db->get('users')->result();
+      $data['selected_user_id'] = $user_id;
+      if($user_id == 0 || !is_numeric($user_id)){
+        $data['qCts'] = $this->config_m->get_countCtsAll();
+        $data['qLoans'] = $this->config_m->get_countLoansAll();
+        $data['qPaids'] = $this->config_m->get_countPaidsAll();
+        $count_lc = $this->config_m->get_countLCAll();
+      }else{
+        $data['qCts'] = $this->config_m->get_countCts($user_id);
+        $data['qLoans'] = $this->config_m->get_countLoans($user_id);
+        $data['qPaids'] = $this->config_m->get_countPaids($user_id);
+        $count_lc = $this->config_m->get_countLC($user_id);
+      }
     }elseif($this->permission->getPermission([AUTHOR_LOAN_READ], FALSE)){
       $data['qCts'] = $this->config_m->get_countCts($this->user_id);
       $data['qLoans'] = $this->config_m->get_countLoans($this->user_id);
