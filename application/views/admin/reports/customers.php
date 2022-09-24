@@ -7,7 +7,7 @@
         if (sizeof($users) > 0) :
           echo '<select class="custom-select-sm btn-outline-secondary" onchange="location = this.value;">';
           $url = site_url('admin/reports/customers');
-          $selected = (0 == $user->id) ? 'selected' : '';
+          $selected = ($selected_user_id == 0) ? 'selected' : '';
           echo "<option value='$url'>TODOS</option>";
           foreach ($users as $user) :
             $url = site_url('admin/reports/customers/' . $user->id);

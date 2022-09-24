@@ -97,7 +97,7 @@ function loadGeneralReport() {
   var coin_id = $("#coin_type").val()
   var symbol = $('#coin_type option:selected').data("symbol");
 
-  $.get(base_url + "admin/reports/ajax_getCredits/" + coin_id, function (data) {
+  $.get(base_url + "admin/reports/ajax_getCredits/" + coin_id + "/" + SELECTED_USER_ID, function (data) {
 
     data = JSON.parse(data);
     // console.log('con parse', data)
@@ -260,7 +260,6 @@ function load_guarantors(loan_id) {
         var options = "";
         x.guarantors.forEach(element => {
           var option = '<button type="button" class="btn btn-secondary margin-right" >' + element.ci + " | " + element.guarantor_name + '</button>';
-
           options += option;
         });
         $("#guarantors_contend").html("");
@@ -311,11 +310,10 @@ function loadGuarantorsOptions() {
 }
 
 // imprimir
-function printElementById(name, title) {
+function printElementById(name, title = 'REPORTE') {
   var printContents = document.getElementById(name)
   var ventana = window.open(' ', 'PRINT'); // 'height=400,width=600'
   ventana.document.write('<html><head><title>CrediChura Casa - Reportes</title>');
-  // ventana.document.write('<html><head><title>' + document.title + '</title>');
   ventana.document.write('<link rel="stylesheet" href="'+print_style+'">');
   ventana.document.write('</head><body>');
   if(title != null && title != ''){

@@ -1,7 +1,26 @@
 <div class="card shadow mb-4">
   <div class="card-header d-flex align-items-center justify-content-between py-3">
     <h6 class="m-0 font-weight-bold text-primary">Resumen general de préstamos</h6>
-    <a class="d-sm-inline-block btn btn-sm btn-success shadow-sm" href="#" onclick="printElementById('imp1', 'RESUMEN GENERAL DE PRÉSTAMOS');"><i class="fas fa-print fa-sm"></i> Imprimir</a>
+    <div>
+      <?php 
+      if(isset($users)) : if(sizeof($users) > 0) :
+        echo "<select class='custom-select-sm btn-outline-secondary' onchange='location = this.value;'>";
+        $url = site_url('admin/reports');
+        $selected = ($selected_user_id == 0) ? 'selected' : '';
+        echo "<option value='$url' $selected>TODOS</option>";
+        foreach($users as $user) :
+          $url = site_url("admin/reports/index/$user->id");
+          $selected = ($user->id==$selected_user_id)? 'selected' : '';
+          $user_name = "$user->academic_degree $user->first_name $user->last_name";
+          echo "<option value='$url' $selected>$user_name</option>";
+        endforeach;
+        echo "</select>";
+      endif; endif;
+      ?>
+      <?php $title = isset($selected_user)?"RESUMEN DE PRÉSTAMOS - $selected_user->user_name":'RESUMEN GENERAL DE PRÉSTAMOS'; ?>
+      <a class="d-sm-inline-block btn btn-sm btn-success shadow-sm" href="#" onclick="printElementById('imp1', '<?=$title?>');"><i class="fas fa-print fa-sm"></i> Imprimir</a>
+    </div>
+    
   </div>
   <div class="card-body">
 
@@ -47,5 +66,12 @@
     </div>
   </div>
 </div>
+
+<!-- paso de varables a javascript -->
+<?php if(isset($selected_user_id)) : ?>
+  <script>const SELECTED_USER_ID = <?=$selected_user_id?>;</script>
+<?php else : ?>
+  <script>const SELECTED_USER_ID = 0;</script>
+<?php endif ;?>
 
 <?php echo "<script>window.onload = function () { loadGeneralReport(); }</script>" ?>

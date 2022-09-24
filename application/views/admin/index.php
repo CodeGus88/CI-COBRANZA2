@@ -16,7 +16,6 @@
       </div>
     </div>
   </div>
-
   <!-- Earnings (Monthly) Card Example -->
   <div class="col-xl-4 mb-4">
     <div class="card border-left-success shadow h-100 py-2">
@@ -54,8 +53,6 @@
   </div>
 </div>
 <div class="card shadow mb-4">
-<!-- card-header d-flex align-items-center justify-content-between py-3 -->
-<!-- card-header py-3 -->
     <div class="card-header d-flex py-3 justify-content-between">
       <h6 class="m-0 font-weight-bold text-primary">BIENVENIDO <?php echo $this->session->userdata('first_name'). ' '.$this->session->userdata('last_name'); ?></h6>
       <div>

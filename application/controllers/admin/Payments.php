@@ -44,7 +44,7 @@ class Payments extends CI_Controller
 
   public function edit()
   {
-    $this->permission->getPermissionY(
+    $this->permission->redirectIfFalse(
       $this->permission->getPermissionX([AUTHOR_LOAN_UPDATE, AUTHOR_LOAN_ITEM_UPDATE], FALSE) || $this->permission->getPermissionX([LOAN_UPDATE, LOAN_ITEM_UPDATE], FALSE),
       TRUE
     );
@@ -124,7 +124,8 @@ class Payments extends CI_Controller
   private function updateState($loan_id, $quota_id, $customer_id, $data)
   {
     foreach ($quota_id as $q) {
-      $this->payments_m->update_quota(['status' => 0, 'payment_user_id' => $this->user_id], $q);
+      // $this->payments_m->update_quota(['status' => 0, 'payment_user_id' => $this->user_id], $q);
+      $this->payments_m->update_quota(['status' => 0], $q);
     }
     if (!$this->payments_m->check_cstLoan($loan_id)) {
       $this->payments_m->update_cstLoan($loan_id, $customer_id);

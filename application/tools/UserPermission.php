@@ -34,7 +34,7 @@ class Permission {
         return $this->denyAndRedirect($redirect, $permit);
     }
 
-    public function getPermissionY($permission, $redirect){
+    public function redirectIfFalse($permission, $redirect){
         $permit = $permission;
         return $this->denyAndRedirect($redirect, $permit);
     }

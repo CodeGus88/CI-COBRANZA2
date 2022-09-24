@@ -185,7 +185,12 @@ class Reports_m extends CI_Model {
     return $this->db->get()->result();
   }
 
-  
+  public function getUser($user_id){
+    $this->db->select("CONCAT(u.academic_degree, ' ', u.first_name, ' ', u.last_name) as user_name");
+    $this->db->from('users u');
+    $this->db->where('id', $user_id);
+    return $this->db->get()->row();
+  }
 
 }
 
