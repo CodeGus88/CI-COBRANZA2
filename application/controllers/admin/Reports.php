@@ -58,6 +58,7 @@ class Reports extends CI_Controller
     $LOAN_READ = $this->permission->getPermission([LOAN_READ], FALSE);
     $this->permission->redirectIfFalse([$AUTHOR_LOAN_READ || $LOAN_READ], TRUE);
     if ($LOAN_READ) $data['users'] = $this->db->get('users')->result();
+    else $data['user_id'] = $this->session->userdata('user_id');
     $data['coins'] = $this->coins_m->get();
     $data['subview'] = 'admin/reports/dates';
     $this->load->view('admin/_main_layout', $data);

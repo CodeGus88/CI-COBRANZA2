@@ -1,16 +1,19 @@
 <div class="card shadow mb-4">
   <div class="card-header d-flex align-items-center justify-content-between py-3">
-    <h6 class="m-0 font-weight-bold text-primary">Reporte de prestamos por rango de fechas</h6>
+    <h6 class="m-0 font-weight-bold text-primary">Reporte de préstamos por rango de fechas</h6>
     <div>
       <?php
-      if(isset($users)) : if(sizeof($users)>0) :
-        echo '<select class="custom-select-sm btn-outline-secondary" id="user_selected">';
+      if (isset($users)) : if (sizeof($users) > 0) :
+          echo '<select class="custom-select-sm btn-outline-secondary" id="user_selected">';
           echo "<option value=''>TODOS</option>";
           foreach ($users as $user) :
             echo "<option value='$user->id'>$user->academic_degree $user->first_name $user->last_name</option>";
           endforeach;
           echo "</select>";
-      endif; endif;
+        endif;
+      elseif (isset($user_id)) :
+        echo "<script>const USER_ID = $user_id;</script>";
+      endif;
       ?>
     </div>
   </div>
@@ -33,8 +36,8 @@
       <div class="form-group col-md-3">
         <label class="small mb-1" for="exampleFormControlSelect2">Tipo de moneda</label>
         <select class="form-control" id="coin_type2" name="coin_type2">
-          <?php foreach ($coins as $c): ?>
-            <option <?php if(strtolower($c->name)=='bolivianos') echo 'selected' ?> value="<?php echo $c->id ?>"><?php echo $c->name.' ('.strtoupper($c->short_name).')' ?></option>
+          <?php foreach ($coins as $c) : ?>
+            <option <?php if (strtolower($c->name) == 'bolivianos') echo 'selected' ?> value="<?php echo $c->id ?>"><?php echo $c->name . ' (' . strtoupper($c->short_name) . ')' ?></option>
           <?php endforeach ?>
         </select>
       </div>
@@ -44,6 +47,6 @@
       </div>
 
     </div>
-    
+
   </div>
 </div>

@@ -137,7 +137,8 @@ function reportPDF() {
   var end_d = $("#end_d").val();
   var coin_t = $("#coin_type2").val();
   var coin_t = $("#coin_type2").val();
-  var user_selected_id = $("#user_selected").val()?'/'+$("#user_selected").val():'';
+  // var user_selected_id = $("#user_selected").val()?'/'+$("#user_selected").val():'';
+  var user_selected_id = $("#user_selected").val()?'/'+$("#user_selected").val():!(typeof USER_ID === 'undefined')?'/'+USER_ID:'';
 
   if (start_d == '' || end_d == '') {
     alert('Ingrese las fechas')
