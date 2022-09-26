@@ -3,12 +3,11 @@
     <h6 class="m-0 font-weight-bold text-primary">Reporte global por clientes</h6>
     <div class="row">
       <?php
-      if (isset($users)) :
-        if (sizeof($users) > 0) :
+      if (isset($users)) : if (sizeof($users) > 0) :
           echo '<select class="custom-select-sm btn-outline-secondary" onchange="location = this.value;">';
           $url = site_url('admin/reports/customers');
           $selected = ($selected_user_id == 0) ? 'selected' : '';
-          echo "<option value='$url'>TODOS</option>";
+          echo "<option value='$url' $seleted>TODOS</option>";
           foreach ($users as $user) :
             $url = site_url('admin/reports/customers/' . $user->id);
             $selected = ($selected_user_id == $user->id) ? 'selected' : '';
