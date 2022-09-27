@@ -85,19 +85,31 @@ $(document).ready(function () {
 
   })
 
-  $("#coin_type").change(function () {
-    loadGeneralReport()
-  });
+  // $("#coin_type").change(function () {
+  //   loadGeneralReport()
+  // });
 
 })
 
 
-// Cargar 
+// Cargar
+report_title = '';
+date_range = '';
 function loadGeneralReport() {
-  var coin_id = $("#coin_type").val()
+  const coin_id = $("#coin_type").val()
+  const start_d = $("#start_d").val()
+  const end_d = $("#end_d").val()
+  const user_id = $("#user_id").val()
   var symbol = $('#coin_type option:selected').data("symbol");
-
-  $.get(base_url + "admin/reports/ajax_getCredits/" + coin_id + "/" + SELECTED_USER_ID, function (data) {
+  if (start_d == '' || end_d == '') {
+    alert('Ingrese las fechas')
+    return;
+  }else if(coin_id == ''){
+    alert('Seleccione una moneda');
+    return;
+  }
+  // $.get(base_url + "admin/reports/ajax_getCredits/" + coin_id + "/" + SELECTED_USER_ID, function (data) {
+    $.get(base_url + "admin/reports/ajax_getCredits/" + coin_id + "/"+start_d+"/"+end_d +((user_id!='')?"/"+user_id:''), function (data) {
 
     data = JSON.parse(data);
     // console.log('con parse', data)
@@ -129,6 +141,24 @@ function loadGeneralReport() {
       var cr_interestPay = data.credits[3].cr_interestPay + ' ' + (data.credits[3].short_name).toUpperCase()
     }
     $("#cr_interestPay").html(cr_interestPay) // id="cr_interestPay" -> Total Credito por cobrar con interes
+    user_name = '';
+    if (typeof data.selected_user === 'undefined') {
+      report_title = '';
+    } else if(data.selected_user.user_name.toLowerCase() == 'all') {
+      report_title = 'RESUMEN GENERAL DE PRÉSTAMOS';
+      user_name = 'TODOS';
+    }else{
+      report_title = 'RESUMEN DE PRÉSTAMOS - ' + data.selected_user.user_name;
+      user_name = data.selected_user.user_name;
+    }
+    date_range = `${start_d} - ${end_d}`;
+    $("#range_date").html('RANGO DE FECHAS: ' + date_range);
+    toastr["success"](date_range, user_name);
+    $("#message").html('USUARIO: ' + user_name);
+    if(report_title != '')
+      document.getElementById('alert_message').style.display = "block";
+    else
+      document.getElementById('alert_message').style.display = "none";
   });
 }
 
@@ -136,8 +166,6 @@ function reportPDF() {
   var start_d = $("#start_d").val();
   var end_d = $("#end_d").val();
   var coin_t = $("#coin_type2").val();
-  var coin_t = $("#coin_type2").val();
-  // var user_selected_id = $("#user_selected").val()?'/'+$("#user_selected").val():'';
   var user_selected_id = $("#user_selected").val()?'/'+$("#user_selected").val():!(typeof USER_ID === 'undefined')?'/'+USER_ID:'';
 
   if (start_d == '' || end_d == '') {
@@ -304,7 +332,7 @@ function loadGuarantorsOptions() {
 }
 
 // imprimir
-function printElementById(name, title = 'REPORTE') {
+function printElementById(name, title = 'REPORTE', secondaryTitle = null) {
   var printContents = document.getElementById(name)
   var ventana = window.open(' ', 'PRINT'); // 'height=400,width=600'
   ventana.document.write('<html><head><title>CrediChura Casa - Reportes</title>');
@@ -312,6 +340,9 @@ function printElementById(name, title = 'REPORTE') {
   ventana.document.write('</head><body>');
   if(title != null && title != ''){
     ventana.document.write('<center><h5>'+title+'</h5></center>');
+  }
+  if(secondaryTitle != null && secondaryTitle != ''){
+    ventana.document.write('<center><h6>'+secondaryTitle+'</h6></center>');
   }
   ventana.document.write(printContents.innerHTML);
   ventana.document.write('</body></html>');

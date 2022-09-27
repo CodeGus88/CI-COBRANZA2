@@ -20,16 +20,31 @@ class Reports extends CI_Controller
     $this->permission = new Permission($this->permission_m, $this->user_id);
   }
 
-  public function index($user_id = 0)
+  // public function index($user_id = 0)
+  // {
+  //   $LOAN_READ = $this->permission->getPermission([LOAN_READ], FALSE);
+  //   $AUTHOR_LOAN_READ = $this->permission->getPermission([AUTHOR_LOAN_READ], FALSE);
+  //   $this->permission->redirectIfFalse(($AUTHOR_LOAN_READ || $LOAN_READ), TRUE);
+  //   if ($LOAN_READ) {
+  //     $user_id = (!is_numeric($user_id)) ? 0 : $user_id;
+  //     $data['users'] = $this->db->get('users')->result();
+  //     $data['selected_user_id'] = $user_id;
+  //     $data['selected_user'] = $this->reports_m->getUser($user_id);
+  //   } else {
+  //     $data['selected_user'] = $this->reports_m->getUser($this->user_id);
+  //   }
+  //   $data['coins'] = $this->coins_m->get();
+  //   $data['subview'] = 'admin/reports/index';
+  //   $this->load->view('admin/_main_layout', $data);
+  // }
+
+  public function index()
   {
     $LOAN_READ = $this->permission->getPermission([LOAN_READ], FALSE);
     $AUTHOR_LOAN_READ = $this->permission->getPermission([AUTHOR_LOAN_READ], FALSE);
     $this->permission->redirectIfFalse(($AUTHOR_LOAN_READ || $LOAN_READ), TRUE);
     if ($LOAN_READ) {
-      $user_id = (!is_numeric($user_id)) ? 0 : $user_id;
       $data['users'] = $this->db->get('users')->result();
-      $data['selected_user_id'] = $user_id;
-      $data['selected_user'] = $this->reports_m->getUser($user_id);
     } else {
       $data['selected_user'] = $this->reports_m->getUser($this->user_id);
     }
@@ -38,16 +53,23 @@ class Reports extends CI_Controller
     $this->load->view('admin/_main_layout', $data);
   }
 
-  public function ajax_getCredits($coin_id, $user_id = 0)
+  public function ajax_getCredits($coin_id, $start_d, $end_d, $user_id)
   {
     if ($this->permission->getPermission([LOAN_READ], FALSE)) {
-      if ($user_id == 0) {
-        $data['credits'] = $this->reports_m->get_reportLoanAll($coin_id);
-      } else {
-        $data['credits'] = $this->reports_m->get_reportLoan($user_id, $coin_id);
+      if ($user_id == 'all') {
+        // $data['credits'] = $this->reports_m->get_reportLoanAll($coin_id);
+        $data['credits'] = $this->reports_m->get_reportLoanAll($coin_id, $start_d, $end_d);
+        $all_users = new stdClass();
+        $all_users->user_name = $user_id;
+        $data['selected_user'] =  $all_users;
+      } elseif(is_numeric($user_id)) {
+        // $data['credits'] = $this->reports_m->get_reportLoan($user_id, $coin_id);
+        $data['credits'] = $this->reports_m->get_reportLoan($user_id, $coin_id, $start_d, $end_d);
+        $data['selected_user'] = $this->reports_m->getUser($user_id);
       }
     } else if ($this->permission->getPermission([AUTHOR_LOAN_READ], FALSE)) {
       $data['credits'] = $this->reports_m->get_reportLoan($this->user_id, $coin_id);
+      $data['selected_user'] = $this->reports_m->getUser($user_id);
     }
     echo json_encode($data);
   }

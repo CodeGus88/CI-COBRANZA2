@@ -3,26 +3,57 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Reports_m extends CI_Model {
 
-  public function get_reportLoanAll($coin_id)
-  {
+  // public function get_reportLoanAll($coin_id, $start_d, $end_d)
+  // {
+  //   $this->db->select('c.short_name, sum(l.credit_amount) as sum_credit');
+  //   $this->db->join('coins c', 'c.id = l.coin_id', 'left');
+  //   $this->db->where('l.coin_id', $coin_id);
+  //   $cr = $this->db->get('loans l')->row();
+
+  //   $this->db->select('c.short_name, sum(TRUNCATE(l.credit_amount*(l.interest_amount/100) + l.credit_amount,2)) AS cr_interest');
+  //   $this->db->join('coins c', 'c.id = l.coin_id', 'left');
+  //   $this->db->where('l.coin_id', $coin_id);
+  //   $cr_interest = $this->db->get('loans l')->row();
+
+  //   $this->db->select('c.short_name, sum(TRUNCATE(l.credit_amount*(l.interest_amount/100) + l.credit_amount,2)) AS cr_interestPaid');
+  //   $this->db->join('coins c', 'c.id = l.coin_id', 'left');
+  //   $this->db->where(['l.coin_id' => $coin_id, 'l.status' => 0]);
+  //   $cr_interestPaid = $this->db->get('loans l')->row();
+
+  //   $this->db->select('c.short_name, sum(TRUNCATE(l.credit_amount*(l.interest_amount/100) + l.credit_amount,2)) AS cr_interestPay');
+  //   $this->db->join('coins c', 'c.id = l.coin_id', 'left');
+  //   $this->db->where(['l.coin_id' => $coin_id, 'l.status' => 1]);
+  //   $cr_interestPay = $this->db->get('loans l')->row();
+
+  //   $credits = [$cr, $cr_interest, $cr_interestPaid, $cr_interestPay];
+
+  //   return $credits;
+  // }
+
+  public function get_reportLoanAll($coin_id, $start_date, $end_date)
+  {// Total crédito
     $this->db->select('c.short_name, sum(l.credit_amount) as sum_credit');
     $this->db->join('coins c', 'c.id = l.coin_id', 'left');
     $this->db->where('l.coin_id', $coin_id);
+    $this->db->where("l.date BETWEEN '{$start_date}' AND '{$end_date}'");
     $cr = $this->db->get('loans l')->row();
-
-    $this->db->select('c.short_name, sum(TRUNCATE(l.credit_amount*(l.interest_amount/100) + l.credit_amount,2)) AS cr_interest');
+    // Total crédito con interés
+    $this->db->select('c.short_name, sum(TRUNCATE(l.fee_amount * num_fee,2)) AS cr_interest');
     $this->db->join('coins c', 'c.id = l.coin_id', 'left');
     $this->db->where('l.coin_id', $coin_id);
+    $this->db->where("l.date BETWEEN '{$start_date}' AND '{$end_date}'");
     $cr_interest = $this->db->get('loans l')->row();
-
-    $this->db->select('c.short_name, sum(TRUNCATE(l.credit_amount*(l.interest_amount/100) + l.credit_amount,2)) AS cr_interestPaid');
+    // Total crédito cancelado con interés
+    $this->db->select('c.short_name, sum(TRUNCATE(l.fee_amount * num_fee,2)) AS cr_interestPaid');
     $this->db->join('coins c', 'c.id = l.coin_id', 'left');
     $this->db->where(['l.coin_id' => $coin_id, 'l.status' => 0]);
+    $this->db->where("l.date BETWEEN '{$start_date}' AND '{$end_date}'");
     $cr_interestPaid = $this->db->get('loans l')->row();
-
-    $this->db->select('c.short_name, sum(TRUNCATE(l.credit_amount*(l.interest_amount/100) + l.credit_amount,2)) AS cr_interestPay');
+    // Total crédito por cobrar con interés
+    $this->db->select('c.short_name, sum(TRUNCATE(l.fee_amount * num_fee,2)) AS cr_interestPay');
     $this->db->join('coins c', 'c.id = l.coin_id', 'left');
     $this->db->where(['l.coin_id' => $coin_id, 'l.status' => 1]);
+    $this->db->where("l.date BETWEEN '{$start_date}' AND '{$end_date}'");
     $cr_interestPay = $this->db->get('loans l')->row();
 
     $credits = [$cr, $cr_interest, $cr_interestPaid, $cr_interestPay];
@@ -30,37 +61,80 @@ class Reports_m extends CI_Model {
     return $credits;
   }
 
-  public function get_reportLoan($user_id, $coin_id)
+  // public function get_reportLoan($user_id, $coin_id)
+  // {
+  //   $this->db->select('c.short_name, sum(l.credit_amount) as sum_credit');
+  //   $this->db->join('coins c', 'c.id = l.coin_id');
+  //   $this->db->join('customers cu', 'cu.id = l.customer_id');
+  //   $this->db->join('users u', 'u.id = cu.user_id');
+  //   $this->db->where('l.coin_id', $coin_id);
+  //   $this->db->where('u.id', $user_id);
+  //   $cr = $this->db->get('loans l')->row();
+
+  //   $this->db->select('c.short_name, sum(TRUNCATE(l.credit_amount*(l.interest_amount/100) + l.credit_amount,2)) AS cr_interest');
+  //   $this->db->join('coins c', 'c.id = l.coin_id');
+  //   $this->db->join('customers cu', 'cu.id = l.customer_id');
+  //   $this->db->join('users u', 'u.id = cu.user_id');
+  //   $this->db->where('l.coin_id', $coin_id);
+  //   $this->db->where('u.id', $user_id);
+  //   $cr_interest = $this->db->get('loans l')->row();
+
+  //   $this->db->select('c.short_name, sum(TRUNCATE(l.credit_amount*(l.interest_amount/100) + l.credit_amount,2)) AS cr_interestPaid');
+  //   $this->db->join('coins c', 'c.id = l.coin_id');
+  //   $this->db->join('customers cu', 'cu.id = l.customer_id');
+  //   $this->db->join('users u', 'u.id = cu.user_id');
+  //   $this->db->where(['l.coin_id' => $coin_id, 'l.status' => 0]);
+  //   $this->db->where('u.id', $user_id);
+  //   $cr_interestPaid = $this->db->get('loans l')->row();
+
+  //   $this->db->select('c.short_name, sum(TRUNCATE(l.credit_amount*(l.interest_amount/100) + l.credit_amount,2)) AS cr_interestPay');
+  //   $this->db->join('coins c', 'c.id = l.coin_id');
+  //   $this->db->join('customers cu', 'cu.id = l.customer_id');
+  //   $this->db->join('users u', 'u.id = cu.user_id');
+  //   $this->db->where(['l.coin_id' => $coin_id, 'l.status' => 1]);
+  //   $this->db->where('u.id', $user_id);
+  //   $cr_interestPay = $this->db->get('loans l')->row();
+
+  //   $credits = [$cr, $cr_interest, $cr_interestPaid, $cr_interestPay];
+
+  //   return $credits;
+  // }
+
+  public function get_reportLoan($user_id, $coin_id, $start_date, $end_date)
   {
     $this->db->select('c.short_name, sum(l.credit_amount) as sum_credit');
     $this->db->join('coins c', 'c.id = l.coin_id');
     $this->db->join('customers cu', 'cu.id = l.customer_id');
     $this->db->join('users u', 'u.id = cu.user_id');
     $this->db->where('l.coin_id', $coin_id);
+    $this->db->where("l.date BETWEEN '{$start_date}' AND '{$end_date}'");
     $this->db->where('u.id', $user_id);
     $cr = $this->db->get('loans l')->row();
 
-    $this->db->select('c.short_name, sum(TRUNCATE(l.credit_amount*(l.interest_amount/100) + l.credit_amount,2)) AS cr_interest');
+    $this->db->select('c.short_name, sum(TRUNCATE(l.fee_amount * num_fee,2)) AS cr_interest');
     $this->db->join('coins c', 'c.id = l.coin_id');
     $this->db->join('customers cu', 'cu.id = l.customer_id');
     $this->db->join('users u', 'u.id = cu.user_id');
     $this->db->where('l.coin_id', $coin_id);
+    $this->db->where("l.date BETWEEN '{$start_date}' AND '{$end_date}'");
     $this->db->where('u.id', $user_id);
     $cr_interest = $this->db->get('loans l')->row();
 
-    $this->db->select('c.short_name, sum(TRUNCATE(l.credit_amount*(l.interest_amount/100) + l.credit_amount,2)) AS cr_interestPaid');
+    $this->db->select('c.short_name, sum(TRUNCATE(l.fee_amount * num_fee,2)) AS cr_interestPaid');
     $this->db->join('coins c', 'c.id = l.coin_id');
     $this->db->join('customers cu', 'cu.id = l.customer_id');
     $this->db->join('users u', 'u.id = cu.user_id');
     $this->db->where(['l.coin_id' => $coin_id, 'l.status' => 0]);
+    $this->db->where("l.date BETWEEN '{$start_date}' AND '{$end_date}'");
     $this->db->where('u.id', $user_id);
     $cr_interestPaid = $this->db->get('loans l')->row();
 
-    $this->db->select('c.short_name, sum(TRUNCATE(l.credit_amount*(l.interest_amount/100) + l.credit_amount,2)) AS cr_interestPay');
+    $this->db->select('c.short_name, sum(TRUNCATE(l.fee_amount * num_fee,2)) AS cr_interestPay');
     $this->db->join('coins c', 'c.id = l.coin_id');
     $this->db->join('customers cu', 'cu.id = l.customer_id');
     $this->db->join('users u', 'u.id = cu.user_id');
     $this->db->where(['l.coin_id' => $coin_id, 'l.status' => 1]);
+    $this->db->where("l.date BETWEEN '{$start_date}' AND '{$end_date}'");
     $this->db->where('u.id', $user_id);
     $cr_interestPay = $this->db->get('loans l')->row();
 
