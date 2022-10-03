@@ -6,7 +6,7 @@
       
       <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="padding-left:10px;"><i class="fas fa-times fa-sm"></i></button>
       <button type="button"  class="close" onclick="printElementById('printable', 'PAGOS')" ><i class="fas fa-print fa-sm"></i></button>
-      <!-- <button type="button" class="close" onclick="window.print();" style="padding-left:30px;"><i class="fas fa-print fa-sm"></i></button> -->
+
     </div>
     <div id="printable">
       <div class="modal-header">
@@ -15,10 +15,6 @@
           <br>
           Cliente: <?php if ($loan) echo $loan->customer_name; ?>
         </h5>
-        <!-- <div class="d-flex flex-row-reverse">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fas fa-times fa-sm"></i></button>
-        <button type="button" class="close" onclick="window.print();"><i class="fas fa-print fa-sm"></i></button>
-      </div> -->
       </div>
       <div class="modal-body">
         <div class="row">

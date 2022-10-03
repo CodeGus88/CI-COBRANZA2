@@ -77,9 +77,7 @@ class Loans extends CI_Controller
           $this->input->post('num_fee'), // Aplicamos el numero de repeticiones
           DatePeriod::EXCLUDE_START_DATE
         );
-
         $num_quota = 1;
-
         foreach ($period as $date) {
           $weekDay = $date->format('N'); // Representación numérica del día de la semana
           $isSunday = false;
@@ -170,7 +168,7 @@ class Loans extends CI_Controller
     $i = ($interest_amount / 100);
     $I = $credit_amount * $i * $time;
     $monto_total = $I + $credit_amount;
-    $cuota = round($monto_total / $num_fee, 1);
+    $cuota = round($monto_total / $num_fee, 2);
     if ($cuota == $input->post('fee_amount') && $num_fee == $input->post('num_fee')) {
       return true;
     } else {

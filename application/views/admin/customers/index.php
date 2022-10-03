@@ -71,16 +71,18 @@
                   <button type="button" class="btn btn-sm <?php echo $ct->loan_status ? 'btn-outline-danger' : 'btn-outline-success' ?> status-check"><?php echo $ct->loan_status ? 'Con Crédito' : 'Sin Crédito' ?></button>
                 </td>
                 <td class="align-self-center" style="vertical-align: middle">
-                  <div class="btn-group">
+                  <div class="container-fluid">
+                    <div class="row">
                     <?php if ($CUSTOMER_UPDATE || ($AUTHOR_CUSTOMER_UPDATE && $ct->user_id == $this->session->userdata('user_id'))) : ?>
-                      <a href="<?php echo site_url('admin/customers/edit/' . $ct->id); ?>" class="btn btn-sm btn-info shadow-sm">Editar</a>
+                      <a href="<?php echo site_url('admin/customers/edit/' . $ct->id); ?>" class="btn btn-sm btn-info shadow-sm col">Editar</a>
                     <?php endif ?>
                     <?php if ($CUSTOMER_DELETE || ($AUTHOR_CUSTOMER_DELETE && $ct->user_id == $this->session->userdata('user_id'))) : ?>
-                      <a onclick="return deleteConfirm(<?= $ct->id ?>, '¿Estas seguro?','¡No podrás revertir esto!  Eliminar cliente: (<?php echo $ct->dni ?>) <?php echo $ct->first_name . ' ' . $ct->last_name ?>')" class="btn btn-sm btn-danger shadow-sm">
+                      <a onclick="return deleteConfirm(<?= $ct->id ?>, '¿Estas seguro?','¡No podrás revertir esto!  Eliminar cliente: (<?php echo $ct->dni ?>) <?php echo $ct->first_name . ' ' . $ct->last_name ?>')" class="btn btn-sm btn-danger shadow-sm col">
                         Eliminar
                         <a href="<?php echo site_url('admin/customers/delete/' . $ct->id); ?>" id="delete<?php echo $ct->id ?>" hidden></a>
                       </a>
                     <?php endif ?>
+                    </div>
                   </div>
                 </td>
               </tr>
