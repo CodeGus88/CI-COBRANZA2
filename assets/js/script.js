@@ -232,7 +232,7 @@ function load_loan_items(loan_id) {
             const payed = (datax.quotas[i].payed != null)?datax.quotas[i].payed:0;
             const payable = (fee_amount - payed).toFixed(2);
             // convenio de nombre para leer -> amount_quota_${id}
-            const input = status ? 
+            const input = status ?
               `<input type='number' step=".01" min="0.01" max="${payable}" id='amount_quota_${id}' name='amount_quota_${id}' class='form-control col-md-12 text-center' onchange="calculateTotal();" disabled>`
               : '<small class="btn btn-success col-md-12">Completado<small>';
             x[i] = [

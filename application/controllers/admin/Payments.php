@@ -22,7 +22,7 @@ class Payments extends CI_Controller
 
   public function index($user_id = 0)
   {
-    $data[LOAN_UPDATE] =  $this->permission->getPermission([LOAN_UPDATE], FALSE);
+    $data[LOAN_UPDATE] = $this->permission->getPermission([LOAN_UPDATE], FALSE);
     $data[LOAN_ITEM_UPDATE] = $this->permission->getPermission([LOAN_ITEM_UPDATE], FALSE);
     $data[AUTHOR_LOAN_UPDATE] =  $this->permission->getPermission([AUTHOR_LOAN_UPDATE], FALSE);
     $data[AUTHOR_LOAN_ITEM_UPDATE] = $this->permission->getPermission([AUTHOR_LOAN_ITEM_UPDATE], FALSE);
@@ -119,11 +119,11 @@ class Payments extends CI_Controller
         endif;
       endif;
       if ($LOAN_UPDATE && $LOAN_ITEM_UPDATE) {
-        $this->updateState($loan_id, $quota_id, $payments, $customer_id, $data);
+        $this->addPayment($loan_id, $quota_id, $payments, $customer_id, $data);
       } elseif ($AUTHOR_LOAN_UPDATE && $AUTHOR_LOAN_ITEM_UPDATE) {
         $probable_user_id = $this->payments_m->get_loan_adviser_user_id($loan_id)->id;
         if (AuthUserData::isAuthor($probable_user_id)) {
-          $this->updateState($loan_id, $quota_id, $payments, $customer_id, $data);
+          $this->addPayment($loan_id, $quota_id, $payments, $customer_id, $data);
         } else {
           echo PERMISSION_DENIED_MESSAGE;
         }
@@ -135,12 +135,24 @@ class Payments extends CI_Controller
     }
   }
 
-  private function updateState($loan_id, $quota_id, $payments, $customer_id, $data)
+  private function addPayment($loan_id, $quota_id, $payments, $customer_id, $data)
   {
     $validate = $this->payments_m->paymentsOk($payments);
     $savePaymentsIsSuccess = FALSE;
     if ($validate->valid) {
-      $savePaymentsIsSuccess = $this->payments_m->addPayments($payments); //descomentar
+      // Guardar documento de pago
+      $Object = new DateTime();  
+      $pay_date = $Object->format("Y-m-d h:i:s");
+      // echo $pay_date . "<br>";
+      $id = $this->payments_m->addDocumentPayment($this->user_id, $pay_date);
+      // echo json_encode($id);
+      if($id > 0){
+        for($i = 0; $i < sizeof($payments); $i++){
+          $payments[$i]['document_payment_id'] = $id;
+        }
+        $savePaymentsIsSuccess = $this->payments_m->addPayments($payments); //descomentar
+      }
+        
     } else {
       foreach ($validate->errors as $error)
         echo "ERROR: " . $error;
@@ -155,77 +167,28 @@ class Payments extends CI_Controller
         if (!$this->payments_m->check_cstLoan($loan_id)) {
           $this->payments_m->update_cstLoan($loan_id, $customer_id); // descomentar
         }
-        $data['quotasPaid'] = $this->payments_m->get_quotasPaid($quota_id);
-        $data['customerAdvisorName'] = $this->payments_m->getCustomerAdvisorName($customer_id)->user_name;
-        $data['payment_user_name'] = $this->session->userdata('academic_degree') .
-          " " . $this->session->userdata('first_name') .
-          " " . $this->session->userdata('last_name');
-        $this->load->view('admin/payments/ticket', $data);
-      } else {
+        // $data['quotasPaid'] = $this->payments_m->get_quotasPaid($quota_id);
+        // $data['customerAdvisorName'] = $this->payments_m->getCustomerAdvisorName($customer_id)->user_name;
+        // $data['payment_user_name'] = $this->session->userdata('academic_degree') .
+        //   " " . $this->session->userdata('first_name') .
+        //   " " . $this->session->userdata('last_name');
+        // $this->load->view('admin/payments/ticket', $data);
 
-        // echo loadErrorMessage('No existen cuotas para registrar');
+         redirect("admin/payments/document_payment/$id");
+      } else {
+        echo loadErrorMessage('No existen cuotas para registrar');
       }
     } else {
       echo loadErrorMessage('¡Ocurrió un error durante la transacción!');
     }
-
-    // if (isset($quota_id) && FALSE) {
-    //   foreach ($quota_id as $q) {
-    //     $this->payments_m->update_quota(['status' => 0], $q);
-    //   }
-    //   if (!$this->payments_m->check_cstLoan($loan_id)) {
-    //     $this->payments_m->update_cstLoan($loan_id, $customer_id);
-    //   }
-
-    //   $data['quotasPaid'] = $this->payments_m->get_quotasPaid($quota_id);
-    //   $data['customerAdvisorName'] = $this->payments_m->getCustomerAdvisorName($customer_id)->user_name;
-    //   $data['payment_user_name'] = $this->session->userdata('academic_degree') .
-    //     " " . $this->session->userdata('first_name') .
-    //     " " . $this->session->userdata('last_name');
-    //   $this->load->view('admin/payments/ticket', $data);
-    // } else {
-
-    //   // echo loadErrorMessage('No existen cuotas para registrar');
-    // }
   }
 
+  public function document_payment($id) {
+    $document = $this->payments_m->getDocumentPayment($id);
+    // echo "<script> console.log(" . json_encode($document) . "); </script>";
+    $this->load->view('admin/payments/ticket', $document);
+  }
 
-  /**
-   * ticket Considerar modificar, ya no guarda nada, solo muestra documento de pago
-   */
-//   function ticket()
-//   {
-//     $LOAN_UPDATE = $this->permission->getPermission([LOAN_UPDATE], FALSE);
-//     $LOAN_ITEM_UPDATE = $this->permission->getPermission([LOAN_ITEM_UPDATE], FALSE);
-//     $AUTHOR_LOAN_UPDATE = $this->permission->getPermission([AUTHOR_LOAN_UPDATE], FALSE);
-//     $AUTHOR_LOAN_ITEM_UPDATE = $this->permission->getPermission([AUTHOR_LOAN_ITEM_UPDATE], FALSE);
-//     // echo "El valor del atributo (amount_quota_14) es: " . $this->input->post('amount_quota_14');
-//     // echo "<br>";
-//     // echo "El valor del atributo (amount_quota_15 disabled) es: " . $this->input->post('amount_quota_15');
-//     if ($this->input->post('customer_id') != null) { // valida que no se acceda desde la url sin datos de entrada
-//       if ($LOAN_UPDATE && $LOAN_ITEM_UPDATE)
-//         $data['customerName'] = $this->payments_m->getCustomerByIdAll($this->input->post('customer_id'));
-//       elseif ($AUTHOR_LOAN_UPDATE && $AUTHOR_LOAN_ITEM_UPDATE)
-//         $data['customerName'] = $this->payments_m->get_customer_by_id($this->user_id, $this->input->post('customer_id'));
-//       $data['coin'] = $this->input->post('coin');
-//       $data['loan_id'] = $this->input->post('loan_id');
-
-//       if ($LOAN_UPDATE && $LOAN_ITEM_UPDATE) {
-//         $this->updateState($this->input->post('loan_id'), $this->input->post('quota_id'), $this->input->post('customer_id'), $data);
-//       } elseif ($AUTHOR_LOAN_UPDATE && $AUTHOR_LOAN_ITEM_UPDATE) {
-//         $probable_user_id = $this->payments_m->get_loan_adviser_user_id($this->input->post('loan_id'))->id;
-//         if (AuthUserData::isAuthor($probable_user_id)) {
-//           $this->updateState($this->input->post('loan_id'), $this->input->post('quota_id'), $this->input->post('customer_id'), $data);
-//         } else {
-//           echo PERMISSION_DENIED_MESSAGE;
-//         }
-//       } else {
-//         echo PERMISSION_DENIED_MESSAGE;
-//       }
-//     } else {
-//       echo loadErrorMessage('¡Imposible acceder a está página, faltan datos de entrada de la transacción!');
-//     }
-//   }
 }
 
 /* End of file Payments.php */

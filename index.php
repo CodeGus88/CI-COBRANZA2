@@ -89,6 +89,9 @@ switch (ENVIRONMENT)
 		exit(1); // EXIT_ERROR
 }
 
+
+date_default_timezone_set('America/La_Paz'); // Conficuración de zona horaria
+
 /*
  *---------------------------------------------------------------
  * SYSTEM DIRECTORY NAME

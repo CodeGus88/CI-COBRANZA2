@@ -68,7 +68,6 @@ class Payments_m extends CI_Model {
 
   public function getLoanItemsAll($loan_id)
   {
-
     $this->db->select("li.*, (select SUM(p.mount) FROM payments p WHERE p.loan_item_id = li.id) payed");
     $this->db->from('loan_items li');
     $this->db->join('loans l', 'l.id = li.loan_id');
@@ -77,15 +76,6 @@ class Payments_m extends CI_Model {
     $this->db->join('coins co', 'co.id = l.coin_id');
     $this->db->where("l.id", $loan_id);
     return $this->db->get()->result();
-
-    // $this->db->select("li.*");
-    // $this->db->from('loan_items li');
-    // $this->db->join('loans l', 'l.id = li.loan_id');
-    // $this->db->join('customers c', 'c.id = l.customer_id');
-    // $this->db->join('users u', 'u.id = c.user_id');
-    // $this->db->join('coins co', 'co.id = l.coin_id');
-    // $this->db->where("l.id", $loan_id);
-    // return $this->db->get()->result();
   }
 
   public function get_loan_items($user_id, $loan_id)
@@ -116,17 +106,6 @@ class Payments_m extends CI_Model {
       ->get()->row();
     // echo "Cantidad de cuotas disponibles: " . $request->count ."<br>";
     return ($request->count > 0)?TRUE: FALSE;
-
-    // $this->db->where('loan_id', $loan_id);
-    // $query = $this->db->get('loan_items'); 
-    // $check = false;
-    // foreach ($query->result() as $row) {
-    //   if ($row->status == 1) {
-    //     $check = true;
-    //     break;
-    //   } 
-    // }
-    // return $check;
   }
 
   /**
@@ -145,10 +124,6 @@ class Payments_m extends CI_Model {
       ->get('loan_items li')
       ->row();
     $quota = ($quotaRequest->fee_amount)?$quotaRequest->fee_amount:0;
-    echo "paid: " . $paid ."<br>";
-    echo "quota: " . $quota ."<br>";
-    echo "¿Todo saldado?" . (($paid>=$quota)?'TRUE':'FALSE') ."<br>";
-    echo "<hr>";
     return ($paid >= $quota)?TRUE:FALSE;
   }
 
@@ -162,6 +137,11 @@ class Payments_m extends CI_Model {
       echo ($e->getMessage());
       return false;
     }
+  }
+
+  public function addDocumentPayment($user_id, $pay_date){
+    $this->db->insert('document_payments', ['user_id' => $user_id, 'pay_date' => $pay_date]);
+    return $this->db->insert_id();
   }
 
   public function update_cstLoan($loan_id, $customer_id)
@@ -266,6 +246,53 @@ class Payments_m extends CI_Model {
       array_push($success->errors, $e->getMessage());
       return $success;
     }
+  }
+
+  /**
+   * Obtiene la información para el docuemnto de impresión
+   * $id es el id del documento ("documentt_payment_id")
+   */
+  public function getDocumentPayment($id){
+    // Obtener el documento
+    $data['document_payment'] = $this->db
+    ->select("dp.*, CONCAT(u.academic_degree, ' ', u.first_name, ' ', u.last_name) user_name")
+    ->join('users u', 'u.id = dp.user_id')
+    ->get_where('document_payments dp', ['dp.id'=>$id])->row();
+    // Obtener pagos del docuemnto
+    $data['quotas_payments'] =  $this->db
+    ->select('li.num_quota, li.loan_id, p.loan_item_id, p.mount, p.document_payment_id')
+    ->from('payments p')
+    ->join('loan_items li', 'li.id = p.loan_item_id')
+    ->where('p.document_payment_id', $id)
+    ->get()
+    ->result();
+    // Obtener el préstamo
+    $data['loan'] = null;
+    if(isset($data['quotas_payments'])): if(sizeof($data['quotas_payments']) > 0) :
+      $loan_id = $data['quotas_payments'][0]->loan_id;
+      $data['loan'] = $this->db->select("l.id, l.customer_id, c.name coin_name")
+      ->join('coins c', 'c.id = l.coin_id')
+      ->get_where('loans l', ['l.id' => $loan_id])->row();
+    endif; endif;
+    // Obtener cliente
+    $data['customer'] = null;
+    if(isset($data['loan']->customer_id)){
+      $customer_id = $data['loan']->customer_id;
+      $data['customer'] = $this->db->select("c.id, CONCAT(c.first_name, ' ', c.last_name) name, c.user_id")
+        ->from('customers c')
+        ->where('id', $customer_id)
+        ->get()->row();
+    }
+    // Obtener asesor
+    $data['adviser'] = null;
+    if(isset($data['customer']->user_id)){
+      $user_id = $data['customer']->user_id;
+      $data['adviser'] = $this->db->select("CONCAT(u.academic_degree, u.first_name, ' ', u.last_name) as name")
+        ->from('users u')
+        ->where('id', $user_id)
+        ->get()->row();
+    }
+    return $data;
   }
 
 }

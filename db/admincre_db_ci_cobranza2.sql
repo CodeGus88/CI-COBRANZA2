@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-10-2022 a las 17:06:17
+-- Tiempo de generación: 04-10-2022 a las 18:29:57
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.5
 
@@ -215,6 +215,25 @@ INSERT INTO `customers` (`id`, `dni`, `first_name`, `last_name`, `gender`, `addr
 (191, '5998229', 'RODO CELSO', 'VALDEZ MORALES', 'masculino', 'C, UNION No.170Z.VILLA COPACABANA', '74526638', '', '', '', '', 0, 7),
 (192, '7236324-1Q', 'MARIA  ALEJANDRA', 'REYES GARCIA', 'femenino', 'C/H.SALAZAR E/COMERCIOY MARTIN BARROSO B. JUAN XXIII-YBA', '', '', '', '', '', 0, 7),
 (211, '6547523', 'DAMIAN', 'FUENTES CLAROS', 'masculino', 'calle xyz', '78569458', '', '', '', '', 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `document_payments`
+--
+
+CREATE TABLE `document_payments` (
+  `id` bigint(20) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `pay_date` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `document_payments`
+--
+
+INSERT INTO `document_payments` (`id`, `user_id`, `pay_date`) VALUES
+(10, 1, '2022-10-04 12:27:01');
 
 -- --------------------------------------------------------
 
@@ -457,8 +476,8 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (14, 3, '2022-09-03', 6, '256.70', '2022-10-01 01:27:44', b'0'),
 (15, 3, '2022-09-10', 7, '256.70', '2022-10-01 13:53:19', b'0'),
 (16, 3, '2022-09-17', 8, '256.70', '2022-10-03 13:29:29', b'0'),
-(17, 3, '2022-09-24', 9, '256.70', '2022-08-31 20:01:35', b'1'),
-(18, 3, '2022-10-01', 10, '256.70', '2022-08-31 20:01:35', b'1'),
+(17, 3, '2022-09-24', 9, '256.70', '2022-10-04 00:48:53', b'0'),
+(18, 3, '2022-10-01', 10, '256.70', '2022-10-04 13:15:27', b'0'),
 (19, 3, '2022-10-08', 11, '256.70', '2022-08-31 20:01:35', b'1'),
 (20, 3, '2022-10-15', 12, '256.70', '2022-08-31 20:01:35', b'1'),
 (21, 4, '2022-08-02', 1, '462.00', '2022-09-14 14:35:21', b'0'),
@@ -499,12 +518,12 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (60, 10, '2022-06-16', 8, '950.00', '2022-08-31 20:34:21', b'1'),
 (61, 10, '2022-07-01', 9, '950.00', '2022-08-31 20:34:21', b'1'),
 (62, 10, '2022-07-16', 10, '950.00', '2022-08-31 20:34:21', b'1'),
-(63, 11, '2022-09-08', 1, '680.00', '2022-08-31 20:35:46', b'1'),
+(63, 11, '2022-09-08', 1, '680.00', '2022-10-04 13:17:16', b'0'),
 (64, 11, '2022-09-23', 2, '680.00', '2022-08-31 20:35:46', b'1'),
 (65, 11, '2022-10-08', 3, '680.00', '2022-08-31 20:35:46', b'1'),
 (66, 11, '2022-10-25', 4, '680.00', '2022-08-31 20:35:46', b'1'),
 (67, 12, '2022-08-31', 1, '370.00', '2022-09-02 15:44:11', b'0'),
-(68, 12, '2022-09-15', 2, '370.00', '2022-08-31 20:38:59', b'1'),
+(68, 12, '2022-09-15', 2, '370.00', '2022-10-03 17:39:15', b'0'),
 (69, 12, '2022-09-30', 3, '370.00', '2022-08-31 20:38:59', b'1'),
 (70, 12, '2022-10-15', 4, '370.00', '2022-08-31 20:38:59', b'1'),
 (71, 12, '2022-11-01', 5, '370.00', '2022-08-31 20:38:59', b'1'),
@@ -783,7 +802,7 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (372, 58, '2022-07-16', 4, '385.00', '2022-09-01 19:42:18', b'1'),
 (373, 58, '2022-08-02', 5, '385.00', '2022-09-01 19:42:18', b'1'),
 (374, 58, '2022-08-15', 6, '385.00', '2022-09-01 19:42:18', b'1'),
-(375, 59, '2022-03-21', 1, '513.30', '2022-09-01 19:42:23', b'1'),
+(375, 59, '2022-03-21', 1, '513.30', '2022-10-04 16:27:01', b'0'),
 (376, 59, '2022-03-28', 2, '513.30', '2022-09-01 19:42:23', b'1'),
 (377, 59, '2022-04-04', 3, '513.30', '2022-09-01 19:42:23', b'1'),
 (378, 59, '2022-04-11', 4, '513.30', '2022-09-01 19:42:23', b'1'),
@@ -1120,7 +1139,7 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (739, 107, '2022-10-04', 4, '1973.30', '2022-09-15 20:10:38', b'1'),
 (740, 107, '2022-10-19', 5, '1973.30', '2022-09-15 20:10:38', b'1'),
 (741, 107, '2022-11-03', 6, '1973.30', '2022-09-15 20:10:38', b'1'),
-(762, 112, '2022-10-01', 1, '2422.70', '2022-09-16 22:37:47', b'1'),
+(762, 112, '2022-10-01', 1, '2422.70', '2022-10-04 00:58:03', b'0'),
 (763, 112, '2022-10-18', 2, '2422.70', '2022-09-16 22:37:47', b'1'),
 (764, 112, '2022-10-31', 3, '2422.70', '2022-09-16 22:37:47', b'1'),
 (765, 112, '2022-11-15', 4, '2422.70', '2022-09-16 22:37:47', b'1'),
@@ -1143,10 +1162,10 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (782, 115, '2022-10-11', 1, '102.00', '2022-09-30 23:32:06', b'0'),
 (783, 115, '2022-10-26', 2, '102.00', '2022-09-30 23:34:00', b'0'),
 (784, 115, '2022-11-10', 3, '102.00', '2022-09-30 23:34:00', b'0'),
-(785, 115, '2022-11-25', 4, '102.00', '2022-09-26 13:34:06', b'1'),
-(786, 115, '2022-12-10', 5, '102.00', '2022-09-26 13:34:06', b'1'),
-(787, 115, '2022-12-27', 6, '102.00', '2022-09-26 13:34:06', b'1'),
-(788, 115, '2023-01-09', 7, '102.00', '2022-09-26 13:34:06', b'1'),
+(785, 115, '2022-11-25', 4, '102.00', '2022-10-03 15:14:48', b'0'),
+(786, 115, '2022-12-10', 5, '102.00', '2022-10-03 15:27:30', b'0'),
+(787, 115, '2022-12-27', 6, '102.00', '2022-10-03 15:27:30', b'0'),
+(788, 115, '2023-01-09', 7, '102.00', '2022-10-03 15:29:32', b'0'),
 (789, 115, '2023-01-24', 8, '102.00', '2022-09-26 13:34:06', b'1'),
 (790, 115, '2023-02-08', 9, '102.00', '2022-09-26 13:34:07', b'1'),
 (791, 115, '2023-02-23', 10, '102.00', '2022-09-26 13:34:07', b'1'),
@@ -1521,21 +1540,17 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 CREATE TABLE `payments` (
   `id` bigint(20) NOT NULL,
   `loan_item_id` bigint(20) NOT NULL,
-  `mount` decimal(20,2) NOT NULL
+  `mount` decimal(20,2) NOT NULL,
+  `document_payment_id` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `payments`
 --
 
-INSERT INTO `payments` (`id`, `loan_item_id`, `mount`) VALUES
-(54, 16, '256.70'),
-(55, 79, '255.00'),
-(56, 80, '255.00'),
-(57, 81, '255.00'),
-(58, 82, '255.00'),
-(59, 83, '255.00'),
-(60, 84, '255.00');
+INSERT INTO `payments` (`id`, `loan_item_id`, `mount`, `document_payment_id`) VALUES
+(11, 375, '513.30', 10),
+(12, 376, '100.00', 10);
 
 -- --------------------------------------------------------
 
@@ -1806,6 +1821,13 @@ ALTER TABLE `customers`
   ADD KEY `FK_customers_users` (`user_id`);
 
 --
+-- Indices de la tabla `document_payments`
+--
+ALTER TABLE `document_payments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `Índice 2` (`user_id`);
+
+--
 -- Indices de la tabla `guarantors`
 --
 ALTER TABLE `guarantors`
@@ -1833,7 +1855,8 @@ ALTER TABLE `loan_items`
 --
 ALTER TABLE `payments`
   ADD PRIMARY KEY (`id`) USING BTREE,
-  ADD KEY `Índice 2` (`loan_item_id`) USING BTREE;
+  ADD KEY `Índice 2` (`loan_item_id`) USING BTREE,
+  ADD KEY `Índice 3` (`document_payment_id`) USING BTREE;
 
 --
 -- Indices de la tabla `permissions`
@@ -1886,6 +1909,12 @@ ALTER TABLE `customers`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=212;
 
 --
+-- AUTO_INCREMENT de la tabla `document_payments`
+--
+ALTER TABLE `document_payments`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
 -- AUTO_INCREMENT de la tabla `guarantors`
 --
 ALTER TABLE `guarantors`
@@ -1907,7 +1936,7 @@ ALTER TABLE `loan_items`
 -- AUTO_INCREMENT de la tabla `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `permissions`
@@ -1950,6 +1979,12 @@ ALTER TABLE `customers`
   ADD CONSTRAINT `FK_customers_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Filtros para la tabla `document_payments`
+--
+ALTER TABLE `document_payments`
+  ADD CONSTRAINT `FK__users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
 -- Filtros para la tabla `guarantors`
 --
 ALTER TABLE `guarantors`
@@ -1973,6 +2008,7 @@ ALTER TABLE `loan_items`
 -- Filtros para la tabla `payments`
 --
 ALTER TABLE `payments`
+  ADD CONSTRAINT `FK_payments_document_payments` FOREIGN KEY (`document_payment_id`) REFERENCES `document_payments` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_payments_loan_items` FOREIGN KEY (`loan_item_id`) REFERENCES `loan_items` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --

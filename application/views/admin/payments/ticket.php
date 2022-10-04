@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Ticket No 132</title>
+  <title>Ticket No <?=$document_payment->id?></title>
 
   <link href="<?php echo site_url(); ?>assets/css/sb-admin-2.min.css" rel="stylesheet">
   <style type="text/css" media="all">
@@ -28,12 +28,13 @@
        
             <p style="text-align:center;"><strong>Pago Realizado</strong>                               
             <p>
-              Fecha/hora:  <?php echo $quotasPaid[0]->pay_date; $total = 0; ?><br>
-              N° Préstamo: <?php echo $loan_id; ?> <br>
-              Cliente: <?php echo $customerName->customer_name; ?> <br>
-              Asesor: <?php echo $customerAdvisorName; ?> <br>
-              Usuario: <?php echo $payment_user_name; ?> <br>
-              Tipo moneda: <?php echo $coin; ?><br>
+              Código de Documento: <?=isset($document_payment->id)?$document_payment->id:'-'?> <br>
+              Fecha/hora:  <?php echo isset($document_payment->pay_date)?$document_payment->pay_date:'-'; $total = 0; ?> <br>
+              Código Préstamo: <?php echo isset($loan->id)?$loan->id:'-';; ?> <br>
+              Cliente: <?php echo isset($customer->name)?$customer->name:'-'; ?> <br>
+              Asesor: <?php echo isset($adviser->name)?$adviser->name:'-'; ?> <br>
+              Usuario: <?php echo isset($document_payment->user_name)?$document_payment->user_name:'-'; ?> <br>
+              Tipo moneda: <?=isset($loan->coin_name)?$loan->coin_name:'-'; ?><br>
             </p>
             <div style="clear:both;"></div>
             <table class="table table-condensed">
@@ -45,13 +46,13 @@
                 </tr>
               </thead>
               <tbody>
-                <?php foreach ($quotasPaid as $qp): ?>
+                <?php if(isset($quotas_payments)) : foreach ($quotas_payments as $qp): ?>
                   <tr>
                     <td>Cuota N° <?php echo $qp->num_quota ?></td>
-                    <td class="text-right"><?php echo $qp->fee_amount; $total+=$qp->fee_amount;  ?></td>
-                    <td class="text-right"><?php echo $qp->fee_amount ?></td>
+                    <td class="text-right"><?php echo $qp->mount; $total+=$qp->mount;  ?></td>
+                    <td class="text-right"><?php echo $qp->mount ?></td>
                   </tr>
-                <?php endforeach ?>
+                <?php endforeach; endif; ?>
               </tbody>
               <tfoot>
                 <tr>
@@ -88,3 +89,25 @@
        
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
