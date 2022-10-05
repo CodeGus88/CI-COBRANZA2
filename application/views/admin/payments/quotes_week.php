@@ -20,6 +20,7 @@
         <div class="row">
           <div class="col-md-12">
             <div class="table-responsive" id="table">
+                <!-- <p><b>Monto a cobrar:</b> 0</p> -->
               <?php if ($items != null) : 
                 echo '<small>En la lista se muestran las cuotas con moras y las cuotas cobrables en los próximos 7 días</small>';
               ?>

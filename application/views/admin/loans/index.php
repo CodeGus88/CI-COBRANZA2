@@ -16,11 +16,7 @@
             }
           echo "</select>";
       endif; endif ?>
-      <?php if (($LOAN_ITEM_READ) || ($AUTHOR_LOAN_ITEM_READ)) : 
-        $parameter = (isset($selected_user_id))?(($selected_user_id != 0)?$selected_user_id:''):'';  
-      ?>
-        <a href="<?php echo site_url("admin/loans/quotes_week/$parameter") ?>" class="btn btn-sm btn-info shadow-sm" data-toggle="ajax-modal"><i class="fas fa-eye fa-sm"></i> Semana</a>
-      <?php endif ?>
+      
       <?php if (($LOAN_CREATE && $LOAN_ITEM_CREATE) || ($AUTHOR_LOAN_CREATE && $AUTHOR_LOAN_ITEM_CREATE)) : ?>
         <a class="d-sm-inline-block btn btn-sm btn-success shadow-sm" href="<?php echo site_url('admin/loans/edit'); ?>"><i class="fas fa-plus-circle fa-sm"></i> Nuevo préstamo</a>
       <?php endif ?>

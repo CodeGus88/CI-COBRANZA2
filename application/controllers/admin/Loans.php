@@ -203,30 +203,6 @@ class Loans extends CI_Controller
     return $valid;
   }
 
-
-  /**
-   * Muestra las cuotas proximas y las que ya están con mora
-   * REFERENCIAS ZONA HORARIA:
-   * https://www.delftstack.com/es/howto/php/how-to-get-the-current-date-and-time-in-php/
-   * https://www.php.net/manual/en/timezones.america.php
-   */
-  function quotes_week($user_id = 0)
-  {
-    date_default_timezone_set('America/Caracas');
-    $start_date = date("Y-m-d", time());
-    $end_date = date("Y-m-d", strtotime($start_date . ' + 7 days'));
-    if ($this->permission->getPermission([LOAN_ITEM_READ], FALSE)) {
-      if($user_id == 0)
-        $data['items'] = $this->loans_m->quotesWeekAll($start_date, $end_date);
-      else
-        $data['items'] = $this->loans_m->quotesWeek($user_id, $start_date, $end_date);
-    } elseif ($this->permission->getPermission([AUTHOR_LOAN_ITEM_READ], FALSE)) {
-      $data['items'] = $this->loans_m->quotesWeek($this->user_id, $start_date, $end_date);
-    } else {
-      $data['items'] = [];
-    }
-    $this->load->view('admin/loans/quotes_week', $data);
-  }
 }
 
 /* End of file Loans.php */
