@@ -20,7 +20,13 @@
         <div class="row">
           <div class="col-md-12">
             <div class="table-responsive" id="table">
-                <!-- <p><b>Monto a cobrar:</b> 0</p> -->
+            <h6 class="h6">Montos a cobrar:</h6>
+              <?php if(isset($payables)) :?>
+                <?php foreach($payables as $payable) :?>
+                  <span class="btn btn-light"> </b><?="$payable->total $payable->name"?></span>
+                <?php endforeach?>
+                <br>
+              <?php endif?>
               <?php if ($items != null) : 
                 echo '<small>En la lista se muestran las cuotas con moras y las cuotas cobrables en los próximos 7 días</small>';
               ?>
@@ -31,6 +37,7 @@
                     <tr class="active">
                       <th>CI</th>
                       <th class="col-xs-2">Cliente</th>
+                      <th class="col-xs-2">Monto</th>
                       <th class="col-xs-2 text-center">Fecha</th>
                       <th>Estado</th>
                     </tr>
@@ -40,9 +47,12 @@
                     if ($items) {
                         $i = 0;
                         foreach ($items as $item) {
+                          $payed = ($item->payed != null)?$item->payed:0;
+                          $mount = $item->fee_amount - $payed;
                           echo '<tr title="Asesor: '.$item->user_name.' ">';
                             echo '<td>' . $item->dni. '</td>';
                             echo '<td>' . $item->customer_name . '</td>';
+                            echo "<td>$mount $item->coin_short_name</td>";
                             echo '<td>' . $item->date . '</td>';
                             $pay_url = '#';// site_url('admin/payments/edit');
                             if( $item->date == date("Y-m-d") ){

@@ -104,7 +104,6 @@ class Payments_m extends CI_Model {
       ->where('loan_id', $loan_id)
       ->where('status', TRUE)
       ->get()->row();
-    // echo "Cantidad de cuotas disponibles: " . $request->count ."<br>";
     return ($request->count > 0)?TRUE: FALSE;
   }
 
@@ -298,29 +297,61 @@ class Payments_m extends CI_Model {
     /**
    * Obtiene las cuotas de la última semana
    */
-  public function quotesWeekAll($start_date, $end_date){
-    $this->db->select('c.dni, CONCAT(c.first_name, " " , c.last_name) customer_name, CONCAT(u.academic_degree, " ", u.first_name, " " , u.last_name) user_name, li.date, li.status');
+  public function quotesWeekAll($start_date, $end_date)
+  {
+    $this->db->select('c.dni, CONCAT(c.first_name, " " , c.last_name) customer_name, 
+    CONCAT(u.academic_degree, " ", u.first_name, " " , u.last_name) user_name, 
+    li.date, co.name as coin_name, co.short_name as coin_short_name, li.fee_amount,
+    (SELECT SUM(p.mount) FROM payments p WHERE p.loan_item_id = li.id) payed');
     $this->db->from('customers c');
     $this->db->join('users u', 'u.id = c.user_id');
     $this->db->join('loans l', 'c.id = l.customer_id');
+    $this->db->join('coins co', 'co.id = l.coin_id');
     $this->db->join('loan_items li', 'l.id = li.loan_id');
     $this->db->where("(li.date BETWEEN '{$start_date}' AND '{$end_date}' AND li.status = TRUE) OR (li.date < '{$start_date}' AND li.status = TRUE)");
     $this->db->order_by('li.date');
-    return $this->db->get()->result(); 
+    $data['items'] = $this->db->get()->result();
+    // print_r(json_encode($data) );
+
+    $query = "SELECT c.name, SUM(IFNULL(li.fee_amount - (SELECT IFNULL(SUM(p.mount), 0) FROM payments p WHERE p.loan_item_id = li.id), 0)) total
+    FROM loans l
+    JOIN coins c ON c.id = l.coin_id
+    JOIN loan_items li ON l.id = li.loan_id
+    WHERE (li.date BETWEEN '$start_date' AND '$end_date' AND li.status = TRUE) OR (li.date < '$start_date' AND li.status = TRUE)
+    GROUP BY c.name;";
+    $data['payables'] = $this->db->query($query)->result();
+    // print_r($data['payables']);
+    return $data;
   }
 
   /**
    * Obtiene las cuotas de la última semana del usuario
    */
-  public function quotesWeek($user_id, $start_date, $end_date){
-    $this->db->select('c.dni, CONCAT(c.first_name, " " , c.last_name) customer_name, CONCAT(u.academic_degree, " ", u.first_name, " " , u.last_name) user_name, li.date, li.status');
+  public function quotesWeek($user_id, $start_date, $end_date)
+  {
+    $this->db->select('c.dni, CONCAT(c.first_name, " " , c.last_name) customer_name, 
+    CONCAT(u.academic_degree, " ", u.first_name, " " , u.last_name) user_name, 
+    li.date, , co.name as coin_name, co.short_name as coin_short_name, li.fee_amount,
+    (SELECT SUM(p.mount) FROM payments p WHERE p.loan_item_id = li.id) payed');
     $this->db->from('customers c');
     $this->db->join('users u', 'u.id = c.user_id');
     $this->db->join('loans l', 'c.id = l.customer_id');
     $this->db->join('loan_items li', 'l.id = li.loan_id');
-    $this->db->where("((li.date BETWEEN '{$start_date}' AND '{$end_date}' AND li.status = TRUE) OR (li.date < '{$start_date}' AND li.status = TRUE)) and u.id = $user_id");
+    $this->db->join('coins co', 'co.id = l.coin_id');
+    $this->db->where("((li.date BETWEEN '{$start_date}' AND '{$end_date}' AND li.status = TRUE) OR (li.date < '{$start_date}' AND li.status = TRUE)) AND u.id = $user_id");
     $this->db->order_by('li.date');
-    return $this->db->get()->result(); 
+    $data['items'] = $this->db->get()->result();
+    
+    $query = "SELECT co.name, SUM(IFNULL(li.fee_amount - (SELECT IFNULL(SUM(p.mount), 0) FROM payments p WHERE p.loan_item_id = li.id), 0)) total
+    FROM loans l
+    JOIN customers c ON c.id = .l.customer_id
+    JOIN coins co ON co.id = l.coin_id
+    JOIN loan_items li ON l.id = li.loan_id
+    WHERE ((li.date BETWEEN '{$start_date}' AND '{$end_date}' AND li.status = TRUE) OR (li.date < '{$start_date}' AND li.status = TRUE)) and c.user_id = $user_id
+    GROUP BY co.name;";
+    $data['payables'] = $this->db->query($query)->result();
+    // print_r($data['payables']);
+    return $data;
   }
 
 }

@@ -206,14 +206,21 @@ class Payments extends CI_Controller
     $start_date = date("Y-m-d", time());
     $end_date = date("Y-m-d", strtotime($start_date . ' + 7 days'));
     if ($this->permission->getPermission([LOAN_ITEM_READ], FALSE)) {
-      if($user_id == 0)
-        $data['items'] = $this->payments_m->quotesWeekAll($start_date, $end_date);
-      else
-        $data['items'] = $this->payments_m->quotesWeek($user_id, $start_date, $end_date);
+      if($user_id == 0){
+        $request = $this->payments_m->quotesWeekAll($start_date, $end_date);
+      }
+      else{
+        $request = $this->payments_m->quotesWeek($user_id, $start_date, $end_date);
+      }
+      $data['items'] = $request['items'];
+      $data['payables'] = $request['payables'];
     } elseif ($this->permission->getPermission([AUTHOR_LOAN_ITEM_READ], FALSE)) {
-      $data['items'] = $this->payments_m->quotesWeek($this->user_id, $start_date, $end_date);
+      $request = $this->payments_m->quotesWeek($this->user_id, $start_date, $end_date);
+      $data['items'] = $request['items'];
+      $data['payables'] = $request['payables'];
     } else {
       $data['items'] = [];
+      $data['payables'] = null;
     }
     $this->load->view('admin/payments/quotes_week', $data);
   }
