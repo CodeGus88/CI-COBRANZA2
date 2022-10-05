@@ -140,19 +140,15 @@ class Payments extends CI_Controller
     $validate = $this->payments_m->paymentsOk($payments);
     $savePaymentsIsSuccess = FALSE;
     if ($validate->valid) {
-      // Guardar documento de pago
       $Object = new DateTime();  
       $pay_date = $Object->format("Y-m-d h:i:s");
-      // echo $pay_date . "<br>";
       $id = $this->payments_m->addDocumentPayment($this->user_id, $pay_date);
-      // echo json_encode($id);
       if($id > 0){
         for($i = 0; $i < sizeof($payments); $i++){
           $payments[$i]['document_payment_id'] = $id;
         }
         $savePaymentsIsSuccess = $this->payments_m->addPayments($payments); //descomentar
       }
-        
     } else {
       foreach ($validate->errors as $error)
         echo "ERROR: " . $error;
@@ -167,14 +163,12 @@ class Payments extends CI_Controller
         if (!$this->payments_m->check_cstLoan($loan_id)) {
           $this->payments_m->update_cstLoan($loan_id, $customer_id); // descomentar
         }
-        // $data['quotasPaid'] = $this->payments_m->get_quotasPaid($quota_id);
-        // $data['customerAdvisorName'] = $this->payments_m->getCustomerAdvisorName($customer_id)->user_name;
-        // $data['payment_user_name'] = $this->session->userdata('academic_degree') .
-        //   " " . $this->session->userdata('first_name') .
-        //   " " . $this->session->userdata('last_name');
-        // $this->load->view('admin/payments/ticket', $data);
-
-         redirect("admin/payments/document_payment/$id");
+        if($this->permission->getPermission([DOCUMENT_PAYMENT_READ, AUTHOR_DOCUMENT_PAYMENT_READ], FALSE))
+          redirect("admin/payments/document_payment/$id");
+        else{
+          $this->session->set_flashdata('msg', 'El pago se procesó con éxito');
+          redirect("admin/payments");
+        }
       } else {
         echo loadErrorMessage('No existen cuotas para registrar');
       }
@@ -185,8 +179,17 @@ class Payments extends CI_Controller
 
   public function document_payment($id) {
     $document = $this->payments_m->getDocumentPayment($id);
-    // echo "<script> console.log(" . json_encode($document) . "); </script>";
-    $this->load->view('admin/payments/ticket', $document);
+    if($this->permission->getPermission([DOCUMENT_PAYMENT_READ], FALSE)){
+      $this->load->view('admin/payments/ticket', $document);
+      return;
+    }
+    elseif($this->permission->getPermission([AUTHOR_DOCUMENT_PAYMENT_READ], FALSE)){
+      if($document['customer']->user_id == $this->user_id){
+        $this->load->view('admin/payments/ticket', $document);
+        return;
+      }
+    }
+    echo loadErrorMessage('No tiene el permiso para leer el documento de impresión...');
   }
 
 }

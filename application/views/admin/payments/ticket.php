@@ -30,7 +30,7 @@
             <p>
               Código de Documento: <?=isset($document_payment->id)?$document_payment->id:'-'?> <br>
               Fecha/hora:  <?php echo isset($document_payment->pay_date)?$document_payment->pay_date:'-'; $total = 0; ?> <br>
-              Código Préstamo: <?php echo isset($loan->id)?$loan->id:'-';; ?> <br>
+              Código Préstamo: <?php echo isset($loan->id)?$loan->id:'-'; ?> <br>
               Cliente: <?php echo isset($customer->name)?$customer->name:'-'; ?> <br>
               Asesor: <?php echo isset($adviser->name)?$adviser->name:'-'; ?> <br>
               Usuario: <?php echo isset($document_payment->user_name)?$document_payment->user_name:'-'; ?> <br>

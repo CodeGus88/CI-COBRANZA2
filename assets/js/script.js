@@ -229,8 +229,9 @@ function load_loan_items(loan_id) {
             const id = datax.quotas[i].id;
             const num_quota = datax.quotas[i].num_quota;
             const date = datax.quotas[i].date;
-            const payed = (datax.quotas[i].payed != null)?datax.quotas[i].payed:0;
-            const payable = (fee_amount - payed).toFixed(2);
+            const noDetailsPaid = (!status && datax.quotas[i].payed == null)?true:false;
+            const payed = (noDetailsPaid)?"-":(datax.quotas[i].payed != null)?datax.quotas[i].payed:0;
+            const payable = (noDetailsPaid)?"-":(fee_amount - payed).toFixed(2);
             // convenio de nombre para leer -> amount_quota_${id}
             const input = status ?
               `<input type='number' step=".01" min="0.01" max="${payable}" id='amount_quota_${id}' name='amount_quota_${id}' class='form-control col-md-12 text-center' onchange="calculateTotal();" disabled>`
