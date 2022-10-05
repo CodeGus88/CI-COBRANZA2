@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-10-2022 a las 18:29:57
+-- Tiempo de generación: 05-10-2022 a las 15:36:54
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.5
 
@@ -214,7 +214,8 @@ INSERT INTO `customers` (`id`, `dni`, `first_name`, `last_name`, `gender`, `addr
 (190, '4137855', 'ANA LIA', 'GARCIA MEDRANO', 'femenino', 'C/D CAMPOS E/BALLIVIAN Y F. TAMAYO-B.S. JOSE OBRERO-YBA', '75376011', '', '', '', '', 1, 7),
 (191, '5998229', 'RODO CELSO', 'VALDEZ MORALES', 'masculino', 'C, UNION No.170Z.VILLA COPACABANA', '74526638', '', '', '', '', 0, 7),
 (192, '7236324-1Q', 'MARIA  ALEJANDRA', 'REYES GARCIA', 'femenino', 'C/H.SALAZAR E/COMERCIOY MARTIN BARROSO B. JUAN XXIII-YBA', '', '', '', '', '', 0, 7),
-(211, '6547523', 'DAMIAN', 'FUENTES CLAROS', 'masculino', 'calle xyz', '78569458', '', '', '', '', 1, 1);
+(211, '6547523', 'DAMIAN', 'FUENTES CLAROS', 'masculino', 'calle xyz', '78569458', '', '', '', '', 1, 1),
+(212, '5656562', 'JUAN', 'PERES', 'masculino', 'calle x', '', '', '', '', '', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -233,7 +234,17 @@ CREATE TABLE `document_payments` (
 --
 
 INSERT INTO `document_payments` (`id`, `user_id`, `pay_date`) VALUES
-(10, 1, '2022-10-04 12:27:01');
+(10, 1, '2022-10-04 12:27:01'),
+(11, 1, '2022-10-04 05:00:34'),
+(12, 1, '2022-10-04 05:02:07'),
+(13, 1, '2022-10-04 05:05:27'),
+(14, 1, '2022-10-04 05:21:07'),
+(15, 1, '2022-10-04 05:43:58'),
+(16, 1, '2022-10-04 05:46:45'),
+(17, 1, '2022-10-04 05:48:21'),
+(18, 1, '2022-10-04 05:50:48'),
+(19, 1, '2022-10-05 09:07:06'),
+(20, 1, '2022-10-05 09:22:01');
 
 -- --------------------------------------------------------
 
@@ -512,7 +523,7 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (54, 10, '2022-03-18', 2, '950.00', '2022-09-15 13:48:20', b'0'),
 (55, 10, '2022-04-02', 3, '950.00', '2022-09-15 13:48:20', b'0'),
 (56, 10, '2022-04-19', 4, '950.00', '2022-09-15 13:48:20', b'0'),
-(57, 10, '2022-05-02', 5, '950.00', '2022-08-31 20:34:21', b'1'),
+(57, 10, '2022-05-02', 5, '950.00', '2022-10-05 13:22:01', b'0'),
 (58, 10, '2022-05-17', 6, '950.00', '2022-08-31 20:34:21', b'1'),
 (59, 10, '2022-06-01', 7, '950.00', '2022-08-31 20:34:21', b'1'),
 (60, 10, '2022-06-16', 8, '950.00', '2022-08-31 20:34:21', b'1'),
@@ -553,7 +564,7 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (95, 15, '2022-08-06', 11, '269.00', '2022-08-31 20:59:23', b'1'),
 (96, 15, '2022-08-13', 12, '269.00', '2022-08-31 20:59:23', b'1'),
 (103, 18, '2022-05-03', 1, '850.00', '2022-09-02 15:50:36', b'0'),
-(104, 18, '2022-05-16', 2, '850.00', '2022-08-31 21:39:29', b'1'),
+(104, 18, '2022-05-16', 2, '850.00', '2022-10-04 21:05:28', b'0'),
 (105, 18, '2022-05-31', 3, '850.00', '2022-08-31 21:39:29', b'1'),
 (106, 18, '2022-06-15', 4, '850.00', '2022-08-31 21:39:29', b'1'),
 (107, 19, '2022-08-06', 1, '580.00', '2022-08-31 21:42:55', b'1'),
@@ -1125,7 +1136,7 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (725, 104, '2022-06-08', 12, '498.10', '2022-09-15 16:06:35', b'1'),
 (726, 105, '2022-09-30', 1, '1180.00', '2022-09-15 16:20:43', b'1'),
 (727, 105, '2022-10-15', 2, '1180.00', '2022-09-15 16:20:43', b'1'),
-(728, 106, '2022-09-09', 1, '289.00', '2022-09-15 19:36:21', b'1'),
+(728, 106, '2022-09-09', 1, '289.00', '2022-10-04 21:46:45', b'0'),
 (729, 106, '2022-09-16', 2, '289.00', '2022-09-15 19:36:21', b'1'),
 (730, 106, '2022-09-23', 3, '289.00', '2022-09-15 19:36:21', b'1'),
 (731, 106, '2022-09-30', 4, '289.00', '2022-09-15 19:36:21', b'1'),
@@ -1166,9 +1177,9 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (786, 115, '2022-12-10', 5, '102.00', '2022-10-03 15:27:30', b'0'),
 (787, 115, '2022-12-27', 6, '102.00', '2022-10-03 15:27:30', b'0'),
 (788, 115, '2023-01-09', 7, '102.00', '2022-10-03 15:29:32', b'0'),
-(789, 115, '2023-01-24', 8, '102.00', '2022-09-26 13:34:06', b'1'),
-(790, 115, '2023-02-08', 9, '102.00', '2022-09-26 13:34:07', b'1'),
-(791, 115, '2023-02-23', 10, '102.00', '2022-09-26 13:34:07', b'1'),
+(789, 115, '2023-01-24', 8, '102.00', '2022-10-04 21:02:07', b'0'),
+(790, 115, '2023-02-08', 9, '102.00', '2022-10-05 13:07:06', b'0'),
+(791, 115, '2023-02-23', 10, '102.00', '2022-10-05 13:07:06', b'0'),
 (792, 115, '2023-03-10', 11, '102.00', '2022-09-26 13:34:07', b'1'),
 (793, 115, '2023-03-25', 12, '102.00', '2022-09-26 13:34:07', b'1'),
 (794, 115, '2023-04-11', 13, '102.00', '2022-09-26 13:34:07', b'1'),
@@ -1179,7 +1190,7 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (799, 115, '2023-06-23', 18, '102.00', '2022-09-26 13:34:09', b'1'),
 (800, 115, '2023-07-08', 19, '102.00', '2022-09-26 13:34:09', b'1'),
 (801, 115, '2023-07-25', 20, '102.00', '2022-09-26 13:34:09', b'1'),
-(802, 116, '2022-10-11', 1, '230.00', '2022-09-26 14:10:16', b'1'),
+(802, 116, '2022-10-11', 1, '230.00', '2022-10-04 21:21:07', b'0'),
 (803, 116, '2022-10-26', 2, '230.00', '2022-09-26 14:10:16', b'1'),
 (804, 116, '2022-11-10', 3, '230.00', '2022-09-26 14:10:16', b'1'),
 (805, 116, '2022-11-25', 4, '230.00', '2022-09-26 14:10:16', b'1'),
@@ -1550,7 +1561,19 @@ CREATE TABLE `payments` (
 
 INSERT INTO `payments` (`id`, `loan_item_id`, `mount`, `document_payment_id`) VALUES
 (11, 375, '513.30', 10),
-(12, 376, '100.00', 10);
+(12, 376, '100.00', 10),
+(13, 789, '75.00', 11),
+(14, 789, '27.00', 12),
+(15, 104, '850.00', 13),
+(16, 802, '230.00', 14),
+(17, 57, '100.00', 15),
+(18, 728, '289.00', 16),
+(19, 729, '100.00', 17),
+(20, 729, '50.00', 18),
+(21, 790, '102.00', 19),
+(22, 791, '102.00', 19),
+(23, 792, '50.00', 19),
+(24, 57, '850.00', 20);
 
 -- --------------------------------------------------------
 
@@ -1635,7 +1658,15 @@ INSERT INTO `permissions` (`id`, `name`) VALUES
 (65, 'AUTHOR_COIN_CREATE'),
 (66, 'AUTHOR_COIN_READ'),
 (67, 'AUTHOR_COIN_UPDATE'),
-(68, 'AUTHOR_COIN_DELETE');
+(68, 'AUTHOR_COIN_DELETE'),
+(69, 'DOCUMENT_PAYMENT_CREATE'),
+(70, 'DOCUMENT_PAYMENT_READ'),
+(71, 'DOCUMENT_PAYMENT_UPDATE'),
+(72, 'DOCUMENT_PAYMENT_DELETE'),
+(73, 'AUTHOR_DOCUMENT_PAYMENT_CREATE'),
+(74, 'AUTHOR_DOCUMENT_PAYMENT_READ'),
+(75, 'AUTHOR_DOCUMENT_PAYMENT_UPDATE'),
+(76, 'AUTHOR_DOCUMENT_PAYMENT_DELETE');
 
 -- --------------------------------------------------------
 
@@ -1744,7 +1775,11 @@ INSERT INTO `roles_permissions` (`id`, `role_id`, `permission_id`) VALUES
 (69, 2, 42),
 (70, 2, 43),
 (71, 2, 44),
-(72, 1, 54);
+(72, 1, 54),
+(73, 1, 69),
+(74, 1, 70),
+(75, 1, 71),
+(76, 1, 72);
 
 -- --------------------------------------------------------
 
@@ -1906,13 +1941,13 @@ ALTER TABLE `coins`
 -- AUTO_INCREMENT de la tabla `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=212;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=213;
 
 --
 -- AUTO_INCREMENT de la tabla `document_payments`
 --
 ALTER TABLE `document_payments`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT de la tabla `guarantors`
@@ -1936,13 +1971,13 @@ ALTER TABLE `loan_items`
 -- AUTO_INCREMENT de la tabla `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT de la tabla `permissions`
 --
 ALTER TABLE `permissions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`
@@ -1954,7 +1989,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT de la tabla `roles_permissions`
 --
 ALTER TABLE `roles_permissions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
