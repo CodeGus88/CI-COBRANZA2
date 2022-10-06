@@ -299,7 +299,7 @@ class Payments_m extends CI_Model {
    */
   public function quotesWeekAll($start_date, $end_date)
   {
-    $this->db->select('c.dni, CONCAT(c.first_name, " " , c.last_name) customer_name, 
+    $this->db->select('c.id, c.dni, CONCAT(c.first_name, " " , c.last_name) customer_name, 
     CONCAT(u.academic_degree, " ", u.first_name, " " , u.last_name) user_name, 
     li.date, co.name as coin_name, co.short_name as coin_short_name, li.fee_amount,
     (SELECT SUM(p.mount) FROM payments p WHERE p.loan_item_id = li.id) payed');
@@ -313,6 +313,7 @@ class Payments_m extends CI_Model {
     $data['items'] = $this->db->get()->result();
     // print_r(json_encode($data) );
 
+    // Montos totalespor monedas
     $query = "SELECT c.name, SUM(IFNULL(li.fee_amount - (SELECT IFNULL(SUM(p.mount), 0) FROM payments p WHERE p.loan_item_id = li.id), 0)) total
     FROM loans l
     JOIN coins c ON c.id = l.coin_id
@@ -321,6 +322,34 @@ class Payments_m extends CI_Model {
     GROUP BY c.name;";
     $data['payables'] = $this->db->query($query)->result();
     // print_r($data['payables']);
+
+    // Buscar monto total de moras por monedas
+    $queryA = "SELECT c.name, SUM(IFNULL(li.fee_amount - (SELECT IFNULL(SUM(p.mount), 0) FROM payments p WHERE p.loan_item_id = li.id), 0)) total
+    FROM loans l
+    JOIN coins c ON c.id = l.coin_id
+    JOIN loan_items li ON l.id = li.loan_id
+    WHERE li.date < '$start_date' AND li.status = TRUE
+    GROUP BY c.name;";
+    $data['payable_expired'] = $this->db->query($queryA)->result();
+
+    // Buscar monto total de cobros hoy por monedas
+    $queryB = "SELECT c.name, SUM(IFNULL(li.fee_amount - (SELECT IFNULL(SUM(p.mount), 0) FROM payments p WHERE p.loan_item_id = li.id), 0)) total
+    FROM loans l
+    JOIN coins c ON c.id = l.coin_id
+    JOIN loan_items li ON l.id = li.loan_id
+    WHERE li.date = '$start_date' AND li.status = TRUE
+    GROUP BY c.name;";
+    $data['payable_now'] = $this->db->query($queryB)->result();
+
+    // Buscar monto total de cobros próximos por monedas
+    $queryC = "SELECT c.name, SUM(IFNULL(li.fee_amount - (SELECT IFNULL(SUM(p.mount), 0) FROM payments p WHERE p.loan_item_id = li.id), 0)) total
+    FROM loans l
+    JOIN coins c ON c.id = l.coin_id
+    JOIN loan_items li ON l.id = li.loan_id
+    WHERE li.date > '$start_date' AND li.date <= '$end_date' AND li.status = TRUE
+    GROUP BY c.name;";
+    $data['payable_next'] = $this->db->query($queryC)->result();
+
     return $data;
   }
 
@@ -329,7 +358,7 @@ class Payments_m extends CI_Model {
    */
   public function quotesWeek($user_id, $start_date, $end_date)
   {
-    $this->db->select('c.dni, CONCAT(c.first_name, " " , c.last_name) customer_name, 
+    $this->db->select('c.id, c.dni, CONCAT(c.first_name, " " , c.last_name) customer_name, 
     CONCAT(u.academic_degree, " ", u.first_name, " " , u.last_name) user_name, 
     li.date, , co.name as coin_name, co.short_name as coin_short_name, li.fee_amount,
     (SELECT SUM(p.mount) FROM payments p WHERE p.loan_item_id = li.id) payed');
@@ -342,16 +371,50 @@ class Payments_m extends CI_Model {
     $this->db->order_by('li.date');
     $data['items'] = $this->db->get()->result();
     
+    // Buscar totales por cobrar
     $query = "SELECT co.name, SUM(IFNULL(li.fee_amount - (SELECT IFNULL(SUM(p.mount), 0) FROM payments p WHERE p.loan_item_id = li.id), 0)) total
     FROM loans l
     JOIN customers c ON c.id = .l.customer_id
     JOIN coins co ON co.id = l.coin_id
     JOIN loan_items li ON l.id = li.loan_id
-    WHERE ((li.date BETWEEN '{$start_date}' AND '{$end_date}' AND li.status = TRUE) OR (li.date < '{$start_date}' AND li.status = TRUE)) and c.user_id = $user_id
+    WHERE ((li.date BETWEEN '$start_date' AND '$end_date' AND li.status = TRUE) OR (li.date < '$start_date' AND li.status = TRUE)) and c.user_id = $user_id
     GROUP BY co.name;";
     $data['payables'] = $this->db->query($query)->result();
-    // print_r($data['payables']);
+
+    // Buscar monto total de moras por monedas
+    $queryA = "SELECT co.name, SUM(IFNULL(li.fee_amount - (SELECT IFNULL(SUM(p.mount), 0) FROM payments p WHERE p.loan_item_id = li.id), 0)) total
+    FROM loans l
+    JOIN customers c ON c.id = .l.customer_id
+    JOIN coins co ON co.id = l.coin_id
+    JOIN loan_items li ON l.id = li.loan_id
+    WHERE  (li.date < '$start_date' AND li.status = TRUE) and c.user_id = $user_id
+    GROUP BY co.name;";
+    $data['payable_expired'] = $this->db->query($queryA)->result();
+
+    // Buscar monto total de cobros hoy por monedas
+    $queryB = "SELECT co.name, SUM(IFNULL(li.fee_amount - (SELECT IFNULL(SUM(p.mount), 0) FROM payments p WHERE p.loan_item_id = li.id), 0)) total
+    FROM loans l
+    JOIN customers c ON c.id = .l.customer_id
+    JOIN coins co ON co.id = l.coin_id
+    JOIN loan_items li ON l.id = li.loan_id
+    WHERE (li.date = '$start_date' AND li.status = TRUE) AND c.user_id = $user_id
+    GROUP BY co.name;";
+    $data['payable_now'] = $this->db->query($queryB)->result();
+
+    // Buscar monto total de cobros próximos por monedas
+    $queryC = "SELECT co.name, SUM(IFNULL(li.fee_amount - (SELECT IFNULL(SUM(p.mount), 0) FROM payments p WHERE p.loan_item_id = li.id), 0)) total
+    FROM loans l
+    JOIN customers c ON c.id = .l.customer_id
+    JOIN coins co ON co.id = l.coin_id
+    JOIN loan_items li ON l.id = li.loan_id
+    WHERE (li.date > '$start_date' AND li.date <= '$end_date' AND li.status = TRUE) AND c.user_id = $user_id
+    GROUP BY co.name;";
+    $data['payable_next'] = $this->db->query($queryC)->result();
     return $data;
+  }
+
+  public function getUser($user_id){
+    return $this->db->select("CONCAT_WS(' ', u.academic_degree, u.first_name, u.last_name) user_name")->get_where('users u', ['id'=>$user_id])->row();
   }
 
 }

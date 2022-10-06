@@ -44,12 +44,13 @@ class Payments extends CI_Controller
     $this->load->view('admin/_main_layout', $data);
   }
 
-  public function edit()
+  public function edit($customer_id = null)
   {
     $this->permission->redirectIfFalse(
       $this->permission->getPermissionX([AUTHOR_LOAN_UPDATE, AUTHOR_LOAN_ITEM_UPDATE], FALSE) || $this->permission->getPermissionX([LOAN_UPDATE, LOAN_ITEM_UPDATE], FALSE),
       TRUE
     );
+    $data['default_selected_customer_id'] = $customer_id;
     $data['customers'] = array();
     if ($this->permission->getPermissionX([LOAN_UPDATE, LOAN_ITEM_UPDATE], FALSE))
       $data['customers'] = $this->payments_m->getCustomersAll();
@@ -142,11 +143,11 @@ class Payments extends CI_Controller
     $validate = $this->payments_m->paymentsOk($payments);
     $savePaymentsIsSuccess = FALSE;
     if ($validate->valid) {
-      $Object = new DateTime();  
+      $Object = new DateTime();
       $pay_date = $Object->format("Y-m-d h:i:s");
       $id = $this->payments_m->addDocumentPayment($this->user_id, $pay_date);
-      if($id > 0){
-        for($i = 0; $i < sizeof($payments); $i++){
+      if ($id > 0) {
+        for ($i = 0; $i < sizeof($payments); $i++) {
           $payments[$i]['document_payment_id'] = $id;
         }
         $savePaymentsIsSuccess = $this->payments_m->addPayments($payments); //descomentar
@@ -154,20 +155,20 @@ class Payments extends CI_Controller
     } else {
       foreach ($validate->errors as $error)
         echo "ERROR: " . $error;
-        return;
+      return;
     }
     if ($savePaymentsIsSuccess) {
       if (isset($quota_id)) {
         foreach ($quota_id as $q) { // Cambiar estado solo si ya se completó el pago
-          if($this->payments_m->paymentsIsEqualToQuote($q))
+          if ($this->payments_m->paymentsIsEqualToQuote($q))
             $this->payments_m->update_quota(['status' => 0], $q); // descomentar
         }
         if (!$this->payments_m->check_cstLoan($loan_id)) {
           $this->payments_m->update_cstLoan($loan_id, $customer_id); // descomentar
         }
-        if($this->permission->getPermission([DOCUMENT_PAYMENT_READ, AUTHOR_DOCUMENT_PAYMENT_READ], FALSE))
+        if ($this->permission->getPermission([DOCUMENT_PAYMENT_READ, AUTHOR_DOCUMENT_PAYMENT_READ], FALSE))
           redirect("admin/payments/document_payment/$id");
-        else{
+        else {
           $this->session->set_flashdata('msg', 'El pago se procesó con éxito');
           redirect("admin/payments");
         }
@@ -179,14 +180,14 @@ class Payments extends CI_Controller
     }
   }
 
-  public function document_payment($id) {
+  public function document_payment($id)
+  {
     $document = $this->payments_m->getDocumentPayment($id);
-    if($this->permission->getPermission([DOCUMENT_PAYMENT_READ], FALSE)){
+    if ($this->permission->getPermission([DOCUMENT_PAYMENT_READ], FALSE)) {
       $this->load->view('admin/payments/ticket', $document);
       return;
-    }
-    elseif($this->permission->getPermission([AUTHOR_DOCUMENT_PAYMENT_READ], FALSE)){
-      if($document['customer']->user_id == $this->user_id){
+    } elseif ($this->permission->getPermission([AUTHOR_DOCUMENT_PAYMENT_READ], FALSE)) {
+      if ($document['customer']->user_id == $this->user_id) {
         $this->load->view('admin/payments/ticket', $document);
         return;
       }
@@ -194,10 +195,8 @@ class Payments extends CI_Controller
     echo loadErrorMessage('No tiene el permiso para leer el documento de impresión...');
   }
 
-
-    /**
+  /**
    * Muestra las cuotas proximas y las que ya están con mora
-   * REFERENCIAS ZONA HORARIA:
    * https://www.delftstack.com/es/howto/php/how-to-get-the-current-date-and-time-in-php/
    * https://www.php.net/manual/en/timezones.america.php
    */
@@ -206,25 +205,36 @@ class Payments extends CI_Controller
     $start_date = date("Y-m-d", time());
     $end_date = date("Y-m-d", strtotime($start_date . ' + 7 days'));
     if ($this->permission->getPermission([LOAN_ITEM_READ], FALSE)) {
-      if($user_id == 0){
+      if ($user_id == 0) {
+        $data['user_name'] = "TODOS";
         $request = $this->payments_m->quotesWeekAll($start_date, $end_date);
-      }
-      else{
+      } else {
+        $data['user_name'] = $this->payments_m->getUser($user_id)->user_name;
         $request = $this->payments_m->quotesWeek($user_id, $start_date, $end_date);
       }
       $data['items'] = $request['items'];
       $data['payables'] = $request['payables'];
+      $data['payable_expired'] = $request['payable_expired'];
+      $data['payable_now'] = $request['payable_now'];
+      $data['payable_next'] = $request['payable_next'];
     } elseif ($this->permission->getPermission([AUTHOR_LOAN_ITEM_READ], FALSE)) {
       $request = $this->payments_m->quotesWeek($this->user_id, $start_date, $end_date);
+      $data['user_name'] = $this->payments_m->getUser($this->user_id)->user_name;
       $data['items'] = $request['items'];
       $data['payables'] = $request['payables'];
+      $data['payable_expired'] = $request['payable_expired'];
+      $data['payable_now'] = $request['payable_now'];
+      $data['payable_next'] = $request['payable_next'];
     } else {
+      $data['user_name'] = '';
       $data['items'] = [];
       $data['payables'] = null;
+      $data['payable_expired'] = null;
+      $data['payable_now'] = null;
+      $data['payable_next'] = null;
     }
     $this->load->view('admin/payments/quotes_week', $data);
   }
-
 }
 
 /* End of file Payments.php */

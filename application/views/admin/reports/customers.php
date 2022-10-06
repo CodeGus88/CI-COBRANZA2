@@ -42,7 +42,7 @@
             <?php endforeach; ?>
           <?php else : ?>
             <tr>
-              <td colspan="7" class="text-center">No existen clientes con prestamo para mostrar</td>
+              <td colspan="7" class="text-center">No existen clientes con préstamo para mostrar</td>
             </tr>
           <?php endif ?>
         </tbody>

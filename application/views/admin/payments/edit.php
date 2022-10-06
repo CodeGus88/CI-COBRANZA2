@@ -2,21 +2,22 @@
   <div class="card-header py-3">Pagar cuotas del préstamo </div>
   <div class="card-body">
 
-  <?php echo form_open('admin/payments/save_payment'); ?>
-    <!-- <?php //echo form_open('admin/payments/ticket'); ?> -->
-
+    <?php echo form_open('admin/payments/save_payment'); ?>
     <div class="form-row">
       <div class="form-group col-12 col-md-12">
         <label class="small mb-1" for="exampleFormControlSelect2">Cliente</label>
         <div class="input-group">
-          <select id="search" class="col-md-12" name="customer_id" onChange="load_loan()">
-            <option value="0" selected="selected">...</option>
-            <?php foreach ($customers as $customer) : ?>
-              <option value="<?php echo $customer->id ?>">
-                <?php echo  $customer->dni . " | " . $customer->fullname ?>
-              </option>
-            <?php endforeach ?>
-          </select>
+          <?php if (isset($customers)) : ?>
+            <select id="search" class="col-md-12" name="customer_id" onChange="load_loan()">
+              <option value="0" selected="selected" class="input-group">...</option>
+              <?php foreach ($customers as $customer) : ?>
+                <?php $selected = ($customer->id == $default_selected_customer_id)?'selected':''; ?>
+                <option value="<?php echo $customer->id ?>" <?=$selected?>>
+                  <?php echo  $customer->dni . " | " . $customer->fullname ?>
+                </option>
+              <?php endforeach ?>
+            </select>
+          <?php endif; ?>
         </div>
         <span class="small mb-1"><small>(Solo aparecen en la lista los clientes que tienen cuentas pendientes)</small></span>
       </div>
@@ -98,4 +99,6 @@
   });
 </script>
 
-<script src="<?= site_url() . 'assets/js/payment.js' ?>"></script>
+<script src="<?= site_url() . 'assets/js/payment.js' ?>">
+
+</script>

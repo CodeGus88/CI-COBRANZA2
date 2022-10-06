@@ -124,10 +124,10 @@ class Reports extends CI_Controller
 
     $html = '<table border="0">
     <tr>
-    <td width="110" height="30"><b>Tipo moneda:</b></td><td width="400" height="30">' . $reportCoin->name . '(' . $reportCoin->short_name . ')</td>  <td width="110" height="30"><b>Fecha inicial:</b></td><td width="50" height="30">' . $start_d . '</td>
+    <td width="110" height="30"><b>Tipo moneda:</b></td><td width="400" height="30">' . utf8_decode($reportCoin->name) . ' (' . $reportCoin->short_name . ')</td>  <td width="110" height="30"><b>Fecha inicial:</b></td><td width="50" height="30">' . $start_d . '</td>
     </tr>
     <tr>
-    <td width="110" height="30"><b>Usuario:</b></td><td width="400" height="30">' . trim($user_name) . '</td>  <td width="110" height="30"><b>Fecha final:</b></td><td width="50" height="30">' . $end_d . '</td>
+    <td width="110" height="30"><b>Usuario:</b></td><td width="400" height="30">' . utf8_decode(trim($user_name)) . '</td>  <td width="110" height="30"><b>Fecha final:</b></td><td width="50" height="30">' . $end_d . '</td>
     </tr>
     </table>';
 
@@ -209,7 +209,7 @@ class Reports extends CI_Controller
       $html =
         '<table border="0">
     <tr>
-    <td width="120" height="30"><b>Cliente:</b></td><td width="400" height="30">' . utf8_decode($rc->customer_name) . " (" . $rc->ci . ")" . '</td><td width="120" height="30"><b>Tipo moneda:</b></td><td width="55" height="30">' . $rc->name . ' (' . $rc->short_name . ')</td>
+    <td width="120" height="30"><b>Cliente:</b></td><td width="400" height="30">' . utf8_decode($rc->customer_name) . " (" . $rc->ci . ")" . '</td><td width="120" height="30"><b>Tipo moneda:</b></td><td width="55" height="30">' . utf8_decode($rc->name) . ' (' . $rc->short_name . ')</td>
     </tr>
     <tr>
     <td width="120" height="30"><b>' . utf8_decode("Crédito:") . '</b></td><td width="400" height="30">' . $rc->credit_amount . '</td><td width="120" height="30"><b>' . utf8_decode("Código:") . '</b></td><td width="55" height="30">' . $rc->id . '</td>

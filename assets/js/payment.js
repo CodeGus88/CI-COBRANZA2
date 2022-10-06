@@ -44,3 +44,15 @@
 // function getConfirm(){
 //   return confirm("¿Confirmar?");
 // }
+
+// Si existe un cliente seleccionado por defecto, carga su préstamo
+function autoSearch(){
+    select = document.getElementById('search');
+    if(select.value != 0){
+        load_loan();
+    }
+}
+// Se ejecuta después de que termina de cargar la página
+window.onload = function () {
+    autoSearch();
+}
