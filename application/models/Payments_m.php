@@ -233,7 +233,7 @@ class Payments_m extends CI_Model {
         $mount_request = $this->db->select('li.fee_amount')->where('id',$item['loan_item_id'])->get('loan_items li')->row();
         $paid = isset($paid_request->debt)?$paid_request->debt:0;
         $mount = isset($mount_request->fee_amount)?$mount_request->fee_amount:0;
-        $debt = round($mount - $paid, 2); // mostraba con muchos decimales
+        $debt = round($mount - $paid, 2);
         if($item['mount'] > $debt)
           array_push($success->errors, "payments.mount > debt ($mount > $debt)");
         if(sizeof($success->errors) > 0)

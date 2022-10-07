@@ -139,45 +139,57 @@ class Payments extends CI_Controller
     }
   }
 
+  /**
+   * Guarda los pagos
+   */
   private function addPayment($loan_id, $quota_id, $payments, $customer_id)
   {
     $validate = $this->payments_m->paymentsOk($payments);
     $savePaymentsIsSuccess = FALSE;
-    if ($validate->valid) {
-      $Object = new DateTime();
-      $pay_date = $Object->format("Y-m-d h:i:s");
-      $id = $this->payments_m->addDocumentPayment($this->user_id, $pay_date);
-      if ($id > 0) {
-        for ($i = 0; $i < sizeof($payments); $i++) {
-          $payments[$i]['document_payment_id'] = $id;
-        }
-        $savePaymentsIsSuccess = $this->payments_m->addPayments($payments); //descomentar
-      }
-    } else {
-      foreach ($validate->errors as $error)
-        echo "ERROR: " . $error;
-      return;
-    }
-    if ($savePaymentsIsSuccess) {
-      if (isset($quota_id)) {
-        foreach ($quota_id as $q) { // Cambiar estado solo si ya se completó el pago
-          if ($this->payments_m->paymentsIsEqualToQuote($q))
-            $this->payments_m->update_quota(['status' => 0], $q); // descomentar
-        }
-        if (!$this->payments_m->check_cstLoan($loan_id)) {
-          $this->payments_m->update_cstLoan($loan_id, $customer_id); // descomentar
-        }
-        if ($this->permission->getPermission([DOCUMENT_PAYMENT_READ, AUTHOR_DOCUMENT_PAYMENT_READ], FALSE))
-          redirect("admin/payments/document_payment/$id");
-        else {
-          $this->session->set_flashdata('msg', 'El pago se procesó con éxito');
-          redirect("admin/payments");
+    $this->db->trans_begin(); // inicio de la transacción
+    try{
+      if ($validate->valid) {
+        $Object = new DateTime();
+        $pay_date = $Object->format("Y-m-d h:i:s");
+        $id = $this->payments_m->addDocumentPayment($this->user_id, $pay_date);
+        if ($id > 0) {
+          for ($i = 0; $i < sizeof($payments); $i++) {
+            $payments[$i]['document_payment_id'] = $id;
+          }
+          $savePaymentsIsSuccess = $this->payments_m->addPayments($payments);
         }
       } else {
-        echo loadErrorMessage('No existen cuotas para registrar');
+        foreach ($validate->errors as $error)
+          echo "ERROR: " . $error;
+        return;
       }
-    } else {
-      echo loadErrorMessage('¡Ocurrió un error durante la transacción!');
+      if ($savePaymentsIsSuccess) { // Cambiar estados
+        if (isset($quota_id)) {
+          foreach ($quota_id as $q) {
+            if ($this->payments_m->paymentsIsEqualToQuote($q))
+              $this->payments_m->update_quota(['status' => 0], $q);
+          }
+          if (!$this->payments_m->check_cstLoan($loan_id)) {
+            $this->payments_m->update_cstLoan($loan_id, $customer_id);
+          }
+          $this->db->trans_commit();
+          if ($this->permission->getPermission([DOCUMENT_PAYMENT_READ, AUTHOR_DOCUMENT_PAYMENT_READ], FALSE))
+            redirect("admin/payments/document_payment/$id");
+          else {
+            $this->session->set_flashdata('msg', 'El pago se procesó con éxito');
+            redirect("admin/payments");
+          }
+        } else {
+          $this->db->trans_rollback();
+          echo loadErrorMessage('No existen cuotas para registrar');
+        }
+      } else {
+        $this->db->trans_rollback();
+        echo loadErrorMessage('¡Ocurrió un error durante la transacción!');
+      }
+    }catch(Exception $ex){
+      $this->db->trans_rollback();
+      echo loadErrorMessage($ex->getMessage());
     }
   }
 
