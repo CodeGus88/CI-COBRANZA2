@@ -44,8 +44,10 @@ class Payments extends CI_Controller
     $this->load->view('admin/_main_layout', $data);
   }
 
-  public function edit($customer_id = null)
+  // public function edit($customer_id = null)
+  public function edit()
   {
+    $customer_id = $_REQUEST['customer_id'] ?? NULL;
     $this->permission->redirectIfFalse(
       $this->permission->getPermissionX([AUTHOR_LOAN_UPDATE, AUTHOR_LOAN_ITEM_UPDATE], FALSE) || $this->permission->getPermissionX([LOAN_UPDATE, LOAN_ITEM_UPDATE], FALSE),
       TRUE

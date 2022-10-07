@@ -78,7 +78,7 @@
                           echo '<td>' . $item->customer_name . '</td>';
                           echo "<td>$mount $item->coin_short_name</td>";
                           echo '<td>' . $item->date . '</td>';
-                          $pay_url = site_url("admin/payments/edit/$item->id");
+                          $pay_url = site_url("admin/payments/edit?customer_id=$item->id");
                           if ($item->date == date("Y-m-d")) {
                             echo '<td><center><a class="btn btn-sm btn-warning" href="' . $pay_url . '">' . 'HOY' . '</a></center></td>';
                           } elseif ($item->date < date("Y-m-d")) {
