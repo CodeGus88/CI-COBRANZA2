@@ -124,21 +124,21 @@ class Reports extends CI_Controller
 
     $html = '<table border="0">
     <tr>
-    <td width="110" height="30"><b>Tipo moneda:</b></td><td width="400" height="30">' . utf8_decode($reportCoin->name) . ' (' . $reportCoin->short_name . ')</td>  <td width="110" height="30"><b>Fecha inicial:</b></td><td width="50" height="30">' . $start_d . '</td>
+    <td width="110" height="30"><b>Tipo moneda:</b></td><td width="400" height="30">' . $reportCoin->name. ' (' . $reportCoin->short_name . ')</td>  <td width="110" height="30"><b>Fecha inicial:</b></td><td width="50" height="30">' . $start_d . '</td>
     </tr>
     <tr>
-    <td width="110" height="30"><b>Usuario:</b></td><td width="400" height="30">' . utf8_decode(trim($user_name)) . '</td>  <td width="110" height="30"><b>Fecha final:</b></td><td width="50" height="30">' . $end_d . '</td>
+    <td width="110" height="30"><b>Usuario:</b></td><td width="400" height="30">' . trim($user_name) . '</td>  <td width="110" height="30"><b>Fecha final:</b></td><td width="50" height="30">' . $end_d . '</td>
     </tr>
     </table>';
 
-    $pdf->WriteHTML($html);
+    $pdf->WriteHTML(utf8_decode($html));
 
     $pdf->Ln(7);
     $pdf->SetFont('Arial', '', 10);
     $html1 = '';
     $html1 .= '<table border="1">
     <tr>
-    <td width="80" height="30"><b>N' . utf8_decode("°") . 'Prest.</b></td><td width="100" height="30"><b>Fecha prest.</b></td><td width="120" height="30"><b>Monto prest.</b></td><td width="65" height="30"><b>Int. %</b></td><td width="65" height="30"><b>N' . utf8_decode("°") . 'cuot.</b></td><td width="90" height="30"><b>Modalidad</b></td><td width="100" height="30"><b>Total con Int.</b></td><td width="79" height="30"><b>Estado</b></td>
+    <td width="80" height="30"><b>N° Prest.</b></td><td width="100" height="30"><b>Fecha prest.</b></td><td width="120" height="30"><b>Monto prest.</b></td><td width="65" height="30"><b>Int. %</b></td><td width="65" height="30"><b>N° cuot.</b></td><td width="90" height="30"><b>Modalidad</b></td><td width="100" height="30"><b>Total con Int.</b></td><td width="79" height="30"><b>Estado</b></td>
     </tr>';
     $sum_m = 0;
     $sum_mi = 0;
@@ -157,7 +157,7 @@ class Reports extends CI_Controller
     </tr>';
     $html1 .= '</table>';
 
-    $pdf->WriteHTML($html1);
+    $pdf->WriteHTML(utf8_decode($html1));
 
     $pdf->Output('reporteFechas.pdf', 'I');
   }
@@ -209,33 +209,33 @@ class Reports extends CI_Controller
       $html =
         '<table border="0">
     <tr>
-    <td width="120" height="30"><b>Cliente:</b></td><td width="400" height="30">' . utf8_decode($rc->customer_name) . " (" . $rc->ci . ")" . '</td><td width="120" height="30"><b>Tipo moneda:</b></td><td width="55" height="30">' . utf8_decode($rc->name) . ' (' . $rc->short_name . ')</td>
+    <td width="100" height="30"><b>Cliente:</b></td><td width="600" height="30">' . $rc->customer_name . '</td>
     </tr>
     <tr>
-    <td width="120" height="30"><b>' . utf8_decode("Crédito:") . '</b></td><td width="400" height="30">' . $rc->credit_amount . '</td><td width="120" height="30"><b>' . utf8_decode("Código:") . '</b></td><td width="55" height="30">' . $rc->id . '</td>
+    <td width="100" height="30"><b>CI:</b></td><td width="400" height="30">' . $rc->ci .'</td><td width="100" height="30" style="background-color:white"><b>Moneda:</b></td><td width="100" height="30">' . $rc->name . ' (' . $rc->short_name . ')</td>
     </tr>
     <tr>
-    <td width="120" height="30"><b>Nro cuotas:</b></td><td width="400" height="30">' . $rc->num_fee . '</td><td width="120" height="30"><b>Forma pago:</b></td><td width="55" height="30">' . $rc->payment_m . '</td>
+    <td width="100" height="30"><b>Crédito:</b></td><td width="400" height="30">' . $rc->credit_amount . '</td><td width="100" height="30"><b>Código:</b></td><td width="100" height="30">' . $rc->id . '</td>
     </tr>
     <tr>
-    <td width="120" height="30"><b>Monto cuota:</b></td><td width="400" height="30">' . $rc->fee_amount . '</td><td width="120" height="30"><b>' . utf8_decode("Fecha crédito:") . '</b></td><td width="55" height="30">' . $rc->date . '</td>
+    <td width="100" height="30"><b>Nro cuotas:</b></td><td width="400" height="30">' . $rc->num_fee . '</td><td width="100" height="30"><b>Forma pago:</b></td><td width="100" height="30">' . $rc->payment_m . '</td>
     </tr>
     <tr>
-    <td width="120" height="30"><b>Asesor:</b></td><td width="400" height="30">' . utf8_decode($rc->user_name) . '</td><td width="120" height="30"><b>' . utf8_decode("Estado crédito:") . '</b></td><td width="55" height="30">' . ($rc->status ? "Pendiente" : "Cancelado") . '</td>
+    <td width="100" height="30"><b>Monto cuota:</b></td><td width="400" height="30">' . $rc->fee_amount . '</td><td width="100" height="30"><b>Fecha:</b></td><td width="100" height="30">' . $rc->date . '</td>
+    </tr>
+    <tr>
+    <td width="100" height="30"><b>Asesor:</b></td><td width="400" height="30">' . $rc->user_name. '</td><td width="100" height="30"><b>Estado:</b></td><td width="100" height="30">' . ($rc->status ? "Pendiente" : "Cancelado") . '</td>
     </tr>
     </table>';
 
-      $pdf->WriteHTML($html);
-
+      $pdf->WriteHTML(utf8_decode($html));
 
       $pdf->Ln(7);
       $pdf->SetFont('Arial', '', 10);
+      $tableTab = "         ";
 
-      $html1 = '';
-      $html1 .= '<table border="1" style="text-align:center">
-    <tr>
-    <td width="75" height="30"><b>Nro Cuota</b></td><td width="120" height="30"><b>Fecha pago</b></td><td width="120" height="30"><b>Total pagar</b></td><td width="120" height="30"><b>Estado</b></td>
-    </tr>';
+      $html1 = '<table border="1">';
+      $html1 .= $tableTab . '<tr><td width="75" height="30"><b>Nro Cuota</b></td><td width="150" height="30"><b>Fecha pago</b></td><td width="120" height="30"><b>Cuota</b></td><td width="120" height="30"><b>Pagado</b></td><td width="120" height="30"><b>Por pagar</b></td><td width="120" height="30"><b>Estado</b></td></tr>';
 
       if ($this->permission->getPermission([LOAN_ITEM_READ], FALSE)) {
         $loanItems = $this->reports_m->get_reportLIAll($rc->id);
@@ -244,14 +244,15 @@ class Reports extends CI_Controller
       }
 
       foreach ($loanItems as $li) {
-        $html1 .= '
-    <tr>
-    <td width="75" height="30">' . $li->num_quota . '</td><td width="120" height="30">' . $li->date . '</td><td width="120" height="30">' . ($li->status ? $li->fee_amount : "0.00") . '</td><td width="120" height="30">' . ($li->status ? "Pendiente" : "Cancelado") . '</td>
-    </tr>';
+        $defaultContent = '-';
+        if($li->status == FALSE && $li->payed == 0)
+          $li->payed = $defaultContent;
+        $payable = ( $li->payed == $defaultContent)?'-':number_format($li->fee_amount - $li->payed, 2);
+        $html1 .= $tableTab . '<tr><td width="75" height="30">' . $li->num_quota . '</td><td width="150" height="30">' . $li->date . '</td><td width="120" height="30">' . $li->fee_amount . '</td><td width="120" height="30">' . $li->payed . '</td><td width="120" height="30">' . $payable . '</td><td width="120" height="30">' . ($li->status ? "Pendiente" : "Cancelado") . '</td></tr>';
       }
 
       $html1 .= '</table>';
-      $pdf->WriteHTML($html1);
+      $pdf->WriteHTML(utf8_decode($html1));
 
       $pdf->Ln(7);
 

@@ -156,22 +156,36 @@ class Reports_m extends CI_Model {
 
   public function get_reportLIAll($loan_id)
   {
+    $subquery = "(SELECT IFNULL(SUM(p.mount), 0) FROM payments p WHERE p.loan_item_id = li.id )";
+    $this->db->select("li.*,  $subquery payed");
     $this->db->where('loan_id', $loan_id);
+    return $this->db->get('loan_items li')->result(); 
 
-    return $this->db->get('loan_items')->result(); 
+    // $this->db->where('loan_id', $loan_id);
+    // return $this->db->get('loan_items')->result(); 
   }
 
   public function get_reportLI($user_id, $loan_id)
   {
-    $this->db->select('li.*');
-    $this->db->from('loan_items li');
+    $subquery = "(SELECT IFNULL(SUM(p.mount), 0) FROM payments p WHERE p.loan_item_id = li.id )";
+    $this->db->select("li.*,  $subquery payed");
     $this->db->join('loans l', 'l.id = li.loan_id');
     $this->db->join('customers c', 'c.id = l.customer_id');
     $this->db->join('users u', 'u.id = c.user_id');
     $this->db->where('loan_id', $loan_id);
     $this->db->where('u.id', $user_id);
 
-    return $this->db->get()->result(); 
+    return $this->db->get('loan_items li')->result(); 
+
+    // $this->db->select('li.*');
+    // $this->db->from('loan_items li');
+    // $this->db->join('loans l', 'l.id = li.loan_id');
+    // $this->db->join('customers c', 'c.id = l.customer_id');
+    // $this->db->join('users u', 'u.id = c.user_id');
+    // $this->db->where('loan_id', $loan_id);
+    // $this->db->where('u.id', $user_id);
+
+    // return $this->db->get()->result(); 
   }
 
   public function get_guarantorsAll($loan_id){
