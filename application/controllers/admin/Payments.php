@@ -146,11 +146,12 @@ class Payments extends CI_Controller
   {
     $validate = $this->payments_m->paymentsOk($payments);
     $savePaymentsIsSuccess = FALSE;
-    $this->db->trans_begin(); // inicio de la transacción
     try{
       if ($validate->valid) {
+        
         $Object = new DateTime();
         $pay_date = $Object->format("Y-m-d h:i:s");
+        $this->db->trans_begin(); // inicio de la transacción
         $id = $this->payments_m->addDocumentPayment($this->user_id, $pay_date);
         if ($id > 0) {
           for ($i = 0; $i < sizeof($payments); $i++) {
