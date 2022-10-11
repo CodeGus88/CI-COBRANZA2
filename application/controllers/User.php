@@ -24,9 +24,10 @@ class User extends CI_Controller {
     if ($this->form_validation->run() == TRUE) {
       
       if ($this->user_m->login() == TRUE) {
+        // $this->session->set_flashdata('msg_error', null);
         redirect($dashboard);
       }else{
-        $this->session->set_flashdata('msg', 'Escriba correctamente su email y/o password');
+        $this->session->set_flashdata('msg_error', 'Escriba correctamente su email y/o password');
         redirect('user/login', 'refresh');
       }
     }
