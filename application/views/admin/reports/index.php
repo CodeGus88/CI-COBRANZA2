@@ -81,7 +81,7 @@
             <td class="text-right" id="cr_interestPay">0</td>
           </tr>
           <tr>
-            <td>Total cuotas cobrables</td>
+            <td>Total en cuotas programadas</td>
             <td class="text-right" id="payable">0</td>
           </tr>
           <tr>

@@ -106,40 +106,40 @@ function loadGeneralReport() {
     // console.log('con parse', data)
 
     if (data.credits[0].sum_credit == null) {
-      var sum_credit = '0 ' + symbol
+      var sum_credit = '0.00 ' + symbol
     } else {
       var sum_credit = data.credits[0].sum_credit + ' ' + (data.credits[0].short_name).toUpperCase()
     }
     $("#cr").html(sum_credit) // id= cr -> total crédito
 
     if (data.credits[1].cr_interest == null) {
-      var cr_interest = '0 ' + symbol
+      var cr_interest = '0.00 ' + symbol
     } else {
       var cr_interest = data.credits[1].cr_interest + ' ' + (data.credits[1].short_name).toUpperCase()
     }
     $("#cr_interest").html(cr_interest) // id="cr_interest" -> Crédito con interes
 
     if (data.credits[2].cr_interestPaid == null) {
-      var cr_interestPaid = '0 ' + symbol
+      var cr_interestPaid = '0.00 ' + symbol
     } else {
       var cr_interestPaid = data.credits[2].cr_interestPaid + ' ' + data.credits[2].short_name.toUpperCase()
     }
     $("#cr_interestPaid").html(cr_interestPaid) // id="cr_interestPaid" -> Total Credito cancelado con intere
 
     if (data.credits[3].cr_interestPay == null) {
-      var cr_interestPay = '0 ' + symbol
+      var cr_interestPay = '0.00 ' + symbol
     } else {
       var cr_interestPay = data.credits[3].cr_interestPay + ' ' + (data.credits[3].short_name).toUpperCase()
     }
     $("#cr_interestPay").html(cr_interestPay) // id="cr_interestPay" -> Total Credito por cobrar con interes
     if (data.credits[4].mount_payed == null) {
-      var mount_payed = '0 ' + symbol
+      var mount_payed = '0.00 ' + symbol
     } else {
       var mount_payed = data.credits[4].mount_payed + ' ' + (data.credits[4].short_name).toUpperCase()
     }
     $("#mount_payed").html(mount_payed)
     if (data.credits[5].payable == null) {
-      var payable = '0 ' + symbol
+      var payable = '0.00 ' + symbol
     } else {
       var payable = data.credits[5].payable + ' ' + (data.credits[5].short_name).toUpperCase()
     }
