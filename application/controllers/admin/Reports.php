@@ -53,11 +53,11 @@ class Reports extends CI_Controller
     $this->load->view('admin/_main_layout', $data);
   }
 
-  public function ajax_getCredits($coin_id, $start_d, $end_d, $user_id)
+  public function ajaxGetCredits($coin_id, $start_d, $end_d, $user_id)
   {
     if ($this->permission->getPermission([LOAN_READ], FALSE)) {
       if ($user_id == 'all') {
-        $data['credits'] = $this->reports_m->get_reportLoanAll($coin_id, $start_d, $end_d);
+        $data['credits'] = $this->reports_m->getReportLoanAll($coin_id, $start_d, $end_d);
         $all_users = new stdClass();
         $all_users->user_name = $user_id;
         $data['selected_user'] =  $all_users;

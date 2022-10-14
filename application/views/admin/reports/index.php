@@ -80,6 +80,14 @@
             <td>Total crédito por cobrar con interés</td>
             <td class="text-right" id="cr_interestPay">0</td>
           </tr>
+          <tr>
+            <td>Total cuotas cobrables</td>
+            <td class="text-right" id="payable">0</td>
+          </tr>
+          <tr>
+            <td>Total por cobros realizados</td>
+            <td class="text-right" id="mount_payed">0</td>
+          </tr>
         </tbody>
       </table>
     </div>

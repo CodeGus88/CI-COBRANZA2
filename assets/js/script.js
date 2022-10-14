@@ -100,7 +100,7 @@ function loadGeneralReport() {
     return;
   }
   // $.get(base_url + "admin/reports/ajax_getCredits/" + coin_id + "/" + SELECTED_USER_ID, function (data) {
-  $.get(base_url + "admin/reports/ajax_getCredits/" + coin_id + "/" + start_d + "/" + end_d + ((user_id != '') ? "/" + user_id : ''), function (data) {
+  $.get(base_url + "admin/reports/ajaxGetCredits/" + coin_id + "/" + start_d + "/" + end_d + ((user_id != '') ? "/" + user_id : ''), function (data) {
 
     data = JSON.parse(data);
     // console.log('con parse', data)
@@ -132,6 +132,18 @@ function loadGeneralReport() {
       var cr_interestPay = data.credits[3].cr_interestPay + ' ' + (data.credits[3].short_name).toUpperCase()
     }
     $("#cr_interestPay").html(cr_interestPay) // id="cr_interestPay" -> Total Credito por cobrar con interes
+    if (data.credits[4].mount_payed == null) {
+      var mount_payed = '0 ' + symbol
+    } else {
+      var mount_payed = data.credits[4].mount_payed + ' ' + (data.credits[4].short_name).toUpperCase()
+    }
+    $("#mount_payed").html(mount_payed)
+    if (data.credits[5].payable == null) {
+      var payable = '0 ' + symbol
+    } else {
+      var payable = data.credits[5].payable + ' ' + (data.credits[5].short_name).toUpperCase()
+    }
+    $("#payable").html(payable)  
     user_name = '';
     if (typeof data.selected_user === 'undefined') {
       report_title = '';

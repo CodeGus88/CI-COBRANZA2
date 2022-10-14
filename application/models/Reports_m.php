@@ -3,8 +3,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Reports_m extends CI_Model {
 
-  public function get_reportLoanAll($coin_id, $start_date, $end_date)
-  {// Total crédito
+  public function getReportLoanAll($coin_id, $start_date, $end_date)
+  { // Total crédito
     $this->db->select('c.short_name, sum(l.credit_amount) as sum_credit');
     $this->db->join('coins c', 'c.id = l.coin_id', 'left');
     $this->db->where('l.coin_id', $coin_id);
@@ -28,8 +28,26 @@ class Reports_m extends CI_Model {
     $this->db->where(['l.coin_id' => $coin_id, 'l.status' => 1]);
     $this->db->where("l.date BETWEEN '{$start_date}' AND '{$end_date}'");
     $cr_interestPay = $this->db->get('loans l')->row();
+    // total cuotas cobrables
+    $this->db->select("co.short_name, SUM(li.fee_amount) as payable");
+    $this->db->from("loans l");
+    $this->db->join("coins co", "co.id = l.coin_id");
+    $this->db->join("loan_items li", "li.loan_id = l.id");
+    $this->db->where("li.date BETWEEN '{$start_date}' AND '{$end_date}'");
+    $payable = $this->db->get()->row();
+    // Total pagos cobrado
+    $this->db->select('co.short_name, IFNULL(SUM(IFNULL(p.mount, li.fee_amount)),0) AS mount_payed');
+    $this->db->from('loans l');
+    $this->db->join('coins co', 'co.id = l.coin_id');
+    $this->db->join('loan_items li', 'li.loan_id = l.id');
+    $this->db->join('payments p', 'p.loan_item_id = li.id', 'left');
+    $this->db->join('document_payments dp', 'dp.id = p.document_payment_id', 'left');
+    $this->db->where("( (li.status = FALSE AND li.pay_date BETWEEN '{$start_date}' AND '{$end_date}') OR 
+    (li.status = TRUE AND  EXISTS(SELECT * FROM payments py WHERE py.loan_item_id = li.id) AND dp.pay_date BETWEEN '{$start_date}' AND '{$end_date}') )");
+    $this->db->where("co.id", $coin_id);
+    $mount_payed = $this->db->get()->row();
 
-    $credits = [$cr, $cr_interest, $cr_interestPaid, $cr_interestPay];
+    $credits = [$cr, $cr_interest, $cr_interestPaid, $cr_interestPay, $mount_payed, $payable];
 
     return $credits;
   }
@@ -71,8 +89,30 @@ class Reports_m extends CI_Model {
     $this->db->where("l.date BETWEEN '{$start_date}' AND '{$end_date}'");
     $this->db->where('u.id', $user_id);
     $cr_interestPay = $this->db->get('loans l')->row();
+    // total cuotas cobrables del usuario
+    $this->db->select("co.short_name, SUM(li.fee_amount) as payable");
+    $this->db->from("loans l");
+    $this->db->join("customers c", "c.id = l.customer_id");
+    $this->db->join("coins co", "co.id = l.coin_id");
+    $this->db->join("loan_items li", "li.loan_id = l.id");
+    $this->db->where("c.user_id", $user_id);
+    $this->db->where("(li.date BETWEEN '{$start_date}' AND '{$end_date}')");
+    $payable = $this->db->get()->row();
+    // Total monto cobrado 
+    $this->db->select('co.short_name, IFNULL(SUM(IFNULL(p.mount, li.fee_amount)),0) AS mount_payed');
+    $this->db->from('loans l');
+    $this->db->join('coins co', 'co.id = l.coin_id');
+    $this->db->join('customers c', 'c.id = l.customer_id');
+    $this->db->join('loan_items li', 'li.loan_id = l.id');
+    $this->db->join('payments p', 'p.loan_item_id = li.id', 'left');
+    $this->db->join('document_payments dp', 'dp.id = p.document_payment_id', 'left');
+    $this->db->where("( (li.status = FALSE AND li.pay_date BETWEEN '{$start_date}' AND '{$end_date}') OR 
+    (li.status = TRUE AND  EXISTS(SELECT * FROM payments py WHERE py.loan_item_id = li.id) AND dp.pay_date BETWEEN '{$start_date}' AND '{$end_date}') )");
+    $this->db->where("c.user_id", $user_id);
+    $this->db->where("co.id", $coin_id);
+    $mount_payed = $this->db->get()->row();
 
-    $credits = [$cr, $cr_interest, $cr_interestPaid, $cr_interestPay];
+    $credits = [$cr, $cr_interest, $cr_interestPaid, $cr_interestPay, $mount_payed, $payable];
 
     return $credits;
   }
