@@ -91,7 +91,7 @@ function loadGeneralReport() {
   const start_d = $("#start_d").val()
   const end_d = $("#end_d").val()
   const user_id = $("#user_id").val()
-  var symbol = $('#coin_type option:selected').data("symbol");
+  var symbol = $('#coin_type option:selected').data("symbol").toUpperCase();
   if (start_d == '' || end_d == '') {
     alert('Ingrese las fechas')
     return;
