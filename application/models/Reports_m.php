@@ -42,8 +42,8 @@ class Reports_m extends CI_Model {
     $this->db->join('loan_items li', 'li.loan_id = l.id');
     $this->db->join('payments p', 'p.loan_item_id = li.id', 'left');
     $this->db->join('document_payments dp', 'dp.id = p.document_payment_id', 'left');
-    $this->db->where("( (li.status = FALSE AND li.pay_date BETWEEN '{$start_date}' AND '{$end_date}') OR 
-    (li.status = TRUE AND  EXISTS(SELECT * FROM payments py WHERE py.loan_item_id = li.id) AND dp.pay_date BETWEEN '{$start_date}' AND '{$end_date}') )");
+    $this->db->where("( (li.status = FALSE AND li.pay_date BETWEEN '{$start_date}' AND '{$end_date} 23:59:59') OR 
+    (li.status = TRUE AND  EXISTS(SELECT * FROM payments py WHERE py.loan_item_id = li.id) AND dp.pay_date BETWEEN '{$start_date}' AND '{$end_date} 23:59:59') )");
     $this->db->where("co.id", $coin_id);
     $mount_payed = $this->db->get()->row();
 
@@ -106,8 +106,8 @@ class Reports_m extends CI_Model {
     $this->db->join('loan_items li', 'li.loan_id = l.id');
     $this->db->join('payments p', 'p.loan_item_id = li.id', 'left');
     $this->db->join('document_payments dp', 'dp.id = p.document_payment_id', 'left');
-    $this->db->where("( (li.status = FALSE AND li.pay_date BETWEEN '{$start_date}' AND '{$end_date}') OR 
-    (li.status = TRUE AND  EXISTS(SELECT * FROM payments py WHERE py.loan_item_id = li.id) AND dp.pay_date BETWEEN '{$start_date}' AND '{$end_date}') )");
+    $this->db->where("( (li.status = FALSE AND li.pay_date BETWEEN '{$start_date}' AND '{$end_date}  23:59:59') OR 
+    (li.status = TRUE AND  EXISTS(SELECT * FROM payments py WHERE py.loan_item_id = li.id) AND dp.pay_date BETWEEN '{$start_date}' AND '{$end_date}  23:59:59') )");
     $this->db->where("c.user_id", $user_id);
     $this->db->where("co.id", $coin_id);
     $mount_payed = $this->db->get()->row();
