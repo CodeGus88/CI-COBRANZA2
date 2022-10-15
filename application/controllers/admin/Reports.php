@@ -20,24 +20,6 @@ class Reports extends CI_Controller
     $this->permission = new Permission($this->permission_m, $this->user_id);
   }
 
-  // public function index($user_id = 0)
-  // {
-  //   $LOAN_READ = $this->permission->getPermission([LOAN_READ], FALSE);
-  //   $AUTHOR_LOAN_READ = $this->permission->getPermission([AUTHOR_LOAN_READ], FALSE);
-  //   $this->permission->redirectIfFalse(($AUTHOR_LOAN_READ || $LOAN_READ), TRUE);
-  //   if ($LOAN_READ) {
-  //     $user_id = (!is_numeric($user_id)) ? 0 : $user_id;
-  //     $data['users'] = $this->db->get('users')->result();
-  //     $data['selected_user_id'] = $user_id;
-  //     $data['selected_user'] = $this->reports_m->getUser($user_id);
-  //   } else {
-  //     $data['selected_user'] = $this->reports_m->getUser($this->user_id);
-  //   }
-  //   $data['coins'] = $this->coins_m->get();
-  //   $data['subview'] = 'admin/reports/index';
-  //   $this->load->view('admin/_main_layout', $data);
-  // }
-
   public function index()
   {
     $LOAN_READ = $this->permission->getPermission([LOAN_READ], FALSE);
@@ -252,8 +234,6 @@ class Reports extends CI_Controller
       $html1 .= '</table>';
       $pdf->WriteHTML(utf8_decode($html1));
 
-      $pdf->Ln(7);
-
       // // // Inicio garantes
       if ($this->permission->getPermissionX([LOAN_READ, LOAN_ITEM_READ], FALSE)) {
         $guarantors = $this->reports_m->get_guarantorsAll($rc->id);
@@ -269,10 +249,11 @@ class Reports extends CI_Controller
         }
         $pdf->Cell(7);
         $pdf->WriteHTML('<span border-radius="10px 0px 39px 22px"><b>Garantes: </b>' . $var . '</span>');
+        $pdf->Ln(7);
       }
       // Fin garantes
     }
-
+    
     $pdf->Output('reporte_global_cliente.pdf', 'I');
   }
 }

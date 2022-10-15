@@ -72,15 +72,15 @@
             <td>Total crédito con interés</td>
             <td class="text-right" id="cr_interest">0</td>
           </tr>
-          <tr>
+          <tr hidden>
             <td>Total crédito cancelado con interés</td>
             <td class="text-right" id="cr_interestPaid">0</td>
           </tr>
-          <tr>
+          <tr hidden>
             <td>Total crédito por cobrar con interés</td>
             <td class="text-right" id="cr_interestPay">0</td>
           </tr>
-          <tr>
+          <tr hidden>
             <td>Total en cuotas programadas</td>
             <td class="text-right" id="payable">0</td>
           </tr>
