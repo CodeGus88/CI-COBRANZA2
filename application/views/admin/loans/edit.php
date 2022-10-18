@@ -30,27 +30,22 @@
         <span class="small mb-1"><small id="customerRectriction">Solo aparecen en la lista los clientes que no tienen cuentas pendientes.</small></span>
       </div>
     </div>
-
-    <!-- garantes -->
     <div class="form-row">
       <div class="form-group col-12 col-md-12">
         <label class="small mb-1" for="exampleFormControlSelect2">Garantes</label>
         <div class="input-group">
           <select id="guarantors" class="form-control form-select" name="guarantors[]" multiple="multiple">
-            <!-- options -->
           </select>
         </div>
         <span class="small mb-1"><small id="guarantorsRestriction">Máximo 9 garantes.</small></span>
       </div>
     </div>
-    <!-- Fin garantes -->
     <div class="form-row">
       <div class="form-group col-12 col-md-12">
         <label class="small mb-1" for="exampleFormControlTextarea1">Asesor de grupo</label>
         <input class="form-control" id="user_name" type="text" readonly>
       </div>
     </div>
-
     <div class="form-row">
       <div class="form-group col-12 col-md-4">
         <label class="small mb-1" for="inputUsername">Monto préstamo (capital)</label>
@@ -58,7 +53,6 @@
       </div>
       <div class="form-group col-12 col-md-4">
         <label class="small mb-1" for="inputUsername">Tasa de interés %</label>
-        <!-- <input class="form-control" min="1" id="in_amount" type="number" name="interest_amount"> -->
         <select class="form-control" type="number" id="in_amount" name="interest_amount">
           <option value="10">10%</option>
           <option value="11">11%</option>
@@ -153,3 +147,5 @@
     maximumSelectionLength: 9
   })
 </script>
+
+<script src="<?= site_url() . 'assets/js/loans.js' ?>"></script>

@@ -194,21 +194,23 @@ class Reports_m extends CI_Model {
     return $this->db->get()->result(); 
   }
 
-  public function get_reportLIAll($loan_id)
+  public function getReportLIAll($loan_id)
   {
-    $subquery = "(SELECT IFNULL(SUM(p.mount), 0) FROM payments p WHERE p.loan_item_id = li.id )";
-    $this->db->select("li.*,  $subquery payed");
+    $this->db->select("li.*,  SUM(IFNULL(p.mount, 0)) as payed, SUM(IFNULL(p.surcharge, 0)) surcharge");
+    $this->db->join('payments p', 'p.loan_item_id = li.id', 'left');
+    $this->db->group_by('li.id');
     $this->db->where('loan_id', $loan_id);
+
     return $this->db->get('loan_items li')->result(); 
   }
 
-  public function get_reportLI($user_id, $loan_id)
+  public function getReportLI($user_id, $loan_id)
   {
-    $subquery = "(SELECT IFNULL(SUM(p.mount), 0) FROM payments p WHERE p.loan_item_id = li.id )";
-    $this->db->select("li.*,  $subquery payed");
+    $this->db->select("li.*,  SUM(IFNULL(p.mount, 0)) as payed, SUM(IFNULL(p.surcharge, 0)) surcharge");
     $this->db->join('loans l', 'l.id = li.loan_id');
     $this->db->join('customers c', 'c.id = l.customer_id');
     $this->db->join('users u', 'u.id = c.user_id');
+    $this->db->join('payments p', 'p.loan_item_id = li.id', 'left');
     $this->db->where('loan_id', $loan_id);
     $this->db->where('u.id', $user_id);
 

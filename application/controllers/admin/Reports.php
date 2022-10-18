@@ -183,7 +183,7 @@ class Reports extends CI_Controller
     $pdf->Ln(8);
 
     $pdf->SetFont('Arial', '', 10);
-
+    $index = 0;
     foreach ($reportCst as $rc) {
 
       $html =
@@ -215,43 +215,45 @@ class Reports extends CI_Controller
       $tableTab = "         ";
 
       $html1 = '<table border="1">';
-      $html1 .= $tableTab . '<tr><td width="75" height="30"><b>Nro Cuota</b></td><td width="150" height="30"><b>Fecha pago</b></td><td width="120" height="30"><b>Cuota</b></td><td width="120" height="30"><b>Pagado</b></td><td width="120" height="30"><b>Por pagar</b></td><td width="120" height="30"><b>Estado</b></td></tr>';
+      $html1 .= $tableTab . '<tr><td width="50" height="30"><b>Cuota</b></td><td width="110" height="30"><b>Fecha pago</b></td><td width="110" height="30"><b>Cuota</b></td><td width="110" height="30"><b>Pagado</b></td><td width="110" height="30"><b>Recargo</b></td><td width="110" height="30"><b>Por pagar</b></td><td width="110" height="30"><b>Estado</b></td></tr>';
 
       if ($this->permission->getPermission([LOAN_ITEM_READ], FALSE)) {
-        $loanItems = $this->reports_m->get_reportLIAll($rc->id);
+        $loanItems = $this->reports_m->getReportLIAll($rc->id);
       } elseif ($this->permission->getPermission([AUTHOR_LOAN_ITEM_READ], FALSE)) {
-        $loanItems = $this->reports_m->get_reportLI($this->session->userdata('user_id'), $rc->id);
+        $loanItems = $this->reports_m->getReportLI($this->session->userdata('user_id'), $rc->id);
       }
 
       foreach ($loanItems as $li) {
-        $defaultContent = '-';
-        if($li->status == FALSE && $li->payed == 0)
-          $li->payed = $defaultContent;
-        $payable = ( $li->payed == $defaultContent)?'-':number_format($li->fee_amount - $li->payed, 2);
-        $html1 .= $tableTab . '<tr><td width="75" height="30">' . $li->num_quota . '</td><td width="150" height="30">' . $li->date . '</td><td width="120" height="30">' . $li->fee_amount . '</td><td width="120" height="30">' . $li->payed . '</td><td width="120" height="30">' . $payable . '</td><td width="120" height="30">' . ($li->status ? "Pendiente" : "Cancelado") . '</td></tr>';
+        if($li->status == FALSE && $li->payed == 0){
+          $li->payed = $li->fee_amount;
+        }
+        $payable = number_format($li->fee_amount - $li->payed, 2);
+        $html1 .= $tableTab . '<tr><td width="50" height="30">' . $li->num_quota . '</td><td width="110" height="30">' . $li->date . '</td><td width="110" height="30">' . $li->fee_amount . '</td><td width="110" height="30">' . $li->payed . '</td><td width="110" height="30">' . $li->surcharge . '</td><td width="110" height="30">' . $payable . '</td><td width="110" height="30">' . ($li->status ? "Pendiente" : "Cancelado") . '</td></tr>';
       }
 
       $html1 .= '</table>';
       $pdf->WriteHTML(utf8_decode($html1));
 
-      // // // Inicio garantes
+      // Inicio garantes
       if ($this->permission->getPermissionX([LOAN_READ, LOAN_ITEM_READ], FALSE)) {
         $guarantors = $this->reports_m->get_guarantorsAll($rc->id);
       } elseif ($this->permission->getPermissionX([AUTHOR_LOAN_READ, AUTHOR_LOAN_ITEM_READ], TRUE)) {
         $guarantors = $this->reports_m->get_guarantors($this->user_id, $rc->id);
       }
-
       if ($guarantors != null) {
         $var = "";
         for ($i = 0; $i < sizeof($guarantors); $i++) {
           $separator = $i == (sizeof($guarantors) - 2) ? " y " : (($i == (sizeof($guarantors) - 1)) ? "." : ", ");
           $var .= $guarantors[$i]->fullname . " (" . $guarantors[$i]->ci . ")" . $separator;
         }
-        $pdf->Cell(7);
-        $pdf->WriteHTML('<span border-radius="10px 0px 39px 22px"><b>Garantes: </b>' . $var . '</span>');
-        $pdf->Ln(7);
+        $pdf->ln(7);
+        $pdf->cell(7);
+        $pdf->WriteHTML('<div><small><b>Garantes: </b>' . $var . '</small></div>');
       }
       // Fin garantes
+      if($index < (sizeof($reportCst)-1))
+        $pdf->AddPage('P', 'A4', 0);
+      $index ++;
     }
     
     $pdf->Output('reporte_global_cliente.pdf', 'I');

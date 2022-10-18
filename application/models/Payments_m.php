@@ -68,19 +68,22 @@ class Payments_m extends CI_Model {
 
   public function getLoanItemsAll($loan_id)
   {
-    $this->db->select("li.*, (select SUM(p.mount) FROM payments p WHERE p.loan_item_id = li.id) payed");
+    $this->db->select("li.*, SUM(IFNULL(p.mount, 0)) payed, SUM(IFNULL(p.surcharge, 0)) surcharge");
     $this->db->from('loan_items li');
     $this->db->join('loans l', 'l.id = li.loan_id');
     $this->db->join('customers c', 'c.id = l.customer_id');
     $this->db->join('users u', 'u.id = c.user_id');
     $this->db->join('coins co', 'co.id = l.coin_id');
+    $this->db->join('payments p', 'p.loan_item_id = li.id', 'left');
     $this->db->where("l.id", $loan_id);
+    $this->db->group_by('li.id');
+    $this->db->order_by('li.num_quota');
     return $this->db->get()->result();
   }
 
-  public function get_loan_items($user_id, $loan_id)
+  public function getLoanItems($user_id, $loan_id)
   {
-    $this->db->select("li.*, (select SUM(p.mount) FROM payments p WHERE p.loan_item_id = li.id) payed");
+    $this->db->select("li.*, select SUM(IFNULL(p.mount, 0)) payed, SUM(IFNULL(p.surcharge, 0)) surcharge FROM payments p WHERE p.loan_item_id = li.id");
     $this->db->from('loan_items li');
     $this->db->join('loans l', 'l.id = li.loan_id');
     $this->db->join('customers c', 'c.id = l.customer_id');
@@ -259,7 +262,7 @@ class Payments_m extends CI_Model {
     ->get_where('document_payments dp', ['dp.id'=>$id])->row();
     // Obtener pagos del docuemnto
     $data['quotas_payments'] =  $this->db
-    ->select('li.num_quota, li.loan_id, p.loan_item_id, p.mount, p.document_payment_id')
+    ->select('li.num_quota, li.loan_id, p.loan_item_id, p.mount, p.surcharge, p.document_payment_id')
     ->from('payments p')
     ->join('loan_items li', 'li.id = p.loan_item_id')
     ->where('p.document_payment_id', $id)

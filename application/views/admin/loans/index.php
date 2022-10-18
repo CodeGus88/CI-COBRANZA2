@@ -74,11 +74,11 @@
                 ?>
                 <td><?php echo $loan->id ?></td>
                 <td><?php echo $loan->customer ?></td>
-                <td><?php echo round($loan->credit_amount, 1) ?></td>
+                <td><?php echo round($loan->credit_amount, 2) ?></td>
                 <td>
-                  <?php echo round($I, 1); ?>
+                  <?php echo round($I, 2); ?>
                 </td>
-                <td><?php echo round($total, 1); ?></td>
+                <td><?php echo round($total, 2); ?></td>
                 <td style="text-transform:uppercase;"><?php echo $loan->short_name ?></td>
                 <td>
                   <button type="button" class="btn btn-sm <?php echo $loan->status ? 'btn-outline-danger' : 'btn-outline-success' ?> status-check"><?php echo $loan->status ? 'Pendiente' : 'Pagado' ?></button>

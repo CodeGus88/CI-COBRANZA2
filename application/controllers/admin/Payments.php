@@ -77,7 +77,7 @@ class Payments extends CI_Controller
     if ($this->permission->getPermission([LOAN_UPDATE, LOAN_ITEM_UPDATE], FALSE))
       $quota_data = $this->payments_m->getLoanItemsAll($loan_id);
     elseif ($this->permission->getPermissionX([AUTHOR_LOAN_UPDATE, AUTHOR_LOAN_ITEM_UPDATE], FALSE))
-      $quota_data = $this->payments_m->get_loan_items($this->user_id, $loan_id);
+      $quota_data = $this->payments_m->getLoanItems($this->user_id, $loan_id);
     $search_data = ['quotas' => $quota_data];
     echo json_encode($search_data); // datos leidos por javascript Ajax
   }
@@ -118,10 +118,15 @@ class Payments extends CI_Controller
       $payments = [];
       if (isset($quota_id)) : if (sizeof($quota_id) > 0) :
           foreach ($quota_id as $id) {
-            array_push($payments, ['loan_item_id' => $id, 'mount' => $this->input->post("amount_quota_$id")]);
+            array_push($payments, [
+              'loan_item_id' => $id, 
+              'mount' => $this->input->post("amount_quota_$id"), 
+              'surcharge'=>$this->input->post("surcharge_$id")
+            ]);
           }
         endif;
       endif;
+      // echo json_encode($payments);return; 
       if ($LOAN_UPDATE && $LOAN_ITEM_UPDATE) {
         $this->addPayment($loan_id, $quota_id, $payments, $customer_id, $data);
       } elseif ($AUTHOR_LOAN_UPDATE && $AUTHOR_LOAN_ITEM_UPDATE) {

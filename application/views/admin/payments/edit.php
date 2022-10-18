@@ -1,14 +1,13 @@
 <div class="card shadow mb-4">
   <div class="card-header py-3">Pagar cuotas del préstamo </div>
   <div class="card-body">
-
     <?php echo form_open('admin/payments/save_payment'); ?>
     <div class="form-row">
       <div class="form-group col-12 col-md-12">
         <label class="small mb-1" for="exampleFormControlSelect2">Cliente</label>
         <div class="input-group">
           <?php if (isset($customers)) : ?>
-            <select id="search" class="col-md-12" name="customer_id" onChange="load_loan()">
+            <select id="search" class="col-md-12" name="customer_id" onChange="loadLoan()">
               <option value="0" selected="selected" class="input-group">...</option>
               <?php foreach ($customers as $customer) : ?>
                 <?php $selected = ($customer->id == $default_selected_customer_id)?'selected':''; ?>
@@ -57,33 +56,36 @@
     </div>
 
     <div class="form-row">
-      <div class="form-group col-12 col-md-8">
+      <div class="form-group col-12 col-md-12">
         <table class="table " id="quotas" width="100%" cellspacing="0">
           <thead>
             <tr>
               <th class="col-md-1">Sel</th>
-              <th class="col-md-1 text-center" id='ncuota'>N°</th>
+              <th class="col-md-1 text-center" id='ncuota'>N° Cuota</th>
               <th class="col-md-3 text-center">Fecha</th>
               <th class="col-md-1 text-center">Cuota</th>
               <th class="col-md-1 text-center">Pagado</th>
-              <th class="col-md-1 text-center">Restante</th>
-              <th class="col-md-4 text-center">Entrada</th>
+              <th class="col-md-1 text-center">Pagable</th>
+              <th class="col-md-2 text-center">Recargo</th>
+              <th class="col-md-2 text-center">Pago</th>
             </tr>
           </thead>
         </table>
       </div>
-      <div class="form-group col-12 col-md-4 text-center">
+    </div>
+    <div class="row">
+    <div class="form-group col-12 col-md-12 text-center">
         <label class="small mb-1" for="exampleFormControlTextarea1">Monto total a pagar</label>
         <div class="input-group mb-3">
           <input type="number" step=".01" class="form-control text-center" style="font-weight: bold; font-size: 1.2rem;" id="total_amount" disabled>
           <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="calculateTotal()"><i class="fas fa-calculator fa-sm"></i></button>
         </div>
         <div class="row">
-          <div class="col-6">
-            <button class="btn btn-success btn-block" id="register_loan" type="submit" onclick="return payConfirmation();" disabled>Registrar Pago</button>
+        <div class="col-6">
+            <a href="<?php echo site_url('admin/payments/'); ?>" class="btn btn-dark btn-block">Cancelar</a>
           </div>
           <div class="col-6">
-            <a href="<?php echo site_url('admin/payments/'); ?>" class="btn btn-dark btn-block">Cancelar</a>
+            <button class="btn btn-success btn-block" id="register_loan" type="submit" onclick="return payConfirmation();" disabled>Registrar Pago</button>
           </div>
         </div>
       </div>
@@ -99,6 +101,4 @@
   });
 </script>
 
-<script src="<?= site_url() . 'assets/js/payment.js' ?>">
-
-</script>
+<script src="<?= site_url() . 'assets/js/payment.js' ?>"></script>
