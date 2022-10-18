@@ -4,7 +4,7 @@
     <div>
       <?php
       if (isset($users)) : if (sizeof($users) > 0) :
-          echo "<select class='custom-select-sm btn-outline-secondary col-md-12' id='user_id'>"; //  onchange='location = this.value;'
+          echo "<select class='custom-select-sm btn-outline-secondary col-md-12' id='user_id'>";
           echo "<option value='all' $selected>TODOS</option>";
           foreach ($users as $user) :
             $user_name = "$user->academic_degree $user->first_name $user->last_name";
@@ -14,7 +14,6 @@
         endif;
       endif;
       ?>
-      <!-- <a class="d-sm-inline-block btn btn-sm btn-success shadow-sm" href="#" onclick="printElementById('imp1', report_title);"><i class="fas fa-print fa-sm"></i> Imprimir</a> -->
     </div>
 
   </div>
@@ -86,7 +85,7 @@
           </tr>
           <tr>
             <td>Total por cobros realizados</td>
-            <td class="text-right" id="mount_payed">0</td>
+            <td class="text-right" id="total_payed">0</td>
           </tr>
         </tbody>
       </table>
@@ -98,3 +97,5 @@
     </div>
   </div>
 </div>
+
+<script src="<?= site_url() ?>assets/js/general-report.js"></script>

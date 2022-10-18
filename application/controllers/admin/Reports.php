@@ -44,11 +44,11 @@ class Reports extends CI_Controller
         $all_users->user_name = $user_id;
         $data['selected_user'] =  $all_users;
       } elseif(is_numeric($user_id)) {
-        $data['credits'] = $this->reports_m->get_reportLoan($user_id, $coin_id, $start_d, $end_d);
+        $data['credits'] = $this->reports_m->getReportLoan($user_id, $coin_id, $start_d, $end_d);
         $data['selected_user'] = $this->reports_m->getUser($user_id);
       }
     } else if ($this->permission->getPermission([AUTHOR_LOAN_READ], FALSE)) {
-      $data['credits'] = $this->reports_m->get_reportLoan($this->user_id, $coin_id, $start_d, $end_d);
+      $data['credits'] = $this->reports_m->getReportLoan($this->user_id, $coin_id, $start_d, $end_d);
       $data['selected_user'] = $this->reports_m->getUser($this->user_id);
     }
     echo json_encode($data);

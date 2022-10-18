@@ -50,3 +50,5 @@
 
   </div>
 </div>
+
+<script src="<?php echo site_url() ?>assets/js/dates-report.js"></script>

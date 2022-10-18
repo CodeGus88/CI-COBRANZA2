@@ -36,7 +36,7 @@ class Reports_m extends CI_Model {
     $this->db->where("li.date BETWEEN '{$start_date}' AND '{$end_date}'");
     $payable = $this->db->get()->row();
     // Total pagos cobrado
-    $this->db->select('co.short_name, IFNULL(SUM(IFNULL(p.mount, li.fee_amount)),0) AS mount_payed');
+    $this->db->select('co.short_name, IFNULL(SUM(IFNULL(p.mount, li.fee_amount)),0) AS mount_payed, IFNULL(SUM(IFNULL(p.surcharge, 0)),0) AS mount_surcharge');
     $this->db->from('loans l');
     $this->db->join('coins co', 'co.id = l.coin_id');
     $this->db->join('loan_items li', 'li.loan_id = l.id');
@@ -52,7 +52,7 @@ class Reports_m extends CI_Model {
     return $credits;
   }
 
-  public function get_reportLoan($user_id, $coin_id, $start_date, $end_date)
+  public function getReportLoan($user_id, $coin_id, $start_date, $end_date)
   {
     $this->db->select('c.short_name, sum(l.credit_amount) as sum_credit');
     $this->db->join('coins c', 'c.id = l.coin_id');
@@ -98,8 +98,9 @@ class Reports_m extends CI_Model {
     $this->db->where("c.user_id", $user_id);
     $this->db->where("(li.date BETWEEN '{$start_date}' AND '{$end_date}')");
     $payable = $this->db->get()->row();
-    // Total monto cobrado 
-    $this->db->select('co.short_name, IFNULL(SUM(IFNULL(p.mount, li.fee_amount)),0) AS mount_payed');
+    // Total monto cobrado por por cuotas y moras
+    // $this->db->select('co.short_name, IFNULL(SUM(IFNULL(p.mount, li.fee_amount)),0) AS mount_payed');
+    $this->db->select('co.short_name, IFNULL(SUM(IFNULL(p.mount, li.fee_amount)),0) AS mount_payed, IFNULL(SUM(IFNULL(p.surcharge, 0)),0) AS mount_surcharge');
     $this->db->from('loans l');
     $this->db->join('coins co', 'co.id = l.coin_id');
     $this->db->join('customers c', 'c.id = l.customer_id');
