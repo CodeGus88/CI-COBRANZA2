@@ -25,7 +25,7 @@ class Payments_m extends CI_Model {
     $this->db->where('li.status', 0);
     $this->db->where('u.id', $user_id);
     $this->db->order_by('li.pay_date', 'desc');
-    return $this->db->get()->result(); 
+    return $this->db->get()->result();
   }
 
   public function getCustomersAll(){
@@ -83,14 +83,17 @@ class Payments_m extends CI_Model {
 
   public function getLoanItems($user_id, $loan_id)
   {
-    $this->db->select("li.*, select SUM(IFNULL(p.mount, 0)) payed, SUM(IFNULL(p.surcharge, 0)) surcharge FROM payments p WHERE p.loan_item_id = li.id");
+    $this->db->select("li.*, SUM(IFNULL(p.mount, 0)) payed, SUM(IFNULL(p.surcharge, 0)) surcharge");
     $this->db->from('loan_items li');
     $this->db->join('loans l', 'l.id = li.loan_id');
     $this->db->join('customers c', 'c.id = l.customer_id');
     $this->db->join('users u', 'u.id = c.user_id');
     $this->db->join('coins co', 'co.id = l.coin_id');
+    $this->db->join('payments p', 'p.loan_item_id = li.id', 'left');
     $this->db->where("l.id", $loan_id);
     $this->db->where("u.id", $user_id);
+    $this->db->group_by('li.id');
+    $this->db->order_by('li.num_quota');
     return $this->db->get()->result();
   }
 
