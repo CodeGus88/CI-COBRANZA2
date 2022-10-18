@@ -168,7 +168,7 @@ class Reports_m extends CI_Model {
     return $this->db->get()->result(); 
   }
 
-  public function get_reportLCAll($customer_id)
+  public function getReportLCAll($customer_id)
   {
     $this->db->select("l.*, CONCAT(c.first_name, ' ', c.last_name) AS customer_name, co.short_name, co.name,
     CONCAT(u.academic_degree, ' ', u.first_name, ' ', u.last_name) AS user_name, c.dni ci");
@@ -181,7 +181,7 @@ class Reports_m extends CI_Model {
     return $this->db->get()->result(); 
   }
 
-  public function get_reportLC($user_id, $customer_id)
+  public function getReportLC($user_id, $customer_id)
   {
     $this->db->select("l.*, CONCAT(c.first_name, ' ', c.last_name) AS customer_name, co.short_name, co.name,
     CONCAT(u.academic_degree, ' ', u.first_name, ' ', u.last_name) AS user_name, c.dni ci");
@@ -197,7 +197,7 @@ class Reports_m extends CI_Model {
 
   public function getReportLIAll($loan_id)
   {
-    $this->db->select("li.*,  SUM(IFNULL(p.mount, 0)) as payed, SUM(IFNULL(p.surcharge, 0)) surcharge");
+    $this->db->select("li.*, SUM(IFNULL(p.mount, 0)) as payed, SUM(IFNULL(p.surcharge, 0)) surcharge");
     $this->db->join('payments p', 'p.loan_item_id = li.id', 'left');
     $this->db->group_by('li.id');
     $this->db->where('loan_id', $loan_id);
@@ -207,14 +207,13 @@ class Reports_m extends CI_Model {
 
   public function getReportLI($user_id, $loan_id)
   {
-    $this->db->select("li.*,  SUM(IFNULL(p.mount, 0)) as payed, SUM(IFNULL(p.surcharge, 0)) surcharge");
+    $this->db->select("li.*, SUM(IFNULL(p.mount, 0)) payed, SUM(IFNULL(p.surcharge, 0)) surcharge");
     $this->db->join('loans l', 'l.id = li.loan_id');
     $this->db->join('customers c', 'c.id = l.customer_id');
-    $this->db->join('users u', 'u.id = c.user_id');
     $this->db->join('payments p', 'p.loan_item_id = li.id', 'left');
     $this->db->where('loan_id', $loan_id);
-    $this->db->where('u.id', $user_id);
-
+    $this->db->where('c.user_id', $user_id);
+    $this->db->group_by('li.id');
     return $this->db->get('loan_items li')->result(); 
   }
 

@@ -167,9 +167,9 @@ class Reports extends CI_Controller
 
     $reportCst = [];
     if ($this->permission->getPermissionX([LOAN_READ, LOAN_ITEM_READ], FALSE)) {
-      $reportCst = $this->reports_m->get_reportLCAll($customer_id);
+      $reportCst = $this->reports_m->getReportLCAll($customer_id);
     } else if ($this->permission->getPermission([AUTHOR_LOAN_READ, AUTHOR_LOAN_ITEM_READ], FALSE)) {
-      $reportCst = $this->reports_m->get_reportLC($this->user_id, $customer_id);
+      $reportCst = $this->reports_m->getReportLC($this->user_id, $customer_id);
     } else {
       $this->permission->getPermissionX([], TRUE);
     }
@@ -222,7 +222,7 @@ class Reports extends CI_Controller
       } elseif ($this->permission->getPermission([AUTHOR_LOAN_ITEM_READ], FALSE)) {
         $loanItems = $this->reports_m->getReportLI($this->session->userdata('user_id'), $rc->id);
       }
-
+      // print_r(json_encode($loanItems) );
       foreach ($loanItems as $li) {
         if($li->status == FALSE && $li->payed == 0){
           $li->payed = $li->fee_amount;
