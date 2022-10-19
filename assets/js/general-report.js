@@ -18,7 +18,7 @@ function loadGeneralReport() {
   $.get(base_url + "admin/reports/ajaxGetCredits/" + coin_id + "/" + start_d + "/" + end_d + ((user_id != '') ? "/" + user_id : ''), function (data) {
 
     data = JSON.parse(data);
-    console.log('con parse', data)
+    // console.log('con parse', data)
 
     if (data.credits[0].sum_credit == null) {
       var sum_credit = '0.00 ' + symbol
@@ -51,7 +51,7 @@ function loadGeneralReport() {
       var total_payed = '0.00 ' + symbol
     } else {
       
-      var total_payed = (Number(data.credits[4].mount_payed) + Number(data.credits[4].mount_surcharge)) + ' ' + (data.credits[4].short_name).toUpperCase()
+      var total_payed = (Number(data.credits[4].mount_payed) + Number(data.credits[4].mount_surcharge)).toFixed(2) + ' ' + (data.credits[4].short_name).toUpperCase()
     }
     $("#total_payed").html(total_payed)
     if (data.credits[5].payable == null) {
