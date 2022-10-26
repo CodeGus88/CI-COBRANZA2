@@ -30,6 +30,23 @@ class CashRegister extends CI_Controller {
 
   public function ajax_loas_cash_registers($user_id = 'all')
   {
+    $CASH_REGISTER_READ = $this->permission->getPermission([CASH_REGISTER_READ], FALSE);
+    $AUTHOR_CASH_REGISTER_READ = $this->permission->getPermission([AUTHOR_CASH_REGISTER_READ], FALSE);
+    if(!$CASH_REGISTER_READ) {
+      if($AUTHOR_CASH_REGISTER_READ)
+        $user_id = $this->user_id;
+      else{
+        $json_data = array(
+          "draw"            => intval($this->input->post('draw')),
+          "recordsTotal"    => intval(0), // total registros para mostrar
+          "recordsFiltered" => intval(0), // total registro en base de datos
+          "data"            => [], // Registros 
+        );
+        echo json_encode($json_data);
+        return;
+      }
+        
+    }
     $start = $this->input->post('start');
 		$length = $this->input->post('length');
 		$search = $this->input->post('search')['value']??'';
@@ -37,8 +54,8 @@ class CashRegister extends CI_Controller {
     $columIndex = $this->input->post('order')['0']['column']??6;
     $order['column'] = $columns[$columIndex]??'';
     $order['dir'] = $this->input->post('order')['0']['dir']??'';
-    $query = $this->cashregister_m->getCashRegistersAll($start, $length, $search, $order, $user_id);
-    if(sizeof($query['data'])==0 && $start>0) $query = $this->cashregister_m->getCashRegistersAll(0, $length, $search, $order, $user_id);
+    $query = $this->cashregister_m->getCashRegisters($start, $length, $search, $order, $user_id);
+    if(sizeof($query['data'])==0 && $start>0) $query = $this->cashregister_m->getCashRegisters(0, $length, $search, $order, $user_id);
     $json_data = array(
       "draw"            => intval($this->input->post('draw')),
       "recordsTotal"    => intval(sizeof($query['data'])), // total registros para mostrar
@@ -89,6 +106,7 @@ class CashRegister extends CI_Controller {
 
   public function view(){
     $cash_register_id = $this->input->get('cash_register_id');
+    echo $cash_register_id;
     $data['subview'] = 'admin/cash-registers/view';
     $this->load->view('admin/_main_layout', $data);
   }

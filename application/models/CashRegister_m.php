@@ -29,7 +29,7 @@ class CashRegister_m extends MY_Model {
     return $obj;
   }
 
-  public function getCashRegistersAll($start, $length, $search, $order, $user_id)
+  public function getCashRegisters($start, $length, $search, $order, $user_id)
   {
     $this->db->select("COUNT(IFNULL(cr.id, 0)) recordsFiltered");
     $this->db->from('cash_registers cr');
@@ -62,7 +62,7 @@ class CashRegister_m extends MY_Model {
       LEFT JOIN  loans l ON l.id = lo.loan_id
       WHERE lo.cash_register_id = cr.id
     ), 0)";
-    $this->db->select("cr.*,CONCAT_ws(' ', ( ($manualInput + $paymentsInputs) - ($manualOutputs + $loanOutputs) ),  c.short_name)  total_mount, 
+    $this->db->select("cr.*, c.short_name,( ($manualInput + $paymentsInputs) - ($manualOutputs + $loanOutputs) )  total_mount, 
     CONCAT_WS(' ', u.first_name, u.last_name) user_name");
     $this->db->from('cash_registers cr');
     $this->db->join('users u', 'u.id = cr.user_id');
@@ -72,9 +72,13 @@ class CashRegister_m extends MY_Model {
     $this->db->where("(cr.opening_date LIKE '%$search%' OR cr.closing_date LIKE '%$search%' 
     OR  CONCAT_WS(' ', u.first_name, u.last_name) LIKE '%$search%') $user_condition");
     $this->db->limit($length, $start);
-    if(isset($order['column']))
+    if($order['column'] != 'name')
       $this->db->order_by($order['column'], $order['dir']);
-    
+    else{
+      $this->db->order_by("LENGTH(cr.name)", $order['dir']);
+      $this->db->order_by("cr.name", $order['dir']);
+    }
+
     $data['data'] = $this->db->get()->result()??[];
     
     return $data;
@@ -101,15 +105,18 @@ class CashRegister_m extends MY_Model {
   }
 
   public function getLoanOutputsByCashRegisterId($cash_register_id){
-    // implementar salidas por prestaamos
-    return 0;
+    $this->db->select("IFNULL(SUM(IFNULL(l.creadit_amount, 0)), 0) mount");
+    $this->db->from('loan_outputs lo');
+    $this->db->join('loans l', 'l.id = lo.loan_id', 'left');
+    $this->db->where('lo.cash_register_id', $cash_register_id);
+    return $this->db->get()->row()->mount??0;
   }
 
   /**
    * Obtiene el total de egresos manuales en una caja
    */
   public function getPaymentInputsByCashRegisterId($cash_register_id){
-    // implementar entradas por pagos
+    $this->db->select("IFNULL(SUM(IFNULL(p.mount)), 0)");
     return 0;
   }
 
@@ -121,11 +128,6 @@ class CashRegister_m extends MY_Model {
     $outputs = $this->getManualOutputsByCashRegisterId($cash_register_id) + $this->getLoanOutputsByCashRegisterId($cash_register_id);
     $total = $inputs - $outputs;
     return $total;
-  }
-
-  public function getCashRegisters($user_id)
-  {
-    return null;
   }
 
   public function cashRegisterInsert($data){

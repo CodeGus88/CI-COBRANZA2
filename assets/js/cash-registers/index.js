@@ -2,7 +2,10 @@
 function loadData() {
     $(document).ready(function () {
         // Consultar cuotas del préstamo
-        user_id = document.getElementById('userSelector').value != 'all'?'/'+document.getElementById('userSelector').value:'';
+        if(document.getElementById( "userSelector" ))
+            user_id = document.getElementById('userSelector').value != 'all'?'/'+document.getElementById('userSelector').value:'';
+        else
+            user_id = null;
         $("#cash-registers").dataTable().fnDestroy();
         // $("#cash-registers").dataTable().destroy();0
         $('#cash-registers').dataTable({
@@ -22,20 +25,25 @@ function loadData() {
             'columns': [
                 { data: 'name', 'sClass': 'dt-body-center' },
                 { data: 'user_name' },
-                { data: 'total_mount' },
+                // { data: 'total_mount' },
+                {'total_mount': true, 
+                    render: function(data, type, row){
+                        return `${row.total_mount} ${row.short_name}`;
+                    }
+                },
                 { data: 'opening_date' },
                 { data: 'closing_date' },
                 {
                     'cell': true,
                     render: function (data, type, row) {
                         if(row.status==1)
-                            return `<button class="btn btn-success btn-sm">Abierto</button>`;
+                            return `<a class="btn btn-success btn-sm" href="${base_url}admin/cashregister/view?id=${row.id}">Abierto</a>`;
                         else
-                            return `<button class="btn btn-warning btn-sm">Cerrado</button>`;
+                            return `<a class="btn btn-warning btn-sm" href="">Cerrado</a>`;
                     }
                 }
             ],
-            "order": [[1, "desc"]]
+            "order": [[3, "asc"]]
         });
     });
 
