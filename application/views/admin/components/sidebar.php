@@ -53,6 +53,12 @@
     <?php endif?>
   
   
+    <li class="nav-item">
+    <a class="nav-link" href="<?php echo site_url('admin/cashRegister/index'); ?>">
+      <i class="fas fa-fw fa-money-bill"></i>
+      <span>Cajas</span></a>
+  </li>
+
 
   <li class="nav-item">
     <a class="nav-link" href="<?php echo site_url('admin/loans'); ?>">

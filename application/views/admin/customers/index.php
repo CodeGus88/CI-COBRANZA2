@@ -48,22 +48,20 @@
       <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
         <thead>
           <tr>
-            <th>CI</th>
-            <th>Nombres</th>
-            <th>Apellidos</th>
-            <th>Género</th>
-            <th>Celular</th>
-            <th>Empresa</th>
-            <th>Estado</th>
-            <th>Acciones</th>
+            <th class="col-1">CI</th>
+            <th class="col-4">Nombre completo</th>
+            <th class="col-1">Género</th>
+            <th class="col-1">Celular</th>
+            <th class="col-1">Empresa</th>
+            <th class="col-2">Estado</th>
+            <th class="col-2">Acciones</th>
           </tr>
         </thead>
         <tbody>
           <?php if (count($customers)) : foreach ($customers as $ct) : ?>
               <tr>
                 <td><?php echo $ct->dni ?></td>
-                <td><?php echo $ct->first_name ?></td>
-                <td><?php echo $ct->last_name ?></td>
+                <td><?php echo $ct->first_name . " " .$ct->last_name ?></td>
                 <td><?php echo $ct->gender ?></td>
                 <td><?php echo $ct->mobile ?></td>
                 <td><?php echo $ct->company ?></td>

@@ -26,6 +26,7 @@
     <script> 
         const print_style = "<?php  echo site_url()?>assets/css/print.css" 
     </script>
+    <script type="text/javascript">base_url = '<?= base_url();?>'</script>
 
     <!-- Agregar toastr -->
     <link href="<?php echo site_url() ?>assets/libs/toastr/toastr.min.css" rel="stylesheet">
@@ -119,7 +120,6 @@
       });
     </script> 
 
-    <script type="text/javascript">base_url = '<?= base_url();?>'</script>
     <script src="<?php echo site_url(); ?>assets/js/script.js"></script>
 
     <script src="<?php echo site_url() ?>assets/libs/toastr/toastr.min.js"></script>

@@ -148,4 +148,4 @@
   })
 </script>
 
-<script src="<?= site_url() . 'assets/js/loans.js' ?>"></script>
+<script src="<?= site_url() . 'assets/js/loans/edit.js' ?>"></script>

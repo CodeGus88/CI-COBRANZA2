@@ -98,4 +98,4 @@
   </div>
 </div>
 
-<script src="<?= site_url() ?>assets/js/general-report.js"></script>
+<script src="<?= site_url() ?>assets/js/reports/index.js"></script>

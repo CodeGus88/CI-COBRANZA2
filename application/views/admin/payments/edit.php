@@ -101,4 +101,4 @@
   });
 </script>
 
-<script src="<?= site_url() . 'assets/js/payment.js' ?>"></script>
+<script src="<?= site_url() . 'assets/js/payments/edit.js' ?>"></script>

@@ -13,11 +13,7 @@ class Permission_m extends CI_Model {
         $this->db->join('users u', "u.id = ur.user_id");
         $this->db->where('p.name', $permission);
         $this->db->where('u.id', $user_id);
-        if($this->db->get()->row()->count > 0){
-            return true;
-        }else {
-            return false;
-        } 
+        return ($this->db->get()->row()->count > 0);
     }
 
     /**Devuelve la lista de permisos del usuario */

@@ -60,8 +60,8 @@ function loadLoanItems(loan_id) {
   fetch(base_url + "admin/payments/ajax_get_loan_items/" + loan_id)
     .then(responsex => responsex.json())
     .then(datax => {
-      console.log("Datos:");
-      console.log(datax);
+      // console.log("Datos:");
+      // console.log(datax);
       if (datax.quotas != null) { // Cargar tabla
         // cargar tabla de cuotas
         var x = new Array(datax.quotas.length);
