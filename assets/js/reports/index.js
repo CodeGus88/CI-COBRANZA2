@@ -47,10 +47,10 @@ function loadGeneralReport() {
       var cr_interestPay = data.credits[3].cr_interestPay + ' ' + (data.credits[3].short_name).toUpperCase()
     }
     $("#cr_interestPay").html(cr_interestPay)
-    if (data.credits[4].mount_payed == null) {
+    if (data.credits[4].amount_payed == null) {
       var total_payed = '0.00 ' + symbol
     } else {
-      var total_payed = (Number(data.credits[4].mount_payed) + Number(data.credits[4].mount_surcharge)).toFixed(2) + ' ' + (data.credits[4].short_name).toUpperCase()
+      var total_payed = (Number(data.credits[4].amount_payed) + Number(data.credits[4].amount_surcharge)).toFixed(2) + ' ' + (data.credits[4].short_name).toUpperCase()
     }
     $("#total_payed").html(total_payed)
     if (data.credits[5].payable == null) {

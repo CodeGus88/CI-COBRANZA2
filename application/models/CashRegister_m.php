@@ -17,7 +17,7 @@ class CashRegister_m extends MY_Model {
       'rules' => 'trim|required',
     ),
     array(
-      'field' => 'mount',
+      'field' => 'amount',
       'label' => 'monto',
       'rules' => 'numeric|is_natural_no_zero|required',
     )
@@ -41,18 +41,18 @@ class CashRegister_m extends MY_Model {
     $data['recordsFiltered'] = $this->db->get()->row()->recordsFiltered??0;
     
     $manualInput = "IFNULL((
-      SELECT SUM(IFNULL(mi.mount, 0)) 
+      SELECT SUM(IFNULL(mi.amount, 0)) 
       FROM manual_inputs mi
       WHERE mi.cash_register_id = cr.id
     ), 0)";
     $paymentsInputs = "IFNULL((
-      SELECT SUM( IFNULL(p.mount, 0) + IFNULL(p.surcharge, 0))
+      SELECT SUM( IFNULL(p.amount, 0) + IFNULL(p.surcharge, 0))
       FROM payment_inputs pin
       LEFT JOIN payments p ON pin.payment_id = p.id
       WHERE pin.cash_register_id = cr.id
     ), 0)";
     $manualOutputs = "IFNULL((
-      SELECT SUM(IFNULL(mo.mount, 0)) 
+      SELECT SUM(IFNULL(mo.amount, 0)) 
       FROM manual_outputs mo
       WHERE mo.cash_register_id = cr.id
     ), 0)";
@@ -62,7 +62,7 @@ class CashRegister_m extends MY_Model {
       LEFT JOIN  loans l ON l.id = lo.loan_id
       WHERE lo.cash_register_id = cr.id
     ), 0)";
-    $this->db->select("cr.*, c.short_name,( ($manualInput + $paymentsInputs) - ($manualOutputs + $loanOutputs) )  total_mount, 
+    $this->db->select("cr.*, c.short_name,( ($manualInput + $paymentsInputs) - ($manualOutputs + $loanOutputs) )  total_amount, 
     CONCAT_WS(' ', u.first_name, u.last_name) user_name");
     $this->db->from('cash_registers cr');
     $this->db->join('users u', 'u.id = cr.user_id');
@@ -88,35 +88,35 @@ class CashRegister_m extends MY_Model {
    * Obtiene el total de ingresos manuales en una caja
    */
   public function getManualInputsByCashRegisterId($cash_register_id){
-    $this->db->select("IFNULL(SUM(IFNULL(mi.mount,0)), 0) mount");
+    $this->db->select("IFNULL(SUM(IFNULL(mi.amount,0)), 0) amount");
     $this->db->from("manual_inputs mi");
     $this->db->where("mi.cash_register_id", $cash_register_id);
-    return $this->db->get()->row()->mount;
+    return $this->db->get()->row()->amount;
   }
 
   /**
    * Obtiene el total de egresos manuales en una caja
    */
   public function getManualOutputsByCashRegisterId($cash_register_id){
-    $this->db->select("IFNULL(SUM(IFNULL(mo.mount,0)), 0) mount");
+    $this->db->select("IFNULL(SUM(IFNULL(mo.amount,0)), 0) amount");
     $this->db->from("manual_outputs mo");
     $this->db->where("mo.cash_register_id", $cash_register_id);
-    return $this->db->get()->row()->mount??0;
+    return $this->db->get()->row()->amount??0;
   }
 
   public function getLoanOutputsByCashRegisterId($cash_register_id){
-    $this->db->select("IFNULL(SUM(IFNULL(l.creadit_amount, 0)), 0) mount");
+    $this->db->select("IFNULL(SUM(IFNULL(l.creadit_amount, 0)), 0) amount");
     $this->db->from('loan_outputs lo');
     $this->db->join('loans l', 'l.id = lo.loan_id', 'left');
     $this->db->where('lo.cash_register_id', $cash_register_id);
-    return $this->db->get()->row()->mount??0;
+    return $this->db->get()->row()->amount??0;
   }
 
   /**
    * Obtiene el total de egresos manuales en una caja
    */
   public function getPaymentInputsByCashRegisterId($cash_register_id){
-    $this->db->select("IFNULL(SUM(IFNULL(p.mount)), 0)");
+    $this->db->select("IFNULL(SUM(IFNULL(p.amount)), 0)");
     return 0;
   }
 

@@ -37,7 +37,7 @@
 
       <div class="form-group col-md-6">
         <label class="small mb-1" for="inputUsername">Monto de apertura</label>
-        <input class="form-control" id="mount" type="number" name="mount" min="1" required>
+        <input class="form-control" id="amount" type="number" name="amount" min="1" required>
       </div>
       <div class="form-group col-md-6">
         <label class="small mb-1" for="exampleFormControlTextarea1">Descripción del monto</label>

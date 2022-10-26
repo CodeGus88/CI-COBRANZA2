@@ -205,14 +205,14 @@ function payConfirmation() {
         const object = {
           quota_id: $(this).val(),
           num_quota: $(this).attr('num_quota'),
-          quota_mount: $('#amount_quota_' + $(this).val()).val(),
-          surcharge_mount: $('#surcharge_' + $(this).val()).val()
+          quota_amount: $('#amount_quota_' + $(this).val()).val(),
+          surcharge_amount: $('#surcharge_' + $(this).val()).val()
         };
-        if (parseFloat(object.quota_mount) <= 0)
+        if (parseFloat(object.quota_amount) <= 0)
           errors += ((errors == '') ? '' : separator) + `- La cuota ${object.num_quota} debe ser mayor a 0.`;
-        if (parseFloat(object.quota_mount) > parseFloat($(this).attr('data_fee')))
+        if (parseFloat(object.quota_amount) > parseFloat($(this).attr('data_fee')))
           errors += ((errors == '') ? '' : separator) + `- La cuota ${object.num_quota} no puede ser mayor a ${$(this).attr('data_fee')}.`;
-        if (parseFloat(object.surcharge_mount) < 0)
+        if (parseFloat(object.surcharge_amount) < 0)
           errors += ((errors == '') ? '' : separator) + `- El recargo en la cuota ${object.num_quota}, no puede ser negativo.`;
         quotasArray[quotas] = object;
         quotas++;
@@ -224,7 +224,7 @@ function payConfirmation() {
     if (errors == '') {
       strQuotas = "";
       quotasArray.forEach(
-        (quotaItem) => { strQuotas += `(${quotaItem.quota_id}) Cuota: ${quotaItem.num_quota}: ${quotaItem.quota_mount} Recargo: ${quotaItem.surcharge_mount}\n`; }
+        (quotaItem) => { strQuotas += `(${quotaItem.quota_id}) Cuota: ${quotaItem.num_quota}: ${quotaItem.quota_amount} Recargo: ${quotaItem.surcharge_amount}\n`; }
       );
       return confirm(
         `Número de cuotas: ${quotas}\n\n${strQuotas}\nTotal: ${total_amount}\n\n¿Continuar?`

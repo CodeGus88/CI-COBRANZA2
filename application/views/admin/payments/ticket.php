@@ -81,12 +81,12 @@
           <tbody>
             <?php if (isset($quotas_payments)) : foreach ($quotas_payments as $qp) : ?>
                 <?php
-                $subtotal =  $qp->mount + $qp->surcharge;
+                $subtotal =  $qp->amount + $qp->surcharge;
                 $total += $subtotal;
                 ?>
                 <tr>
                   <td>Cuota N° <?php echo $qp->num_quota ?></td>
-                  <td class="text-right"><?php echo $qp->mount;  ?></td>
+                  <td class="text-right"><?php echo $qp->amount;  ?></td>
                   <td class="text-right"><?php echo $qp->surcharge ?></td>
                   <td class="text-right"><?php echo number_format($subtotal, 2) ?></td>
                 </tr>

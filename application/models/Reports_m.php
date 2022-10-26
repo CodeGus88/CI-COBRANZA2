@@ -36,7 +36,7 @@ class Reports_m extends CI_Model {
     $this->db->where("li.date BETWEEN '{$start_date}' AND '{$end_date}'");
     $payable = $this->db->get()->row();
     // Total pagos cobrado
-    $this->db->select('co.short_name, IFNULL(SUM(IFNULL(p.mount, li.fee_amount)),0) AS mount_payed, IFNULL(SUM(IFNULL(p.surcharge, 0)),0) AS mount_surcharge');
+    $this->db->select('co.short_name, IFNULL(SUM(IFNULL(p.amount, li.fee_amount)),0) AS amount_payed, IFNULL(SUM(IFNULL(p.surcharge, 0)),0) AS amount_surcharge');
     $this->db->from('loans l');
     $this->db->join('coins co', 'co.id = l.coin_id');
     $this->db->join('loan_items li', 'li.loan_id = l.id');
@@ -45,9 +45,9 @@ class Reports_m extends CI_Model {
     $this->db->where("( (li.status = FALSE AND li.pay_date BETWEEN '{$start_date}' AND '{$end_date} 23:59:59') OR 
     (li.status = TRUE AND  EXISTS(SELECT * FROM payments py WHERE py.loan_item_id = li.id) AND dp.pay_date BETWEEN '{$start_date}' AND '{$end_date} 23:59:59') )");
     $this->db->where("co.id", $coin_id);
-    $mount_payed = $this->db->get()->row();
+    $amount_payed = $this->db->get()->row();
 
-    $credits = [$cr, $cr_interest, $cr_interestPaid, $cr_interestPay, $mount_payed, $payable];
+    $credits = [$cr, $cr_interest, $cr_interestPaid, $cr_interestPay, $amount_payed, $payable];
 
     return $credits;
   }
@@ -99,8 +99,7 @@ class Reports_m extends CI_Model {
     $this->db->where("(li.date BETWEEN '{$start_date}' AND '{$end_date}')");
     $payable = $this->db->get()->row();
     // Total monto cobrado por por cuotas y moras
-    // $this->db->select('co.short_name, IFNULL(SUM(IFNULL(p.mount, li.fee_amount)),0) AS mount_payed');
-    $this->db->select('co.short_name, IFNULL(SUM(IFNULL(p.mount, li.fee_amount)),0) AS mount_payed, IFNULL(SUM(IFNULL(p.surcharge, 0)),0) AS mount_surcharge');
+    $this->db->select('co.short_name, IFNULL(SUM(IFNULL(p.amount, li.fee_amount)),0) AS amount_payed, IFNULL(SUM(IFNULL(p.surcharge, 0)),0) AS amount_surcharge');
     $this->db->from('loans l');
     $this->db->join('coins co', 'co.id = l.coin_id');
     $this->db->join('customers c', 'c.id = l.customer_id');
@@ -111,9 +110,9 @@ class Reports_m extends CI_Model {
     (li.status = TRUE AND  EXISTS(SELECT * FROM payments py WHERE py.loan_item_id = li.id) AND dp.pay_date BETWEEN '{$start_date}' AND '{$end_date}  23:59:59') )");
     $this->db->where("c.user_id", $user_id);
     $this->db->where("co.id", $coin_id);
-    $mount_payed = $this->db->get()->row();
+    $amount_payed = $this->db->get()->row();
 
-    $credits = [$cr, $cr_interest, $cr_interestPaid, $cr_interestPay, $mount_payed, $payable];
+    $credits = [$cr, $cr_interest, $cr_interestPaid, $cr_interestPay, $amount_payed, $payable];
 
     return $credits;
   }
@@ -197,7 +196,7 @@ class Reports_m extends CI_Model {
 
   public function getReportLIAll($loan_id)
   {
-    $this->db->select("li.*, SUM(IFNULL(p.mount, 0)) as payed, SUM(IFNULL(p.surcharge, 0)) surcharge");
+    $this->db->select("li.*, SUM(IFNULL(p.amount, 0)) as payed, SUM(IFNULL(p.surcharge, 0)) surcharge");
     $this->db->join('payments p', 'p.loan_item_id = li.id', 'left');
     $this->db->group_by('li.id');
     $this->db->where('loan_id', $loan_id);
@@ -207,7 +206,7 @@ class Reports_m extends CI_Model {
 
   public function getReportLI($user_id, $loan_id)
   {
-    $this->db->select("li.*, SUM(IFNULL(p.mount, 0)) payed, SUM(IFNULL(p.surcharge, 0)) surcharge");
+    $this->db->select("li.*, SUM(IFNULL(p.amount, 0)) payed, SUM(IFNULL(p.surcharge, 0)) surcharge");
     $this->db->join('loans l', 'l.id = li.loan_id');
     $this->db->join('customers c', 'c.id = l.customer_id');
     $this->db->join('payments p', 'p.loan_item_id = li.id', 'left');

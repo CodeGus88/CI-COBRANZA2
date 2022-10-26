@@ -68,7 +68,7 @@ class Payments_m extends CI_Model {
 
   public function getLoanItemsAll($loan_id)
   {
-    $this->db->select("li.*, SUM(IFNULL(p.mount, 0)) payed, SUM(IFNULL(p.surcharge, 0)) surcharge");
+    $this->db->select("li.*, SUM(IFNULL(p.amount, 0)) payed, SUM(IFNULL(p.surcharge, 0)) surcharge");
     $this->db->from('loan_items li');
     $this->db->join('loans l', 'l.id = li.loan_id');
     $this->db->join('customers c', 'c.id = l.customer_id');
@@ -83,7 +83,7 @@ class Payments_m extends CI_Model {
 
   public function getLoanItems($user_id, $loan_id)
   {
-    $this->db->select("li.*, SUM(IFNULL(p.mount, 0)) payed, SUM(IFNULL(p.surcharge, 0)) surcharge");
+    $this->db->select("li.*, SUM(IFNULL(p.amount, 0)) payed, SUM(IFNULL(p.surcharge, 0)) surcharge");
     $this->db->from('loan_items li');
     $this->db->join('loans l', 'l.id = li.loan_id');
     $this->db->join('customers c', 'c.id = l.customer_id');
@@ -118,7 +118,7 @@ class Payments_m extends CI_Model {
    */
   public function paymentsIsEqualToQuote($loan_item_id){
     $paidRequest = $this->db
-      ->select('SUM(p.mount) total_quota')
+      ->select('SUM(p.amount) total_quota')
       ->where('loan_item_id', $loan_item_id)
       ->get('payments p')
       ->row();
@@ -228,20 +228,20 @@ class Payments_m extends CI_Model {
     try{
       foreach($payments as $item){
         // Si payment es > a 0, continuar (ok)
-        if($item['mount'] <= 0)
-          array_push($success->errors, 'payments.mount <= 0');
+        if($item['amount'] <= 0)
+          array_push($success->errors, 'payments.amount <= 0');
         // Si payment es mayor a 0, continuar (ok)
         $loan_item_status = $this->db->select('status')->where('id', $item["loan_item_id"])->get('loan_items')->row();
         if($loan_item_status->status == FALSE)
           array_push($success->errors, 'loan_items.status is FALSE');
         // Si payment <= a la deuda, continuar;
-        $paid_request = $this->db->select("SUM(p.mount) AS debt")->where('loan_item_id', $item['loan_item_id'])->get('payments p')->row(); // deuda
-        $mount_request = $this->db->select('li.fee_amount')->where('id',$item['loan_item_id'])->get('loan_items li')->row();
+        $paid_request = $this->db->select("SUM(p.amount) AS debt")->where('loan_item_id', $item['loan_item_id'])->get('payments p')->row(); // deuda
+        $amount_request = $this->db->select('li.fee_amount')->where('id',$item['loan_item_id'])->get('loan_items li')->row();
         $paid = isset($paid_request->debt)?$paid_request->debt:0;
-        $mount = isset($mount_request->fee_amount)?$mount_request->fee_amount:0;
-        $debt = round($mount - $paid, 2);
-        if($item['mount'] > $debt)
-          array_push($success->errors, "payments.mount > debt ($mount > $debt)");
+        $amount = isset($amount_request->fee_amount)?$amount_request->fee_amount:0;
+        $debt = round($amount - $paid, 2);
+        if($item['amount'] > $debt)
+          array_push($success->errors, "payments.amount > debt ($amount > $debt)");
         if(sizeof($success->errors) > 0)
           $success->valid = FALSE;
         return $success;
@@ -265,7 +265,7 @@ class Payments_m extends CI_Model {
     ->get_where('document_payments dp', ['dp.id'=>$id])->row();
     // Obtener pagos del docuemnto
     $data['quotas_payments'] =  $this->db
-    ->select('li.num_quota, li.loan_id, p.loan_item_id, p.mount, p.surcharge, p.document_payment_id')
+    ->select('li.num_quota, li.loan_id, p.loan_item_id, p.amount, p.surcharge, p.document_payment_id')
     ->from('payments p')
     ->join('loan_items li', 'li.id = p.loan_item_id')
     ->where('p.document_payment_id', $id)
@@ -308,7 +308,7 @@ class Payments_m extends CI_Model {
     $this->db->select('c.id, c.dni, CONCAT(c.first_name, " " , c.last_name) customer_name, 
     CONCAT(u.academic_degree, " ", u.first_name, " " , u.last_name) user_name, 
     li.date, co.name as coin_name, co.short_name as coin_short_name, li.fee_amount,
-    (SELECT SUM(p.mount) FROM payments p WHERE p.loan_item_id = li.id) payed');
+    (SELECT SUM(p.amount) FROM payments p WHERE p.loan_item_id = li.id) payed');
     $this->db->from('customers c');
     $this->db->join('users u', 'u.id = c.user_id');
     $this->db->join('loans l', 'c.id = l.customer_id');
@@ -320,7 +320,7 @@ class Payments_m extends CI_Model {
     // print_r(json_encode($data) );
 
     // Montos totalespor monedas
-    $query = "SELECT c.name, SUM(IFNULL(li.fee_amount - (SELECT IFNULL(SUM(p.mount), 0) FROM payments p WHERE p.loan_item_id = li.id), 0)) total
+    $query = "SELECT c.name, SUM(IFNULL(li.fee_amount - (SELECT IFNULL(SUM(p.amount), 0) FROM payments p WHERE p.loan_item_id = li.id), 0)) total
     FROM loans l
     JOIN coins c ON c.id = l.coin_id
     JOIN loan_items li ON l.id = li.loan_id
@@ -330,7 +330,7 @@ class Payments_m extends CI_Model {
     // print_r($data['payables']);
 
     // Buscar monto total de moras por monedas
-    $queryA = "SELECT c.name, SUM(IFNULL(li.fee_amount - (SELECT IFNULL(SUM(p.mount), 0) FROM payments p WHERE p.loan_item_id = li.id), 0)) total
+    $queryA = "SELECT c.name, SUM(IFNULL(li.fee_amount - (SELECT IFNULL(SUM(p.amount), 0) FROM payments p WHERE p.loan_item_id = li.id), 0)) total
     FROM loans l
     JOIN coins c ON c.id = l.coin_id
     JOIN loan_items li ON l.id = li.loan_id
@@ -339,7 +339,7 @@ class Payments_m extends CI_Model {
     $data['payable_expired'] = $this->db->query($queryA)->result();
 
     // Buscar monto total de cobros hoy por monedas
-    $queryB = "SELECT c.name, SUM(IFNULL(li.fee_amount - (SELECT IFNULL(SUM(p.mount), 0) FROM payments p WHERE p.loan_item_id = li.id), 0)) total
+    $queryB = "SELECT c.name, SUM(IFNULL(li.fee_amount - (SELECT IFNULL(SUM(p.amount), 0) FROM payments p WHERE p.loan_item_id = li.id), 0)) total
     FROM loans l
     JOIN coins c ON c.id = l.coin_id
     JOIN loan_items li ON l.id = li.loan_id
@@ -348,7 +348,7 @@ class Payments_m extends CI_Model {
     $data['payable_now'] = $this->db->query($queryB)->result();
 
     // Buscar monto total de cobros próximos por monedas
-    $queryC = "SELECT c.name, SUM(IFNULL(li.fee_amount - (SELECT IFNULL(SUM(p.mount), 0) FROM payments p WHERE p.loan_item_id = li.id), 0)) total
+    $queryC = "SELECT c.name, SUM(IFNULL(li.fee_amount - (SELECT IFNULL(SUM(p.amount), 0) FROM payments p WHERE p.loan_item_id = li.id), 0)) total
     FROM loans l
     JOIN coins c ON c.id = l.coin_id
     JOIN loan_items li ON l.id = li.loan_id
@@ -367,7 +367,7 @@ class Payments_m extends CI_Model {
     $this->db->select('c.id, c.dni, CONCAT(c.first_name, " " , c.last_name) customer_name, 
     CONCAT(u.academic_degree, " ", u.first_name, " " , u.last_name) user_name, 
     li.date, , co.name as coin_name, co.short_name as coin_short_name, li.fee_amount,
-    (SELECT SUM(p.mount) FROM payments p WHERE p.loan_item_id = li.id) payed');
+    (SELECT SUM(p.amount) FROM payments p WHERE p.loan_item_id = li.id) payed');
     $this->db->from('customers c');
     $this->db->join('users u', 'u.id = c.user_id');
     $this->db->join('loans l', 'c.id = l.customer_id');
@@ -378,7 +378,7 @@ class Payments_m extends CI_Model {
     $data['items'] = $this->db->get()->result();
     
     // Buscar totales por cobrar
-    $query = "SELECT co.name, SUM(IFNULL(li.fee_amount - (SELECT IFNULL(SUM(p.mount), 0) FROM payments p WHERE p.loan_item_id = li.id), 0)) total
+    $query = "SELECT co.name, SUM(IFNULL(li.fee_amount - (SELECT IFNULL(SUM(p.amount), 0) FROM payments p WHERE p.loan_item_id = li.id), 0)) total
     FROM loans l
     JOIN customers c ON c.id = .l.customer_id
     JOIN coins co ON co.id = l.coin_id
@@ -388,7 +388,7 @@ class Payments_m extends CI_Model {
     $data['payables'] = $this->db->query($query)->result();
 
     // Buscar monto total de moras por monedas
-    $queryA = "SELECT co.name, SUM(IFNULL(li.fee_amount - (SELECT IFNULL(SUM(p.mount), 0) FROM payments p WHERE p.loan_item_id = li.id), 0)) total
+    $queryA = "SELECT co.name, SUM(IFNULL(li.fee_amount - (SELECT IFNULL(SUM(p.amount), 0) FROM payments p WHERE p.loan_item_id = li.id), 0)) total
     FROM loans l
     JOIN customers c ON c.id = .l.customer_id
     JOIN coins co ON co.id = l.coin_id
@@ -398,7 +398,7 @@ class Payments_m extends CI_Model {
     $data['payable_expired'] = $this->db->query($queryA)->result();
 
     // Buscar monto total de cobros hoy por monedas
-    $queryB = "SELECT co.name, SUM(IFNULL(li.fee_amount - (SELECT IFNULL(SUM(p.mount), 0) FROM payments p WHERE p.loan_item_id = li.id), 0)) total
+    $queryB = "SELECT co.name, SUM(IFNULL(li.fee_amount - (SELECT IFNULL(SUM(p.amount), 0) FROM payments p WHERE p.loan_item_id = li.id), 0)) total
     FROM loans l
     JOIN customers c ON c.id = .l.customer_id
     JOIN coins co ON co.id = l.coin_id
@@ -408,7 +408,7 @@ class Payments_m extends CI_Model {
     $data['payable_now'] = $this->db->query($queryB)->result();
 
     // Buscar monto total de cobros próximos por monedas
-    $queryC = "SELECT co.name, SUM(IFNULL(li.fee_amount - (SELECT IFNULL(SUM(p.mount), 0) FROM payments p WHERE p.loan_item_id = li.id), 0)) total
+    $queryC = "SELECT co.name, SUM(IFNULL(li.fee_amount - (SELECT IFNULL(SUM(p.amount), 0) FROM payments p WHERE p.loan_item_id = li.id), 0)) total
     FROM loans l
     JOIN customers c ON c.id = .l.customer_id
     JOIN coins co ON co.id = l.coin_id

@@ -120,7 +120,7 @@ class Payments extends CI_Controller
           foreach ($quota_id as $id) {
             array_push($payments, [
               'loan_item_id' => $id, 
-              'mount' => $this->input->post("amount_quota_$id"), 
+              'amount' => $this->input->post("amount_quota_$id"), 
               'surcharge'=>$this->input->post("surcharge_$id")
             ]);
           }

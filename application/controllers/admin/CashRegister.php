@@ -50,7 +50,7 @@ class CashRegister extends CI_Controller {
     $start = $this->input->post('start');
 		$length = $this->input->post('length');
 		$search = $this->input->post('search')['value']??'';
-    $columns = ['name', 'user_name', 'total_mount', 'opening_date', 'closing_date', 'status', null];
+    $columns = ['name', 'user_name', 'total_amount', 'opening_date', 'closing_date', 'status', null];
     $columIndex = $this->input->post('order')['0']['column']??6;
     $order['column'] = $columns[$columIndex]??'';
     $order['dir'] = $this->input->post('order')['0']['dir']??'';
@@ -83,7 +83,7 @@ class CashRegister extends CI_Controller {
         $this->db->trans_begin(); 
         $cash_register_id = $this->cashregister_m->cashRegisterInsert($data);
         $datax['cash_register_id'] = $cash_register_id;
-        $datax['mount'] = $this->input->post('mount');
+        $datax['amount'] = $this->input->post('amount');
         $datax['description'] = $this->input->post('description');
         $datax['date'] = $date;
         $this->cashregister_m->manualInputInsert($datax);

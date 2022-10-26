@@ -25,10 +25,9 @@ function loadData() {
             'columns': [
                 { data: 'name', 'sClass': 'dt-body-center' },
                 { data: 'user_name' },
-                // { data: 'total_mount' },
-                {'total_mount': true, 
+                {'total_amount': true, 
                     render: function(data, type, row){
-                        return `${row.total_mount} ${row.short_name}`;
+                        return `${row.total_amount} ${row.short_name}`;
                     }
                 },
                 { data: 'opening_date' },

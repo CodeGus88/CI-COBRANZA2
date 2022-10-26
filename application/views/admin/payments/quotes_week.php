@@ -72,11 +72,11 @@
                         $i = 0;
                         foreach ($items as $item) {
                           $payed = ($item->payed != null) ? $item->payed : 0;
-                          $mount = $item->fee_amount - $payed;
+                          $amount = $item->fee_amount - $payed;
                           echo '<tr title="Asesor: ' . $item->user_name . ' ">';
                           echo '<td>' . $item->dni . '</td>';
                           echo '<td>' . $item->customer_name . '</td>';
-                          echo "<td>$mount $item->coin_short_name</td>";
+                          echo "<td>$amount $item->coin_short_name</td>";
                           echo '<td>' . $item->date . '</td>';
                           $pay_url = site_url("admin/payments/edit?customer_id=$item->id");
                           if ($item->date == date("Y-m-d")) {

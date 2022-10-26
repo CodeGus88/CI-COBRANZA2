@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 18-10-2022 a las 18:17:33
+-- Tiempo de generación: 26-10-2022 a las 20:50:52
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.5
 
@@ -24,6 +24,43 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `cash_registers`
+--
+
+CREATE TABLE `cash_registers` (
+  `id` bigint(20) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `coin_id` int(11) DEFAULT NULL,
+  `name` varchar(20) COLLATE utf32_spanish_ci NOT NULL DEFAULT '',
+  `status` bit(1) DEFAULT NULL,
+  `opening_date` datetime DEFAULT NULL,
+  `closing_date` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `cash_registers`
+--
+
+INSERT INTO `cash_registers` (`id`, `user_id`, `coin_id`, `name`, `status`, `opening_date`, `closing_date`) VALUES
+(1, 1, 1, 'Caja 1', b'1', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(2, 2, 1, 'Caja 1', b'0', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(3, 3, 1, 'Caja 1', b'1', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(4, 4, 1, 'Caja 1', b'1', '2022-10-01 00:00:00', '2022-10-20 10:00:00'),
+(5, 5, 1, 'Caja 1', b'1', '2022-10-01 00:00:00', '2022-10-01 11:00:00'),
+(6, 6, 1, 'Caja 2', b'1', '0000-00-00 00:00:00', NULL),
+(7, 1, 1, 'Caja 7', b'1', '2022-10-25 03:03:55', NULL),
+(8, 1, 1, 'Caja 8', b'1', '2022-10-25 03:22:54', NULL),
+(9, 1, 1, 'Caja 9', b'1', '2022-10-25 03:48:19', NULL),
+(10, 1, 1, 'Caja 10', b'1', '2022-10-25 04:01:40', NULL),
+(11, 1, 1, 'Caja 11', b'1', '2022-10-25 04:02:46', NULL),
+(12, 1, 1, 'Caja 12', b'1', '2022-10-25 04:06:42', NULL),
+(13, 3, 1, 'Caja 13', b'1', '2022-10-25 04:18:04', NULL),
+(14, 8, 1, 'Caja x', b'1', '2022-10-01 00:00:00', NULL),
+(15, 1, 1, 'Caja 15', b'1', '2022-10-26 02:27:24', NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `coins`
 --
 
@@ -40,7 +77,7 @@ CREATE TABLE `coins` (
 --
 
 INSERT INTO `coins` (`id`, `name`, `short_name`, `symbol`, `description`) VALUES
-(1, 'Bolivianos', 'Bs', 'BO', 'Moneda nacional');
+(1, 'Bolivianos', 'Bs', 'BOB', 'Moneda nacional');
 
 -- --------------------------------------------------------
 
@@ -79,7 +116,7 @@ INSERT INTO `customers` (`id`, `dni`, `first_name`, `last_name`, `gender`, `addr
 (11, '10718791', 'CAROL XIMENA', 'APARICIO GUTIERREZ', 'femenino', 'B/ AEROPUERTO C/ FUERZA AEREA', '68717712', '', '', '', '', 1, 2),
 (12, '7109398', 'CRISTHIAN HAROLD', 'ROCHA MENDEZ', 'masculino', 'B/ MORROS BLANCOS ', '74533209', '', '', '', '', 1, 2),
 (13, '7217197', 'MARIA MAYDA', 'TITIZANO JEREZ', 'femenino', 'AV. LOS CEIBOS BA/ SENAC ', '73483618', '0', '', '', '', 1, 1),
-(15, '5796238', 'MARLENE', 'ROMAN BOLIVAR', 'femenino', 'BA/26 DE AGOSTO ', '', '', '', '', '', 0, 1),
+(15, '5796238', 'MARLENE', 'ROMAN BOLIVAR', 'femenino', 'BA/26 DE AGOSTO ', '', '', '', '', '', 1, 1),
 (16, '7190526', 'MARCO ANTONIO', 'COLODRO', 'masculino', 'BA/NACIONAL CARAPARI ', '', '', '', '', '', 0, 1),
 (17, '10625967', 'HUGO ALBARO', 'CONDORI COLQUE', 'masculino', 'B/ ALTO SENAC C/ EL CHAÑAR', '76183152', '', '', '', 'GARANTE', 0, 5),
 (18, '7197800', 'CESAR ALEX', 'QUISPE LLANQUE', 'masculino', 'B/ 12 DE OCTUBRE C/ ANDALUCIA ', '65811181', '', '', '', '', 1, 2),
@@ -338,7 +375,10 @@ INSERT INTO `document_payments` (`id`, `user_id`, `pay_date`) VALUES
 (43, 3, '2022-10-17 09:47:04'),
 (44, 3, '2022-10-18 08:55:16'),
 (45, 3, '2022-10-18 08:59:14'),
-(46, 3, '2022-10-18 12:00:22');
+(46, 3, '2022-10-18 12:00:22'),
+(47, 8, '2022-10-18 05:26:10'),
+(48, 8, '2022-10-18 08:13:10'),
+(49, 1, '2022-10-26 02:26:17');
 
 -- --------------------------------------------------------
 
@@ -472,7 +512,8 @@ INSERT INTO `guarantors` (`id`, `loan_id`, `customer_id`) VALUES
 (131, 156, 306),
 (132, 156, 307),
 (133, 161, 77),
-(134, 165, 297);
+(134, 165, 297),
+(135, 166, 16);
 
 -- --------------------------------------------------------
 
@@ -633,7 +674,8 @@ INSERT INTO `loans` (`id`, `customer_id`, `credit_amount`, `interest_amount`, `n
 (162, 27, '1070.00', '18.00', 4, '363.80', 'quincenal', 1, '2022-10-06', b'1'),
 (163, 127, '2000.00', '10.00', 6, '533.30', 'mensual', 1, '2022-08-05', b'1'),
 (164, 180, '500.00', '20.00', 4, '150.00', 'semanal', 1, '2022-10-07', b'1'),
-(165, 296, '1500.00', '14.00', 2, '855.00', 'quincenal', 1, '2022-10-11', b'1');
+(165, 296, '1500.00', '14.00', 2, '855.00', 'quincenal', 1, '2022-10-11', b'1'),
+(166, 15, '150.00', '14.00', 2, '85.50', 'quincenal', 1, '2022-10-27', b'1');
 
 -- --------------------------------------------------------
 
@@ -1027,7 +1069,7 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (471, 73, '2022-04-01', 1, '513.30', '2022-09-14 16:07:45', b'0'),
 (472, 73, '2022-04-16', 2, '513.30', '2022-09-14 16:07:45', b'0'),
 (473, 73, '2022-05-03', 3, '513.30', '2022-09-14 16:07:45', b'0'),
-(474, 73, '2022-05-16', 4, '513.30', '2022-09-01 21:07:19', b'1'),
+(474, 73, '2022-05-16', 4, '513.30', '2022-10-26 18:26:17', b'0'),
 (475, 73, '2022-05-31', 5, '513.30', '2022-09-01 21:07:19', b'1'),
 (476, 73, '2022-06-15', 6, '513.30', '2022-09-01 21:07:19', b'1'),
 (477, 74, '2022-01-03', 1, '332.50', '2022-09-14 16:11:29', b'0'),
@@ -1535,8 +1577,80 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (1053, 164, '2022-10-21', 2, '150.00', '2022-10-07 15:09:11', b'1'),
 (1054, 164, '2022-10-28', 3, '150.00', '2022-10-07 15:09:11', b'1'),
 (1055, 164, '2022-11-04', 4, '150.00', '2022-10-07 15:09:11', b'1'),
-(1056, 165, '2022-10-26', 1, '855.00', '2022-10-11 14:13:57', b'1'),
-(1057, 165, '2022-11-10', 2, '855.00', '2022-10-11 14:13:57', b'1');
+(1056, 165, '2022-10-26', 1, '855.00', '2022-10-19 00:13:10', b'0'),
+(1057, 165, '2022-11-10', 2, '855.00', '2022-10-11 14:13:57', b'1'),
+(1058, 166, '2022-11-11', 1, '85.50', '2022-10-26 18:35:37', b'1'),
+(1059, 166, '2022-11-26', 2, '85.50', '2022-10-26 18:35:37', b'1');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `loan_outputs`
+--
+
+CREATE TABLE `loan_outputs` (
+  `id` bigint(20) NOT NULL,
+  `cash_register_id` bigint(20) NOT NULL,
+  `loan_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `loan_outputs`
+--
+
+INSERT INTO `loan_outputs` (`id`, `cash_register_id`, `loan_id`) VALUES
+(1, 1, 25);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `manual_inputs`
+--
+
+CREATE TABLE `manual_inputs` (
+  `id` bigint(20) NOT NULL,
+  `cash_register_id` bigint(20) NOT NULL,
+  `amount` decimal(20,2) NOT NULL,
+  `description` varchar(200) COLLATE utf32_spanish_ci NOT NULL,
+  `date` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `manual_inputs`
+--
+
+INSERT INTO `manual_inputs` (`id`, `cash_register_id`, `amount`, `description`, `date`) VALUES
+(1, 1, '1000.00', 'Porque me da la gana', '0000-00-00 00:00:00'),
+(2, 1, '10.00', 'No se', '2022-10-21 16:03:04'),
+(3, 2, '250.00', 'Por apertura', '2022-10-25 09:27:52'),
+(4, 8, '10500.00', 'Por apertura de caja', '2022-10-25 03:22:54'),
+(5, 9, '1500.00', 'Por apertura de caja', '2022-10-25 03:48:19'),
+(6, 10, '100.00', 'Por apertura de caja', '2022-10-25 04:01:40'),
+(7, 11, '120.00', 'Por apertura de caja', '2022-10-25 04:02:46'),
+(8, 12, '210.00', 'Por apertura de caja', '2022-10-25 04:06:42'),
+(9, 13, '1500.00', 'Por apertura de caja', '2022-10-25 04:18:04'),
+(10, 15, '151.00', 'Por apertura de caja x', '2022-10-26 02:27:24');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `manual_outputs`
+--
+
+CREATE TABLE `manual_outputs` (
+  `id` bigint(20) NOT NULL,
+  `cash_register_id` bigint(20) NOT NULL,
+  `amount` decimal(20,2) NOT NULL,
+  `description` varchar(200) COLLATE utf32_spanish_ci NOT NULL,
+  `date` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `manual_outputs`
+--
+
+INSERT INTO `manual_outputs` (`id`, `cash_register_id`, `amount`, `description`, `date`) VALUES
+(1, 1, '50.00', 'Por préstamo', '2022-10-22 16:03:36');
 
 -- --------------------------------------------------------
 
@@ -1547,7 +1661,7 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 CREATE TABLE `payments` (
   `id` bigint(20) NOT NULL,
   `loan_item_id` bigint(20) NOT NULL,
-  `mount` decimal(20,2) NOT NULL,
+  `amount` decimal(20,2) NOT NULL,
   `surcharge` decimal(20,2) DEFAULT 0.00,
   `document_payment_id` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_spanish_ci;
@@ -1556,7 +1670,7 @@ CREATE TABLE `payments` (
 -- Volcado de datos para la tabla `payments`
 --
 
-INSERT INTO `payments` (`id`, `loan_item_id`, `mount`, `surcharge`, `document_payment_id`) VALUES
+INSERT INTO `payments` (`id`, `loan_item_id`, `amount`, `surcharge`, `document_payment_id`) VALUES
 (34, 946, '641.70', '0.00', 27),
 (35, 947, '150.00', '0.00', 27),
 (36, 153, '385.00', '0.00', 28),
@@ -1590,7 +1704,29 @@ INSERT INTO `payments` (`id`, `loan_item_id`, `mount`, `surcharge`, `document_pa
 (64, 716, '498.10', '0.00', 44),
 (65, 717, '498.10', '0.00', 44),
 (66, 718, '498.10', '5.00', 45),
-(67, 872, '100.00', '50.00', 46);
+(67, 872, '100.00', '50.00', 46),
+(68, 1056, '500.00', '5.00', 47),
+(69, 1056, '355.00', '0.00', 48),
+(70, 474, '513.30', '10.00', 49);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `payment_inputs`
+--
+
+CREATE TABLE `payment_inputs` (
+  `id` bigint(20) NOT NULL,
+  `cash_register_id` bigint(20) NOT NULL,
+  `payment_id` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `payment_inputs`
+--
+
+INSERT INTO `payment_inputs` (`id`, `cash_register_id`, `payment_id`) VALUES
+(1, 1, 68);
 
 -- --------------------------------------------------------
 
@@ -1691,7 +1827,15 @@ INSERT INTO `permissions` (`id`, `name`) VALUES
 (81, 'AUTHOR_DOCUMENT_PAYMENT_CREATE'),
 (82, 'AUTHOR_DOCUMENT_PAYMENT_READ'),
 (83, 'AUTHOR_DOCUMENT_PAYMENT_UPDATE'),
-(84, 'AUTHOR_DOCUMENT_PAYMENT_DELETE');
+(84, 'AUTHOR_DOCUMENT_PAYMENT_DELETE'),
+(85, 'CASH_REGISTER_CREATE'),
+(86, 'CASH_REGISTER_READ'),
+(87, 'CASH_REGISTER_UPDATE'),
+(88, 'CASH_REGISTER_DELETE'),
+(89, 'AUTHOR_CASH_REGISTER_CREATE'),
+(90, 'AUTHOR_CASH_REGISTER_READ'),
+(91, 'AUTHOR_CASH_REGISTER_UPDATE'),
+(92, 'AUTHOR_CASH_REGISTER_DELETE');
 
 -- --------------------------------------------------------
 
@@ -1835,7 +1979,12 @@ INSERT INTO `roles_permissions` (`id`, `role_id`, `permission_id`) VALUES
 (103, 4, 81),
 (104, 4, 82),
 (105, 4, 83),
-(106, 4, 84);
+(106, 4, 84),
+(107, 1, 85),
+(108, 1, 86),
+(109, 1, 87),
+(110, 1, 88),
+(112, 4, 90);
 
 -- --------------------------------------------------------
 
@@ -1898,6 +2047,14 @@ INSERT INTO `users_roles` (`id`, `user_id`, `role_id`) VALUES
 --
 
 --
+-- Indices de la tabla `cash_registers`
+--
+ALTER TABLE `cash_registers`
+  ADD PRIMARY KEY (`id`) USING BTREE,
+  ADD KEY `Índice 2` (`user_id`) USING BTREE,
+  ADD KEY `Índice 3` (`coin_id`);
+
+--
 -- Indices de la tabla `coins`
 --
 ALTER TABLE `coins`
@@ -1942,12 +2099,42 @@ ALTER TABLE `loan_items`
   ADD KEY `loan_id` (`loan_id`);
 
 --
+-- Indices de la tabla `loan_outputs`
+--
+ALTER TABLE `loan_outputs`
+  ADD PRIMARY KEY (`id`) USING BTREE,
+  ADD KEY `Índice 2` (`cash_register_id`) USING BTREE,
+  ADD KEY `Índice 3` (`loan_id`) USING BTREE;
+
+--
+-- Indices de la tabla `manual_inputs`
+--
+ALTER TABLE `manual_inputs`
+  ADD PRIMARY KEY (`id`) USING BTREE,
+  ADD KEY `Índice 2` (`cash_register_id`) USING BTREE;
+
+--
+-- Indices de la tabla `manual_outputs`
+--
+ALTER TABLE `manual_outputs`
+  ADD PRIMARY KEY (`id`) USING BTREE,
+  ADD KEY `Índice 2` (`cash_register_id`) USING BTREE;
+
+--
 -- Indices de la tabla `payments`
 --
 ALTER TABLE `payments`
   ADD PRIMARY KEY (`id`) USING BTREE,
   ADD KEY `Índice 2` (`loan_item_id`) USING BTREE,
   ADD KEY `Índice 3` (`document_payment_id`) USING BTREE;
+
+--
+-- Indices de la tabla `payment_inputs`
+--
+ALTER TABLE `payment_inputs`
+  ADD PRIMARY KEY (`id`) USING BTREE,
+  ADD KEY `Índice 2` (`cash_register_id`) USING BTREE,
+  ADD KEY `Índice 3` (`payment_id`) USING BTREE;
 
 --
 -- Indices de la tabla `permissions`
@@ -1988,6 +2175,12 @@ ALTER TABLE `users_roles`
 --
 
 --
+-- AUTO_INCREMENT de la tabla `cash_registers`
+--
+ALTER TABLE `cash_registers`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
 -- AUTO_INCREMENT de la tabla `coins`
 --
 ALTER TABLE `coins`
@@ -2003,37 +2196,61 @@ ALTER TABLE `customers`
 -- AUTO_INCREMENT de la tabla `document_payments`
 --
 ALTER TABLE `document_payments`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT de la tabla `guarantors`
 --
 ALTER TABLE `guarantors`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=135;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=136;
 
 --
 -- AUTO_INCREMENT de la tabla `loans`
 --
 ALTER TABLE `loans`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=166;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=167;
 
 --
 -- AUTO_INCREMENT de la tabla `loan_items`
 --
 ALTER TABLE `loan_items`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1058;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1060;
+
+--
+-- AUTO_INCREMENT de la tabla `loan_outputs`
+--
+ALTER TABLE `loan_outputs`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `manual_inputs`
+--
+ALTER TABLE `manual_inputs`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT de la tabla `manual_outputs`
+--
+ALTER TABLE `manual_outputs`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+
+--
+-- AUTO_INCREMENT de la tabla `payment_inputs`
+--
+ALTER TABLE `payment_inputs`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `permissions`
 --
 ALTER TABLE `permissions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`
@@ -2045,7 +2262,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT de la tabla `roles_permissions`
 --
 ALTER TABLE `roles_permissions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=107;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
@@ -2062,6 +2279,13 @@ ALTER TABLE `users_roles`
 --
 -- Restricciones para tablas volcadas
 --
+
+--
+-- Filtros para la tabla `cash_registers`
+--
+ALTER TABLE `cash_registers`
+  ADD CONSTRAINT `FK_cash_registers_coins` FOREIGN KEY (`coin_id`) REFERENCES `coins` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `customers`
@@ -2096,11 +2320,37 @@ ALTER TABLE `loan_items`
   ADD CONSTRAINT `loan_items_ibfk_1` FOREIGN KEY (`loan_id`) REFERENCES `loans` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Filtros para la tabla `loan_outputs`
+--
+ALTER TABLE `loan_outputs`
+  ADD CONSTRAINT `FK_lo_cash_registers` FOREIGN KEY (`cash_register_id`) REFERENCES `cash_registers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_lo_loans` FOREIGN KEY (`loan_id`) REFERENCES `loans` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `manual_inputs`
+--
+ALTER TABLE `manual_inputs`
+  ADD CONSTRAINT `FK_mi_cash_registers` FOREIGN KEY (`cash_register_id`) REFERENCES `cash_registers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `manual_outputs`
+--
+ALTER TABLE `manual_outputs`
+  ADD CONSTRAINT `FK_mo_cash_registers` FOREIGN KEY (`cash_register_id`) REFERENCES `cash_registers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Filtros para la tabla `payments`
 --
 ALTER TABLE `payments`
   ADD CONSTRAINT `FK_payments_document_payments` FOREIGN KEY (`document_payment_id`) REFERENCES `document_payments` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_payments_loan_items` FOREIGN KEY (`loan_item_id`) REFERENCES `loan_items` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `payment_inputs`
+--
+ALTER TABLE `payment_inputs`
+  ADD CONSTRAINT `FK_pi_cash_registers` FOREIGN KEY (`cash_register_id`) REFERENCES `cash_registers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_pi_payments` FOREIGN KEY (`payment_id`) REFERENCES `payments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `roles_permissions`
