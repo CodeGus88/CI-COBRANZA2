@@ -7,7 +7,6 @@ function loadData() {
         else
             user_id = null;
         $("#cash-registers").dataTable().fnDestroy();
-        // $("#cash-registers").dataTable().destroy();0
         $('#cash-registers').dataTable({
             "lengthMenu": [[10, 25, 50, 75, 100], [10, 25, 50, 75, 100]],
             'paging': true,
@@ -19,7 +18,7 @@ function loadData() {
             'serverSide': true,
 
             'ajax': {
-                "url": base_url + "admin/cashRegister/ajax_loas_cash_registers/" + user_id,
+                "url": base_url + "admin/cashRegister/ajax_cash_registers/" + user_id,
                 "type": "POST"
             },
             'columns': [
@@ -38,7 +37,7 @@ function loadData() {
                         if(row.status==1)
                             return `<a class="btn btn-success btn-sm" href="${base_url}admin/cashregister/view?id=${row.id}">Abierto</a>`;
                         else
-                            return `<a class="btn btn-warning btn-sm" href="">Cerrado</a>`;
+                            return `<a class="btn btn-warning btn-sm" href="${base_url}admin/cashregister/view?id=${row.id}">Cerrado</a>`;
                     }
                 }
             ],

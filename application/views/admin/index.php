@@ -54,10 +54,10 @@
 </div>
 <div class="card shadow mb-4">
     <div class="card-header d-flex py-3 justify-content-between">
-      <h6 class="m-0 font-weight-bold text-primary">BIENVENIDO <?php echo $this->session->userdata('first_name'). ' '.$this->session->userdata('last_name'); ?></h6>
+      <h6 class="m-0 font-weight-bold text-primary col-sm-0 col-md-6">BIENVENIDO <?php echo $this->session->userdata('first_name'). ' '.$this->session->userdata('last_name'); ?></h6>
       <div>
         <?php if(isset($users)) : if(sizeof($users) > 0):
-          echo "<select class='custom-select-sm btn-outline-secondary' onchange='location = this.value;'>";
+          echo "<select class='custom-select-sm btn-outline-secondary col-sm-12 col-md-6' onchange='location = this.value;'>";
           $url = site_url("admin/dashboard");
           $selected = ($selected_user_id == 0)?'selected':'';
           echo "<option value='$url' $selected>TODO</option>";
