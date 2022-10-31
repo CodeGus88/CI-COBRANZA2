@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 include(APPPATH . "/tools/UserPermission.php");
 
-class CashRegister extends CI_Controller {
+class Cashregister extends CI_Controller {
 
   private $user_id;
   private $permission;

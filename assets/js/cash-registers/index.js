@@ -13,12 +13,10 @@ function loadData() {
             'info': true,
             'filter': true,
             'stateSave': true,
-
             'processing': true,
             'serverSide': true,
-
             'ajax': {
-                "url": base_url + "admin/cashRegister/ajax_cash_registers/" + user_id,
+                "url": base_url + "admin/cashregister/ajax_cash_registers/" + user_id,
                 "type": "POST"
             },
             'columns': [

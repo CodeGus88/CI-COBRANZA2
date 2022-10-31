@@ -6,7 +6,7 @@
 
         <div class="card-body">
             <div class=" col-12 text-center">
-                <h5 class="h5">DETALLES DE CAJA</h5>
+                <h5 class="h5">DETALLES</h5>
             </div>
             <div class="card">
                 <div class="card-header">
@@ -162,7 +162,7 @@
                                     <td><?= number_format($cash_register->loan_outputs_amount, 2) ?></td>
                                     <td><?= number_format($cash_register->manual_outputs_amount + $cash_register->loan_outputs_amount, 2) ?></td>
                                 </tr>
-                                <tr class="table-active">
+                                <tr>
                                     <?php
                                     $manualTotal = number_format($cash_register->manual_inputs_amount - $cash_register->manual_outputs_amount, 2);
                                     $operationTotal = number_format($cash_register->document_payment_inputs_amount - $cash_register->loan_outputs_amount, 2);

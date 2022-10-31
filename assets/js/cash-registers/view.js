@@ -21,7 +21,7 @@ function tableBuilder(tableName, url, columns, lengthMenu) {
 const cash_register_id = document.getElementById('id').value;
 const lengthMenu = [2, 5, 10, 20, 50, 100];
 const method = "${method}";
-const partialUrl = base_url + `admin/cashRegister/${method}/${cash_register_id}`;
+const partialUrl = base_url + `admin/cashregister/${method}/${cash_register_id}`;
 
 // Para las tablas manualInputs y manualOutputs
 const manual_columns = [
@@ -36,7 +36,6 @@ tableBuilder("manual-outputs", partialUrl.replace(method, 'ajax_manual_outputs')
 
 // operaciones;
 const document_payment_colums = [
-    // { data: 'id', 'sClass': 'text-center'},
     {'id': true, 'sClass': 'text-center', 
         render: function(data, type, row){
             return `<a href="${base_url}admin/payments/document_payment/${row.id}" target="_blank">${row.id}</a>`;

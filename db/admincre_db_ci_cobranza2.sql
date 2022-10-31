@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 26-10-2022 a las 20:50:52
+-- Tiempo de generación: 31-10-2022 a las 15:08:04
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.5
 
@@ -42,21 +42,7 @@ CREATE TABLE `cash_registers` (
 --
 
 INSERT INTO `cash_registers` (`id`, `user_id`, `coin_id`, `name`, `status`, `opening_date`, `closing_date`) VALUES
-(1, 1, 1, 'Caja 1', b'1', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(2, 2, 1, 'Caja 1', b'0', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(3, 3, 1, 'Caja 1', b'1', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(4, 4, 1, 'Caja 1', b'1', '2022-10-01 00:00:00', '2022-10-20 10:00:00'),
-(5, 5, 1, 'Caja 1', b'1', '2022-10-01 00:00:00', '2022-10-01 11:00:00'),
-(6, 6, 1, 'Caja 2', b'1', '0000-00-00 00:00:00', NULL),
-(7, 1, 1, 'Caja 7', b'1', '2022-10-25 03:03:55', NULL),
-(8, 1, 1, 'Caja 8', b'1', '2022-10-25 03:22:54', NULL),
-(9, 1, 1, 'Caja 9', b'1', '2022-10-25 03:48:19', NULL),
-(10, 1, 1, 'Caja 10', b'1', '2022-10-25 04:01:40', NULL),
-(11, 1, 1, 'Caja 11', b'1', '2022-10-25 04:02:46', NULL),
-(12, 1, 1, 'Caja 12', b'1', '2022-10-25 04:06:42', NULL),
-(13, 3, 1, 'Caja 13', b'1', '2022-10-25 04:18:04', NULL),
-(14, 8, 1, 'Caja x', b'1', '2022-10-01 00:00:00', NULL),
-(15, 1, 1, 'Caja 15', b'1', '2022-10-26 02:27:24', NULL);
+(16, 1, 1, 'Caja 1', b'1', '2022-10-29 12:41:20', NULL);
 
 -- --------------------------------------------------------
 
@@ -66,18 +52,18 @@ INSERT INTO `cash_registers` (`id`, `user_id`, `coin_id`, `name`, `status`, `ope
 
 CREATE TABLE `coins` (
   `id` int(11) NOT NULL,
-  `name` varchar(20) COLLATE utf8_spanish2_ci NOT NULL,
-  `short_name` varchar(10) COLLATE utf8_spanish2_ci NOT NULL,
-  `symbol` varchar(11) COLLATE utf8_spanish2_ci NOT NULL,
-  `description` varchar(70) COLLATE utf8_spanish2_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+  `name` varchar(20) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+  `short_name` varchar(10) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+  `symbol` varchar(11) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+  `description` varchar(70) CHARACTER SET utf8 COLLATE utf8_spanish2_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `coins`
 --
 
 INSERT INTO `coins` (`id`, `name`, `short_name`, `symbol`, `description`) VALUES
-(1, 'Bolivianos', 'Bs', 'BOB', 'Moneda nacional');
+(1, 'Bolivianos', 'Bs', 'BO', 'Moneda nacional');
 
 -- --------------------------------------------------------
 
@@ -87,19 +73,19 @@ INSERT INTO `coins` (`id`, `name`, `short_name`, `symbol`, `description`) VALUES
 
 CREATE TABLE `customers` (
   `id` int(11) NOT NULL,
-  `dni` varchar(20) COLLATE utf8_spanish2_ci NOT NULL COMMENT 'ci',
-  `first_name` varchar(150) COLLATE utf8_spanish2_ci NOT NULL,
-  `last_name` varchar(150) COLLATE utf8_spanish2_ci NOT NULL,
-  `gender` enum('masculino','femenino','','') COLLATE utf8_spanish2_ci DEFAULT NULL,
-  `address` varchar(160) COLLATE utf8_spanish2_ci DEFAULT NULL,
-  `mobile` varchar(32) COLLATE utf8_spanish2_ci DEFAULT NULL,
-  `phone` varchar(20) COLLATE utf8_spanish2_ci DEFAULT NULL,
-  `business_name` varchar(100) COLLATE utf8_spanish2_ci DEFAULT NULL,
-  `ruc` varchar(20) COLLATE utf8_spanish2_ci DEFAULT NULL COMMENT 'nit',
-  `company` varchar(150) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `dni` varchar(20) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL COMMENT 'ci',
+  `first_name` varchar(150) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+  `last_name` varchar(150) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+  `gender` enum('masculino','femenino','','') CHARACTER SET utf8 COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `address` varchar(160) CHARACTER SET utf8 COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `mobile` varchar(32) CHARACTER SET utf8 COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `phone` varchar(20) CHARACTER SET utf8 COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `business_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `ruc` varchar(20) CHARACTER SET utf8 COLLATE utf8_spanish2_ci DEFAULT NULL COMMENT 'nit',
+  `company` varchar(150) CHARACTER SET utf8 COLLATE utf8_spanish2_ci DEFAULT NULL,
   `loan_status` int(11) NOT NULL DEFAULT 0,
   `user_id` int(11) DEFAULT NULL COMMENT 'adviser_id'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `customers`
@@ -113,7 +99,7 @@ INSERT INTO `customers` (`id`, `dni`, `first_name`, `last_name`, `gender`, `addr
 (6, '1052847', 'MARIA LOURDES', 'VACA RAMOS DE VELASCO', 'femenino', 'AV. SAMA', '72980734', '', '', '', '', 1, 3),
 (7, '5506680', 'CARLA CAROLA', 'RODRIGUEZ SOTOMAYOR', '', 'B/ ALTO SENAC ', '71820406', '', '', '', '', 1, 2),
 (9, '5815577', 'HILDA GABRIELA', 'ORTEGA MARTINEZ', 'femenino', 'B/6 DE AGOSTO', '75129912', '', '', '', 'GARANTE', 1, 5),
-(11, '10718791', 'CAROL XIMENA', 'APARICIO GUTIERREZ', 'femenino', 'B/ AEROPUERTO C/ FUERZA AEREA', '68717712', '', '', '', '', 1, 2),
+(11, '10718791', 'CAROL XIMENA', 'APARICIO GUTIERREZ', 'femenino', 'B/ AEROPUERTO C/ FUERZA AEREA', '68717712', '', '', '', '', 0, 2),
 (12, '7109398', 'CRISTHIAN HAROLD', 'ROCHA MENDEZ', 'masculino', 'B/ MORROS BLANCOS ', '74533209', '', '', '', '', 1, 2),
 (13, '7217197', 'MARIA MAYDA', 'TITIZANO JEREZ', 'femenino', 'AV. LOS CEIBOS BA/ SENAC ', '73483618', '0', '', '', '', 1, 1),
 (15, '5796238', 'MARLENE', 'ROMAN BOLIVAR', 'femenino', 'BA/26 DE AGOSTO ', '', '', '', '', '', 1, 1),
@@ -123,7 +109,7 @@ INSERT INTO `customers` (`id`, `dni`, `first_name`, `last_name`, `gender`, `addr
 (19, '7211060', 'CELESTE NARELLA', 'ROCHA ALARCON', 'femenino', 'BA/ PARADA EL NORTE ', '7211060', '', '', '', 'GARANTE', 1, 5),
 (20, '1886834', 'MARIO', 'SOSSA VASQUEZ', 'masculino', 'BARRIO TABLADITA C/LOS TAJIBOS', '60274489', '60274489', '', '', '', 1, 3),
 (21, '7179193', 'EDUARDO LUIZ', 'ANTEZANA RAMOS', 'femenino', 'BA/ PARADA EL NORTE ', '78703409', '', '', '', '', 0, 5),
-(23, '1847138', 'MARIA ZULMA', 'UGARTE VASQUEZ', 'femenino', 'BA/ SENAC ', '70229813', '6655535', '', '', '', 0, 1),
+(23, '1847138', 'MARIA ZULMA', 'UGARTE VASQUEZ', 'femenino', 'BA/ SENAC ', '70229813', '6655535', '', '', '', 1, 1),
 (24, '1884314', 'MIRKA', 'LARA VILCA', 'femenino', 'BARRIO LA PAMPA AV. POTOSI ', '79260489', '', '', '', '', 1, 3),
 (25, '1663104', 'LUCIO', 'TOLAY', 'masculino', 'SAN GERONIMO ALTO DE LA ALIANZA ', '', '', '', '', 'GARANTE', 0, 5),
 (26, '5811198', 'IVANNA SHAFID', 'VARGAS UGARTE', 'femenino', 'AV. DOMINGO PAZ ', '75138159', '', '', '', '', 0, 1),
@@ -144,11 +130,11 @@ INSERT INTO `customers` (`id`, `dni`, `first_name`, `last_name`, `gender`, `addr
 (47, '7203812', 'DAYSI', 'CUELLAR SAGREDO', 'masculino', 'B/ AEROPUERTO', '67384763', '', '', '', '', 1, 2),
 (48, '7212958', 'EMELDA', 'ARMELLA SOLIZ', 'femenino', 'B/ LUIS PIZARRO C/ PASTOR BORDA ', '68680402', '', '', '', '', 1, 2),
 (49, '7259089', 'MARISOL DANIELA', 'RAMOS', 'femenino', 'ZONA SAN JACINTO ', '75128680', '', '', '', '', 1, 1),
-(50, '4143978', 'MARIA DEL ROSARIO', 'RIOS VALDEZ', 'femenino', 'BA/ AVAROA CALLE CALAMA ', '73495002', '', '', '', '', 0, 1),
+(50, '4143978', 'MARIA DEL ROSARIO', 'RIOS VALDEZ', 'femenino', 'BA/ AVAROA CALLE CALAMA ', '73495002', '', '', '', '', 1, 1),
 (51, '7238521', 'MILDRED ROCIO', 'ALBORNOZ', 'femenino', 'C/ COCHABAMBA N*179', '76199969', '', '', '', '', 1, 1),
 (52, '7103441', 'JUANA ESTHER', 'MICHEL CRUZ', 'femenino', 'BA/ SAN ROQUE C/ COCHABAMBA ', '78257045', '', '', '', '', 1, 1),
 (53, '7143371', 'NOEMI LILA', 'LOPEZ CANEDO', 'femenino', 'BA/ LA PAMPA AV/ POTOSI ', '67991999', '', '', '', '', 1, 1),
-(54, '4134360', 'ZAIDA ANAHI', 'MIRANDA RUIZ', 'femenino', 'ZONA PALMARCITO C. JOSE ELECTO', '72992767', '', '', '', '', 1, 3),
+(54, '4134360', 'ZAIDA ANAHI', 'MIRANDA RUIZ', 'femenino', 'ZONA PALMARCITO C. JOSE ELECTO', '72992767', '', '', '', '', 0, 3),
 (55, '7127438', 'PAUL MIKI', 'GARNICA MEZZA', 'masculino', 'BA/ SAN ROQUE C/ GENERAL TRIGO ', '72955787', '', '', '', '', 1, 1),
 (56, '5797560', 'LIMBER RAYNARD', 'GARNICA MEZZA', 'masculino', 'BA/ ANDALUSIA C/ FINAL RUILOBA ', '', '', '', '', '', 0, 1),
 (57, '10651336', 'PAOLA RAQUEL', 'PIMENTEL ROMERO', '', 'BA/ JUAN XXIII C/ GODOFREDO ARNOLD ', '77879502', '', '', '', '', 1, 1),
@@ -170,9 +156,9 @@ INSERT INTO `customers` (`id`, `dni`, `first_name`, `last_name`, `gender`, `addr
 (77, '5002529', 'EVA NIEVES', 'CRUZ GUTIERREZ', 'femenino', 'C/ COCHABAMBA N|1480', '71877280', '', '', '', '', 0, 1),
 (79, '1889902', 'EULOGIO RAMIRO', 'HUMACATA RIOS', 'masculino', 'ERQUIS NORTE ', '71878394', '', '', '', 'GARANTE', 0, 1),
 (80, '5801048', 'IVAN NERY', 'ICHAZU SUSTACH', 'masculino', 'B/ LA PAMPA', '75121235', '', '', '', '', 1, 2),
-(82, '10640681', 'JESUS GONZALO', 'CHOQUE JURADO', '', 'AV/ SALINAS C/ DOMETILA', '69315139', '', '', '', '', 1, 2),
+(82, '10640681', 'JESUS GONZALO', 'CHOQUE JURADO', '', 'AV/ SALINAS C/ DOMETILA', '69315139', '', '', '', '', 0, 2),
 (84, '14177626', 'JHONNY GABRIEL', 'ONTIVEROS RASGUIDO', 'masculino', 'B/ SAN ANTONIO C/ ISABEL LA CATOLICA', '76802609', '', '', '', '', 1, 2),
-(85, '5808056', 'GIOVANNI BRAYAN', 'PEREZ IRAHOLA', 'masculino', 'B/ SAN JOSE ', '70211244', '', '', '', '', 0, 2),
+(85, '5808056', 'GIOVANNI BRAYAN', 'PEREZ IRAHOLA', 'masculino', 'B/ SAN JOSE ', '70211244', '', '', '', '', 1, 2),
 (86, '10660835', 'LUIS FERNANDO', 'CISNEROS', 'masculino', 'ave. Panamericana y  Luis campero', '68767242', '', '', '', 'trabaja en la cascada', 0, 4),
 (87, '9', 'AMISTAD', 'AMISTAD', 'masculino', '', '', '', '', '', '', 0, 4),
 (88, '7197273', 'JHON WALTER', 'SALVATIERRA VACA', 'masculino', 'B/ SAN JORGE II', '77170324', '', '', '', '', 1, 2),
@@ -180,9 +166,9 @@ INSERT INTO `customers` (`id`, `dni`, `first_name`, `last_name`, `gender`, `addr
 (93, '10719735', 'JORGE LUIS', 'CRUZ MENDOZA', 'masculino', 'B/ 26 DE AGOSTO', '75146451', '', '', '', '', 1, 2),
 (95, '10741444', 'JUAN CARLOS', 'MAMANI CHOQUE', 'masculino', 'B/ LOMA DE TOMATITAS', '76194960', '', '', '', '', 0, 2),
 (96, '4147520', 'LUCIA', 'VALLEJOS FLORES', 'femenino', 'MZ. 11 CASA Nº 5 URB. BELLA VISTA II- YACUIBA', '63776345', 'NO REGISTRA', '', '', 'YACUIBA', 1, 6),
-(97, '7120125', 'KAREN ESTHER', 'CORDERO MORALES', 'femenino', 'B/ SENAC ', '68702457', '', '', '', '', 1, 2),
+(97, '7120125', 'KAREN ESTHER', 'CORDERO MORALES', 'femenino', 'B/ SENAC ', '68702457', '', '', '', '', 0, 2),
 (98, '2637944', 'ANA MARIA', 'SARMIENTO', 'femenino', 'BA/ MIRAFLORES ', '72995775', '', '', '', '', 1, 5),
-(101, '7105285', 'LUIS FERNANDO', 'NIEVES MARQUEZ', 'masculino', 'B/ NARCISO CAMPERO', '76836500', '', '', '', '', 0, 2),
+(101, '7105285', 'LUIS FERNANDO', 'NIEVES MARQUEZ', 'masculino', 'B/ NARCISO CAMPERO', '76836500', '', '', '', '', 1, 2),
 (102, '10703486', 'MONICA ALEJANDRA', 'GUZMAN RAMIREZ', 'femenino', 'SAN LORENZO MATADERO MUNICIAPAL', '67632811', '', '', '', 'AMISTAD', 0, 4),
 (103, '6786439', 'CAROLINA PAOLA', 'GALEAN', 'femenino', 'B/ ALTO SENAC C/ EL CHAÑAR', '76183152', '', '', '', '', 1, 5),
 (104, '5056800', 'FABIOLA', 'MERCADO CAYALO', 'femenino', 'CREVAUX E/M. BARROSO Y SAN MARTIN Nº 196 B/C. NORTE YACUIBA', '71068363', 'NO REGISTRA', '', '', 'YACUIBA', 1, 6),
@@ -214,11 +200,11 @@ INSERT INTO `customers` (`id`, `dni`, `first_name`, `last_name`, `gender`, `addr
 (150, '5813347', 'FLORENTINO', 'SEGUNDO CUELLAR', 'masculino', 'MZ. X BARRIO EL CHAQUEÑITO YACUIBA', '71892533', 'NO REGISTRA', '', '', 'YACUIBA', 0, 6),
 (151, '10722293', 'MARIA VICTORIA', 'PARADA', 'femenino', 'AV. LIBERTADORES E/JACINTO DELFINYCOLON - YACUIBA', '75168164', '', '', '', 'GM. EL PORVENIR YACUIBA', 0, 7),
 (152, '5810149', 'SANDRA VALERIA', 'CONDORI OSINAGA', 'femenino', 'C/BENEMERITOS E/M BARROSO Y AV. S. MARTIN - YACUIBA ', '68016484', '', '', '', 'GM. EL PORVENIR YACUIBA', 0, 7),
-(153, '5816465', 'AGAPITO', 'SORUCO ORTIZ', 'masculino', 'C/URUGUAY E/LIBERTAD Y ECUADOR B/EL PRADO YACUIBA', '68901933', 'NO REGISTRA', '', '', 'YACUIBA', 1, 6),
+(153, '5816465', 'AGAPITO', 'SORUCO ORTIZ', 'masculino', 'C/URUGUAY E/LIBERTAD Y ECUADOR B/EL PRADO YACUIBA', '68901933', 'NO REGISTRA', '', '', 'YACUIBA', 0, 6),
 (154, '4155405', 'WILBER', 'GONZALES', 'masculino', 'C/F. CAMPO VIA E/T. MANCHEGO Y E. RUIZ B.S. GERONIMO YACUIBA', '', 'NO REGISTRA', '', '', 'YACUIBA', 0, 6),
 (155, '2854534', 'IRMA FABIOLA', 'GUTIERREZ SUAREZ', 'femenino', 'C/DANIEL CAMPOS ESQ.  AV.  LIBERTADORES B/OBRERO - YACUIBA', '', '', '', '', 'GM. EL PORVENIR YACUIBA', 0, 7),
 (156, '9707908', 'JORGE CORNELIO', 'CUEVAS FLORES', 'masculino', 'RES. EN YACUIBA', '76821126', '', '', '', 'GM EL PORVENIR YACUIBA', 0, 7),
-(157, '2926863', 'GRACIELA', 'GONZALES VALLE VDA. DE ELIAS', 'femenino', 'C/JUAN XXIII ESQ. CORNELIO RIOS YACUIBA', '71378316', 'NO REGISTRA', '', '', 'YACUIBA', 1, 6),
+(157, '2926863', 'GRACIELA', 'GONZALES VALLE VDA. DE ELIAS', 'femenino', 'C/JUAN XXIII ESQ. CORNELIO RIOS YACUIBA', '71378316', 'NO REGISTRA', '', '', 'YACUIBA', 0, 6),
 (158, '1836015', 'LOURDES', 'PADILLA', 'femenino', 'C/CORNELIO RIOS E/JUAN XXIII Y JACINTO DELFIN YACUIBA', '73458576', 'NO REGISTRA', '', '', 'YACUIBA', 1, 6),
 (159, '7245064', 'MARCO ANTONIO', 'LOPEZ ZARATE', 'masculino', 'C/TUPIZA E/AV. TARIJA Y CHUQUISACA S/N S.J. DE POCITOS', '76824296', 'NO REGISTRA', '', '', 'YACUIBA', 1, 6),
 (160, '1817258', 'ADOLFO', 'ARROYO SAINS', 'femenino', 'COM. OJO DEL AGUA GRAN CHACO ', '76824296', 'NO REGISTRA', '', '', 'YACUIBA', 0, 6),
@@ -240,7 +226,7 @@ INSERT INTO `customers` (`id`, `dni`, `first_name`, `last_name`, `gender`, `addr
 (177, '5050743', 'AIDA LUZ', 'VALLEJOS QUISPE', 'femenino', 'B. LAS DELICIAS C/ JUAN XXIII - YACUIBA', '69349473', '', '', '', 'GM. NUEVA ESPERANZA YACUIBA', 0, 7),
 (178, '10711135', 'MARIELA', 'SAAVEDRA FORES', 'femenino', 'FINAL C/INDEPENDENCIA S/N B. SAN FRANCISCO YACUIBA', '75185989', '', '', '', 'GM. NUEVA ESPERANZA YACUIBA', 0, 7),
 (179, '1848994', 'FEDERICO ANTONIO', 'FLORES', 'masculino', 'Zona Central C/Colon N°882', '75125557', '', '', '', '', 1, 1),
-(180, '7238010', 'FIDEL FABIAN', 'GARECA ACOSTA', 'masculino', 'B. MOTO MENDEZ BLOQ.M-22', '', '', '', '', '', 1, 1),
+(180, '7238010', 'FIDEL FABIAN', 'GARECA ACOSTA', 'masculino', 'B. MOTO MENDEZ BLOQ.M-22', '75142504', '', '', '', '', 1, 1),
 (185, '7175626', 'JUAN GABRIEL', 'MARTINEZ ANACHURI', 'masculino', '', '', '', '', '', '', 0, 1),
 (188, '5784526', 'PAMELA JUANA', 'RIVERA FLORES', 'femenino', 'B. AEROPUERTO AV. H DEL CHACO', '69325911', '', '', '', '', 1, 1),
 (189, '1899950', 'MARY DOLORES', 'MEJIA BARCA DE CASTILLO', 'femenino', 'C/ROBLES E/SANTA CRUZ Y COMERCIO B. ATLETICO NORTE YACUIBA', '60297883', 'NO REGISTRA', '', '', 'YACUIBA', 1, 6),
@@ -273,13 +259,13 @@ INSERT INTO `customers` (`id`, `dni`, `first_name`, `last_name`, `gender`, `addr
 (229, '7235277-1D', 'YANIRA REINA', 'ROSAS PRUDENCIO', 'femenino', 'BA/ SAN GERONIMO ', '75119355', '', '', '', 'GM LUIS DE FUENTES ', 0, 1),
 (230, '10716612-1F', 'OMAR GRABIEL', 'LIMA', 'masculino', 'BA/ 4 DE JULIO ESQ PERU ', '', '', '', '', 'GM LUIS DE FUENTES ', 0, 1),
 (231, '5001461', 'NESTOR JOSE', 'ANDRADE ZAPATA', 'femenino', 'BA/ LUIS DE FUENTES ', '', '', '', '', 'GM LUIS DE FUENTES ', 1, 1),
-(234, '5054070', 'RICHARD JHONNY', 'ZEBALLOS TEJERINA', 'masculino', 'B/LOURDES ', '63788071', '', '', '', '', 1, 5),
+(234, '5054070', 'RICHARD JHONNY', 'ZEBALLOS TEJERINA', 'masculino', 'B/LOURDES ', '63788071', '', '', '', '', 0, 5),
 (235, '7254095', 'ROLY ALEJANDRO', 'VELASCO VACA', 'masculino', 'AV/ SAMA C/ CHAPAQUITA ', '75142596', '72980734', '', '', '', 1, 1),
 (236, '7148877', 'SANTOS RODOLFO', 'FERNANDEZ CHAUQUE', 'masculino', 'b/warnes', '75147408', '69330463', 'propio', '', '', 1, 4),
 (237, '7219114', 'SANDRA', 'LOPEZ CANEDO', 'femenino', 'b/WARNES', '69330463', '', '', '', '', 0, 4),
 (238, '5004813', 'BEATRIZ LIA', 'VALDA ARAGON', 'femenino', 'C/COLON E/RENE MORENO Y BALLIVIAN B/OBRERO YACUIBA', '62898000', 'NO REGISTRA', '', '', 'YACUIBA', 1, 6),
 (239, '5021393', 'MARIA DEL CARMEN', 'VALDA ARAGON', 'femenino', 'URB. PERIODISTA MZ. 7 CASA 12 YACUIBA', '69347286', 'NO REGISTRA', '', '', 'YACUIBA', 0, 6),
-(240, '5806511', 'JUAN', 'ROMERO IRALA', 'masculino', 'C/INDEPENDENCIA ESQ. SANTA CRUZ YACUIBA', '75162363', 'NO REGISTRA', '', '', 'YACUIBA', 1, 6),
+(240, '5806511', 'JUAN', 'ROMERO IRALA', 'masculino', 'C/INDEPENDENCIA ESQ. SANTA CRUZ YACUIBA', '75162363', 'NO REGISTRA', '', '', 'YACUIBA', 0, 6),
 (241, '9761706', 'MILTON', 'ARAUZ CUVA', 'masculino', 'C/LOMA ALTA E/CHOROLQUE B. LA CRUZ YACUIBA', '75162363', 'NO REGISTRA', '', '', 'YACUIBA', 0, 6),
 (246, '7572912', 'ESPERANZA', 'VICENTE SALAS', 'femenino', 'C/P. CONTRERAS E/CREVAUX Y COCHABAMBA B/ LA PLAYA YACUIBA', '76832320', 'NO REGISTRA', '', '', 'YACUIBA', 0, 6),
 (247, '7166477', 'ELIZABETH ROMINA', 'TORRICO DE LA VEGA', 'femenino', 'C. SANTA CRUZ ESQ. BENEMERITOS YACUIBA', '61977367', 'NO REGISTRA', '', '', 'GM. LAS CHURITAS DEL CENTRAL YACUIBA', 1, 6),
@@ -306,7 +292,7 @@ INSERT INTO `customers` (`id`, `dni`, `first_name`, `last_name`, `gender`, `addr
 (268, '5010631', 'WILFREDO', 'CHURA CORONADO', 'masculino', 'C/C. RIOS E/21 DE ENERO Y E. MENDEZ B. FERROVIARIO YACUIBA', '75167687', 'NO REGISTRA', '', '', 'GM. LAS CHURAS COMERCIANTES YACUIBA', 0, 6),
 (269, '10636372', 'ALEJANDRO', 'VILLARROEL CRESPO', 'masculino', 'AV. GASODUCTO S/N B. MONTE REDONDO YACUIBA', '67865033', 'NO REGISTRA', '', '', 'GM. LAS CHURAS COMERCIANTES YACUIBA', 0, 6),
 (270, '10628171', 'SORAYA ESMERALDA', 'ESPINOZA SAGREDO', 'femenino', 'B. CENTRAL PADCAYA', '', '', '', '', 'INDIVIDUAL-TJA', 1, 3),
-(271, '7113724', 'YESSICA PAMELA', 'TRIGO RUIZ', 'femenino', 'B. SAN ROQUE CALLE CAMPERO N°1057', '', '', '', '', 'INDIVIDUAL-TJA', 0, 3),
+(271, '7113724', 'YESSICA PAMELA', 'TRIGO RUIZ', 'femenino', 'B. SAN ROQUE CALLE CAMPERO N°1057', '69323587', '69323587', '', '7113724010', 'INDIVIDUAL-TJA', 1, 3),
 (272, '7105231', 'EDGAR', 'TOLAY MOLINA', 'masculino', 'B. SAN GERONIMO AV. ALTO DE LA ALIANZA ', '', '', '', '', 'NOTARIADO-TJA', 1, 3),
 (273, '5001200', 'YOLANDA', 'FLORES AYARDE', 'femenino', 'ERQUIZ NORTE', '72940770', '', '', '', 'INDIVIDUAL-TJA', 1, 5),
 (278, '5232977', 'PALMIRA', 'BUTRON TABOADA', 'femenino', 'C/27 DE MAYO E/C RIOS', '68697100', '', '', '', 'GM. NEGOCIANTES X SIEMPRE YACUIBA', 1, 7),
@@ -316,7 +302,7 @@ INSERT INTO `customers` (`id`, `dni`, `first_name`, `last_name`, `gender`, `addr
 (283, '7167619', 'ROLY ADAN', 'CARY MANPAZO', 'masculino', 'B. SIMON BOLIVAR S/N', '', '', '', '', 'NOTARIADO-TJA', 1, 3),
 (284, '10639263', 'MARIBEL', 'CASTILLO MELA', 'femenino', 'C/HUGO SALAZAR E/15 DE ABRIL Y C/MORENOS B/LAS DELICIAS ', '75163877', 'NO REGISTRA', '', '', 'MICROCREDITO YACUIBA', 1, 6),
 (285, '12350358', 'ROSA ELENA', 'GARECA ACOSTA', 'femenino', 'B/ MOTO MENDEZ', '75117228', '', '', '', 'MICROCREDITO', 1, 5),
-(286, '5548367', 'ELMAN MEZIAS', 'ANZE EYZAGUIRRE', 'masculino', 'b/san luis ', '60257419', '60852840', 'comercio minorista', '6382346015', 'PERSONAL TJA', 1, 4),
+(286, '5548367', 'ELMAN MEZIAS', 'ANZE EYZAGUIRRE', 'masculino', 'b/san luis ', '60257419', '60852840', 'comercio minorista', '6382346015', 'PERSONAL TJA', 0, 4),
 (287, '7141330', 'IVER MAURICIO', 'VELASCO VACA', 'masculino', 'BA/ ALTO SENAC', '75133624', '', '', '', '', 1, 5),
 (288, '5805990', 'YOSHIMAR', 'MENDIETA ROCA', 'masculino', 'B/ AEROPUERTO', '72970426', '67965054', '', '', 'PERSONAL TJA', 1, 4),
 (289, '7177540', 'JAQUELINE TEODORA', 'MAULLCU CONDORI', 'femenino', '', '63240354', '69314669', 'PROPIO', '7177540013', 'PERSONAL TJA', 1, 4),
@@ -324,7 +310,7 @@ INSERT INTO `customers` (`id`, `dni`, `first_name`, `last_name`, `gender`, `addr
 (293, '10676951', 'WENDY ROMINA', 'MORA CORAITE', 'femenino', 'B/MENDEZ ARCOS', '75122155', '', 'MANCOMUNADO', '', 'G.M.NUEVO AMANECER ', 0, 4),
 (294, '7198308', 'ANA PAOLA', 'AGUILERA DURAN', 'femenino', 'B/MENDEZ ARCOS', '72982769', '', 'MANCOMUNADO', '', 'G.M.NUEVO AMANECER ', 0, 4),
 (295, '10703741', 'SERGIO DANIEL', 'HOYOS CUELLAR', 'femenino', 'B/MENDEZ ARCOS', '68681487', '', 'MANCOMUNADO', '', 'G.M.NUEVO AMANECER ', 0, 4),
-(296, '000', 'PRUEBA2', 'PRUEBAS', 'masculino', 'teleferico', '12321323', '123213233', 'sadsdddd', '12321323', 'asdsadasdasd', 1, 8),
+(296, '000', 'PRUEBA2', 'PRUEBAS', 'masculino', 'teleferico', '12321323', '123213233', 'sadsdddd', '12321323', 'asdsadasdasd', 0, 8),
 (297, '0000000000', 'PRUEBAS 3', 'PRUEBAS', 'masculino', 'ASDFASDSAD', '343245324', '123123213', 'SADASDSAD', '12324234', 'SDFSAFSDF', 0, 8),
 (298, '5008907', 'LEONOR', 'ARENAS TOLABA', 'femenino', 'B/MENDEZ ARCOS', '70212600', '', 'MANCOMUNADO', '', 'G.M.NUEVO AMANECER ', 1, 4),
 (299, '7179436', 'LILI', 'DURAN BATALLANOS', 'femenino', 'B/MENDEZ ARCOS', '', '', 'MANCOMUNADO', '', 'G.M.NUEVO AMANECER ', 0, 4),
@@ -337,7 +323,22 @@ INSERT INTO `customers` (`id`, `dni`, `first_name`, `last_name`, `gender`, `addr
 (306, '5040707', 'CATALINO WILSON', 'FLORES PIMENTEL', 'masculino', '', '', '', '', '', 'GRUPO COSTURERAS- TJA', 0, 3),
 (307, '4152097', 'MARINA VICTORIA', 'VAQUILLA SERRANO', 'femenino', '', '', '', '', '', 'GRUPO COSTURERAS- TJA', 0, 3),
 (308, '7203440', 'WILLANSOR FRANCLIN', 'QUISPE GOMEZ', 'masculino', 'BA 12 DE OCTUBRE ', '60600106', '75144450', '', '', '', 1, 1),
-(309, '1878048', 'SANDRA TRICIA', 'ACOSTA TAPIA', 'femenino', 'B/ MOTO MENDEZ', '74511513', '', '', '', '', 1, 5);
+(309, '1878048', 'SANDRA TRICIA', 'ACOSTA TAPIA', 'femenino', 'B/ MOTO MENDEZ', '74511513', '', '', '', '', 1, 5),
+(310, '454545', 'PRUEBA5', 'PRUEBAS', 'masculino', 'sd', '123', '213', 'as', '23', 'asd', 1, 8),
+(311, '7228075', 'VICTOR HUGO', 'CAMARGO', 'masculino', 'BARRIO HEROES DEL CHACO CALLE MANUEL MARZANA', '61669428', 'NO REGISTRA', '', '', 'YACUIBA', 1, 6),
+(312, '1836215', 'MARCELINA', 'RIOS DE GARCIA', 'femenino', 'BARRIO LOURDES AV. SAN MARTIN CALLE INDEPENDENCIA', '67385905', 'NO REGISTRA', '', '', 'YACUIBA', 1, 6),
+(313, '3008079', 'ROSARIO JULIETA', 'AGREDA CADIMA', 'femenino', 'B/ OBRERO C/JUAN XXIII ESQ. BOLIVAR', '67385905', 'NO REGISTRA', '', '', 'YACUIBA', 0, 6),
+(314, '5800232', 'DIEGO GUSTAVO', 'GARECA BALDERAS', 'masculino', 'C/INDEPENDENCIA E/MARTIN BARROSO Y AV. SAN MARTIN B/LOURDES', '72942434', 'NO REGISTRA', '', '', 'YACUIBA', 1, 6),
+(315, '5798084', 'JANETH VICTORIA', 'BALDIVIEZO GUTIéRREZ DE TRIGO', 'femenino', 'B/San roque ', '', '', '', '', '', 0, 4),
+(317, '7259959', 'ALVARO GONZALO', 'ROMERO ROMERO', 'masculino', 'B/ JUAN XXIII', ' 67996421', '', '', '', '', 1, 5),
+(318, '7185499', 'LAURA VERONICA', 'ROJAS MIRANDA', 'femenino', 'AV. GAMONEDA Y CALLE ARTURO MOLINA', '72969240', '', '', '', 'MICROCREDITO-TJA', 1, 3),
+(319, '7112976', 'MARCELA CLARA', 'URIBURU TIRAO', 'femenino', 'barrio salamanca', '74508783', '', '', '', 'PERSONAL TJA', 1, 4),
+(320, '255888', 'FRANCIS', 'URIBURU TIRAO', '', 'B/SALAMANCA', '70227300', '', '', '', '', 0, 4),
+(321, '10722849', 'LUIS FERNANDO', 'PADILLA MARTINEZ', 'masculino', 'B/LUIS ESPINAL ', '77196395', '', 'TOPOGRAFO', '', 'PERSONAL TJA', 1, 4),
+(322, '5045639', 'GISELA', 'CARVAJAL', 'femenino', 'BARRIO SAN BERNARDO', '63397910', '', '', '', 'MICROCREDITO', 1, 3),
+(323, '7144066', 'CINTHYA LORENA', 'HILAQUITA RUFINO', 'femenino', 'AV. GASODUCTO E/JUAN XXIII Y JACINTO DELFIN YACUIBA', '77195189', 'NO REGISTRA', '', '', 'YACUIBA', 1, 6),
+(324, '5056661', 'SANDRA ISABEL', 'ALARCON RIVERA', 'femenino', 'C/PERU E/CUBA Y CHILE B. LOS PARAISOS YACUIBA', '75161079', 'NO REGISTRA', '', '', 'YACUIBA', 0, 6),
+(325, '10645173', 'JULIO CESAR', 'CATOIRA BLANCO', 'masculino', '', '75143172', '', '', '', 'PERSONAL TJA', 1, 4);
 
 -- --------------------------------------------------------
 
@@ -349,36 +350,177 @@ CREATE TABLE `document_payments` (
   `id` bigint(20) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
   `pay_date` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_spanish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `document_payments`
 --
 
 INSERT INTO `document_payments` (`id`, `user_id`, `pay_date`) VALUES
-(27, 8, '2022-10-07 07:36:17'),
-(28, 8, '2022-10-08 10:17:39'),
-(29, 8, '2022-10-08 10:17:58'),
-(30, 8, '2022-10-08 10:19:15'),
-(31, 3, '2022-10-13 06:07:45'),
-(32, 3, '2022-10-13 06:21:03'),
-(33, 3, '2022-10-13 06:21:26'),
-(34, 3, '2022-10-14 01:01:51'),
-(35, 3, '2022-10-17 06:47:42'),
-(36, 3, '2022-10-17 07:59:03'),
-(37, 3, '2022-10-17 08:00:23'),
-(38, 3, '2022-10-17 09:19:34'),
-(39, 3, '2022-10-17 09:27:22'),
-(40, 3, '2022-10-17 09:27:46'),
-(41, 3, '2022-10-17 09:28:29'),
-(42, 3, '2022-10-17 09:28:53'),
-(43, 3, '2022-10-17 09:47:04'),
-(44, 3, '2022-10-18 08:55:16'),
-(45, 3, '2022-10-18 08:59:14'),
-(46, 3, '2022-10-18 12:00:22'),
-(47, 8, '2022-10-18 05:26:10'),
-(48, 8, '2022-10-18 08:13:10'),
-(49, 1, '2022-10-26 02:26:17');
+(27, 1, '2022-10-08 09:04:39'),
+(28, 1, '2022-10-08 09:07:02'),
+(29, 1, '2022-10-08 09:07:42'),
+(30, 8, '2022-10-08 10:56:02'),
+(31, 8, '2022-10-08 10:58:27'),
+(32, 1, '2022-10-08 11:18:36'),
+(33, 6, '2022-10-08 11:31:32'),
+(34, 6, '2022-10-08 11:34:35'),
+(35, 6, '2022-10-08 11:35:16'),
+(36, 6, '2022-10-08 11:35:57'),
+(37, 6, '2022-10-08 11:36:36'),
+(38, 6, '2022-10-08 11:38:08'),
+(39, 6, '2022-10-08 11:40:19'),
+(40, 6, '2022-10-08 11:40:53'),
+(41, 3, '2022-10-08 11:42:48'),
+(42, 6, '2022-10-10 10:43:44'),
+(43, 3, '2022-10-10 10:49:43'),
+(44, 3, '2022-10-10 11:11:21'),
+(45, 3, '2022-10-10 11:21:58'),
+(46, 3, '2022-10-10 11:25:23'),
+(47, 3, '2022-10-10 11:31:42'),
+(48, 6, '2022-10-10 12:14:45'),
+(49, 6, '2022-10-10 03:24:06'),
+(50, 1, '2022-10-10 03:27:49'),
+(51, 6, '2022-10-10 03:51:18'),
+(52, 3, '2022-10-10 06:00:05'),
+(53, 3, '2022-10-10 06:04:31'),
+(54, 3, '2022-10-10 06:04:54'),
+(55, 3, '2022-10-10 06:18:06'),
+(56, 3, '2022-10-10 06:20:40'),
+(57, 1, '2022-10-11 09:39:40'),
+(58, 1, '2022-10-11 09:40:33'),
+(59, 1, '2022-10-11 09:41:12'),
+(60, 3, '2022-10-11 10:40:36'),
+(61, 3, '2022-10-11 10:49:16'),
+(62, 3, '2022-10-11 10:51:13'),
+(63, 3, '2022-10-11 10:57:59'),
+(64, 3, '2022-10-11 11:05:28'),
+(65, 3, '2022-10-11 11:06:12'),
+(66, 3, '2022-10-11 11:08:27'),
+(67, 3, '2022-10-11 11:20:15'),
+(68, 3, '2022-10-11 11:26:45'),
+(69, 3, '2022-10-11 11:29:09'),
+(70, 5, '2022-10-11 11:58:13'),
+(71, 3, '2022-10-11 12:01:55'),
+(72, 3, '2022-10-11 12:05:30'),
+(73, 3, '2022-10-11 12:06:12'),
+(74, 6, '2022-10-11 04:37:45'),
+(75, 6, '2022-10-11 06:01:50'),
+(76, 1, '2022-10-11 06:21:11'),
+(77, 1, '2022-10-11 06:30:26'),
+(78, 4, '2022-10-12 09:57:08'),
+(79, 1, '2022-10-12 11:54:52'),
+(80, 5, '2022-10-12 03:24:30'),
+(81, 3, '2022-10-12 03:43:43'),
+(82, 1, '2022-10-12 05:49:23'),
+(83, 5, '2022-10-12 05:55:54'),
+(84, 5, '2022-10-12 06:06:24'),
+(85, 5, '2022-10-13 09:09:19'),
+(86, 5, '2022-10-13 09:12:34'),
+(87, 3, '2022-10-13 11:24:26'),
+(88, 4, '2022-10-13 04:56:04'),
+(89, 3, '2022-10-13 06:13:18'),
+(90, 5, '2022-10-13 06:23:51'),
+(91, 6, '2022-10-14 09:00:11'),
+(92, 6, '2022-10-14 03:37:36'),
+(93, 4, '2022-10-14 04:06:40'),
+(94, 4, '2022-10-14 04:29:27'),
+(95, 5, '2022-10-14 06:19:38'),
+(96, 5, '2022-10-14 06:19:59'),
+(97, 6, '2022-10-15 10:56:49'),
+(98, 4, '2022-10-17 09:51:33'),
+(99, 7, '2022-10-17 04:22:42'),
+(100, 7, '2022-10-17 04:25:13'),
+(101, 6, '2022-10-18 09:00:21'),
+(102, 6, '2022-10-18 10:29:19'),
+(103, 1, '2022-10-18 11:09:25'),
+(104, 3, '2022-10-18 11:46:31'),
+(105, 5, '2022-10-18 11:50:36'),
+(106, 5, '2022-10-18 03:19:37'),
+(107, 4, '2022-10-18 04:37:05'),
+(108, 6, '2022-10-18 04:50:39'),
+(109, 6, '2022-10-18 05:29:10'),
+(110, 6, '2022-10-18 05:45:16'),
+(111, 5, '2022-10-18 06:09:38'),
+(112, 4, '2022-10-18 06:20:45'),
+(113, 4, '2022-10-18 06:22:29'),
+(114, 4, '2022-10-18 06:23:03'),
+(115, 4, '2022-10-19 08:53:36'),
+(116, 6, '2022-10-19 11:01:32'),
+(117, 5, '2022-10-19 03:07:47'),
+(118, 6, '2022-10-19 03:46:43'),
+(119, 6, '2022-10-19 05:25:42'),
+(120, 3, '2022-10-19 06:05:53'),
+(121, 3, '2022-10-19 06:26:40'),
+(122, 3, '2022-10-19 06:27:25'),
+(123, 4, '2022-10-19 06:52:00'),
+(124, 3, '2022-10-20 10:08:06'),
+(125, 3, '2022-10-20 10:16:32'),
+(126, 6, '2022-10-20 10:59:20'),
+(127, 6, '2022-10-20 11:46:40'),
+(128, 6, '2022-10-20 05:34:27'),
+(129, 1, '2022-10-20 06:19:13'),
+(130, 1, '2022-10-21 09:09:02'),
+(131, 1, '2022-10-21 09:10:00'),
+(132, 1, '2022-10-21 09:22:49'),
+(133, 6, '2022-10-21 10:53:07'),
+(134, 1, '2022-10-21 03:10:47'),
+(135, 1, '2022-10-21 04:33:33'),
+(136, 3, '2022-10-21 04:56:25'),
+(137, 6, '2022-10-21 05:26:27'),
+(138, 1, '2022-10-21 05:38:21'),
+(139, 3, '2022-10-21 05:47:15'),
+(140, 3, '2022-10-21 05:47:45'),
+(141, 6, '2022-10-21 06:17:17'),
+(142, 5, '2022-10-22 10:43:13'),
+(143, 3, '2022-10-22 11:25:33'),
+(144, 3, '2022-10-22 11:26:15'),
+(145, 1, '2022-10-22 11:30:58'),
+(146, 6, '2022-10-24 09:00:50'),
+(147, 6, '2022-10-24 04:01:59'),
+(148, 6, '2022-10-24 04:18:40'),
+(149, 6, '2022-10-24 05:09:56'),
+(150, 5, '2022-10-24 05:34:36'),
+(151, 5, '2022-10-25 08:53:49'),
+(152, 6, '2022-10-25 09:45:51'),
+(153, 3, '2022-10-25 10:12:07'),
+(154, 3, '2022-10-25 10:12:57'),
+(155, 3, '2022-10-25 03:16:22'),
+(156, 3, '2022-10-25 03:17:43'),
+(157, 3, '2022-10-25 03:18:39'),
+(158, 6, '2022-10-25 03:33:56'),
+(159, 6, '2022-10-25 04:15:42'),
+(160, 6, '2022-10-25 04:27:20'),
+(161, 1, '2022-10-26 09:47:08'),
+(162, 6, '2022-10-26 03:27:50'),
+(163, 3, '2022-10-26 04:26:01'),
+(164, 6, '2022-10-26 05:20:17'),
+(165, 6, '2022-10-26 06:45:27'),
+(166, 4, '2022-10-27 08:51:13'),
+(167, 4, '2022-10-27 09:41:47'),
+(168, 3, '2022-10-27 10:43:00'),
+(169, 4, '2022-10-28 09:10:08'),
+(170, 3, '2022-10-28 10:12:17'),
+(171, 3, '2022-10-28 10:49:38'),
+(172, 3, '2022-10-28 11:02:20'),
+(173, 3, '2022-10-28 11:37:47'),
+(174, 3, '2022-10-28 11:56:35'),
+(175, 1, '2022-10-28 03:24:47'),
+(176, 6, '2022-10-28 04:16:19'),
+(177, 3, '2022-10-28 04:31:09'),
+(178, 3, '2022-10-28 05:02:40');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `document_payment_inputs`
+--
+
+CREATE TABLE `document_payment_inputs` (
+  `id` bigint(20) NOT NULL,
+  `cash_register_id` bigint(20) NOT NULL,
+  `document_payment_id` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_spanish_ci;
 
 -- --------------------------------------------------------
 
@@ -390,7 +532,7 @@ CREATE TABLE `guarantors` (
   `id` bigint(20) NOT NULL,
   `loan_id` int(11) NOT NULL,
   `customer_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `guarantors`
@@ -512,8 +654,21 @@ INSERT INTO `guarantors` (`id`, `loan_id`, `customer_id`) VALUES
 (131, 156, 306),
 (132, 156, 307),
 (133, 161, 77),
-(134, 165, 297),
-(135, 166, 16);
+(134, 165, 296),
+(135, 166, 150),
+(136, 167, 313),
+(137, 169, 86),
+(138, 169, 92),
+(139, 169, 102),
+(140, 173, 48),
+(141, 174, 47),
+(142, 181, 109),
+(143, 187, 171),
+(144, 187, 172),
+(145, 187, 173),
+(146, 192, 109),
+(147, 194, 324),
+(148, 195, 110);
 
 -- --------------------------------------------------------
 
@@ -528,11 +683,11 @@ CREATE TABLE `loans` (
   `interest_amount` decimal(15,2) NOT NULL COMMENT 'interest_rate',
   `num_fee` int(3) NOT NULL,
   `fee_amount` decimal(10,2) NOT NULL,
-  `payment_m` varchar(15) COLLATE utf8_spanish2_ci NOT NULL,
+  `payment_m` varchar(15) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
   `coin_id` int(11) NOT NULL,
   `date` date NOT NULL,
   `status` bit(1) NOT NULL DEFAULT b'1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `loans`
@@ -548,7 +703,7 @@ INSERT INTO `loans` (`id`, `customer_id`, `credit_amount`, `interest_amount`, `n
 (9, 12, '2500.00', '18.00', 4, '850.00', 'quincenal', 1, '2022-07-14', b'0'),
 (10, 13, '5000.00', '18.00', 10, '950.00', 'quincenal', 1, '2022-02-16', b'1'),
 (11, 18, '2000.00', '18.00', 4, '680.00', 'quincenal', 1, '2022-08-24', b'1'),
-(12, 20, '1500.00', '16.00', 6, '370.00', 'quincenal', 1, '2022-08-16', b'1'),
+(12, 20, '1500.00', '16.00', 6, '370.00', 'quincenal', 1, '2022-08-16', b'0'),
 (13, 24, '1500.00', '18.00', 4, '510.00', 'quincenal', 1, '2022-08-25', b'0'),
 (14, 27, '1500.00', '18.00', 8, '255.00', 'semanal', 1, '2022-08-16', b'0'),
 (15, 28, '2096.00', '18.00', 12, '269.00', 'semanal', 1, '2022-05-21', b'1'),
@@ -556,19 +711,19 @@ INSERT INTO `loans` (`id`, `customer_id`, `credit_amount`, `interest_amount`, `n
 (19, 32, '1000.00', '16.00', 2, '580.00', 'quincenal', 1, '2022-07-22', b'0'),
 (21, 34, '4000.00', '18.00', 3, '2053.30', 'mensual', 1, '2022-07-14', b'0'),
 (22, 35, '2000.00', '17.00', 4, '670.00', 'quincenal', 1, '2022-07-21', b'1'),
-(24, 37, '2000.00', '18.00', 4, '680.00', 'quincenal', 1, '2022-08-22', b'1'),
+(24, 37, '2000.00', '18.00', 4, '680.00', 'quincenal', 1, '2022-08-22', b'0'),
 (25, 40, '1302.00', '18.00', 4, '442.70', 'quincenal', 1, '2022-04-28', b'0'),
 (26, 41, '500.00', '15.00', 6, '120.80', 'quincenal', 1, '2022-06-18', b'1'),
 (27, 42, '1500.00', '18.00', 6, '385.00', 'quincenal', 1, '2022-05-17', b'0'),
 (29, 45, '1500.00', '18.00', 6, '385.00', 'quincenal', 1, '2022-07-25', b'1'),
 (31, 44, '3500.00', '18.00', 10, '665.00', 'quincenal', 1, '2022-02-08', b'1'),
-(32, 49, '3710.00', '18.00', 6, '952.20', 'quincenal', 1, '2022-06-13', b'1'),
+(32, 49, '3710.00', '18.00', 6, '952.20', 'quincenal', 1, '2022-06-13', b'0'),
 (33, 50, '4000.00', '15.00', 10, '700.00', 'quincenal', 1, '2022-05-05', b'0'),
 (34, 51, '5000.00', '18.00', 6, '1283.30', 'quincenal', 1, '2022-08-03', b'1'),
-(35, 53, '3000.00', '18.00', 6, '770.00', 'quincenal', 1, '2022-04-21', b'1'),
-(36, 54, '2000.00', '18.00', 8, '340.00', 'semanal', 1, '2022-07-21', b'1'),
-(37, 47, '1826.00', '18.00', 6, '468.70', 'quincenal', 1, '2022-06-22', b'1'),
-(38, 48, '1900.00', '18.00', 6, '487.70', 'quincenal', 1, '2022-06-28', b'1'),
+(35, 53, '3000.00', '18.00', 6, '770.00', 'quincenal', 1, '2022-04-21', b'0'),
+(36, 54, '2000.00', '18.00', 8, '340.00', 'semanal', 1, '2022-07-21', b'0'),
+(37, 47, '1826.00', '18.00', 6, '468.70', 'quincenal', 1, '2022-06-22', b'0'),
+(38, 48, '1900.00', '18.00', 6, '487.70', 'quincenal', 1, '2022-06-28', b'0'),
 (40, 55, '3500.00', '18.00', 6, '898.30', 'quincenal', 1, '2022-05-10', b'1'),
 (41, 57, '3500.00', '18.00', 10, '665.00', 'quincenal', 1, '2022-03-17', b'1'),
 (42, 59, '2000.00', '17.00', 4, '670.00', 'quincenal', 1, '2022-06-22', b'1'),
@@ -580,34 +735,34 @@ INSERT INTO `loans` (`id`, `customer_id`, `credit_amount`, `interest_amount`, `n
 (51, 74, '3000.00', '18.00', 6, '770.00', 'quincenal', 1, '2022-08-17', b'1'),
 (52, 75, '1500.00', '18.00', 4, '510.00', 'quincenal', 1, '2022-05-16', b'0'),
 (53, 76, '3500.00', '18.00', 2, '2065.00', 'quincenal', 1, '2022-08-16', b'0'),
-(55, 80, '1000.00', '16.00', 2, '580.00', 'quincenal', 1, '2022-08-08', b'1'),
-(57, 82, '1500.00', '18.00', 8, '322.50', 'quincenal', 1, '2022-06-07', b'1'),
+(55, 80, '1000.00', '16.00', 2, '580.00', 'quincenal', 1, '2022-08-08', b'0'),
+(57, 82, '1500.00', '18.00', 8, '322.50', 'quincenal', 1, '2022-06-07', b'0'),
 (58, 84, '1500.00', '18.00', 6, '385.00', 'quincenal', 1, '2022-05-17', b'1'),
 (60, 88, '1000.00', '18.00', 2, '590.00', 'quincenal', 1, '2022-07-28', b'1'),
 (61, 38, '2280.00', '18.00', 12, '292.60', 'semanal', 1, '2022-04-25', b'1'),
 (62, 93, '2000.00', '18.00', 4, '680.00', 'quincenal', 1, '2022-07-22', b'0'),
 (63, 95, '1000.00', '18.00', 4, '340.00', 'quincenal', 1, '2022-08-16', b'0'),
-(64, 97, '800.00', '16.00', 4, '264.00', 'quincenal', 1, '2022-08-22', b'1'),
+(64, 97, '800.00', '16.00', 4, '264.00', 'quincenal', 1, '2022-08-22', b'0'),
 (66, 98, '1397.00', '18.00', 4, '475.00', 'quincenal', 1, '2022-07-11', b'1'),
 (67, 96, '1542.00', '15.00', 8, '250.60', 'semanal', 1, '2022-07-19', b'1'),
 (68, 101, '3749.00', '17.00', 4, '1255.90', 'quincenal', 1, '2022-08-09', b'0'),
 (69, 104, '3500.00', '18.00', 12, '449.20', 'semanal', 1, '2022-02-04', b'1'),
 (70, 105, '2000.00', '18.00', 12, '256.70', 'semanal', 1, '2022-05-10', b'1'),
 (71, 103, '4593.00', '18.00', 8, '987.50', 'quincenal', 1, '2022-07-05', b'1'),
-(73, 109, '2000.00', '18.00', 6, '513.30', 'quincenal', 1, '2022-03-17', b'1'),
+(73, 109, '2000.00', '18.00', 6, '513.30', 'quincenal', 1, '2022-03-17', b'0'),
 (74, 111, '3500.00', '18.00', 20, '332.50', 'semanal', 1, '2021-12-27', b'1'),
 (75, 123, '4000.00', '18.00', 12, '513.30', 'semanal', 1, '2022-05-10', b'1'),
 (76, 9, '2500.00', '18.00', 10, '475.00', 'quincenal', 1, '2022-01-29', b'1'),
 (77, 127, '2112.00', '18.00', 8, '359.00', 'semanal', 1, '2022-05-11', b'0'),
-(78, 128, '2500.00', '18.00', 8, '537.50', 'quincenal', 1, '2022-06-10', b'1'),
+(78, 128, '2500.00', '18.00', 8, '537.50', 'quincenal', 1, '2022-06-10', b'0'),
 (79, 133, '3000.00', '18.00', 10, '570.00', 'quincenal', 1, '2022-07-26', b'1'),
 (80, 135, '3000.00', '18.00', 6, '770.00', 'quincenal', 1, '2022-08-17', b'1'),
 (81, 136, '2696.00', '18.00', 6, '692.00', 'quincenal', 1, '2022-08-16', b'1'),
 (82, 137, '2000.00', '16.00', 6, '493.30', 'quincenal', 1, '2022-08-05', b'1'),
 (84, 139, '10000.00', '15.00', 20, '875.00', 'semanal', 1, '2022-06-08', b'1'),
 (85, 142, '3500.00', '18.00', 12, '449.20', 'semanal', 1, '2022-07-13', b'0'),
-(87, 153, '2500.00', '18.00', 12, '320.80', 'semanal', 1, '2022-07-20', b'1'),
-(88, 157, '3500.00', '18.00', 6, '898.30', 'quincenal', 1, '2022-07-25', b'1'),
+(87, 153, '2500.00', '18.00', 12, '320.80', 'semanal', 1, '2022-07-20', b'0'),
+(88, 157, '3500.00', '18.00', 6, '898.30', 'quincenal', 1, '2022-07-25', b'0'),
 (89, 159, '2000.00', '18.00', 6, '513.30', 'quincenal', 1, '2022-07-28', b'1'),
 (90, 161, '6000.00', '15.00', 6, '1450.00', 'quincenal', 1, '2022-08-03', b'1'),
 (91, 162, '3500.00', '18.00', 6, '898.30', 'quincenal', 1, '2022-08-03', b'1'),
@@ -615,15 +770,15 @@ INSERT INTO `loans` (`id`, `customer_id`, `credit_amount`, `interest_amount`, `n
 (93, 166, '3500.00', '18.00', 6, '898.30', 'quincenal', 1, '2022-08-15', b'1'),
 (94, 168, '2500.00', '18.00', 6, '641.70', 'quincenal', 1, '2022-08-18', b'1'),
 (95, 145, '13000.00', '16.00', 6, '3206.70', 'quincenal', 1, '2022-07-19', b'1'),
-(96, 170, '5500.00', '16.00', 6, '1356.70', 'quincenal', 1, '2022-07-22', b'1'),
+(96, 170, '5500.00', '16.00', 6, '1356.70', 'quincenal', 1, '2022-07-22', b'0'),
 (98, 175, '7000.00', '16.00', 6, '1726.70', 'quincenal', 1, '2022-08-02', b'1'),
 (99, 179, '1000.00', '16.00', 1, '1160.00', 'mensual', 1, '2022-09-10', b'0'),
 (100, 180, '500.00', '20.00', 4, '150.00', 'semanal', 1, '2022-09-13', b'0'),
-(101, 52, '5000.00', '18.00', 6, '1283.30', 'quincenal', 1, '2022-07-14', b'1'),
+(101, 52, '5000.00', '18.00', 6, '1283.30', 'quincenal', 1, '2022-07-14', b'0'),
 (102, 130, '3500.00', '18.00', 4, '1190.00', 'quincenal', 1, '2022-03-26', b'1'),
-(103, 110, '3500.00', '18.00', 4, '1190.00', 'quincenal', 1, '2022-02-09', b'1'),
+(103, 110, '3500.00', '18.00', 4, '1190.00', 'quincenal', 1, '2022-02-09', b'0'),
 (104, 188, '3881.00', '18.00', 12, '498.10', 'semanal', 1, '2022-03-16', b'1'),
-(105, 179, '2000.00', '18.00', 2, '1180.00', 'quincenal', 1, '2022-09-15', b'1'),
+(105, 179, '2000.00', '18.00', 2, '1180.00', 'quincenal', 1, '2022-09-15', b'0'),
 (106, 189, '1700.00', '18.00', 8, '289.00', 'semanal', 1, '2022-09-02', b'1'),
 (107, 190, '8000.00', '16.00', 6, '1973.30', 'quincenal', 1, '2022-08-05', b'1'),
 (108, 198, '8000.00', '16.00', 6, '1973.30', 'quincenal', 1, '2022-06-17', b'0'),
@@ -634,23 +789,23 @@ INSERT INTO `loans` (`id`, `customer_id`, `credit_amount`, `interest_amount`, `n
 (114, 216, '6000.00', '16.00', 4, '1980.00', 'quincenal', 1, '2022-07-13', b'1'),
 (115, 219, '8000.00', '16.00', 6, '1973.30', 'quincenal', 1, '2022-07-23', b'1'),
 (116, 231, '8000.00', '16.00', 12, '986.70', 'semanal', 1, '2022-08-05', b'1'),
-(117, 107, '7000.00', '16.00', 6, '1726.70', 'quincenal', 1, '2022-08-25', b'1'),
-(118, 234, '500.00', '20.00', 4, '150.00', 'semanal', 1, '2022-09-19', b'1'),
+(117, 107, '7000.00', '16.00', 6, '1726.70', 'quincenal', 1, '2022-08-25', b'0'),
+(118, 234, '500.00', '20.00', 4, '150.00', 'semanal', 1, '2022-09-19', b'0'),
 (119, 235, '2057.00', '16.00', 20, '185.10', 'semanal', 1, '2022-09-19', b'1'),
 (121, 236, '2513.00', '17.00', 6, '632.40', 'quincenal', 1, '2022-09-20', b'1'),
 (123, 238, '3500.00', '18.00', 6, '898.30', 'quincenal', 1, '2022-08-23', b'1'),
-(124, 240, '2000.00', '18.00', 8, '340.00', 'semanal', 1, '2022-08-22', b'1'),
+(124, 240, '2000.00', '18.00', 8, '340.00', 'semanal', 1, '2022-08-22', b'0'),
 (125, 158, '2000.00', '18.00', 6, '513.30', 'quincenal', 1, '2022-09-14', b'1'),
 (126, 247, '8000.00', '16.00', 6, '1973.30', 'quincenal', 1, '2022-09-20', b'1'),
 (127, 24, '2000.00', '18.00', 6, '513.30', 'quincenal', 1, '2022-09-20', b'1'),
 (128, 6, '1346.00', '16.00', 16, '138.00', 'semanal', 1, '2022-09-20', b'1'),
 (129, 251, '6500.00', '16.00', 6, '1603.30', 'quincenal', 1, '2022-08-16', b'1'),
 (130, 255, '6000.00', '16.00', 6, '1480.00', 'quincenal', 1, '2022-08-26', b'1'),
-(131, 11, '2400.00', '18.00', 2, '1416.00', 'quincenal', 1, '2022-09-13', b'1'),
-(132, 12, '2400.00', '18.00', 2, '1416.00', 'quincenal', 1, '2022-09-13', b'1'),
+(131, 11, '2400.00', '18.00', 2, '1416.00', 'quincenal', 1, '2022-09-13', b'0'),
+(132, 12, '2400.00', '18.00', 2, '1416.00', 'quincenal', 1, '2022-09-13', b'0'),
 (133, 42, '1000.00', '18.00', 4, '340.00', 'quincenal', 1, '2022-09-15', b'1'),
 (134, 75, '1550.00', '18.00', 8, '263.50', 'semanal', 1, '2022-09-15', b'1'),
-(135, 261, '300.00', '20.00', 2, '180.00', 'quincenal', 1, '2022-09-13', b'1'),
+(135, 261, '300.00', '20.00', 2, '180.00', 'quincenal', 1, '2022-09-13', b'0'),
 (136, 32, '2500.00', '15.00', 4, '812.50', 'quincenal', 1, '2022-09-06', b'1'),
 (137, 262, '10000.00', '16.00', 6, '2466.70', 'quincenal', 1, '2022-09-09', b'1'),
 (138, 270, '1000.00', '18.00', 4, '340.00', 'quincenal', 1, '2022-04-08', b'1'),
@@ -662,7 +817,7 @@ INSERT INTO `loans` (`id`, `customer_id`, `credit_amount`, `interest_amount`, `n
 (145, 284, '500.00', '20.00', 4, '150.00', 'semanal', 1, '2022-08-17', b'1'),
 (146, 285, '500.00', '20.00', 2, '300.00', 'quincenal', 1, '2022-09-22', b'1'),
 (148, 287, '1500.00', '18.00', 6, '385.00', 'quincenal', 1, '2022-08-02', b'1'),
-(149, 286, '2000.00', '18.00', 2, '1180.00', 'quincenal', 1, '2022-09-23', b'1'),
+(149, 286, '2000.00', '18.00', 2, '1180.00', 'quincenal', 1, '2022-09-23', b'0'),
 (150, 288, '1500.00', '18.00', 4, '510.00', 'quincenal', 1, '2022-09-23', b'1'),
 (151, 289, '1500.00', '18.00', 4, '510.00', 'quincenal', 1, '2022-09-23', b'1'),
 (155, 298, '14000.00', '16.00', 8, '2310.00', 'semanal', 1, '2022-09-27', b'1'),
@@ -674,8 +829,39 @@ INSERT INTO `loans` (`id`, `customer_id`, `credit_amount`, `interest_amount`, `n
 (162, 27, '1070.00', '18.00', 4, '363.80', 'quincenal', 1, '2022-10-06', b'1'),
 (163, 127, '2000.00', '10.00', 6, '533.30', 'mensual', 1, '2022-08-05', b'1'),
 (164, 180, '500.00', '20.00', 4, '150.00', 'semanal', 1, '2022-10-07', b'1'),
-(165, 296, '1500.00', '14.00', 2, '855.00', 'quincenal', 1, '2022-10-11', b'1'),
-(166, 15, '150.00', '14.00', 2, '85.50', 'quincenal', 1, '2022-10-27', b'1');
+(165, 310, '10000.00', '10.00', 12, '1083.33', 'semanal', 1, '2022-09-07', b'1'),
+(166, 311, '2500.00', '18.00', 12, '320.83', 'semanal', 1, '2022-10-12', b'1'),
+(167, 312, '1500.00', '18.00', 12, '192.50', 'semanal', 1, '2022-10-12', b'1'),
+(168, 314, '1500.00', '18.00', 3, '770.00', 'mensual', 1, '2022-09-09', b'1'),
+(169, 107, '7000.00', '16.00', 6, '1726.67', 'quincenal', 1, '2022-08-25', b'1'),
+(170, 101, '1000.00', '18.00', 2, '590.00', 'quincenal', 1, '2022-10-13', b'1'),
+(171, 261, '500.00', '20.00', 2, '300.00', 'quincenal', 1, '2022-10-13', b'1'),
+(172, 52, '6000.00', '16.00', 6, '1480.00', 'quincenal', 1, '2022-10-13', b'1'),
+(173, 47, '2112.00', '16.00', 12, '260.48', 'semanal', 1, '2022-10-13', b'1'),
+(174, 48, '1826.00', '16.00', 2, '1059.08', 'quincenal', 1, '2022-10-14', b'1'),
+(175, 53, '1120.00', '18.00', 6, '287.47', 'quincenal', 1, '2022-07-20', b'1'),
+(176, 12, '4864.00', '18.00', 2, '2869.76', 'quincenal', 1, '2022-10-15', b'1'),
+(177, 49, '4814.00', '18.00', 8, '818.38', 'semanal', 1, '2022-10-10', b'1'),
+(178, 85, '5071.00', '18.00', 6, '1301.56', 'quincenal', 1, '2022-10-18', b'1'),
+(179, 271, '2000.00', '18.00', 4, '680.00', 'quincenal', 1, '2022-10-18', b'1'),
+(180, 179, '2000.00', '18.00', 2, '1180.00', 'quincenal', 1, '2022-10-18', b'1'),
+(181, 110, '1617.00', '16.00', 20, '145.53', 'semanal', 1, '2022-06-15', b'0'),
+(182, 50, '2500.00', '15.00', 16, '250.00', 'semanal', 1, '2022-10-18', b'1'),
+(183, 317, '2000.00', '18.00', 4, '680.00', 'quincenal', 1, '2022-10-20', b'1'),
+(184, 128, '2000.00', '18.00', 4, '680.00', 'quincenal', 1, '2022-10-20', b'1'),
+(185, 20, '2500.00', '15.00', 20, '218.75', 'semanal', 1, '2022-10-21', b'1'),
+(186, 318, '1000.00', '18.00', 30, '39.33', 'diario', 1, '2022-10-21', b'1'),
+(187, 170, '5500.00', '16.00', 6, '1356.67', 'quincenal', 1, '2022-10-24', b'1'),
+(188, 80, '1180.00', '18.00', 2, '696.20', 'quincenal', 1, '2022-10-21', b'1'),
+(189, 37, '1920.00', '18.00', 2, '1132.80', 'quincenal', 1, '2022-10-22', b'1'),
+(190, 319, '2000.00', '18.00', 4, '680.00', 'quincenal', 1, '2022-10-24', b'1'),
+(191, 321, '1000.00', '16.00', 2, '580.00', 'quincenal', 1, '2022-10-25', b'1'),
+(192, 110, '2910.00', '18.00', 4, '989.40', 'quincenal', 1, '2022-10-26', b'1'),
+(193, 322, '2000.00', '12.00', 6, '453.33', 'quincenal', 1, '2022-10-26', b'1'),
+(194, 323, '2000.00', '18.00', 6, '513.33', 'quincenal', 1, '2022-10-27', b'1'),
+(195, 109, '2000.00', '18.00', 6, '513.33', 'quincenal', 1, '2021-12-20', b'1'),
+(196, 23, '3000.00', '12.00', 6, '680.00', 'quincenal', 1, '2022-08-01', b'1'),
+(197, 325, '500.00', '20.00', 1, '600.00', 'mensual', 1, '2022-10-28', b'1');
 
 -- --------------------------------------------------------
 
@@ -691,29 +877,29 @@ CREATE TABLE `loan_items` (
   `fee_amount` decimal(25,2) NOT NULL,
   `pay_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `status` bit(1) NOT NULL DEFAULT b'1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `loan_items`
 --
 
 INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `pay_date`, `status`) VALUES
-(5, 2, '2022-08-26', 1, '340.00', '2022-10-17 22:47:42', b'0'),
-(6, 2, '2022-09-10', 2, '340.00', '2022-10-17 22:47:42', b'0'),
+(5, 2, '2022-08-26', 1, '340.00', '2022-08-31 19:31:44', b'1'),
+(6, 2, '2022-09-10', 2, '340.00', '2022-08-31 19:31:44', b'1'),
 (7, 2, '2022-09-27', 3, '340.00', '2022-08-31 19:31:44', b'1'),
 (8, 2, '2022-10-10', 4, '340.00', '2022-08-31 19:31:44', b'1'),
 (9, 3, '2022-07-30', 1, '256.70', '2022-09-02 15:40:35', b'0'),
 (10, 3, '2022-08-06', 2, '256.70', '2022-09-02 15:40:35', b'0'),
 (11, 3, '2022-08-13', 3, '256.70', '2022-09-26 13:21:15', b'0'),
-(12, 3, '2022-08-20', 4, '256.70', '2022-10-09 02:19:15', b'0'),
-(13, 3, '2022-08-27', 5, '256.70', '2022-10-09 02:19:15', b'0'),
-(14, 3, '2022-09-03', 6, '256.70', '2022-10-09 02:19:15', b'0'),
-(15, 3, '2022-09-10', 7, '256.70', '2022-10-09 02:19:15', b'0'),
-(16, 3, '2022-09-17', 8, '256.70', '2022-10-09 02:19:15', b'0'),
-(17, 3, '2022-09-24', 9, '256.70', '2022-10-09 02:19:15', b'0'),
-(18, 3, '2022-10-01', 10, '256.70', '2022-10-18 00:00:23', b'0'),
-(19, 3, '2022-10-08', 11, '256.70', '2022-10-18 01:27:46', b'0'),
-(20, 3, '2022-10-15', 12, '256.70', '2022-10-18 01:28:53', b'0'),
+(12, 3, '2022-08-20', 4, '256.70', '2022-10-19 22:26:40', b'0'),
+(13, 3, '2022-08-27', 5, '256.70', '2022-10-19 22:26:40', b'0'),
+(14, 3, '2022-09-03', 6, '256.70', '2022-10-19 22:26:40', b'0'),
+(15, 3, '2022-09-10', 7, '256.70', '2022-10-28 14:12:17', b'0'),
+(16, 3, '2022-09-17', 8, '256.70', '2022-10-28 14:12:17', b'0'),
+(17, 3, '2022-09-24', 9, '256.70', '2022-10-28 14:12:17', b'0'),
+(18, 3, '2022-10-01', 10, '256.70', '2022-10-28 14:12:17', b'0'),
+(19, 3, '2022-10-08', 11, '256.70', '2022-10-28 14:12:17', b'0'),
+(20, 3, '2022-10-15', 12, '256.70', '2022-10-28 14:12:17', b'0'),
 (21, 4, '2022-08-02', 1, '462.00', '2022-09-14 14:35:21', b'0'),
 (22, 4, '2022-08-15', 2, '462.00', '2022-09-14 14:35:21', b'0'),
 (23, 4, '2022-08-30', 3, '462.00', '2022-09-22 21:24:22', b'0'),
@@ -726,7 +912,7 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (30, 5, '2022-07-15', 4, '510.00', '2022-09-20 21:31:13', b'0'),
 (31, 6, '2022-08-31', 1, '256.70', '2022-09-14 14:32:57', b'0'),
 (32, 6, '2022-09-15', 2, '256.70', '2022-09-21 20:45:31', b'0'),
-(33, 6, '2022-09-30', 3, '256.70', '2022-08-31 20:16:55', b'1'),
+(33, 6, '2022-09-30', 3, '256.70', '2022-10-12 19:24:30', b'0'),
 (34, 6, '2022-10-15', 4, '256.70', '2022-08-31 20:16:55', b'1'),
 (35, 6, '2022-11-01', 5, '256.70', '2022-08-31 20:16:55', b'1'),
 (36, 6, '2022-11-14', 6, '256.70', '2022-08-31 20:16:55', b'1'),
@@ -742,7 +928,7 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (54, 10, '2022-03-18', 2, '950.00', '2022-09-15 13:48:20', b'0'),
 (55, 10, '2022-04-02', 3, '950.00', '2022-09-15 13:48:20', b'0'),
 (56, 10, '2022-04-19', 4, '950.00', '2022-09-15 13:48:20', b'0'),
-(57, 10, '2022-05-02', 5, '950.00', '2022-08-31 20:34:21', b'1'),
+(57, 10, '2022-05-02', 5, '950.00', '2022-10-28 15:37:47', b'0'),
 (58, 10, '2022-05-17', 6, '950.00', '2022-08-31 20:34:21', b'1'),
 (59, 10, '2022-06-01', 7, '950.00', '2022-08-31 20:34:21', b'1'),
 (60, 10, '2022-06-16', 8, '950.00', '2022-08-31 20:34:21', b'1'),
@@ -755,9 +941,9 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (67, 12, '2022-08-31', 1, '370.00', '2022-09-02 15:44:11', b'0'),
 (68, 12, '2022-09-15', 2, '370.00', '2022-09-19 20:30:40', b'0'),
 (69, 12, '2022-09-30', 3, '370.00', '2022-09-30 13:56:39', b'0'),
-(70, 12, '2022-10-15', 4, '370.00', '2022-08-31 20:38:59', b'1'),
-(71, 12, '2022-11-01', 5, '370.00', '2022-08-31 20:38:59', b'1'),
-(72, 12, '2022-11-14', 6, '370.00', '2022-08-31 20:38:59', b'1'),
+(70, 12, '2022-10-15', 4, '370.00', '2022-10-18 15:09:25', b'0'),
+(71, 12, '2022-11-01', 5, '370.00', '2022-10-21 13:22:49', b'0'),
+(72, 12, '2022-11-14', 6, '370.00', '2022-10-21 13:22:49', b'0'),
 (73, 13, '2022-09-09', 1, '510.00', '2022-09-14 15:37:33', b'0'),
 (74, 13, '2022-09-24', 2, '510.00', '2022-09-20 20:38:06', b'0'),
 (75, 13, '2022-10-11', 3, '510.00', '2022-09-20 20:38:06', b'0'),
@@ -791,14 +977,14 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (117, 21, '2022-08-16', 1, '2053.30', '2022-09-21 14:38:24', b'0'),
 (118, 21, '2022-09-14', 2, '2053.30', '2022-09-21 14:38:24', b'0'),
 (119, 21, '2022-10-14', 3, '2053.30', '2022-09-21 14:38:24', b'0'),
-(120, 22, '2022-08-05', 1, '670.00', '2022-08-31 22:18:17', b'1'),
+(120, 22, '2022-08-05', 1, '670.00', '2022-10-19 22:05:53', b'0'),
 (121, 22, '2022-08-20', 2, '670.00', '2022-08-31 22:18:17', b'1'),
 (122, 22, '2022-09-06', 3, '670.00', '2022-08-31 22:18:17', b'1'),
 (123, 22, '2022-09-19', 4, '670.00', '2022-08-31 22:18:17', b'1'),
-(130, 24, '2022-09-06', 1, '680.00', '2022-08-31 22:32:23', b'1'),
-(131, 24, '2022-09-21', 2, '680.00', '2022-08-31 22:32:23', b'1'),
-(132, 24, '2022-10-06', 3, '680.00', '2022-08-31 22:32:23', b'1'),
-(133, 24, '2022-10-21', 4, '680.00', '2022-08-31 22:32:23', b'1'),
+(130, 24, '2022-09-06', 1, '680.00', '2022-10-22 15:30:58', b'0'),
+(131, 24, '2022-09-21', 2, '680.00', '2022-10-22 15:30:58', b'0'),
+(132, 24, '2022-10-06', 3, '680.00', '2022-10-22 15:30:58', b'0'),
+(133, 24, '2022-10-21', 4, '680.00', '2022-10-22 15:30:58', b'0'),
 (134, 25, '2022-05-13', 1, '442.70', '2022-09-21 19:30:45', b'0'),
 (135, 25, '2022-05-28', 2, '442.70', '2022-09-21 19:30:45', b'0'),
 (136, 25, '2022-06-14', 3, '442.70', '2022-09-21 19:30:45', b'0'),
@@ -816,9 +1002,9 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (148, 27, '2022-08-02', 5, '385.00', '2022-09-20 22:22:00', b'0'),
 (149, 27, '2022-08-15', 6, '385.00', '2022-09-20 22:22:00', b'0'),
 (152, 29, '2022-08-09', 1, '385.00', '2022-09-14 15:45:41', b'0'),
-(153, 29, '2022-08-24', 2, '385.00', '2022-10-09 02:17:39', b'0'),
-(154, 29, '2022-09-08', 3, '385.00', '2022-10-09 02:17:39', b'0'),
-(155, 29, '2022-09-23', 4, '385.00', '2022-10-09 02:17:39', b'0'),
+(153, 29, '2022-08-24', 2, '385.00', '2022-09-01 13:28:58', b'1'),
+(154, 29, '2022-09-08', 3, '385.00', '2022-09-01 13:28:58', b'1'),
+(155, 29, '2022-09-23', 4, '385.00', '2022-09-01 13:28:58', b'1'),
 (156, 29, '2022-10-08', 5, '385.00', '2022-09-01 13:28:58', b'1'),
 (157, 29, '2022-10-25', 6, '385.00', '2022-09-01 13:28:58', b'1'),
 (166, 31, '2022-02-23', 1, '665.00', '2022-09-14 14:41:46', b'0'),
@@ -831,12 +1017,12 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (173, 31, '2022-06-08', 8, '665.00', '2022-09-20 22:29:32', b'0'),
 (174, 31, '2022-06-23', 9, '665.00', '2022-09-20 22:29:32', b'0'),
 (175, 31, '2022-07-08', 10, '665.00', '2022-09-01 13:38:58', b'1'),
-(176, 32, '2022-06-28', 1, '952.20', '2022-09-01 14:01:52', b'1'),
-(177, 32, '2022-07-13', 2, '952.20', '2022-09-01 14:01:52', b'1'),
-(178, 32, '2022-07-28', 3, '952.20', '2022-09-01 14:01:52', b'1'),
-(179, 32, '2022-08-12', 4, '952.20', '2022-09-01 14:01:52', b'1'),
-(180, 32, '2022-08-27', 5, '952.20', '2022-09-01 14:01:52', b'1'),
-(181, 32, '2022-09-13', 6, '952.20', '2022-09-01 14:01:52', b'1'),
+(176, 32, '2022-06-28', 1, '952.20', '2022-10-17 13:51:33', b'0'),
+(177, 32, '2022-07-13', 2, '952.20', '2022-10-17 13:51:33', b'0'),
+(178, 32, '2022-07-28', 3, '952.20', '2022-10-17 13:51:33', b'0'),
+(179, 32, '2022-08-12', 4, '952.20', '2022-10-17 13:51:33', b'0'),
+(180, 32, '2022-08-27', 5, '952.20', '2022-10-17 13:51:33', b'0'),
+(181, 32, '2022-09-13', 6, '952.20', '2022-10-17 13:51:33', b'0'),
 (182, 33, '2022-05-20', 1, '700.00', '2022-09-15 14:04:24', b'0'),
 (183, 33, '2022-06-04', 2, '700.00', '2022-09-15 14:04:24', b'0'),
 (184, 33, '2022-06-21', 3, '700.00', '2022-09-15 14:04:24', b'0'),
@@ -851,34 +1037,34 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (193, 34, '2022-09-02', 2, '1283.30', '2022-09-15 14:05:44', b'0'),
 (194, 34, '2022-09-17', 3, '1283.30', '2022-09-19 12:56:05', b'0'),
 (195, 34, '2022-10-04', 4, '1283.30', '2022-10-04 13:26:25', b'0'),
-(196, 34, '2022-10-17', 5, '1283.30', '2022-09-01 14:11:59', b'1'),
+(196, 34, '2022-10-17', 5, '1283.30', '2022-10-19 19:07:47', b'0'),
 (197, 34, '2022-11-01', 6, '1283.30', '2022-09-01 14:11:59', b'1'),
 (198, 35, '2022-05-06', 1, '770.00', '2022-09-15 14:07:49', b'0'),
 (199, 35, '2022-05-21', 2, '770.00', '2022-09-15 14:07:49', b'0'),
 (200, 35, '2022-06-07', 3, '770.00', '2022-09-15 14:07:49', b'0'),
 (201, 35, '2022-06-20', 4, '770.00', '2022-10-04 21:42:37', b'0'),
-(202, 35, '2022-07-05', 5, '770.00', '2022-09-01 14:15:42', b'1'),
-(203, 35, '2022-07-20', 6, '770.00', '2022-09-01 14:15:42', b'1'),
+(202, 35, '2022-07-05', 5, '770.00', '2022-10-14 20:29:27', b'0'),
+(203, 35, '2022-07-20', 6, '770.00', '2022-10-14 20:29:27', b'0'),
 (204, 36, '2022-07-28', 1, '340.00', '2022-09-14 15:46:32', b'0'),
 (205, 36, '2022-08-04', 2, '340.00', '2022-09-14 15:46:32', b'0'),
 (206, 36, '2022-08-11', 3, '340.00', '2022-09-14 15:46:32', b'0'),
 (207, 36, '2022-08-18', 4, '340.00', '2022-09-21 21:19:48', b'0'),
 (208, 36, '2022-08-25', 5, '340.00', '2022-09-26 15:08:29', b'0'),
 (209, 36, '2022-09-01', 6, '340.00', '2022-09-29 13:47:41', b'0'),
-(210, 36, '2022-09-08', 7, '340.00', '2022-09-01 14:18:16', b'1'),
-(211, 36, '2022-09-15', 8, '340.00', '2022-09-01 14:18:16', b'1'),
+(210, 36, '2022-09-08', 7, '340.00', '2022-10-13 13:09:19', b'0'),
+(211, 36, '2022-09-15', 8, '340.00', '2022-10-27 14:43:00', b'0'),
 (212, 37, '2022-07-07', 1, '468.70', '2022-09-20 22:32:39', b'0'),
-(213, 37, '2022-07-22', 2, '468.70', '2022-09-01 14:23:47', b'1'),
-(214, 37, '2022-08-06', 3, '468.70', '2022-09-01 14:23:47', b'1'),
-(215, 37, '2022-08-23', 4, '468.70', '2022-09-01 14:23:47', b'1'),
-(216, 37, '2022-09-05', 5, '468.70', '2022-09-01 14:23:47', b'1'),
-(217, 37, '2022-09-20', 6, '468.70', '2022-09-01 14:23:47', b'1'),
+(213, 37, '2022-07-22', 2, '468.70', '2022-10-13 20:56:04', b'0'),
+(214, 37, '2022-08-06', 3, '468.70', '2022-10-13 20:56:04', b'0'),
+(215, 37, '2022-08-23', 4, '468.70', '2022-10-13 20:56:04', b'0'),
+(216, 37, '2022-09-05', 5, '468.70', '2022-10-13 20:56:04', b'0'),
+(217, 37, '2022-09-20', 6, '468.70', '2022-10-13 20:56:04', b'0'),
 (218, 38, '2022-07-13', 1, '487.70', '2022-09-14 14:42:31', b'0'),
 (219, 38, '2022-07-28', 2, '487.70', '2022-09-20 22:33:27', b'0'),
-(220, 38, '2022-08-12', 3, '487.70', '2022-09-01 14:42:40', b'1'),
-(221, 38, '2022-08-27', 4, '487.70', '2022-09-01 14:42:40', b'1'),
-(222, 38, '2022-09-13', 5, '487.70', '2022-09-01 14:42:40', b'1'),
-(223, 38, '2022-09-26', 6, '487.70', '2022-09-01 14:42:40', b'1'),
+(220, 38, '2022-08-12', 3, '487.70', '2022-10-14 20:06:40', b'0'),
+(221, 38, '2022-08-27', 4, '487.70', '2022-10-14 20:06:40', b'0'),
+(222, 38, '2022-09-13', 5, '487.70', '2022-10-14 20:06:40', b'0'),
+(223, 38, '2022-09-26', 6, '487.70', '2022-10-14 20:06:40', b'0'),
 (226, 40, '2022-05-25', 1, '898.30', '2022-09-15 15:56:48', b'0'),
 (227, 40, '2022-06-09', 2, '898.30', '2022-09-01 14:46:50', b'1'),
 (228, 40, '2022-06-24', 3, '898.30', '2022-09-01 14:46:50', b'1'),
@@ -976,8 +1162,8 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (344, 52, '2022-07-15', 4, '510.00', '2022-09-21 13:29:10', b'0'),
 (345, 53, '2022-08-31', 1, '2065.00', '2022-09-27 22:19:03', b'0'),
 (346, 53, '2022-09-15', 2, '2065.00', '2022-10-05 21:09:16', b'0'),
-(353, 55, '2022-08-23', 1, '580.00', '2022-09-01 19:18:50', b'1'),
-(354, 55, '2022-09-07', 2, '580.00', '2022-09-01 19:18:50', b'1'),
+(353, 55, '2022-08-23', 1, '580.00', '2022-10-19 22:52:00', b'0'),
+(354, 55, '2022-09-07', 2, '580.00', '2022-10-19 22:52:00', b'0'),
 (361, 57, '2022-06-22', 1, '322.50', '2022-09-14 15:21:25', b'0'),
 (362, 57, '2022-07-07', 2, '322.50', '2022-09-14 15:21:25', b'0'),
 (363, 57, '2022-07-22', 3, '322.50', '2022-09-14 15:21:25', b'0'),
@@ -985,7 +1171,7 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (365, 57, '2022-08-23', 5, '322.50', '2022-09-14 15:21:25', b'0'),
 (366, 57, '2022-09-05', 6, '322.50', '2022-09-14 15:21:25', b'0'),
 (367, 57, '2022-09-20', 7, '322.50', '2022-09-26 15:02:11', b'0'),
-(368, 57, '2022-10-05', 8, '322.50', '2022-09-01 19:32:52', b'1'),
+(368, 57, '2022-10-05', 8, '322.50', '2022-10-10 15:21:58', b'0'),
 (369, 58, '2022-06-01', 1, '385.00', '2022-09-14 15:22:51', b'0'),
 (370, 58, '2022-06-16', 2, '385.00', '2022-09-01 19:42:18', b'1'),
 (371, 58, '2022-07-01', 3, '385.00', '2022-09-01 19:42:18', b'1'),
@@ -997,8 +1183,8 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (389, 61, '2022-05-02', 1, '292.60', '2022-09-14 16:06:21', b'0'),
 (390, 61, '2022-05-09', 2, '292.60', '2022-09-14 16:06:21', b'0'),
 (391, 61, '2022-05-16', 3, '292.60', '2022-09-14 16:06:21', b'0'),
-(392, 61, '2022-05-23', 4, '292.60', '2022-09-01 19:54:00', b'1'),
-(393, 61, '2022-05-30', 5, '292.60', '2022-09-01 19:54:00', b'1'),
+(392, 61, '2022-05-23', 4, '292.60', '2022-10-28 14:49:38', b'0'),
+(393, 61, '2022-05-30', 5, '292.60', '2022-10-28 14:49:38', b'0'),
 (394, 61, '2022-06-06', 6, '292.60', '2022-09-01 19:54:00', b'1'),
 (395, 61, '2022-06-13', 7, '292.60', '2022-09-01 19:54:00', b'1'),
 (396, 61, '2022-06-20', 8, '292.60', '2022-09-01 19:54:00', b'1'),
@@ -1016,8 +1202,8 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (408, 63, '2022-10-15', 4, '340.00', '2022-09-24 16:36:42', b'0'),
 (409, 64, '2022-09-06', 1, '264.00', '2022-09-14 15:24:08', b'0'),
 (410, 64, '2022-09-21', 2, '264.00', '2022-09-27 15:31:56', b'0'),
-(411, 64, '2022-10-06', 3, '264.00', '2022-09-01 20:12:15', b'1'),
-(412, 64, '2022-10-21', 4, '264.00', '2022-09-01 20:12:15', b'1'),
+(411, 64, '2022-10-06', 3, '264.00', '2022-10-11 15:58:13', b'0'),
+(412, 64, '2022-10-21', 4, '264.00', '2022-10-21 19:10:47', b'0'),
 (417, 66, '2022-07-26', 1, '475.00', '2022-09-01 20:22:49', b'1'),
 (418, 66, '2022-08-10', 2, '475.00', '2022-09-01 20:22:49', b'1'),
 (419, 66, '2022-08-25', 3, '475.00', '2022-09-01 20:22:49', b'1'),
@@ -1069,15 +1255,15 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (471, 73, '2022-04-01', 1, '513.30', '2022-09-14 16:07:45', b'0'),
 (472, 73, '2022-04-16', 2, '513.30', '2022-09-14 16:07:45', b'0'),
 (473, 73, '2022-05-03', 3, '513.30', '2022-09-14 16:07:45', b'0'),
-(474, 73, '2022-05-16', 4, '513.30', '2022-10-26 18:26:17', b'0'),
-(475, 73, '2022-05-31', 5, '513.30', '2022-09-01 21:07:19', b'1'),
-(476, 73, '2022-06-15', 6, '513.30', '2022-09-01 21:07:19', b'1'),
+(474, 73, '2022-05-16', 4, '513.30', '2022-10-18 22:23:03', b'0'),
+(475, 73, '2022-05-31', 5, '513.30', '2022-10-18 22:23:03', b'0'),
+(476, 73, '2022-06-15', 6, '513.30', '2022-10-18 22:23:03', b'0'),
 (477, 74, '2022-01-03', 1, '332.50', '2022-09-14 16:11:29', b'0'),
 (478, 74, '2022-01-10', 2, '332.50', '2022-09-14 16:11:29', b'0'),
 (479, 74, '2022-01-17', 3, '332.50', '2022-09-14 16:11:29', b'0'),
-(480, 74, '2022-01-24', 4, '332.50', '2022-10-09 02:17:58', b'0'),
-(481, 74, '2022-01-31', 5, '332.50', '2022-10-09 02:17:58', b'0'),
-(482, 74, '2022-02-07', 6, '332.50', '2022-10-09 02:17:58', b'0'),
+(480, 74, '2022-01-24', 4, '332.50', '2022-09-01 21:15:55', b'1'),
+(481, 74, '2022-01-31', 5, '332.50', '2022-09-01 21:15:55', b'1'),
+(482, 74, '2022-02-07', 6, '332.50', '2022-09-01 21:15:55', b'1'),
 (483, 74, '2022-02-14', 7, '332.50', '2022-09-01 21:15:55', b'1'),
 (484, 74, '2022-02-21', 8, '332.50', '2022-09-01 21:15:55', b'1'),
 (485, 74, '2022-02-28', 9, '332.50', '2022-09-01 21:15:55', b'1'),
@@ -1129,7 +1315,7 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (531, 78, '2022-08-24', 5, '537.50', '2022-09-14 20:07:05', b'0'),
 (532, 78, '2022-09-08', 6, '537.50', '2022-09-23 20:47:14', b'0'),
 (533, 78, '2022-09-23', 7, '537.50', '2022-09-23 20:47:14', b'0'),
-(534, 78, '2022-10-08', 8, '537.50', '2022-09-02 13:43:19', b'1'),
+(534, 78, '2022-10-08', 8, '537.50', '2022-10-13 22:13:18', b'0'),
 (535, 79, '2022-08-10', 1, '570.00', '2022-09-14 21:40:48', b'0'),
 (536, 79, '2022-08-25', 2, '570.00', '2022-09-14 21:40:48', b'0'),
 (537, 79, '2022-09-09', 3, '570.00', '2022-09-02 14:17:56', b'1'),
@@ -1142,11 +1328,11 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (544, 79, '2022-12-23', 10, '570.00', '2022-09-02 14:17:56', b'1'),
 (545, 80, '2022-09-01', 1, '770.00', '2022-09-20 14:50:12', b'0'),
 (546, 80, '2022-09-16', 2, '770.00', '2022-09-20 14:50:12', b'0'),
-(547, 80, '2022-10-01', 3, '770.00', '2022-09-02 14:29:24', b'1'),
-(548, 80, '2022-10-18', 4, '770.00', '2022-09-02 14:29:24', b'1'),
+(547, 80, '2022-10-01', 3, '770.00', '2022-10-18 22:09:38', b'0'),
+(548, 80, '2022-10-18', 4, '770.00', '2022-10-18 22:09:38', b'0'),
 (549, 80, '2022-10-31', 5, '770.00', '2022-09-02 14:29:24', b'1'),
 (550, 80, '2022-11-15', 6, '770.00', '2022-09-02 14:29:24', b'1'),
-(551, 81, '2022-08-31', 1, '692.00', '2022-09-02 14:54:37', b'1'),
+(551, 81, '2022-08-31', 1, '692.00', '2022-10-19 21:25:42', b'0'),
 (552, 81, '2022-09-15', 2, '692.00', '2022-09-02 14:54:37', b'1'),
 (553, 81, '2022-09-30', 3, '692.00', '2022-09-02 14:54:37', b'1'),
 (554, 81, '2022-10-15', 4, '692.00', '2022-09-02 14:54:37', b'1'),
@@ -1201,13 +1387,13 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (627, 87, '2022-09-21', 9, '320.80', '2022-10-04 22:06:11', b'0'),
 (628, 87, '2022-09-28', 10, '320.80', '2022-10-04 22:06:11', b'0'),
 (629, 87, '2022-10-05', 11, '320.80', '2022-10-07 21:02:27', b'0'),
-(630, 87, '2022-10-12', 12, '320.80', '2022-09-02 15:59:51', b'1'),
+(630, 87, '2022-10-12', 12, '320.80', '2022-10-14 13:00:11', b'0'),
 (631, 88, '2022-08-09', 1, '898.30', '2022-09-02 18:48:40', b'0'),
 (632, 88, '2022-08-24', 2, '898.30', '2022-09-02 18:49:20', b'0'),
 (633, 88, '2022-09-08', 3, '898.30', '2022-09-15 20:11:38', b'0'),
 (634, 88, '2022-09-23', 4, '898.30', '2022-09-23 19:49:01', b'0'),
 (635, 88, '2022-10-08', 5, '898.30', '2022-10-07 13:18:48', b'0'),
-(636, 88, '2022-10-25', 6, '898.30', '2022-09-02 18:48:07', b'1'),
+(636, 88, '2022-10-25', 6, '898.30', '2022-10-21 14:53:07', b'0'),
 (637, 89, '2022-08-12', 1, '513.30', '2022-09-02 18:55:23', b'0'),
 (638, 89, '2022-08-27', 2, '513.30', '2022-09-02 18:55:36', b'0'),
 (639, 89, '2022-09-13', 3, '513.30', '2022-09-15 20:13:01', b'0'),
@@ -1254,13 +1440,13 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (680, 96, '2022-08-23', 2, '1356.70', '2022-09-02 21:57:00', b'0'),
 (681, 96, '2022-09-05', 3, '1356.70', '2022-09-20 21:00:37', b'0'),
 (682, 96, '2022-09-20', 4, '1356.70', '2022-09-23 18:54:49', b'0'),
-(683, 96, '2022-10-05', 5, '1356.70', '2022-09-02 21:55:20', b'1'),
-(684, 96, '2022-10-20', 6, '1356.70', '2022-09-02 21:55:20', b'1'),
+(683, 96, '2022-10-05', 5, '1356.70', '2022-10-08 15:38:08', b'0'),
+(684, 96, '2022-10-20', 6, '1356.70', '2022-10-21 21:26:27', b'0'),
 (689, 98, '2022-08-17', 1, '1726.70', '2022-09-02 22:33:03', b'0'),
 (690, 98, '2022-09-01', 2, '1726.70', '2022-09-20 21:02:12', b'0'),
 (691, 98, '2022-09-16', 3, '1726.70', '2022-09-20 21:02:50', b'0'),
 (692, 98, '2022-10-01', 4, '1726.70', '2022-10-01 16:51:09', b'0'),
-(693, 98, '2022-10-18', 5, '1726.70', '2022-09-02 22:27:22', b'1'),
+(693, 98, '2022-10-18', 5, '1726.70', '2022-10-17 20:22:42', b'0'),
 (694, 98, '2022-10-31', 6, '1726.70', '2022-09-02 22:27:22', b'1'),
 (695, 99, '2022-10-10', 1, '1160.00', '2022-09-15 16:18:55', b'0'),
 (696, 100, '2022-09-20', 1, '150.00', '2022-09-22 15:24:08', b'0'),
@@ -1272,7 +1458,7 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (702, 101, '2022-08-30', 3, '1283.30', '2022-09-14 22:17:00', b'0'),
 (703, 101, '2022-09-12', 4, '1283.30', '2022-10-05 21:01:59', b'0'),
 (704, 101, '2022-09-27', 5, '1283.30', '2022-10-05 21:01:59', b'0'),
-(705, 101, '2022-10-12', 6, '1283.30', '2022-09-14 20:38:39', b'1'),
+(705, 101, '2022-10-12', 6, '1283.30', '2022-10-13 15:24:26', b'0'),
 (706, 102, '2022-04-12', 1, '1190.00', '2022-09-14 21:25:53', b'0'),
 (707, 102, '2022-04-25', 2, '1190.00', '2022-09-14 21:25:35', b'1'),
 (708, 102, '2022-05-10', 3, '1190.00', '2022-09-14 21:25:35', b'1'),
@@ -1280,12 +1466,12 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (710, 103, '2022-02-24', 1, '1190.00', '2022-09-14 21:39:26', b'0'),
 (711, 103, '2022-03-11', 2, '1190.00', '2022-09-14 21:39:26', b'0'),
 (712, 103, '2022-03-26', 3, '1190.00', '2022-09-14 21:39:26', b'0'),
-(713, 103, '2022-04-12', 4, '1190.00', '2022-09-14 21:29:37', b'1'),
+(713, 103, '2022-04-12', 4, '1190.00', '2022-10-18 22:20:45', b'0'),
 (714, 104, '2022-03-23', 1, '498.10', '2022-09-15 16:07:15', b'0'),
-(715, 104, '2022-03-30', 2, '498.10', '2022-10-18 12:55:16', b'0'),
-(716, 104, '2022-04-06', 3, '498.10', '2022-10-18 12:55:16', b'0'),
-(717, 104, '2022-04-13', 4, '498.10', '2022-10-18 12:55:16', b'0'),
-(718, 104, '2022-04-20', 5, '498.10', '2022-10-18 12:59:14', b'0'),
+(715, 104, '2022-03-30', 2, '498.10', '2022-10-28 20:31:09', b'0'),
+(716, 104, '2022-04-06', 3, '498.10', '2022-09-15 16:06:35', b'1'),
+(717, 104, '2022-04-13', 4, '498.10', '2022-09-15 16:06:35', b'1'),
+(718, 104, '2022-04-20', 5, '498.10', '2022-09-15 16:06:35', b'1'),
 (719, 104, '2022-04-27', 6, '498.10', '2022-09-15 16:06:35', b'1'),
 (720, 104, '2022-05-04', 7, '498.10', '2022-09-15 16:06:35', b'1'),
 (721, 104, '2022-05-11', 8, '498.10', '2022-09-15 16:06:35', b'1'),
@@ -1294,9 +1480,9 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (724, 104, '2022-06-01', 11, '498.10', '2022-09-15 16:06:35', b'1'),
 (725, 104, '2022-06-08', 12, '498.10', '2022-09-15 16:06:35', b'1'),
 (726, 105, '2022-09-30', 1, '1180.00', '2022-10-06 13:43:25', b'0'),
-(727, 105, '2022-10-15', 2, '1180.00', '2022-09-15 16:20:43', b'1'),
-(728, 106, '2022-09-09', 1, '289.00', '2022-09-15 19:36:21', b'1'),
-(729, 106, '2022-09-16', 2, '289.00', '2022-09-15 19:36:21', b'1'),
+(727, 105, '2022-10-15', 2, '1180.00', '2022-10-18 19:19:37', b'0'),
+(728, 106, '2022-09-09', 1, '289.00', '2022-10-18 13:00:21', b'0'),
+(729, 106, '2022-09-16', 2, '289.00', '2022-10-28 20:16:19', b'0'),
 (730, 106, '2022-09-23', 3, '289.00', '2022-09-15 19:36:21', b'1'),
 (731, 106, '2022-09-30', 4, '289.00', '2022-09-15 19:36:21', b'1'),
 (732, 106, '2022-10-07', 5, '289.00', '2022-09-15 19:36:21', b'1'),
@@ -1322,7 +1508,7 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (752, 110, '2022-09-06', 1, '641.70', '2022-09-15 22:18:08', b'0'),
 (753, 110, '2022-09-19', 2, '641.70', '2022-09-19 15:45:17', b'0'),
 (754, 110, '2022-10-04', 3, '641.70', '2022-10-03 20:23:41', b'0'),
-(755, 110, '2022-10-19', 4, '641.70', '2022-09-15 22:17:42', b'1'),
+(755, 110, '2022-10-19', 4, '641.70', '2022-10-20 21:34:27', b'0'),
 (756, 110, '2022-11-03', 5, '641.70', '2022-09-15 22:17:42', b'1'),
 (757, 110, '2022-11-18', 6, '641.70', '2022-09-15 22:17:42', b'1'),
 (758, 111, '2022-09-06', 1, '340.00', '2022-09-19 21:50:06', b'0'),
@@ -1341,7 +1527,7 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (775, 115, '2022-08-22', 2, '1973.30', '2022-09-20 14:06:51', b'0'),
 (776, 115, '2022-09-06', 3, '1973.30', '2022-09-20 14:06:51', b'0'),
 (777, 115, '2022-09-21', 4, '1973.30', '2022-09-20 14:06:51', b'0'),
-(778, 115, '2022-10-06', 5, '1973.30', '2022-09-17 15:01:58', b'1'),
+(778, 115, '2022-10-06', 5, '1973.30', '2022-10-12 19:43:43', b'0'),
 (779, 115, '2022-10-21', 6, '1973.30', '2022-09-17 15:01:58', b'1'),
 (780, 116, '2022-08-12', 1, '986.70', '2022-09-17 15:26:48', b'0'),
 (781, 116, '2022-08-19', 2, '986.70', '2022-09-17 15:26:48', b'0'),
@@ -1356,15 +1542,15 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (790, 116, '2022-10-21', 11, '986.70', '2022-09-17 15:18:13', b'1'),
 (791, 116, '2022-10-28', 12, '986.70', '2022-09-17 15:18:13', b'1'),
 (792, 117, '2022-09-09', 1, '1726.70', '2022-09-19 13:15:26', b'0'),
-(793, 117, '2022-09-24', 2, '1726.70', '2022-09-17 15:38:57', b'1'),
-(794, 117, '2022-10-11', 3, '1726.70', '2022-09-17 15:38:57', b'1'),
-(795, 117, '2022-10-24', 4, '1726.70', '2022-09-17 15:38:57', b'1'),
-(796, 117, '2022-11-08', 5, '1726.70', '2022-09-17 15:38:57', b'1'),
-(797, 117, '2022-11-23', 6, '1726.70', '2022-09-17 15:38:57', b'1'),
-(798, 118, '2022-09-26', 1, '150.00', '2022-09-19 19:44:21', b'1'),
-(799, 118, '2022-10-03', 2, '150.00', '2022-09-19 19:44:21', b'1'),
-(800, 118, '2022-10-10', 3, '150.00', '2022-09-19 19:44:21', b'1'),
-(801, 118, '2022-10-17', 4, '150.00', '2022-09-19 19:44:21', b'1'),
+(793, 117, '2022-09-24', 2, '1726.70', '2022-10-11 22:30:26', b'0'),
+(794, 117, '2022-10-11', 3, '1726.70', '2022-10-11 22:30:26', b'0'),
+(795, 117, '2022-10-24', 4, '1726.70', '2022-10-12 21:49:23', b'0'),
+(796, 117, '2022-11-08', 5, '1726.70', '2022-10-12 21:49:23', b'0'),
+(797, 117, '2022-11-23', 6, '1726.70', '2022-10-12 21:49:23', b'0'),
+(798, 118, '2022-09-26', 1, '150.00', '2022-10-22 14:43:13', b'0'),
+(799, 118, '2022-10-03', 2, '150.00', '2022-10-22 14:43:13', b'0'),
+(800, 118, '2022-10-10', 3, '150.00', '2022-10-24 21:34:36', b'0'),
+(801, 118, '2022-10-17', 4, '150.00', '2022-10-24 21:34:36', b'0'),
 (802, 119, '2022-09-26', 1, '185.10', '2022-09-19 20:59:45', b'1'),
 (803, 119, '2022-10-03', 2, '185.10', '2022-09-19 20:59:45', b'1'),
 (804, 119, '2022-10-10', 3, '185.10', '2022-09-19 20:59:45', b'1'),
@@ -1403,28 +1589,28 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (847, 124, '2022-09-19', 4, '340.00', '2022-09-20 14:38:09', b'0'),
 (848, 124, '2022-09-26', 5, '340.00', '2022-09-26 14:16:06', b'0'),
 (849, 124, '2022-10-03', 6, '340.00', '2022-10-03 13:51:45', b'0'),
-(850, 124, '2022-10-10', 7, '340.00', '2022-09-20 14:35:15', b'1'),
-(851, 124, '2022-10-17', 8, '340.00', '2022-09-20 14:35:15', b'1'),
+(850, 124, '2022-10-10', 7, '340.00', '2022-10-24 13:00:50', b'0'),
+(851, 124, '2022-10-17', 8, '340.00', '2022-10-24 13:00:50', b'0'),
 (852, 125, '2022-09-29', 1, '513.30', '2022-09-29 19:17:28', b'0'),
-(853, 125, '2022-10-14', 2, '513.30', '2022-09-20 15:14:07', b'1'),
+(853, 125, '2022-10-14', 2, '513.30', '2022-10-18 21:29:10', b'0'),
 (854, 125, '2022-10-29', 3, '513.30', '2022-09-20 15:14:07', b'1'),
 (855, 125, '2022-11-15', 4, '513.30', '2022-09-20 15:14:07', b'1'),
 (856, 125, '2022-11-28', 5, '513.30', '2022-09-20 15:14:07', b'1'),
 (857, 125, '2022-12-13', 6, '513.30', '2022-09-20 15:14:07', b'1'),
 (858, 126, '2022-10-05', 1, '1973.30', '2022-10-05 15:04:21', b'0'),
-(859, 126, '2022-10-20', 2, '1973.30', '2022-09-20 16:00:28', b'1'),
+(859, 126, '2022-10-20', 2, '1973.30', '2022-10-20 15:46:40', b'0'),
 (860, 126, '2022-11-04', 3, '1973.30', '2022-09-20 16:00:28', b'1'),
 (861, 126, '2022-11-19', 4, '1973.30', '2022-09-20 16:00:28', b'1'),
 (862, 126, '2022-12-06', 5, '1973.30', '2022-09-20 16:00:28', b'1'),
 (863, 126, '2022-12-19', 6, '1973.30', '2022-09-20 16:00:28', b'1'),
 (864, 127, '2022-10-05', 1, '513.30', '2022-10-06 14:00:59', b'0'),
-(865, 127, '2022-10-20', 2, '513.30', '2022-09-20 20:39:46', b'1'),
+(865, 127, '2022-10-20', 2, '513.30', '2022-10-21 13:09:02', b'0'),
 (866, 127, '2022-11-04', 3, '513.30', '2022-09-20 20:39:46', b'1'),
 (867, 127, '2022-11-19', 4, '513.30', '2022-09-20 20:39:46', b'1'),
 (868, 127, '2022-12-06', 5, '513.30', '2022-09-20 20:39:46', b'1'),
 (869, 127, '2022-12-19', 6, '513.30', '2022-09-20 20:39:46', b'1'),
-(870, 128, '2022-09-27', 1, '138.00', '2022-10-18 01:47:04', b'0'),
-(871, 128, '2022-10-04', 2, '138.00', '2022-10-18 01:47:04', b'0'),
+(870, 128, '2022-09-27', 1, '138.00', '2022-09-20 21:39:12', b'1'),
+(871, 128, '2022-10-04', 2, '138.00', '2022-09-20 21:39:12', b'1'),
 (872, 128, '2022-10-11', 3, '138.00', '2022-09-20 21:39:12', b'1'),
 (873, 128, '2022-10-18', 4, '138.00', '2022-09-20 21:39:12', b'1'),
 (874, 128, '2022-10-25', 5, '138.00', '2022-09-20 21:39:12', b'1'),
@@ -1440,26 +1626,26 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (884, 128, '2023-01-03', 15, '138.00', '2022-09-20 21:39:12', b'1'),
 (885, 128, '2023-01-10', 16, '138.00', '2022-09-20 21:39:12', b'1'),
 (886, 129, '2022-08-31', 1, '1603.30', '2022-09-20 21:54:36', b'0'),
-(887, 129, '2022-09-15', 2, '1603.30', '2022-09-20 21:53:07', b'1'),
+(887, 129, '2022-09-15', 2, '1603.30', '2022-10-18 20:50:39', b'0'),
 (888, 129, '2022-09-30', 3, '1603.30', '2022-09-20 21:53:07', b'1'),
 (889, 129, '2022-10-15', 4, '1603.30', '2022-09-20 21:53:07', b'1'),
 (890, 129, '2022-11-01', 5, '1603.30', '2022-09-20 21:53:07', b'1'),
 (891, 129, '2022-11-14', 6, '1603.30', '2022-09-20 21:53:07', b'1'),
 (892, 130, '2022-09-10', 1, '1480.00', '2022-09-20 22:16:03', b'0'),
 (893, 130, '2022-09-27', 2, '1480.00', '2022-09-26 14:15:14', b'0'),
-(894, 130, '2022-10-10', 3, '1480.00', '2022-09-20 22:14:50', b'1'),
-(895, 130, '2022-10-25', 4, '1480.00', '2022-09-20 22:14:50', b'1'),
+(894, 130, '2022-10-10', 3, '1480.00', '2022-10-10 19:51:18', b'0'),
+(895, 130, '2022-10-25', 4, '1480.00', '2022-10-25 20:27:20', b'0'),
 (896, 130, '2022-11-09', 5, '1480.00', '2022-09-20 22:14:50', b'1'),
 (897, 130, '2022-11-24', 6, '1480.00', '2022-09-20 22:14:50', b'1'),
-(898, 131, '2022-09-28', 1, '1416.00', '2022-09-20 22:19:00', b'1'),
-(899, 131, '2022-10-13', 2, '1416.00', '2022-09-20 22:19:00', b'1'),
-(900, 132, '2022-09-28', 1, '1416.00', '2022-09-20 22:19:32', b'1'),
-(901, 132, '2022-10-13', 2, '1416.00', '2022-09-20 22:19:32', b'1'),
+(898, 131, '2022-09-28', 1, '1416.00', '2022-10-14 22:19:59', b'0'),
+(899, 131, '2022-10-13', 2, '1416.00', '2022-10-14 22:19:59', b'0'),
+(900, 132, '2022-09-28', 1, '1416.00', '2022-10-14 22:19:38', b'0'),
+(901, 132, '2022-10-13', 2, '1416.00', '2022-10-14 22:19:38', b'0'),
 (902, 133, '2022-09-30', 1, '340.00', '2022-09-20 22:23:53', b'1'),
 (903, 133, '2022-10-15', 2, '340.00', '2022-09-20 22:23:53', b'1'),
 (904, 133, '2022-11-01', 3, '340.00', '2022-09-20 22:23:53', b'1'),
 (905, 133, '2022-11-14', 4, '340.00', '2022-09-20 22:23:53', b'1'),
-(906, 134, '2022-09-22', 1, '263.50', '2022-09-21 13:32:40', b'1');
+(906, 134, '2022-09-22', 1, '263.50', '2022-10-11 13:40:33', b'0');
 INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `pay_date`, `status`) VALUES
 (907, 134, '2022-09-29', 2, '263.50', '2022-09-21 13:32:40', b'1'),
 (908, 134, '2022-10-06', 3, '263.50', '2022-09-21 13:32:40', b'1'),
@@ -1469,14 +1655,14 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (912, 134, '2022-11-03', 7, '263.50', '2022-09-21 13:32:40', b'1'),
 (913, 134, '2022-11-10', 8, '263.50', '2022-09-21 13:32:40', b'1'),
 (914, 135, '2022-09-28', 1, '180.00', '2022-09-28 22:36:05', b'0'),
-(915, 135, '2022-10-13', 2, '180.00', '2022-09-21 14:06:01', b'1'),
-(916, 136, '2022-09-21', 1, '812.50', '2022-09-21 14:35:55', b'1'),
+(915, 135, '2022-10-13', 2, '180.00', '2022-10-10 22:18:06', b'0'),
+(916, 136, '2022-09-21', 1, '812.50', '2022-10-10 22:04:31', b'0'),
 (917, 136, '2022-10-06', 2, '812.50', '2022-09-21 14:35:55', b'1'),
 (918, 136, '2022-10-21', 3, '812.50', '2022-09-21 14:35:55', b'1'),
 (919, 136, '2022-11-05', 4, '812.50', '2022-09-21 14:35:55', b'1'),
 (920, 137, '2022-09-24', 1, '2466.70', '2022-09-24 16:13:36', b'0'),
-(921, 137, '2022-10-11', 2, '2466.70', '2022-09-21 14:39:26', b'1'),
-(922, 137, '2022-10-24', 3, '2466.70', '2022-09-21 14:39:26', b'1'),
+(921, 137, '2022-10-11', 2, '2466.70', '2022-10-14 19:37:36', b'0'),
+(922, 137, '2022-10-24', 3, '2466.70', '2022-10-26 22:45:27', b'0'),
 (923, 137, '2022-11-08', 4, '2466.70', '2022-09-21 14:39:26', b'1'),
 (924, 137, '2022-11-23', 5, '2466.70', '2022-09-21 14:39:26', b'1'),
 (925, 137, '2022-12-08', 6, '2466.70', '2022-09-21 14:39:26', b'1'),
@@ -1500,12 +1686,12 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (943, 140, '2022-06-14', 12, '508.80', '2022-09-21 15:44:12', b'1'),
 (944, 141, '2022-09-07', 1, '641.70', '2022-09-21 20:08:57', b'0'),
 (945, 141, '2022-09-22', 2, '641.70', '2022-09-24 16:19:15', b'0'),
-(946, 141, '2022-10-07', 3, '641.70', '2022-10-07 23:36:17', b'0'),
+(946, 141, '2022-10-07', 3, '641.70', '2022-09-21 19:54:28', b'1'),
 (947, 141, '2022-10-22', 4, '641.70', '2022-09-21 19:54:28', b'1'),
 (948, 141, '2022-11-08', 5, '641.70', '2022-09-21 19:54:28', b'1'),
 (949, 141, '2022-11-21', 6, '641.70', '2022-09-21 19:54:28', b'1'),
 (950, 142, '2022-10-01', 1, '1726.70', '2022-10-01 15:37:02', b'0'),
-(951, 142, '2022-10-18', 2, '1726.70', '2022-09-21 20:43:35', b'1'),
+(951, 142, '2022-10-18', 2, '1726.70', '2022-10-17 20:25:13', b'0'),
 (952, 142, '2022-10-31', 3, '1726.70', '2022-09-21 20:43:35', b'1'),
 (953, 142, '2022-11-15', 4, '1726.70', '2022-09-21 20:43:35', b'1'),
 (954, 142, '2022-11-30', 5, '1726.70', '2022-09-21 20:43:35', b'1'),
@@ -1530,20 +1716,20 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (989, 148, '2022-10-01', 4, '385.00', '2022-09-23 14:06:50', b'1'),
 (990, 148, '2022-10-18', 5, '385.00', '2022-09-23 14:06:50', b'1'),
 (991, 148, '2022-10-31', 6, '385.00', '2022-09-23 14:06:50', b'1'),
-(992, 149, '2022-10-08', 1, '1180.00', '2022-09-23 14:20:04', b'1'),
-(993, 149, '2022-10-25', 2, '1180.00', '2022-09-23 14:20:04', b'1'),
-(994, 150, '2022-10-08', 1, '510.00', '2022-09-23 14:57:19', b'1'),
+(992, 149, '2022-10-08', 1, '1180.00', '2022-10-11 13:39:40', b'0'),
+(993, 149, '2022-10-25', 2, '1180.00', '2022-10-28 19:24:47', b'0'),
+(994, 150, '2022-10-08', 1, '510.00', '2022-10-10 15:25:23', b'0'),
 (995, 150, '2022-10-25', 2, '510.00', '2022-09-23 14:57:19', b'1'),
 (996, 150, '2022-11-07', 3, '510.00', '2022-09-23 14:57:19', b'1'),
 (997, 150, '2022-11-22', 4, '510.00', '2022-09-23 14:57:19', b'1'),
-(998, 151, '2022-10-08', 1, '510.00', '2022-09-23 19:48:03', b'1'),
+(998, 151, '2022-10-08', 1, '510.00', '2022-10-10 14:49:43', b'0'),
 (999, 151, '2022-10-25', 2, '510.00', '2022-09-23 19:48:03', b'1'),
 (1000, 151, '2022-11-07', 3, '510.00', '2022-09-23 19:48:03', b'1'),
 (1001, 151, '2022-11-22', 4, '510.00', '2022-09-23 19:48:03', b'1'),
 (1015, 155, '2022-10-04', 1, '2310.00', '2022-10-04 19:58:38', b'0'),
-(1016, 155, '2022-10-11', 2, '2310.00', '2022-09-26 19:40:01', b'1'),
+(1016, 155, '2022-10-11', 2, '2310.00', '2022-10-12 15:54:52', b'0'),
 (1017, 155, '2022-10-18', 3, '2310.00', '2022-09-26 19:40:01', b'1'),
-(1018, 155, '2022-10-25', 4, '2310.00', '2022-09-26 19:40:01', b'1'),
+(1018, 155, '2022-10-25', 4, '2310.00', '2022-10-28 13:10:08', b'0'),
 (1019, 155, '2022-11-01', 5, '2310.00', '2022-09-26 19:40:01', b'1'),
 (1020, 155, '2022-11-08', 6, '2310.00', '2022-09-26 19:40:01', b'1'),
 (1021, 155, '2022-11-15', 7, '2310.00', '2022-09-26 19:40:01', b'1'),
@@ -1554,7 +1740,7 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (1026, 156, '2022-09-14', 4, '3206.70', '2022-09-27 14:36:10', b'1'),
 (1027, 156, '2022-09-29', 5, '3206.70', '2022-09-27 14:36:10', b'1'),
 (1028, 156, '2022-10-14', 6, '3206.70', '2022-09-27 14:36:10', b'1'),
-(1029, 157, '2022-10-13', 1, '590.00', '2022-09-28 20:03:03', b'1'),
+(1029, 157, '2022-10-13', 1, '590.00', '2022-10-13 22:23:51', b'0'),
 (1030, 157, '2022-10-28', 2, '590.00', '2022-09-28 20:03:03', b'1'),
 (1031, 158, '2022-10-08', 1, '1180.00', '2022-09-29 13:49:47', b'1'),
 (1032, 158, '2022-10-25', 2, '1180.00', '2022-09-29 13:49:47', b'1'),
@@ -1563,7 +1749,7 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (1039, 160, '2022-10-22', 3, '90.00', '2022-10-01 13:37:00', b'1'),
 (1040, 160, '2022-10-29', 4, '90.00', '2022-10-01 13:37:00', b'1'),
 (1041, 161, '2022-10-15', 1, '2436.70', '2022-10-05 21:12:32', b'1'),
-(1042, 162, '2022-10-21', 1, '363.80', '2022-10-06 20:16:27', b'1'),
+(1042, 162, '2022-10-21', 1, '363.80', '2022-10-25 12:53:49', b'0'),
 (1043, 162, '2022-11-05', 2, '363.80', '2022-10-06 20:16:27', b'1'),
 (1044, 162, '2022-11-22', 3, '363.80', '2022-10-06 20:16:27', b'1'),
 (1045, 162, '2022-12-05', 4, '363.80', '2022-10-06 20:16:27', b'1'),
@@ -1573,14 +1759,246 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (1049, 163, '2022-12-05', 4, '533.30', '2022-10-07 13:34:39', b'1'),
 (1050, 163, '2023-01-05', 5, '533.30', '2022-10-07 13:34:39', b'1'),
 (1051, 163, '2023-02-07', 6, '533.30', '2022-10-07 13:34:39', b'1'),
-(1052, 164, '2022-10-14', 1, '150.00', '2022-10-07 15:09:11', b'1'),
+(1052, 164, '2022-10-14', 1, '150.00', '2022-10-21 20:56:25', b'0'),
 (1053, 164, '2022-10-21', 2, '150.00', '2022-10-07 15:09:11', b'1'),
 (1054, 164, '2022-10-28', 3, '150.00', '2022-10-07 15:09:11', b'1'),
 (1055, 164, '2022-11-04', 4, '150.00', '2022-10-07 15:09:11', b'1'),
-(1056, 165, '2022-10-26', 1, '855.00', '2022-10-19 00:13:10', b'0'),
-(1057, 165, '2022-11-10', 2, '855.00', '2022-10-11 14:13:57', b'1'),
-(1058, 166, '2022-11-11', 1, '85.50', '2022-10-26 18:35:37', b'1'),
-(1059, 166, '2022-11-26', 2, '85.50', '2022-10-26 18:35:37', b'1');
+(1056, 165, '2022-09-14', 1, '1083.33', '2022-10-08 13:07:02', b'0'),
+(1057, 165, '2022-09-21', 2, '1083.33', '2022-10-08 14:56:02', b'0'),
+(1058, 165, '2022-09-28', 3, '1083.33', '2022-10-10 19:27:49', b'0'),
+(1059, 165, '2022-10-05', 4, '1083.33', '2022-10-07 22:41:42', b'1'),
+(1060, 165, '2022-10-12', 5, '1083.33', '2022-10-07 22:41:42', b'1'),
+(1061, 165, '2022-10-19', 6, '1083.33', '2022-10-07 22:41:42', b'1'),
+(1062, 165, '2022-10-26', 7, '1083.33', '2022-10-07 22:41:42', b'1'),
+(1063, 165, '2022-11-02', 8, '1083.33', '2022-10-07 22:41:42', b'1'),
+(1064, 165, '2022-11-09', 9, '1083.33', '2022-10-07 22:41:42', b'1'),
+(1065, 165, '2022-11-16', 10, '1083.33', '2022-10-07 22:41:42', b'1'),
+(1066, 165, '2022-11-23', 11, '1083.33', '2022-10-07 22:41:42', b'1'),
+(1067, 165, '2022-11-30', 12, '1083.33', '2022-10-07 22:41:42', b'1'),
+(1068, 166, '2022-10-19', 1, '320.83', '2022-10-24 20:18:40', b'0'),
+(1069, 166, '2022-10-26', 2, '320.83', '2022-10-24 20:18:40', b'0'),
+(1070, 166, '2022-11-02', 3, '320.83', '2022-10-11 15:49:49', b'1'),
+(1071, 166, '2022-11-09', 4, '320.83', '2022-10-11 15:49:49', b'1'),
+(1072, 166, '2022-11-16', 5, '320.83', '2022-10-11 15:49:49', b'1'),
+(1073, 166, '2022-11-23', 6, '320.83', '2022-10-11 15:49:49', b'1'),
+(1074, 166, '2022-11-30', 7, '320.83', '2022-10-11 15:49:49', b'1'),
+(1075, 166, '2022-12-07', 8, '320.83', '2022-10-11 15:49:49', b'1'),
+(1076, 166, '2022-12-14', 9, '320.83', '2022-10-11 15:49:49', b'1'),
+(1077, 166, '2022-12-21', 10, '320.83', '2022-10-11 15:49:49', b'1'),
+(1078, 166, '2022-12-28', 11, '320.83', '2022-10-11 15:49:49', b'1'),
+(1079, 166, '2023-01-04', 12, '320.83', '2022-10-11 15:49:49', b'1'),
+(1080, 167, '2022-10-19', 1, '192.50', '2022-10-19 19:46:43', b'0'),
+(1081, 167, '2022-10-26', 2, '192.50', '2022-10-26 19:27:50', b'0'),
+(1082, 167, '2022-11-02', 3, '192.50', '2022-10-11 21:08:45', b'1'),
+(1083, 167, '2022-11-09', 4, '192.50', '2022-10-11 21:08:45', b'1'),
+(1084, 167, '2022-11-16', 5, '192.50', '2022-10-11 21:08:45', b'1'),
+(1085, 167, '2022-11-23', 6, '192.50', '2022-10-11 21:08:45', b'1'),
+(1086, 167, '2022-11-30', 7, '192.50', '2022-10-11 21:08:45', b'1'),
+(1087, 167, '2022-12-07', 8, '192.50', '2022-10-11 21:08:45', b'1'),
+(1088, 167, '2022-12-14', 9, '192.50', '2022-10-11 21:08:45', b'1'),
+(1089, 167, '2022-12-21', 10, '192.50', '2022-10-11 21:08:45', b'1'),
+(1090, 167, '2022-12-28', 11, '192.50', '2022-10-11 21:08:45', b'1'),
+(1091, 167, '2023-01-04', 12, '192.50', '2022-10-11 21:08:45', b'1'),
+(1092, 168, '2022-10-11', 1, '770.00', '2022-10-11 22:01:50', b'0'),
+(1093, 168, '2022-11-09', 2, '770.00', '2022-10-11 22:01:24', b'1'),
+(1094, 168, '2022-12-09', 3, '770.00', '2022-10-11 22:01:24', b'1'),
+(1095, 169, '2022-09-09', 1, '1726.67', '2022-10-12 21:55:54', b'0'),
+(1096, 169, '2022-09-24', 2, '1726.67', '2022-10-12 21:55:54', b'0'),
+(1097, 169, '2022-10-11', 3, '1726.67', '2022-10-12 21:55:24', b'1'),
+(1098, 169, '2022-10-24', 4, '1726.67', '2022-10-12 21:55:24', b'1'),
+(1099, 169, '2022-11-08', 5, '1726.67', '2022-10-12 21:55:24', b'1'),
+(1100, 169, '2022-11-23', 6, '1726.67', '2022-10-12 21:55:24', b'1'),
+(1101, 170, '2022-10-28', 1, '590.00', '2022-10-13 12:56:49', b'1'),
+(1102, 170, '2022-11-12', 2, '590.00', '2022-10-13 12:56:49', b'1'),
+(1103, 171, '2022-10-28', 1, '300.00', '2022-10-13 15:33:15', b'1'),
+(1104, 171, '2022-11-12', 2, '300.00', '2022-10-13 15:33:15', b'1'),
+(1105, 172, '2022-10-28', 1, '1480.00', '2022-10-13 15:41:50', b'1'),
+(1106, 172, '2022-11-12', 2, '1480.00', '2022-10-13 15:41:50', b'1'),
+(1107, 172, '2022-11-29', 3, '1480.00', '2022-10-13 15:41:50', b'1'),
+(1108, 172, '2022-12-12', 4, '1480.00', '2022-10-13 15:41:50', b'1'),
+(1109, 172, '2022-12-27', 5, '1480.00', '2022-10-13 15:41:50', b'1'),
+(1110, 172, '2023-01-11', 6, '1480.00', '2022-10-13 15:41:50', b'1'),
+(1111, 173, '2022-10-20', 1, '260.48', '2022-10-13 20:59:42', b'1'),
+(1112, 173, '2022-10-27', 2, '260.48', '2022-10-13 20:59:42', b'1'),
+(1113, 173, '2022-11-03', 3, '260.48', '2022-10-13 20:59:42', b'1'),
+(1114, 173, '2022-11-10', 4, '260.48', '2022-10-13 20:59:42', b'1'),
+(1115, 173, '2022-11-17', 5, '260.48', '2022-10-13 20:59:42', b'1'),
+(1116, 173, '2022-11-24', 6, '260.48', '2022-10-13 20:59:42', b'1'),
+(1117, 173, '2022-12-01', 7, '260.48', '2022-10-13 20:59:42', b'1'),
+(1118, 173, '2022-12-08', 8, '260.48', '2022-10-13 20:59:42', b'1'),
+(1119, 173, '2022-12-15', 9, '260.48', '2022-10-13 20:59:42', b'1'),
+(1120, 173, '2022-12-22', 10, '260.48', '2022-10-13 20:59:42', b'1'),
+(1121, 173, '2022-12-29', 11, '260.48', '2022-10-13 20:59:42', b'1'),
+(1122, 173, '2023-01-05', 12, '260.48', '2022-10-13 20:59:42', b'1'),
+(1123, 174, '2022-10-29', 1, '1059.08', '2022-10-14 20:09:12', b'1'),
+(1124, 174, '2022-11-15', 2, '1059.08', '2022-10-14 20:09:12', b'1'),
+(1125, 175, '2022-08-04', 1, '287.47', '2022-10-14 20:31:29', b'1'),
+(1126, 175, '2022-08-19', 2, '287.47', '2022-10-14 20:31:29', b'1'),
+(1127, 175, '2022-09-03', 3, '287.47', '2022-10-14 20:31:29', b'1'),
+(1128, 175, '2022-09-20', 4, '287.47', '2022-10-14 20:31:29', b'1'),
+(1129, 175, '2022-10-03', 5, '287.47', '2022-10-14 20:31:29', b'1'),
+(1130, 175, '2022-10-18', 6, '287.47', '2022-10-14 20:31:29', b'1'),
+(1131, 176, '2022-11-01', 1, '2869.76', '2022-10-15 16:09:30', b'1'),
+(1132, 176, '2022-11-14', 2, '2869.76', '2022-10-15 16:09:30', b'1'),
+(1133, 177, '2022-10-17', 1, '818.38', '2022-10-17 13:56:54', b'1'),
+(1134, 177, '2022-10-24', 2, '818.38', '2022-10-17 13:56:54', b'1'),
+(1135, 177, '2022-10-31', 3, '818.38', '2022-10-17 13:56:54', b'1'),
+(1136, 177, '2022-11-07', 4, '818.38', '2022-10-17 13:56:54', b'1'),
+(1137, 177, '2022-11-14', 5, '818.38', '2022-10-17 13:56:54', b'1'),
+(1138, 177, '2022-11-21', 6, '818.38', '2022-10-17 13:56:54', b'1'),
+(1139, 177, '2022-11-28', 7, '818.38', '2022-10-17 13:56:54', b'1'),
+(1140, 177, '2022-12-05', 8, '818.38', '2022-10-17 13:56:54', b'1'),
+(1141, 178, '2022-11-02', 1, '1301.56', '2022-10-18 15:46:31', b'0'),
+(1142, 178, '2022-11-17', 2, '1301.56', '2022-10-21 21:47:15', b'0'),
+(1143, 178, '2022-12-02', 3, '1301.56', '2022-10-18 15:44:32', b'1'),
+(1144, 178, '2022-12-17', 4, '1301.56', '2022-10-18 15:44:32', b'1'),
+(1145, 178, '2023-01-03', 5, '1301.56', '2022-10-18 15:44:32', b'1'),
+(1146, 178, '2023-01-16', 6, '1301.56', '2022-10-18 15:44:32', b'1'),
+(1147, 179, '2022-11-02', 1, '680.00', '2022-10-18 19:12:36', b'1'),
+(1148, 179, '2022-11-17', 2, '680.00', '2022-10-18 19:12:36', b'1'),
+(1149, 179, '2022-12-02', 3, '680.00', '2022-10-18 19:12:36', b'1'),
+(1150, 179, '2022-12-17', 4, '680.00', '2022-10-18 19:12:36', b'1'),
+(1151, 180, '2022-11-02', 1, '1180.00', '2022-10-18 19:22:07', b'1'),
+(1152, 180, '2022-11-17', 2, '1180.00', '2022-10-18 19:22:07', b'1'),
+(1153, 181, '2022-06-22', 1, '145.53', '2022-10-26 13:47:08', b'0'),
+(1154, 181, '2022-06-29', 2, '145.53', '2022-10-26 13:47:08', b'0'),
+(1155, 181, '2022-07-06', 3, '145.53', '2022-10-26 13:47:08', b'0'),
+(1156, 181, '2022-07-13', 4, '145.53', '2022-10-26 13:47:08', b'0'),
+(1157, 181, '2022-07-20', 5, '145.53', '2022-10-26 13:47:08', b'0'),
+(1158, 181, '2022-07-27', 6, '145.53', '2022-10-26 13:47:08', b'0'),
+(1159, 181, '2022-08-03', 7, '145.53', '2022-10-26 13:47:08', b'0'),
+(1160, 181, '2022-08-10', 8, '145.53', '2022-10-26 13:47:08', b'0'),
+(1161, 181, '2022-08-17', 9, '145.53', '2022-10-26 13:47:08', b'0'),
+(1162, 181, '2022-08-24', 10, '145.53', '2022-10-26 13:47:08', b'0'),
+(1163, 181, '2022-08-31', 11, '145.53', '2022-10-26 13:47:08', b'0'),
+(1164, 181, '2022-09-07', 12, '145.53', '2022-10-26 13:47:08', b'0'),
+(1165, 181, '2022-09-14', 13, '145.53', '2022-10-26 13:47:08', b'0'),
+(1166, 181, '2022-09-21', 14, '145.53', '2022-10-26 13:47:08', b'0'),
+(1167, 181, '2022-09-28', 15, '145.53', '2022-10-26 13:47:08', b'0'),
+(1168, 181, '2022-10-05', 16, '145.53', '2022-10-26 13:47:08', b'0'),
+(1169, 181, '2022-10-12', 17, '145.53', '2022-10-26 13:47:08', b'0'),
+(1170, 181, '2022-10-19', 18, '145.53', '2022-10-26 13:47:08', b'0'),
+(1171, 181, '2022-10-26', 19, '145.53', '2022-10-26 13:47:08', b'0'),
+(1172, 181, '2022-11-02', 20, '145.53', '2022-10-26 13:47:08', b'0'),
+(1173, 182, '2022-10-25', 1, '250.00', '2022-10-19 15:46:03', b'1'),
+(1174, 182, '2022-11-01', 2, '250.00', '2022-10-19 15:46:03', b'1'),
+(1175, 182, '2022-11-08', 3, '250.00', '2022-10-19 15:46:03', b'1'),
+(1176, 182, '2022-11-15', 4, '250.00', '2022-10-19 15:46:03', b'1'),
+(1177, 182, '2022-11-22', 5, '250.00', '2022-10-19 15:46:03', b'1'),
+(1178, 182, '2022-11-29', 6, '250.00', '2022-10-19 15:46:03', b'1'),
+(1179, 182, '2022-12-06', 7, '250.00', '2022-10-19 15:46:03', b'1'),
+(1180, 182, '2022-12-13', 8, '250.00', '2022-10-19 15:46:03', b'1'),
+(1181, 182, '2022-12-20', 9, '250.00', '2022-10-19 15:46:03', b'1'),
+(1182, 182, '2022-12-27', 10, '250.00', '2022-10-19 15:46:03', b'1'),
+(1183, 182, '2023-01-03', 11, '250.00', '2022-10-19 15:46:03', b'1'),
+(1184, 182, '2023-01-10', 12, '250.00', '2022-10-19 15:46:03', b'1'),
+(1185, 182, '2023-01-17', 13, '250.00', '2022-10-19 15:46:03', b'1'),
+(1186, 182, '2023-01-24', 14, '250.00', '2022-10-19 15:46:03', b'1'),
+(1187, 182, '2023-01-31', 15, '250.00', '2022-10-19 15:46:03', b'1'),
+(1188, 182, '2023-02-07', 16, '250.00', '2022-10-19 15:46:03', b'1'),
+(1189, 183, '2022-11-04', 1, '680.00', '2022-10-20 13:24:45', b'1'),
+(1190, 183, '2022-11-19', 2, '680.00', '2022-10-20 13:24:45', b'1'),
+(1191, 183, '2022-12-06', 3, '680.00', '2022-10-20 13:24:45', b'1'),
+(1192, 183, '2022-12-19', 4, '680.00', '2022-10-20 13:24:45', b'1'),
+(1193, 184, '2022-11-04', 1, '680.00', '2022-10-20 15:50:35', b'1'),
+(1194, 184, '2022-11-19', 2, '680.00', '2022-10-20 15:50:35', b'1'),
+(1195, 184, '2022-12-06', 3, '680.00', '2022-10-20 15:50:35', b'1'),
+(1196, 184, '2022-12-19', 4, '680.00', '2022-10-20 15:50:35', b'1'),
+(1197, 185, '2022-10-28', 1, '218.75', '2022-10-21 13:28:54', b'1'),
+(1198, 185, '2022-11-04', 2, '218.75', '2022-10-21 13:28:54', b'1'),
+(1199, 185, '2022-11-11', 3, '218.75', '2022-10-21 13:28:54', b'1'),
+(1200, 185, '2022-11-18', 4, '218.75', '2022-10-21 13:28:54', b'1'),
+(1201, 185, '2022-11-25', 5, '218.75', '2022-10-21 13:28:54', b'1'),
+(1202, 185, '2022-12-02', 6, '218.75', '2022-10-21 13:28:54', b'1'),
+(1203, 185, '2022-12-09', 7, '218.75', '2022-10-21 13:28:54', b'1'),
+(1204, 185, '2022-12-16', 8, '218.75', '2022-10-21 13:28:54', b'1'),
+(1205, 185, '2022-12-23', 9, '218.75', '2022-10-21 13:28:54', b'1'),
+(1206, 185, '2022-12-30', 10, '218.75', '2022-10-21 13:28:54', b'1'),
+(1207, 185, '2023-01-06', 11, '218.75', '2022-10-21 13:28:54', b'1'),
+(1208, 185, '2023-01-13', 12, '218.75', '2022-10-21 13:28:54', b'1'),
+(1209, 185, '2023-01-20', 13, '218.75', '2022-10-21 13:28:54', b'1'),
+(1210, 185, '2023-01-27', 14, '218.75', '2022-10-21 13:28:54', b'1'),
+(1211, 185, '2023-02-03', 15, '218.75', '2022-10-21 13:28:54', b'1'),
+(1212, 185, '2023-02-10', 16, '218.75', '2022-10-21 13:28:54', b'1'),
+(1213, 185, '2023-02-17', 17, '218.75', '2022-10-21 13:28:54', b'1'),
+(1214, 185, '2023-02-24', 18, '218.75', '2022-10-21 13:28:54', b'1'),
+(1215, 185, '2023-03-03', 19, '218.75', '2022-10-21 13:28:54', b'1'),
+(1216, 185, '2023-03-10', 20, '218.75', '2022-10-21 13:28:54', b'1'),
+(1217, 186, '2022-10-22', 1, '39.33', '2022-10-22 15:25:33', b'0'),
+(1218, 186, '2022-10-25', 2, '39.33', '2022-10-25 19:16:22', b'0'),
+(1219, 186, '2022-10-24', 3, '39.33', '2022-10-25 19:17:43', b'0'),
+(1220, 186, '2022-10-25', 4, '39.33', '2022-10-21 15:08:52', b'1'),
+(1221, 186, '2022-10-26', 5, '39.33', '2022-10-21 15:08:52', b'1'),
+(1222, 186, '2022-10-27', 6, '39.33', '2022-10-21 15:08:52', b'1'),
+(1223, 186, '2022-10-28', 7, '39.33', '2022-10-21 15:08:52', b'1'),
+(1224, 186, '2022-10-29', 8, '39.33', '2022-10-21 15:08:52', b'1'),
+(1225, 186, '2022-11-01', 9, '39.33', '2022-10-21 15:08:52', b'1'),
+(1226, 186, '2022-10-31', 10, '39.33', '2022-10-21 15:08:52', b'1'),
+(1227, 186, '2022-11-01', 11, '39.33', '2022-10-21 15:08:52', b'1'),
+(1228, 186, '2022-11-02', 12, '39.33', '2022-10-21 15:08:52', b'1'),
+(1229, 186, '2022-11-03', 13, '39.33', '2022-10-21 15:08:52', b'1'),
+(1230, 186, '2022-11-04', 14, '39.33', '2022-10-21 15:08:52', b'1'),
+(1231, 186, '2022-11-05', 15, '39.33', '2022-10-21 15:08:52', b'1'),
+(1232, 186, '2022-11-08', 16, '39.33', '2022-10-21 15:08:52', b'1'),
+(1233, 186, '2022-11-07', 17, '39.33', '2022-10-21 15:08:52', b'1'),
+(1234, 186, '2022-11-08', 18, '39.33', '2022-10-21 15:08:52', b'1'),
+(1235, 186, '2022-11-09', 19, '39.33', '2022-10-21 15:08:52', b'1'),
+(1236, 186, '2022-11-10', 20, '39.33', '2022-10-21 15:08:52', b'1'),
+(1237, 186, '2022-11-11', 21, '39.33', '2022-10-21 15:08:52', b'1'),
+(1238, 186, '2022-11-12', 22, '39.33', '2022-10-21 15:08:52', b'1'),
+(1239, 186, '2022-11-15', 23, '39.33', '2022-10-21 15:08:52', b'1'),
+(1240, 186, '2022-11-14', 24, '39.33', '2022-10-21 15:08:52', b'1'),
+(1241, 186, '2022-11-15', 25, '39.33', '2022-10-21 15:08:52', b'1'),
+(1242, 186, '2022-11-16', 26, '39.33', '2022-10-21 15:08:52', b'1'),
+(1243, 186, '2022-11-17', 27, '39.33', '2022-10-21 15:08:52', b'1'),
+(1244, 186, '2022-11-18', 28, '39.33', '2022-10-21 15:08:52', b'1'),
+(1245, 186, '2022-11-19', 29, '39.33', '2022-10-21 15:08:52', b'1'),
+(1246, 186, '2022-11-22', 30, '39.33', '2022-10-21 15:08:52', b'1'),
+(1247, 187, '2022-11-08', 1, '1356.67', '2022-10-21 21:29:16', b'1'),
+(1248, 187, '2022-11-23', 2, '1356.67', '2022-10-21 21:29:16', b'1'),
+(1249, 187, '2022-12-08', 3, '1356.67', '2022-10-21 21:29:16', b'1'),
+(1250, 187, '2022-12-23', 4, '1356.67', '2022-10-21 21:29:16', b'1'),
+(1251, 187, '2023-01-07', 5, '1356.67', '2022-10-21 21:29:16', b'1'),
+(1252, 187, '2023-01-24', 6, '1356.67', '2022-10-21 21:29:16', b'1'),
+(1253, 188, '2022-11-05', 1, '696.20', '2022-10-22 14:45:31', b'1'),
+(1254, 188, '2022-11-22', 2, '696.20', '2022-10-22 14:45:31', b'1'),
+(1255, 189, '2022-11-08', 1, '1132.80', '2022-10-22 15:32:16', b'1'),
+(1256, 189, '2022-11-21', 2, '1132.80', '2022-10-22 15:32:16', b'1'),
+(1257, 190, '2022-11-08', 1, '680.00', '2022-10-24 13:50:48', b'1'),
+(1258, 190, '2022-11-23', 2, '680.00', '2022-10-24 13:50:48', b'1'),
+(1259, 190, '2022-12-08', 3, '680.00', '2022-10-24 13:50:48', b'1'),
+(1260, 190, '2022-12-23', 4, '680.00', '2022-10-24 13:50:48', b'1'),
+(1261, 191, '2022-11-09', 1, '580.00', '2022-10-25 13:22:45', b'1'),
+(1262, 191, '2022-11-24', 2, '580.00', '2022-10-25 13:22:45', b'1'),
+(1263, 192, '2022-11-10', 1, '989.40', '2022-10-26 13:50:07', b'1'),
+(1264, 192, '2022-11-25', 2, '989.40', '2022-10-26 13:50:07', b'1'),
+(1265, 192, '2022-12-10', 3, '989.40', '2022-10-26 13:50:07', b'1'),
+(1266, 192, '2022-12-27', 4, '989.40', '2022-10-26 13:50:07', b'1'),
+(1267, 193, '2022-11-10', 1, '453.33', '2022-10-26 20:26:01', b'0'),
+(1268, 193, '2022-11-25', 2, '453.33', '2022-10-26 20:23:56', b'1'),
+(1269, 193, '2022-12-10', 3, '453.33', '2022-10-26 20:23:56', b'1'),
+(1270, 193, '2022-12-27', 4, '453.33', '2022-10-26 20:23:56', b'1'),
+(1271, 193, '2023-01-09', 5, '453.33', '2022-10-26 20:23:56', b'1'),
+(1272, 193, '2023-01-24', 6, '453.33', '2022-10-26 20:23:56', b'1'),
+(1273, 194, '2022-11-11', 1, '513.33', '2022-10-26 21:45:32', b'1'),
+(1274, 194, '2022-11-26', 2, '513.33', '2022-10-26 21:45:32', b'1'),
+(1275, 194, '2022-12-13', 3, '513.33', '2022-10-26 21:45:32', b'1'),
+(1276, 194, '2022-12-26', 4, '513.33', '2022-10-26 21:45:32', b'1'),
+(1277, 194, '2023-01-10', 5, '513.33', '2022-10-26 21:45:32', b'1'),
+(1278, 194, '2023-01-25', 6, '513.33', '2022-10-26 21:45:32', b'1'),
+(1279, 195, '2022-01-04', 1, '513.33', '2022-10-28 15:01:52', b'1'),
+(1280, 195, '2022-01-19', 2, '513.33', '2022-10-28 15:01:52', b'1'),
+(1281, 195, '2022-02-03', 3, '513.33', '2022-10-28 15:01:52', b'1'),
+(1282, 195, '2022-02-18', 4, '513.33', '2022-10-28 15:01:52', b'1'),
+(1283, 195, '2022-03-05', 5, '513.33', '2022-10-28 15:01:52', b'1'),
+(1284, 195, '2022-03-22', 6, '513.33', '2022-10-28 15:01:52', b'1'),
+(1285, 196, '2022-08-16', 1, '680.00', '2022-10-28 15:56:35', b'0'),
+(1286, 196, '2022-08-31', 2, '680.00', '2022-10-28 15:56:35', b'0'),
+(1287, 196, '2022-09-15', 3, '680.00', '2022-10-28 15:56:35', b'0'),
+(1288, 196, '2022-09-30', 4, '680.00', '2022-10-28 15:56:35', b'0'),
+(1289, 196, '2022-10-15', 5, '680.00', '2022-10-28 15:56:35', b'0'),
+(1290, 196, '2022-11-01', 6, '680.00', '2022-10-28 15:56:13', b'1'),
+(1291, 197, '2022-11-28', 1, '600.00', '2022-10-28 20:02:24', b'1');
 
 -- --------------------------------------------------------
 
@@ -1593,13 +2011,6 @@ CREATE TABLE `loan_outputs` (
   `cash_register_id` bigint(20) NOT NULL,
   `loan_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_spanish_ci;
-
---
--- Volcado de datos para la tabla `loan_outputs`
---
-
-INSERT INTO `loan_outputs` (`id`, `cash_register_id`, `loan_id`) VALUES
-(1, 1, 25);
 
 -- --------------------------------------------------------
 
@@ -1620,16 +2031,7 @@ CREATE TABLE `manual_inputs` (
 --
 
 INSERT INTO `manual_inputs` (`id`, `cash_register_id`, `amount`, `description`, `date`) VALUES
-(1, 1, '1000.00', 'Porque me da la gana', '0000-00-00 00:00:00'),
-(2, 1, '10.00', 'No se', '2022-10-21 16:03:04'),
-(3, 2, '250.00', 'Por apertura', '2022-10-25 09:27:52'),
-(4, 8, '10500.00', 'Por apertura de caja', '2022-10-25 03:22:54'),
-(5, 9, '1500.00', 'Por apertura de caja', '2022-10-25 03:48:19'),
-(6, 10, '100.00', 'Por apertura de caja', '2022-10-25 04:01:40'),
-(7, 11, '120.00', 'Por apertura de caja', '2022-10-25 04:02:46'),
-(8, 12, '210.00', 'Por apertura de caja', '2022-10-25 04:06:42'),
-(9, 13, '1500.00', 'Por apertura de caja', '2022-10-25 04:18:04'),
-(10, 15, '151.00', 'Por apertura de caja x', '2022-10-26 02:27:24');
+(12, 16, '1500.00', 'Por apertura de caja', '2022-10-29 12:41:20');
 
 -- --------------------------------------------------------
 
@@ -1645,13 +2047,6 @@ CREATE TABLE `manual_outputs` (
   `date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_spanish_ci;
 
---
--- Volcado de datos para la tabla `manual_outputs`
---
-
-INSERT INTO `manual_outputs` (`id`, `cash_register_id`, `amount`, `description`, `date`) VALUES
-(1, 1, '50.00', 'Por préstamo', '2022-10-22 16:03:36');
-
 -- --------------------------------------------------------
 
 --
@@ -1662,71 +2057,235 @@ CREATE TABLE `payments` (
   `id` bigint(20) NOT NULL,
   `loan_item_id` bigint(20) NOT NULL,
   `amount` decimal(20,2) NOT NULL,
-  `surcharge` decimal(20,2) DEFAULT 0.00,
-  `document_payment_id` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_spanish_ci;
+  `document_payment_id` bigint(20) DEFAULT NULL,
+  `surcharge` decimal(20,2) DEFAULT 0.00
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `payments`
 --
 
-INSERT INTO `payments` (`id`, `loan_item_id`, `amount`, `surcharge`, `document_payment_id`) VALUES
-(34, 946, '641.70', '0.00', 27),
-(35, 947, '150.00', '0.00', 27),
-(36, 153, '385.00', '0.00', 28),
-(37, 154, '385.00', '0.00', 28),
-(38, 155, '385.00', '0.00', 28),
-(39, 480, '332.50', '0.00', 29),
-(40, 481, '332.50', '0.00', 29),
-(41, 482, '332.50', '0.00', 29),
-(42, 12, '256.70', '0.00', 30),
-(43, 13, '256.70', '0.00', 30),
-(44, 14, '256.70', '0.00', 30),
-(45, 15, '256.70', '0.00', 30),
-(46, 16, '256.70', '0.00', 30),
-(47, 17, '256.70', '0.00', 30),
-(48, 5, '150.00', '0.00', 31),
-(49, 18, '50.00', '0.00', 32),
-(50, 18, '100.70', '0.00', 33),
-(51, 18, '10.00', '0.00', 34),
-(52, 5, '190.00', '10.00', 35),
-(53, 6, '340.00', '11.00', 35),
-(54, 18, '50.00', '10.00', 36),
-(55, 18, '46.00', '0.00', 37),
-(56, 19, '100.00', '5.00', 38),
-(57, 19, '100.70', '5.00', 39),
-(58, 19, '56.00', '5.00', 40),
-(59, 20, '100.00', '5.00', 41),
-(60, 20, '156.70', '0.00', 42),
-(61, 870, '138.00', '12.00', 43),
-(62, 871, '138.00', '0.00', 43),
-(63, 715, '498.10', '0.00', 44),
-(64, 716, '498.10', '0.00', 44),
-(65, 717, '498.10', '0.00', 44),
-(66, 718, '498.10', '5.00', 45),
-(67, 872, '100.00', '50.00', 46),
-(68, 1056, '500.00', '5.00', 47),
-(69, 1056, '355.00', '0.00', 48),
-(70, 474, '513.30', '10.00', 49);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `payment_inputs`
---
-
-CREATE TABLE `payment_inputs` (
-  `id` bigint(20) NOT NULL,
-  `cash_register_id` bigint(20) NOT NULL,
-  `payment_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_spanish_ci;
-
---
--- Volcado de datos para la tabla `payment_inputs`
---
-
-INSERT INTO `payment_inputs` (`id`, `cash_register_id`, `payment_id`) VALUES
-(1, 1, 68);
+INSERT INTO `payments` (`id`, `loan_item_id`, `amount`, `document_payment_id`, `surcharge`) VALUES
+(34, 1056, '1000.00', 27, '0.00'),
+(35, 1056, '83.33', 28, '0.00'),
+(36, 1057, '500.00', 29, '0.00'),
+(37, 1057, '583.33', 30, '0.00'),
+(38, 1058, '500.00', 31, '0.00'),
+(39, 1058, '500.00', 32, '0.00'),
+(40, 677, '2713.40', 33, '0.00'),
+(41, 736, '1187.00', 34, '0.00'),
+(42, 737, '987.00', 35, '0.00'),
+(43, 738, '493.30', 36, '0.00'),
+(44, 739, '493.30', 37, '0.00'),
+(45, 683, '1356.70', 38, '0.00'),
+(46, 887, '1110.50', 39, '0.00'),
+(47, 888, '1110.50', 40, '0.00'),
+(48, 788, '247.00', 41, '0.00'),
+(49, 894, '494.00', 42, '0.00'),
+(50, 998, '510.00', 43, '0.00'),
+(51, 778, '986.60', 44, '0.00'),
+(52, 368, '322.50', 45, '0.00'),
+(53, 994, '510.00', 46, '0.00'),
+(54, 331, '1215.30', 47, '0.00'),
+(55, 894, '938.00', 48, '0.00'),
+(56, 760, '150.00', 49, '0.00'),
+(57, 1058, '83.33', 50, '0.00'),
+(58, 894, '48.00', 51, '0.00'),
+(59, 778, '500.00', 52, '0.00'),
+(60, 916, '812.50', 53, '0.00'),
+(61, 917, '187.50', 54, '0.00'),
+(62, 915, '180.00', 55, '0.00'),
+(63, 176, '900.00', 56, '0.00'),
+(64, 992, '1180.00', 57, '0.00'),
+(65, 906, '263.50', 58, '0.00'),
+(66, 907, '16.50', 59, '0.00'),
+(67, 24, '138.00', 60, '0.00'),
+(68, 175, '60.00', 61, '0.00'),
+(69, 213, '31.30', 62, '0.00'),
+(70, 220, '124.60', 63, '0.00'),
+(71, 12, '241.90', 64, '0.00'),
+(72, 870, '120.00', 65, '0.00'),
+(73, 90, '255.00', 66, '0.00'),
+(74, 120, '350.00', 67, '0.00'),
+(75, 153, '15.00', 68, '0.00'),
+(76, 210, '330.00', 69, '0.00'),
+(77, 411, '264.00', 70, '0.00'),
+(78, 513, '425.00', 71, '0.00'),
+(79, 713, '377.00', 72, '0.00'),
+(80, 537, '400.00', 73, '0.00'),
+(81, 921, '1728.00', 74, '0.00'),
+(82, 1092, '770.00', 75, '0.00'),
+(83, 1016, '1980.00', 76, '0.00'),
+(84, 793, '1726.70', 77, '0.00'),
+(85, 794, '1726.70', 77, '0.00'),
+(86, 795, '745.60', 77, '0.00'),
+(87, 213, '237.40', 78, '0.00'),
+(88, 1016, '330.00', 79, '0.00'),
+(89, 33, '256.70', 80, '0.00'),
+(90, 778, '486.70', 81, '0.00'),
+(91, 795, '981.10', 82, '0.00'),
+(92, 796, '1726.70', 82, '0.00'),
+(93, 797, '1726.70', 82, '0.00'),
+(94, 1095, '1726.67', 83, '0.00'),
+(95, 1096, '1726.67', 83, '0.00'),
+(96, 1097, '740.00', 84, '0.00'),
+(97, 210, '10.00', 85, '0.00'),
+(98, 211, '300.00', 86, '0.00'),
+(99, 705, '1283.30', 87, '0.00'),
+(100, 213, '200.00', 88, '0.00'),
+(101, 214, '468.70', 88, '0.00'),
+(102, 215, '468.70', 88, '0.00'),
+(103, 216, '468.70', 88, '0.00'),
+(104, 217, '468.70', 88, '0.00'),
+(105, 534, '537.50', 89, '0.00'),
+(106, 1029, '590.00', 90, '0.00'),
+(107, 630, '320.80', 91, '0.00'),
+(108, 921, '738.70', 92, '0.00'),
+(109, 220, '363.10', 93, '0.00'),
+(110, 221, '487.70', 93, '0.00'),
+(111, 222, '487.70', 93, '0.00'),
+(112, 223, '487.70', 93, '0.00'),
+(113, 202, '770.00', 94, '0.00'),
+(114, 203, '770.00', 94, '0.00'),
+(115, 900, '1416.00', 95, '0.00'),
+(116, 901, '1416.00', 95, '0.00'),
+(117, 898, '1416.00', 96, '0.00'),
+(118, 899, '1416.00', 96, '0.00'),
+(119, 889, '1110.50', 97, '0.00'),
+(120, 176, '52.20', 98, '0.00'),
+(121, 177, '952.20', 98, '0.00'),
+(122, 178, '952.20', 98, '0.00'),
+(123, 179, '952.20', 98, '0.00'),
+(124, 180, '952.20', 98, '0.00'),
+(125, 181, '952.20', 98, '0.00'),
+(126, 693, '1726.70', 99, '0.00'),
+(127, 951, '1726.70', 100, '0.00'),
+(128, 728, '289.00', 101, '0.00'),
+(129, 678, '493.50', 102, '0.00'),
+(130, 70, '370.00', 103, '0.00'),
+(131, 1141, '1301.56', 104, '0.00'),
+(132, 1142, '898.44', 104, '0.00'),
+(133, 987, '350.00', 105, '0.00'),
+(134, 727, '1180.00', 106, '0.00'),
+(135, 713, '400.00', 107, '0.00'),
+(136, 887, '492.80', 108, '0.00'),
+(137, 853, '513.30', 109, '0.00'),
+(138, 678, '247.00', 110, '0.00'),
+(139, 547, '770.00', 111, '0.00'),
+(140, 548, '770.00', 111, '0.00'),
+(141, 713, '413.00', 112, '0.00'),
+(142, 474, '300.00', 113, '0.00'),
+(143, 474, '213.30', 114, '0.00'),
+(144, 475, '513.30', 114, '0.00'),
+(145, 476, '513.30', 114, '0.00'),
+(146, 907, '100.00', 115, '0.00'),
+(147, 888, '200.00', 116, '0.00'),
+(148, 196, '1283.30', 117, '0.00'),
+(149, 1080, '192.50', 118, '0.00'),
+(150, 551, '692.00', 119, '0.00'),
+(151, 120, '320.00', 120, '0.00'),
+(152, 12, '14.80', 121, '0.00'),
+(153, 13, '256.70', 121, '0.00'),
+(154, 14, '256.70', 121, '0.00'),
+(155, 121, '180.00', 122, '0.00'),
+(156, 353, '580.00', 123, '0.00'),
+(157, 354, '580.00', 123, '0.00'),
+(158, 788, '494.00', 124, '0.00'),
+(159, 5, '115.00', 125, '0.00'),
+(160, 859, '493.50', 126, '0.00'),
+(161, 859, '1479.80', 127, '0.00'),
+(162, 755, '641.70', 128, '0.00'),
+(163, 1017, '1980.00', 129, '0.00'),
+(164, 865, '513.30', 130, '0.00'),
+(165, 866, '1.70', 131, '0.00'),
+(166, 71, '370.00', 132, '0.00'),
+(167, 72, '370.00', 132, '0.00'),
+(168, 636, '898.30', 133, '0.00'),
+(169, 412, '264.00', 134, '0.00'),
+(170, 263, '800.00', 135, '0.00'),
+(171, 1052, '150.00', 136, '0.00'),
+(172, 684, '1356.70', 137, '0.00'),
+(173, 34, '256.00', 138, '0.00'),
+(174, 1142, '403.12', 139, '0.00'),
+(175, 1143, '596.88', 140, '0.00'),
+(176, 670, '450.00', 141, '0.00'),
+(177, 798, '150.00', 142, '0.00'),
+(178, 799, '150.00', 142, '0.00'),
+(179, 1217, '39.33', 143, '0.00'),
+(180, 1218, '5.67', 144, '0.00'),
+(181, 130, '680.00', 145, '0.00'),
+(182, 131, '680.00', 145, '0.00'),
+(183, 132, '680.00', 145, '0.00'),
+(184, 133, '680.00', 145, '0.00'),
+(185, 850, '340.00', 146, '0.00'),
+(186, 851, '340.00', 146, '0.00'),
+(187, 841, '450.00', 147, '0.00'),
+(188, 1068, '320.83', 148, '0.00'),
+(189, 1069, '320.83', 148, '0.00'),
+(190, 922, '1358.00', 149, '0.00'),
+(191, 800, '150.00', 150, '0.00'),
+(192, 801, '150.00', 150, '0.00'),
+(193, 1042, '363.80', 151, '0.00'),
+(194, 895, '247.00', 152, '0.00'),
+(195, 789, '247.00', 153, '0.00'),
+(196, 790, '247.00', 154, '0.00'),
+(197, 1218, '33.66', 155, '0.00'),
+(198, 1219, '39.33', 156, '0.00'),
+(199, 1220, '7.01', 157, '0.00'),
+(200, 895, '741.00', 158, '0.00'),
+(201, 895, '247.00', 159, '0.00'),
+(202, 895, '245.00', 160, '0.00'),
+(203, 1153, '145.53', 161, '0.00'),
+(204, 1154, '145.53', 161, '0.00'),
+(205, 1155, '145.53', 161, '0.00'),
+(206, 1156, '145.53', 161, '0.00'),
+(207, 1157, '145.53', 161, '0.00'),
+(208, 1158, '145.53', 161, '0.00'),
+(209, 1159, '145.53', 161, '0.00'),
+(210, 1160, '145.53', 161, '0.00'),
+(211, 1161, '145.53', 161, '0.00'),
+(212, 1162, '145.53', 161, '0.00'),
+(213, 1163, '145.53', 161, '0.00'),
+(214, 1164, '145.53', 161, '0.00'),
+(215, 1165, '145.53', 161, '0.00'),
+(216, 1166, '145.53', 161, '0.00'),
+(217, 1167, '145.53', 161, '0.00'),
+(218, 1168, '145.53', 161, '0.00'),
+(219, 1169, '145.53', 161, '0.00'),
+(220, 1170, '145.53', 161, '0.00'),
+(221, 1171, '145.53', 161, '0.00'),
+(222, 1172, '145.53', 161, '0.00'),
+(223, 1081, '192.50', 162, '0.00'),
+(224, 1267, '453.33', 163, '0.00'),
+(225, 1268, '200.00', 163, '0.00'),
+(226, 922, '740.00', 164, '0.00'),
+(227, 922, '368.70', 165, '0.00'),
+(228, 995, '500.00', 166, '0.00'),
+(229, 5, '120.00', 167, '0.00'),
+(230, 211, '40.00', 168, '0.00'),
+(231, 1018, '2310.00', 169, '0.00'),
+(232, 15, '256.70', 170, '0.00'),
+(233, 16, '256.70', 170, '0.00'),
+(234, 17, '256.70', 170, '0.00'),
+(235, 18, '256.70', 170, '0.00'),
+(236, 19, '256.70', 170, '0.00'),
+(237, 20, '256.70', 170, '0.00'),
+(238, 392, '292.60', 171, '0.00'),
+(239, 393, '292.60', 171, '0.00'),
+(240, 394, '187.00', 171, '0.00'),
+(241, 1279, '300.00', 172, '0.00'),
+(242, 57, '950.00', 173, '0.00'),
+(243, 58, '700.00', 173, '0.00'),
+(244, 1285, '680.00', 174, '0.00'),
+(245, 1286, '680.00', 174, '0.00'),
+(246, 1287, '680.00', 174, '0.00'),
+(247, 1288, '680.00', 174, '0.00'),
+(248, 1289, '680.00', 174, '0.00'),
+(249, 993, '1180.00', 175, '0.00'),
+(250, 729, '289.00', 176, '0.00'),
+(251, 715, '498.10', 177, '0.00'),
+(252, 716, '303.80', 177, '0.00'),
+(253, 314, '70.00', 178, '0.00');
 
 -- --------------------------------------------------------
 
@@ -1855,8 +2414,7 @@ CREATE TABLE `roles` (
 INSERT INTO `roles` (`id`, `name`) VALUES
 (1, 'ADMIN'),
 (2, 'ADMIN_ADVISER'),
-(3, 'AUX'),
-(4, 'AUTHOR');
+(3, 'AUX');
 
 -- --------------------------------------------------------
 
@@ -1948,43 +2506,14 @@ INSERT INTO `roles_permissions` (`id`, `role_id`, `permission_id`) VALUES
 (72, 1, 78),
 (73, 2, 78),
 (74, 3, 78),
-(75, 4, 45),
-(76, 4, 46),
-(77, 4, 47),
-(78, 4, 48),
-(79, 4, 49),
-(80, 4, 50),
-(81, 4, 51),
-(82, 4, 52),
-(83, 4, 53),
-(84, 4, 54),
-(85, 4, 55),
-(86, 4, 56),
-(87, 4, 57),
-(88, 4, 58),
-(89, 4, 59),
-(90, 4, 60),
-(91, 4, 61),
-(92, 4, 62),
-(93, 4, 63),
-(94, 4, 64),
-(95, 4, 65),
-(96, 4, 66),
-(97, 4, 67),
-(98, 4, 68),
-(99, 4, 73),
-(100, 4, 74),
-(101, 4, 75),
-(102, 4, 76),
-(103, 4, 81),
-(104, 4, 82),
-(105, 4, 83),
-(106, 4, 84),
-(107, 1, 85),
-(108, 1, 86),
-(109, 1, 87),
-(110, 1, 88),
-(112, 4, 90);
+(75, 1, 86),
+(76, 1, 85),
+(77, 1, 87),
+(78, 1, 88),
+(79, 1, 85),
+(80, 1, 86),
+(81, 1, 87),
+(82, 1, 88);
 
 -- --------------------------------------------------------
 
@@ -1994,13 +2523,13 @@ INSERT INTO `roles_permissions` (`id`, `role_id`, `permission_id`) VALUES
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
-  `academic_degree` varchar(10) COLLATE utf8_spanish2_ci NOT NULL,
-  `first_name` varchar(150) COLLATE utf8_spanish2_ci NOT NULL,
-  `last_name` varchar(200) COLLATE utf8_spanish2_ci NOT NULL,
-  `email` varchar(150) COLLATE utf8_spanish2_ci NOT NULL,
-  `password` varchar(250) COLLATE utf8_spanish2_ci NOT NULL,
-  `avatar` varchar(2000) COLLATE utf8_spanish2_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+  `academic_degree` varchar(10) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+  `first_name` varchar(150) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+  `last_name` varchar(200) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+  `email` varchar(150) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+  `password` varchar(250) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+  `avatar` varchar(2000) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `users`
@@ -2008,12 +2537,12 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `academic_degree`, `first_name`, `last_name`, `email`, `password`, `avatar`) VALUES
 (1, 'DR.', 'ORLANDO', 'BEJARANO FERNANDEZ', 'gerenciacredichuracasa@gmail.com', 'ad57cb3de9c53c1fc7de94665f6f1db2dfbcaaf73063769fed0b3011466eba602c2f423c4725c6dfacdc2973a518a18e0784e848ca3aabd7cadfd140df1df447', 'employee_man.png'),
-(2, 'DR.', 'JERZON PABLO', 'SIHUAIROS', 'legalcredichuracasa@gmail.com', 'ad57cb3de9c53c1fc7de94665f6f1db2dfbcaaf73063769fed0b3011466eba602c2f423c4725c6dfacdc2973a518a18e0784e848ca3aabd7cadfd140df1df447', 'employee_man.png'),
+(2, 'DR.', 'JERZON PABLO', 'SIHUAIROS', 'legalcredichuracasa@gmail.com', 'e96af661bc336ff382eeeadbdc56d719e81349c6b945c01efbeddc40016989a5cfd90f3df359717e4dad7626c24152406ecddb81ce51114c14c8b15a3949f33a', 'employee_man.png'),
 (3, 'LIC.', 'GISELA', 'CARVAJAL NINAJA', 'credichuracasaadm@gmail.com', 'ad57cb3de9c53c1fc7de94665f6f1db2dfbcaaf73063769fed0b3011466eba602c2f423c4725c6dfacdc2973a518a18e0784e848ca3aabd7cadfd140df1df447', 'employee_woman.png'),
 (4, 'ING.', 'RUSSETT', 'RODRIGUEZ VELIZ', 'cobrostarijacredichura@gmail.com', 'ad57cb3de9c53c1fc7de94665f6f1db2dfbcaaf73063769fed0b3011466eba602c2f423c4725c6dfacdc2973a518a18e0784e848ca3aabd7cadfd140df1df447', 'employee_man.png'),
 (5, 'LIC.', 'CRISTIAN OLIVER', 'RAMOS VELIZ', 'auxiliartjacredichuracasa@gmail.com', 'ad57cb3de9c53c1fc7de94665f6f1db2dfbcaaf73063769fed0b3011466eba602c2f423c4725c6dfacdc2973a518a18e0784e848ca3aabd7cadfd140df1df447', 'employee_man.png'),
 (6, 'DRA.', 'FABIOLA', 'ARDAYA ALCAZAR', 'agenciayacuibacredichuracasa@gmail.com', 'ad57cb3de9c53c1fc7de94665f6f1db2dfbcaaf73063769fed0b3011466eba602c2f423c4725c6dfacdc2973a518a18e0784e848ca3aabd7cadfd140df1df447', 'employee_woman.png'),
-(7, 'DRA.', 'M ALEJANDRA', 'ZENTENO VELASCO', 'cobranzascredichuracasa@gmail.com', 'ad57cb3de9c53c1fc7de94665f6f1db2dfbcaaf73063769fed0b3011466eba602c2f423c4725c6dfacdc2973a518a18e0784e848ca3aabd7cadfd140df1df447', 'employee_woman.png'),
+(7, 'SR.', 'ADALID ALFREDO', 'ZEBALLOS TEJERINA', 'cobranzascredichuracasa@gmail.com', 'ad57cb3de9c53c1fc7de94665f6f1db2dfbcaaf73063769fed0b3011466eba602c2f423c4725c6dfacdc2973a518a18e0784e848ca3aabd7cadfd140df1df447', 'employee_woman.png'),
 (8, '', 'PRUEBA', 'PRUEBA', 'prueba@gmail.com', 'ad57cb3de9c53c1fc7de94665f6f1db2dfbcaaf73063769fed0b3011466eba602c2f423c4725c6dfacdc2973a518a18e0784e848ca3aabd7cadfd140df1df447', '');
 
 -- --------------------------------------------------------
@@ -2040,7 +2569,7 @@ INSERT INTO `users_roles` (`id`, `user_id`, `role_id`) VALUES
 (5, 5, 1),
 (6, 6, 2),
 (7, 7, 2),
-(8, 8, 4);
+(8, 8, 3);
 
 --
 -- Índices para tablas volcadas
@@ -2074,6 +2603,14 @@ ALTER TABLE `customers`
 ALTER TABLE `document_payments`
   ADD PRIMARY KEY (`id`),
   ADD KEY `Índice 2` (`user_id`);
+
+--
+-- Indices de la tabla `document_payment_inputs`
+--
+ALTER TABLE `document_payment_inputs`
+  ADD PRIMARY KEY (`id`) USING BTREE,
+  ADD KEY `Índice 2` (`cash_register_id`) USING BTREE,
+  ADD KEY `Índice 3` (`document_payment_id`) USING BTREE;
 
 --
 -- Indices de la tabla `guarantors`
@@ -2129,14 +2666,6 @@ ALTER TABLE `payments`
   ADD KEY `Índice 3` (`document_payment_id`) USING BTREE;
 
 --
--- Indices de la tabla `payment_inputs`
---
-ALTER TABLE `payment_inputs`
-  ADD PRIMARY KEY (`id`) USING BTREE,
-  ADD KEY `Índice 2` (`cash_register_id`) USING BTREE,
-  ADD KEY `Índice 3` (`payment_id`) USING BTREE;
-
---
 -- Indices de la tabla `permissions`
 --
 ALTER TABLE `permissions`
@@ -2178,7 +2707,7 @@ ALTER TABLE `users_roles`
 -- AUTO_INCREMENT de la tabla `cash_registers`
 --
 ALTER TABLE `cash_registers`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `coins`
@@ -2190,31 +2719,37 @@ ALTER TABLE `coins`
 -- AUTO_INCREMENT de la tabla `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=310;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=326;
 
 --
 -- AUTO_INCREMENT de la tabla `document_payments`
 --
 ALTER TABLE `document_payments`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=179;
+
+--
+-- AUTO_INCREMENT de la tabla `document_payment_inputs`
+--
+ALTER TABLE `document_payment_inputs`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `guarantors`
 --
 ALTER TABLE `guarantors`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=136;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=149;
 
 --
 -- AUTO_INCREMENT de la tabla `loans`
 --
 ALTER TABLE `loans`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=167;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=198;
 
 --
 -- AUTO_INCREMENT de la tabla `loan_items`
 --
 ALTER TABLE `loan_items`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1060;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1292;
 
 --
 -- AUTO_INCREMENT de la tabla `loan_outputs`
@@ -2226,25 +2761,19 @@ ALTER TABLE `loan_outputs`
 -- AUTO_INCREMENT de la tabla `manual_inputs`
 --
 ALTER TABLE `manual_inputs`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `manual_outputs`
 --
 ALTER TABLE `manual_outputs`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
-
---
--- AUTO_INCREMENT de la tabla `payment_inputs`
---
-ALTER TABLE `payment_inputs`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=254;
 
 --
 -- AUTO_INCREMENT de la tabla `permissions`
@@ -2256,13 +2785,13 @@ ALTER TABLE `permissions`
 -- AUTO_INCREMENT de la tabla `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `roles_permissions`
 --
 ALTER TABLE `roles_permissions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
@@ -2298,6 +2827,13 @@ ALTER TABLE `customers`
 --
 ALTER TABLE `document_payments`
   ADD CONSTRAINT `FK__users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `document_payment_inputs`
+--
+ALTER TABLE `document_payment_inputs`
+  ADD CONSTRAINT `FK_dpi_cash_registers` FOREIGN KEY (`cash_register_id`) REFERENCES `cash_registers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_dpi_document_payments` FOREIGN KEY (`document_payment_id`) REFERENCES `document_payments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `guarantors`
@@ -2344,13 +2880,6 @@ ALTER TABLE `manual_outputs`
 ALTER TABLE `payments`
   ADD CONSTRAINT `FK_payments_document_payments` FOREIGN KEY (`document_payment_id`) REFERENCES `document_payments` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_payments_loan_items` FOREIGN KEY (`loan_item_id`) REFERENCES `loan_items` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `payment_inputs`
---
-ALTER TABLE `payment_inputs`
-  ADD CONSTRAINT `FK_pi_cash_registers` FOREIGN KEY (`cash_register_id`) REFERENCES `cash_registers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_pi_payments` FOREIGN KEY (`payment_id`) REFERENCES `payments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `roles_permissions`
