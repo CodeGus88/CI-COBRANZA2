@@ -54,7 +54,7 @@
   
   
     <li class="nav-item">
-    <a class="nav-link" href="<?php echo site_url('admin/cashregister/index'); ?>">
+    <a class="nav-link" href="<?php echo site_url('admin/cashregisters/index'); ?>">
       <i class="fas fa-fw fa-money-bill"></i>
       <span>Cajas</span></a>
   </li>

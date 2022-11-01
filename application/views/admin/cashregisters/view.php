@@ -1,6 +1,12 @@
 <div class="card shadow mb-4">
     <div class="card-header d-flex align-items-center justify-content-between py-3">
         <h6 class="m-0 font-weight-bold text-primary" id="cash_register_name"><?= $cash_register->name ?? 'undefined' ?></h6>
+        <div class="btn-group" role="group" aria-label="Basic example">
+        <?php if (isset($cash_register)) : ?>
+            <a type="button" class="btn btn-secondary" href="<?=site_url('admin/cashregisters/manual_input_create/'.$cash_register->id)?>">Entrada manual</a>
+            <a type="button" class="btn btn-secondary" href="<?=site_url('admin/cashregisters/manual_output_create/'.$cash_register->id)?>">Salida manual</a>
+        <?php endif?>
+        </div>
     </div>
     <?php if (isset($cash_register)) : ?>
 
@@ -8,6 +14,15 @@
             <div class=" col-12 text-center">
                 <h5 class="h5">DETALLES</h5>
             </div>
+
+            <?php if ($this->session->flashdata('msg')) : ?>
+            <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+                <?= $this->session->flashdata('msg') ?>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <?php endif ?>
             <div class="card">
                 <div class="card-header">
                     <h6 class="h6">Datos técnicos</h6>
@@ -172,7 +187,7 @@
                                     <th scope="row">Total</th>
                                     <td><b><?= $manualTotal ?></b></td>
                                     <td><b><?= $operationTotal ?></b></td>
-                                    <td ><b><?= $total ?></b></td>
+                                    <td><b><?= $total ?></b></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -182,4 +197,5 @@
         </div>
     <?php endif ?>
 </div>
+<!-- <div class="modal fade" id="myModal" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"></div> -->
 <script src="<?= site_url() . 'assets/js/cash-registers/view.js' ?>"></script>

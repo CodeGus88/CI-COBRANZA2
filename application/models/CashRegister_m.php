@@ -20,6 +20,24 @@ class Cashregister_m extends MY_Model {
       'field' => 'amount',
       'label' => 'monto',
       'rules' => 'numeric|is_natural_no_zero|required',
+    ),
+    array(
+      'field' => 'description',
+      'label' => 'Descripción del monto',
+      'rules' => 'required',
+    )
+  );
+
+  public $manualRule = array(
+    array(
+      'field' => 'amount',
+      'label' => 'monto',
+      'rules' => 'numeric|is_natural_no_zero|required',
+    ),
+    array(
+      'field' => 'description',
+      'label' => 'descripción',
+      'rules' => 'required',
     )
   );
 
@@ -57,10 +75,9 @@ class Cashregister_m extends MY_Model {
     ), 0)";
     $paymentsInputs = "IFNULL((
       SELECT SUM( IFNULL(p.amount, 0) + IFNULL(p.surcharge, 0))
-      FROM document_payment_inputs dpi
-      LEFT JOIN document_payments dp ON dpi.document_payment_id = dp.id
+      FROM document_payments dp
       LEFT JOIN payments p ON dp.id = p.document_payment_id
-      WHERE dpi.cash_register_id = cr.id
+      WHERE dp.cash_register_id = cr.id
     ), 0)";
     $manualOutputs = "IFNULL((
       SELECT SUM(IFNULL(mo.amount, 0)) 
@@ -69,9 +86,8 @@ class Cashregister_m extends MY_Model {
     ), 0)";
     $loanOutputs = "IFNULL((
       SELECT SUM(IFNULL(l.credit_amount, 0)) 
-      FROM loan_outputs lo
-      LEFT JOIN  loans l ON l.id = lo.loan_id
-      WHERE lo.cash_register_id = cr.id
+      FROM loans l
+      WHERE l.cash_register_id = cr.id
     ), 0)";
     $this->db->select("cr.*, c.short_name,( ($manualInput + $paymentsInputs) - ($manualOutputs + $loanOutputs) )  total_amount, 
     CONCAT_WS(' ', u.first_name, u.last_name) user_name");
@@ -91,6 +107,14 @@ class Cashregister_m extends MY_Model {
     }
     $data['data'] = $this->db->get()->result()??[];
     return $data;
+  }
+
+  public function getCashRegisterBasicData($cash_register_id){
+    $this->db->select('cr.name, c.short_name coin_short_name');
+    $this->db->from('cash_registers cr');
+    $this->db->join('coins c', 'c.id = cr.coin_id');
+    $this->db->where('cr.id', $cash_register_id);
+    return $this->db->get()->row();
   }
 
   /**
@@ -147,14 +171,13 @@ class Cashregister_m extends MY_Model {
       LEFT JOIN payments py ON py.document_payment_id = dpy.id
       WHERE dpy.id = dp.id
     )";
-    $this->db->select("COUNT(IFNULL(dpi.id, 0)) recordsFiltered");
-    $this->db->from('document_payment_inputs dpi');
-    $this->db->join('document_payments dp', 'dp.id = dpi.document_payment_id', 'left');
+    $this->db->select("COUNT(IFNULL(dp.id, 0)) recordsFiltered");
+    $this->db->from('document_payments dp');
     $this->db->join('payments p', 'p.document_payment_id = dp.id', 'left');
     $this->db->join('loan_items li', 'li.id = p.loan_item_id', 'left');
     $this->db->join('loans l', 'l.id = li.loan_id', 'left');
     $this->db->join('customers c', 'c.id = l.customer_id', 'left');
-    $this->db->where('dpi.cash_register_id', $cash_register_id);
+    $this->db->where('dp.cash_register_id', $cash_register_id);
     $this->db->where("( p.id LIKE '%$search%' OR CONCAT_WS(' ', c.first_name, c.last_name) LIKE '%$search%' 
     OR $artifice LIKE '%$search%')");
     $this->db->group_by('p.document_payment_id');
@@ -162,13 +185,12 @@ class Cashregister_m extends MY_Model {
 
     $this->db->select("dp.id, CONCAT_WS(' ', c.first_name, c.last_name) customer_name, 
     FORMAT(SUM(IFNULL(p.amount, 0) + IFNULL(p.surcharge, 0)), 2) amount, dp.pay_date");
-    $this->db->from('document_payment_inputs dpi');
-    $this->db->join('document_payments dp', 'dp.id = dpi.document_payment_id', 'left');
+    $this->db->from('document_payments dp');
     $this->db->join('payments p', 'p.document_payment_id = dp.id', 'left');
     $this->db->join('loan_items li', 'li.id = p.loan_item_id', 'left');
     $this->db->join('loans l', 'l.id = li.loan_id', 'left');
     $this->db->join('customers c', 'c.id = l.customer_id', 'left');
-    $this->db->where('dpi.cash_register_id', $cash_register_id);
+    $this->db->where('dp.cash_register_id', $cash_register_id);
     $this->db->where("( dp.id LIKE '%$search%' OR CONCAT_WS(' ', c.first_name, c.last_name) LIKE '%$search%' 
     OR $artifice LIKE '%$search%')");
     $this->db->group_by('p.document_payment_id');
@@ -206,19 +228,17 @@ class Cashregister_m extends MY_Model {
   public function getLoanOutputItems($start, $length, $search, $order, $cash_register_id)
   {
     $this->db->select("COUNT(*) recordsFiltered");
-    $this->db->from('loan_outputs lo');
-    $this->db->join('loans l', 'l.id = lo.loan_id', 'left');
+    $this->db->from('loans l');
     $this->db->join('customers c', 'c.id = l.customer_id', 'left');
-    $this->db->where('lo.cash_register_id', $cash_register_id);
+    $this->db->where('l.cash_register_id', $cash_register_id);
     $this->db->where("(l.id LIKE '%$search%' OR l.credit_amount LIKE '%$search%' 
     OR  CONCAT_WS(' ', c.first_name, c.last_name) LIKE '%$search%' OR l.date LIKE '%$search%')");
     $data['recordsFiltered'] = $this->db->get()->row()->recordsFiltered??0;
 
     $this->db->select("l.id, FORMAT(l.credit_amount, 2) credit_amount, CONCAT_WS(' ', c.first_name, c.last_name) customer_name, l.date");
-    $this->db->from('loan_outputs lo');
-    $this->db->join('loans l', 'l.id = lo.loan_id', 'left');
+    $this->db->from('loans l');
     $this->db->join('customers c', 'c.id = l.customer_id', 'left');
-    $this->db->where('lo.cash_register_id', $cash_register_id);
+    $this->db->where('l.cash_register_id', $cash_register_id);
     $this->db->where("(l.id LIKE '%$search%' OR l.credit_amount LIKE '%$search%' 
     OR  CONCAT_WS(' ', c.first_name, c.last_name) LIKE '%$search%' OR l.date LIKE '%$search%')");
     $this->db->limit($length, $start);
@@ -256,9 +276,8 @@ class Cashregister_m extends MY_Model {
   public function getLoanOutputsByCashRegisterId($cash_register_id)
   {
     $this->db->select("IFNULL(SUM(IFNULL(l.credit_amount, 0)), 0) amount");
-    $this->db->from('loan_outputs lo');
-    $this->db->join('loans l', 'l.id = lo.loan_id', 'left');
-    $this->db->where('lo.cash_register_id', $cash_register_id);
+    $this->db->from('loans l');
+    $this->db->where('l.cash_register_id', $cash_register_id);
     return $this->db->get()->row()->amount??0;
   }
 
@@ -268,10 +287,9 @@ class Cashregister_m extends MY_Model {
   public function getDocumentPaymentInputsByCashRegisterId($cash_register_id)
   {
     $this->db->select("IFNULL(SUM(IFNULL(p.amount, 0) + IFNULL(p.surcharge, 0)), 0) amount");
-    $this->db->from("document_payment_inputs dpi");
-    $this->db->join('document_payments dp', 'dp.id = dpi.document_payment_id', 'left');
+    $this->db->from('document_payments dp');
     $this->db->join('payments p', 'p.document_payment_id = dp.id', 'left');
-    $this->db->where('dpi.cash_register_id', $cash_register_id);
+    $this->db->where('dp.cash_register_id', $cash_register_id);
     return $this->db->get()->row()->amount??0;
   }
 
@@ -297,6 +315,11 @@ class Cashregister_m extends MY_Model {
   public function manualInputInsert($data)
   {
     return $this->db->insert('manual_inputs', $data);
+  }
+
+  public function manualOutputInsert($data)
+  {
+    return $this->db->insert('manual_outputs', $data);
   }
 
 }

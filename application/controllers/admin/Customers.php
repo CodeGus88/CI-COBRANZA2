@@ -61,13 +61,9 @@ class Customers extends CI_Controller
     }else {
       $data['customer'] = $this->customers_m->get_new();
     }
-
     $this->form_validation->set_rules($this->customers_m->customer_rules_x);
-
     if ($this->form_validation->run()) {
-
       $cst_data = $this->customers_m->array_from_post(['dni', 'first_name', 'last_name', 'gender', 'mobile', 'address', 'phone', 'business_name', 'ruc', 'company', 'user_id']);
-
       $isSuccessfull = false;
       $cst_data['first_name'] = strtoupper($cst_data['first_name']);
       $cst_data['last_name'] = strtoupper($cst_data['last_name']);

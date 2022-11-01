@@ -16,7 +16,7 @@ function loadData() {
             'processing': true,
             'serverSide': true,
             'ajax': {
-                "url": base_url + "admin/cashregister/ajax_cash_registers/" + user_id,
+                "url": base_url + "admin/cashregisters/ajax_cash_registers/" + user_id,
                 "type": "POST"
             },
             'columns': [
@@ -33,9 +33,9 @@ function loadData() {
                     'cell': true,
                     render: function (data, type, row) {
                         if(row.status==1)
-                            return `<a class="btn btn-success btn-sm" href="${base_url}admin/cashregister/view?id=${row.id}">Abierto</a>`;
+                            return `<a class="btn btn-success btn-sm" href="${base_url}admin/cashregisters/view/${row.id}">Abierto</a>`;
                         else
-                            return `<a class="btn btn-warning btn-sm" href="${base_url}admin/cashregister/view?id=${row.id}">Cerrado</a>`;
+                            return `<a class="btn btn-warning btn-sm" href="${base_url}admin/cashregisters/view/${row.id}">Cerrado</a>`;
                     }
                 }
             ],

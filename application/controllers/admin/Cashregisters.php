@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 include(APPPATH . "/tools/UserPermission.php");
 
-class Cashregister extends CI_Controller {
+class Cashregisters extends CI_Controller {
 
   private $user_id;
   private $permission;
@@ -23,7 +23,7 @@ class Cashregister extends CI_Controller {
   {
     if($this->permission->getPermission([CASH_REGISTER_READ], FALSE))
       $data['users'] = $this->db->order_by('id')->get('users')->result();
-    $data['subview'] = 'admin/cash-registers/index';
+    $data['subview'] = 'admin/cashregisters/index';
 
     $this->load->view('admin/_main_layout', $data);
   }
@@ -89,22 +89,21 @@ class Cashregister extends CI_Controller {
         $this->cashregister_m->manualInputInsert($datax);
         $this->db->trans_commit();
         $this->session->set_flashdata('msg', "Se abrió la caja " . $data['name']);
-        redirect("admin/cashregister");
+        redirect("admin/cashregisters");
       }catch(Exception $e){
         $this->db->trans_rollback();
         $this->session->set_flashdata('msg_error', "¡Ocurrió un error durante el proceso! " . $e->getMessage());
-        redirect("admin/cashregister");
+        redirect("admin/cashregisters");
       }
     }else{
       $data['coins'] = $this->db->get('coins')->result()??[];
       $data['name'] = 'Caja ' . ($this->cashregister_m->getLastId()->id + 1);
-      $data['subview'] = 'admin/cash-registers/create';
+      $data['subview'] = 'admin/cashregisters/create';
       $this->load->view('admin/_main_layout', $data);
     }
   }
 
-  public function view(){
-    $cash_register_id = $this->input->get('id');
+  public function view($cash_register_id){
     $CASH_REGISTER_READ = $this->permission->getPermission([CASH_REGISTER_READ], FALSE);
     $AUTHOR_CASH_REGISTER_READ = $this->permission->getPermission([AUTHOR_CASH_REGISTER_READ], FALSE);
     if(!$CASH_REGISTER_READ) {
@@ -112,7 +111,7 @@ class Cashregister extends CI_Controller {
         echo PERMISSION_DENIED_MESSAGE;
     }
     $data['cash_register'] = $this->cashregister_m->getCashRegister($cash_register_id);
-    $data['subview'] = 'admin/cash-registers/view';
+    $data['subview'] = 'admin/cashregisters/view';
     $this->load->view('admin/_main_layout', $data);
   }
 
@@ -182,7 +181,7 @@ class Cashregister extends CI_Controller {
     echo json_encode($json_data);
   }
 
-  public function ajax_document_payment_inputs($cash_register_id = 0){
+  public function ajax_document_payments($cash_register_id = 0){
     $CASH_REGISTER_READ = $this->permission->getPermission([CASH_REGISTER_READ], FALSE);
     $AUTHOR_CASH_REGISTER_READ = $this->permission->getPermission([AUTHOR_CASH_REGISTER_READ], FALSE);
     if(!$CASH_REGISTER_READ) {
@@ -215,7 +214,7 @@ class Cashregister extends CI_Controller {
     echo json_encode($json_data);
   }
 
-  public function ajax_loan_outputs($cash_register_id = 0){
+  public function ajax_loans($cash_register_id = 0){
     $CASH_REGISTER_READ = $this->permission->getPermission([CASH_REGISTER_READ], FALSE);
     $AUTHOR_CASH_REGISTER_READ = $this->permission->getPermission([AUTHOR_CASH_REGISTER_READ], FALSE);
     if(!$CASH_REGISTER_READ) {
@@ -246,6 +245,62 @@ class Cashregister extends CI_Controller {
       "data"            => $query['data']
     );
     echo json_encode($json_data);
+  }
+
+  /**
+   * Crear una entrana manual
+   */
+  public function manual_input_create($cash_register_id) {
+    $data['amount'] = $this->input->post('amount');
+    $data['description'] = $this->input->post('description');
+    $data['cash_register_id'] = $cash_register_id; // $this->input->post('cash_register_id');
+    $object = new DateTime();
+    $date = $object->format("Y-m-d h:i:s");
+    $data['date'] = $date;
+    $this->permission->getPermission([CASH_REGISTER_UPDATE, AUTHOR_CASH_REGISTER_UPDATE], TRUE);
+    $this->form_validation->set_rules($this->cashregister_m->manualRule);
+    if ($this->form_validation->run()){
+      $this->cashregister_m->manualInputInsert($data);
+      $this->session->set_flashdata('msg', 'Se agregó el monto manual');
+      redirect("admin/cashregisters/view/$cash_register_id");
+    }else{
+      $query = $this->cashregister_m->getCashRegisterBasicData($cash_register_id);
+      $data['cash_register_id'] = $cash_register_id;
+      if(isset($query)){
+        $data['cash_register_name'] = $query->name;
+        $data['coin_short_name'] = $query->coin_short_name;
+      }
+      $data['subview'] = 'admin/cashregisters/manual_input_create';
+      $this->load->view('admin/_main_layout', $data);
+    }
+  }
+
+  /**
+   * Crear una salida manual
+   */
+  public function manual_output_create($cash_register_id) {
+    $data['amount'] = $this->input->post('amount');
+    $data['description'] = $this->input->post('description');
+    $data['cash_register_id'] = $cash_register_id;
+    $object = new DateTime();
+    $date = $object->format("Y-m-d h:i:s");
+    $data['date'] = $date;
+    $this->permission->getPermission([CASH_REGISTER_UPDATE, AUTHOR_CASH_REGISTER_UPDATE], TRUE);
+    $this->form_validation->set_rules($this->cashregister_m->manualRule);
+    if ($this->form_validation->run()){
+      $this->cashregister_m->manualOutputInsert($data);
+      $this->session->set_flashdata('msg', 'Se extrajo el monto de caja');
+      redirect("admin/cashregisters/view/$cash_register_id");
+    }else{
+      $query = $this->cashregister_m->getCashRegisterBasicData($cash_register_id);
+      $data['cash_register_id'] = $cash_register_id;
+      if(isset($query)){
+        $data['cash_register_name'] = $query->name;
+        $data['coin_short_name'] = $query->coin_short_name;
+      }
+      $data['subview'] = 'admin/cashregisters/manual_output_create';
+      $this->load->view('admin/_main_layout', $data);
+    }
   }
 
 }

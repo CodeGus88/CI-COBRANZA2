@@ -21,7 +21,7 @@ function tableBuilder(tableName, url, columns, lengthMenu) {
 const cash_register_id = document.getElementById('id').value;
 const lengthMenu = [2, 5, 10, 20, 50, 100];
 const method = "${method}";
-const partialUrl = base_url + `admin/cashregister/${method}/${cash_register_id}`;
+const partialUrl = base_url + `admin/cashregisters/${method}/${cash_register_id}`;
 
 // Para las tablas manualInputs y manualOutputs
 const manual_columns = [
@@ -53,5 +53,6 @@ const loan_columns = [
 ];
 tableBuilder("manual-inputs", partialUrl.replace(method, 'ajax_manual_inputs'), manual_columns, lengthMenu);
 tableBuilder("manual-outputs", partialUrl.replace(method, 'ajax_manual_outputs'), manual_columns, lengthMenu);
-tableBuilder("document-payment-inputs", partialUrl.replace(method, 'ajax_document_payment_inputs'), document_payment_colums, lengthMenu);
-tableBuilder("loan-outputs", partialUrl.replace(method, 'ajax_loan_outputs'), loan_columns, lengthMenu);
+tableBuilder("document-payment-inputs", partialUrl.replace(method, 'ajax_document_payments'), document_payment_colums, lengthMenu);
+tableBuilder("loan-outputs", partialUrl.replace(method, 'ajax_loans'), loan_columns, lengthMenu);
+

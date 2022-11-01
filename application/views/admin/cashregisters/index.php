@@ -14,7 +14,7 @@
         endif;
       endif;
       ?>
-      <a class="d-sm-inline-block btn btn-sm btn-success shadow-sm" href="<?= site_url('admin/cashregister/create'); ?>"><i class="fas fa-plus-circle fa-sm"></i> Abrir caja</a>
+      <a class="d-sm-inline-block btn btn-sm btn-success shadow-sm" href="<?= site_url('admin/cashregisters/create'); ?>"><i class="fas fa-plus-circle fa-sm"></i> Abrir caja</a>
     </div>
   </div>
   <div class="card-body">
