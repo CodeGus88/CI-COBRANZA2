@@ -14,7 +14,9 @@
         endif;
       endif;
       ?>
+      <?php if($CASH_REGISTER_CREATE || $AUTHOR_CASH_REGISTER_CREATE) : ?>
       <a class="d-sm-inline-block btn btn-sm btn-success shadow-sm" href="<?= site_url('admin/cashregisters/create'); ?>"><i class="fas fa-plus-circle fa-sm"></i> Abrir caja</a>
+      <?php endif ?>
     </div>
   </div>
   <div class="card-body">

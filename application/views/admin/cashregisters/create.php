@@ -45,8 +45,8 @@
       </div>
     </div>
 
-    <button class="btn btn-primary ml-5" type="submit">Abrir caja</button>
-    <a href="<?php echo site_url('admin/cashregisters'); ?>" class="btn btn-dark ml-5">Cancelar</a>
+    <button class="btn btn-primary" type="submit">Abrir caja</button>
+    <a href="<?php echo site_url('admin/cashregisters'); ?>" class="btn btn-dark">Cancelar</a>
 
     <?php echo form_close() ?>
   </div>

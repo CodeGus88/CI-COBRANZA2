@@ -28,7 +28,7 @@ class Cashregister_m extends MY_Model {
     )
   );
 
-  public $manualRule = array(
+  public $manualInputRule = array(
     array(
       'field' => 'amount',
       'label' => 'monto',
@@ -40,6 +40,20 @@ class Cashregister_m extends MY_Model {
       'rules' => 'required',
     )
   );
+
+  public $manualOutputRule = array(
+    array(
+      'field' => 'amount',
+      'label' => 'monto',
+      'rules' => 'numeric|is_natural_no_zero|required',
+    ),
+    array(
+      'field' => 'description',
+      'label' => 'descripción',
+      'rules' => 'required',
+    )
+  );
+
 
   public function getLastId()
   {
@@ -55,6 +69,14 @@ class Cashregister_m extends MY_Model {
       FROM cash_registers cr
       WHERE cr.id = $cash_register_id AND cr.user_id = $user_id), 1, 0) exist");
     return $this->db->get()->row()->exist==1?TRUE:FALSE;
+  }
+
+  public function cashRegisterIsOpen($cash_register_id)
+  {
+    $this->db->select("cr.status");
+    $this->db->from('cash_registers cr');
+    $this->db->where('cr.id', $cash_register_id);
+    return $this->db->get()->row()->status==1?TRUE:FALSE;
   }
 
   public function getCashRegisters($start, $length, $search, $order, $user_id)
@@ -320,6 +342,11 @@ class Cashregister_m extends MY_Model {
   public function manualOutputInsert($data)
   {
     return $this->db->insert('manual_outputs', $data);
+  }
+
+  public function closeCashRegister($id, $data){
+    $this->db->where('id', $id);
+    return $this->db->update('cash_registers cr', $data);
   }
 
 }

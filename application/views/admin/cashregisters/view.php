@@ -2,10 +2,10 @@
     <div class="card-header d-flex align-items-center justify-content-between py-3">
         <h6 class="m-0 font-weight-bold text-primary" id="cash_register_name"><?= $cash_register->name ?? 'undefined' ?></h6>
         <div class="btn-group" role="group" aria-label="Basic example">
-        <?php if (isset($cash_register)) : ?>
+        <?php if(($CASH_REGISTER_UPDATE || $AUTHOR_CASH_REGISTER_UPDATE) && $IS_OPEN) : if (isset($cash_register)) : ?>
             <a type="button" class="btn btn-secondary" href="<?=site_url('admin/cashregisters/manual_input_create/'.$cash_register->id)?>">Entrada manual</a>
             <a type="button" class="btn btn-secondary" href="<?=site_url('admin/cashregisters/manual_output_create/'.$cash_register->id)?>">Salida manual</a>
-        <?php endif?>
+        <?php endif ; endif ?>
         </div>
     </div>
     <?php if (isset($cash_register)) : ?>
@@ -52,7 +52,19 @@
                         </div>
                         <div class="form-group col-md-4">
                             <label class="small mb-1">Estado</label>
-                            <button class="form-control <?= $cash_register->status ? 'btn-success' : 'btn-warning' ?>" style="text-transform:uppercase" type="text" name="last_name"><?= $cash_register->status ? "Abierto" : "Cerrado" ?></button>
+                            <?php 
+                                $url = $cash_register->status?site_url("admin/cashregisters/close_cash_register/$cash_register->id"):'#';
+                                if($cash_register->status) :
+                             ?>
+                             
+                            <a href="<?=site_url('admin/cashregisters/close_cash_register/'.$cash_register->id)?>" class="form-control btn btn-success" onclick="return confirm('Se cerrará esta caja, esta acción es irreversible\n¿Quieres continuar?')">
+                                ABIERTO
+                            </a>
+                            <?php else :?>
+                                <a href="#" class="form-control btn btn-secondary">
+                                CERRADO
+                            </a>
+                            <?php endif?>
                         </div>
                     </div>
 

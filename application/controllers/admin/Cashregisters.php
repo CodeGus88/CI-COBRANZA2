@@ -24,7 +24,8 @@ class Cashregisters extends CI_Controller {
     if($this->permission->getPermission([CASH_REGISTER_READ], FALSE))
       $data['users'] = $this->db->order_by('id')->get('users')->result();
     $data['subview'] = 'admin/cashregisters/index';
-
+    $data[CASH_REGISTER_CREATE] = $this->permission->getPermission([CASH_REGISTER_CREATE], FALSE);
+    $data[AUTHOR_CASH_REGISTER_CREATE] = $this->permission->getPermission([AUTHOR_CASH_REGISTER_CREATE], FALSE);
     $this->load->view('admin/_main_layout', $data);
   }
 
@@ -45,7 +46,6 @@ class Cashregisters extends CI_Controller {
         echo json_encode($json_data);
         return;
       }
-        
     }
     $start = $this->input->post('start');
 		$length = $this->input->post('length');
@@ -106,10 +106,14 @@ class Cashregisters extends CI_Controller {
   public function view($cash_register_id){
     $CASH_REGISTER_READ = $this->permission->getPermission([CASH_REGISTER_READ], FALSE);
     $AUTHOR_CASH_REGISTER_READ = $this->permission->getPermission([AUTHOR_CASH_REGISTER_READ], FALSE);
+    $IS_OPEN = $this->cashregister_m->cashRegisterIsOpen($cash_register_id);
     if(!$CASH_REGISTER_READ) {
       if(!($AUTHOR_CASH_REGISTER_READ && $this->cashregister_m->isAuthor($cash_register_id, $this->user_id)))
         echo PERMISSION_DENIED_MESSAGE;
     }
+    $data[CASH_REGISTER_UPDATE] = $this->permission->getPermission([CASH_REGISTER_UPDATE], FALSE);
+    $data[AUTHOR_CASH_REGISTER_UPDATE] = $this->permission->getPermission([AUTHOR_CASH_REGISTER_UPDATE], FALSE) && $this->cashregister_m->isAuthor($cash_register_id, $this->user_id);
+    $data['IS_OPEN'] = $IS_OPEN;
     $data['cash_register'] = $this->cashregister_m->getCashRegister($cash_register_id);
     $data['subview'] = 'admin/cashregisters/view';
     $this->load->view('admin/_main_layout', $data);
@@ -251,58 +255,91 @@ class Cashregisters extends CI_Controller {
    * Crear una entrana manual
    */
   public function manual_input_create($cash_register_id) {
-    $data['amount'] = $this->input->post('amount');
-    $data['description'] = $this->input->post('description');
-    $data['cash_register_id'] = $cash_register_id; // $this->input->post('cash_register_id');
-    $object = new DateTime();
-    $date = $object->format("Y-m-d h:i:s");
-    $data['date'] = $date;
-    $this->permission->getPermission([CASH_REGISTER_UPDATE, AUTHOR_CASH_REGISTER_UPDATE], TRUE);
-    $this->form_validation->set_rules($this->cashregister_m->manualRule);
-    if ($this->form_validation->run()){
-      $this->cashregister_m->manualInputInsert($data);
-      $this->session->set_flashdata('msg', 'Se agregó el monto manual');
-      redirect("admin/cashregisters/view/$cash_register_id");
-    }else{
-      $query = $this->cashregister_m->getCashRegisterBasicData($cash_register_id);
-      $data['cash_register_id'] = $cash_register_id;
-      if(isset($query)){
-        $data['cash_register_name'] = $query->name;
-        $data['coin_short_name'] = $query->coin_short_name;
+    $CASH_REGISTER_UPDATE = $this->permission->getPermission([CASH_REGISTER_UPDATE], FALSE);
+    $AUTHOR_CASH_REGISTER_UPDATE = $this->permission->getPermission([AUTHOR_CASH_REGISTER_UPDATE], FALSE);
+    $IS_OPEN = $this->cashregister_m->cashRegisterIsOpen($cash_register_id);
+    if(($CASH_REGISTER_UPDATE || ($AUTHOR_CASH_REGISTER_UPDATE && $this->cashregister_m->isAuthor($cash_register_id, $this->user_id))) && $IS_OPEN){
+      $data['amount'] = $this->input->post('amount');
+      $data['description'] = $this->input->post('description');
+      $data['cash_register_id'] = $cash_register_id; // $this->input->post('cash_register_id');
+      $object = new DateTime();
+      $date = $object->format("Y-m-d h:i:s");
+      $data['date'] = $date;
+      // $this->permission->getPermission([CASH_REGISTER_UPDATE, AUTHOR_CASH_REGISTER_UPDATE], TRUE);
+      $this->form_validation->set_rules($this->cashregister_m->manualInputRule);
+      if ($this->form_validation->run()){
+        $this->cashregister_m->manualInputInsert($data);
+        $this->session->set_flashdata('msg', 'Se agregó el monto manual');
+        redirect("admin/cashregisters/view/$cash_register_id");
+      }else{
+        $query = $this->cashregister_m->getCashRegisterBasicData($cash_register_id);
+        $data['cash_register_id'] = $cash_register_id;
+        if(isset($query)){
+          $data['cash_register_name'] = $query->name;
+          $data['coin_short_name'] = $query->coin_short_name;
+        }
+        $data['subview'] = 'admin/cashregisters/manual_input_create';
+        $this->load->view('admin/_main_layout', $data);
       }
-      $data['subview'] = 'admin/cashregisters/manual_input_create';
-      $this->load->view('admin/_main_layout', $data);
+    }else{
+      echo PERMISSION_DENIED_MESSAGE;
     }
+      
   }
 
   /**
    * Crear una salida manual
    */
-  public function manual_output_create($cash_register_id) {
-    $data['amount'] = $this->input->post('amount');
-    $data['description'] = $this->input->post('description');
-    $data['cash_register_id'] = $cash_register_id;
-    $object = new DateTime();
-    $date = $object->format("Y-m-d h:i:s");
-    $data['date'] = $date;
-    $this->permission->getPermission([CASH_REGISTER_UPDATE, AUTHOR_CASH_REGISTER_UPDATE], TRUE);
-    $this->form_validation->set_rules($this->cashregister_m->manualRule);
-    if ($this->form_validation->run()){
-      $this->cashregister_m->manualOutputInsert($data);
-      $this->session->set_flashdata('msg', 'Se extrajo el monto de caja');
-      redirect("admin/cashregisters/view/$cash_register_id");
-    }else{
-      $query = $this->cashregister_m->getCashRegisterBasicData($cash_register_id);
+  public function manual_output_create($cash_register_id = 0) {
+    $CASH_REGISTER_UPDATE = $this->permission->getPermission([CASH_REGISTER_UPDATE], FALSE);
+    $AUTHOR_CASH_REGISTER_UPDATE = $this->permission->getPermission([AUTHOR_CASH_REGISTER_UPDATE], FALSE);
+    $IS_OPEN = $this->cashregister_m->cashRegisterIsOpen($cash_register_id);
+    if(($CASH_REGISTER_UPDATE || ($AUTHOR_CASH_REGISTER_UPDATE && $this->cashregister_m->isAuthor($cash_register_id, $this->user_id))) && $IS_OPEN){
+
+      $data['amount'] = $this->input->post('amount');
+      $data['description'] = $this->input->post('description');
       $data['cash_register_id'] = $cash_register_id;
-      if(isset($query)){
-        $data['cash_register_name'] = $query->name;
-        $data['coin_short_name'] = $query->coin_short_name;
+      $object = new DateTime();
+      $date = $object->format("Y-m-d h:i:s");
+      $data['date'] = $date;
+      $existAmount = isset($data['amount'])?($this->cashregister_m->getTotal($cash_register_id) >= $data['amount']):TRUE;
+      $this->form_validation->set_rules($this->cashregister_m->manualOutputRule);
+      if ($this->form_validation->run() && $existAmount){
+        $this->cashregister_m->manualOutputInsert($data);
+        $this->session->set_flashdata('msg', 'Se extrajo el monto de caja');
+        redirect("admin/cashregisters/view/$cash_register_id");
+      }else{
+        if(!$existAmount){
+          $this->session->set_flashdata('msg_error', 'La caja no contiene el monto suficiente');
+        } 
+        $query = $this->cashregister_m->getCashRegisterBasicData($cash_register_id);
+        $data['cash_register_id'] = $cash_register_id;
+        if(isset($query)){
+          $data['cash_register_name'] = $query->name;
+          $data['coin_short_name'] = $query->coin_short_name;
+        }
+        $data['subview'] = 'admin/cashregisters/manual_output_create';
+        $this->load->view('admin/_main_layout', $data);
       }
-      $data['subview'] = 'admin/cashregisters/manual_output_create';
-      $this->load->view('admin/_main_layout', $data);
+
+    }else{
+      echo loadErrorMessage("Permiso denegado");
     }
   }
 
+  public function close_cash_register($cash_register_id){
+    $CASH_REGISTER_UPDATE = $this->permission->getPermission([CASH_REGISTER_UPDATE], FALSE);
+    $AUTHOR_CASH_REGISTER_UPDATE = $this->permission->getPermission([AUTHOR_CASH_REGISTER_UPDATE], FALSE);
+    if($CASH_REGISTER_UPDATE || ($AUTHOR_CASH_REGISTER_UPDATE && $this->cashregister_m->isAuthor($cash_register_id, $this->user_id))){
+      $data['status'] = 0;
+      $object = new DateTime();
+      $data['closing_date'] = $object->format("Y-m-d h:i:s");
+      $this->cashregister_m->closeCashRegister($cash_register_id, $data);
+      redirect("admin/cashregisters/view/$cash_register_id");
+    }else{
+      echo PERMISSION_DENIED_MESSAGE;
+    }
+  }
 }
 
 /* End of file Coins.php */

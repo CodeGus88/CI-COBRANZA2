@@ -12,7 +12,6 @@
                 </button>
             </div>
         <?php } ?>
-
         <?= form_open() ?>
         <div class="container py-3">
             <div class="form-row">

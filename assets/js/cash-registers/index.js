@@ -35,7 +35,7 @@ function loadData() {
                         if(row.status==1)
                             return `<a class="btn btn-success btn-sm" href="${base_url}admin/cashregisters/view/${row.id}">Abierto</a>`;
                         else
-                            return `<a class="btn btn-warning btn-sm" href="${base_url}admin/cashregisters/view/${row.id}">Cerrado</a>`;
+                            return `<a class="btn btn-secondary btn-sm" href="${base_url}admin/cashregisters/view/${row.id}">Cerrado</a>`;
                     }
                 }
             ],
