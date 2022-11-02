@@ -81,15 +81,6 @@ class Cashregister_m extends MY_Model {
 
   public function getCashRegisters($start, $length, $search, $order, $user_id)
   {
-    $this->db->select("COUNT(IFNULL(cr.id, 0)) recordsFiltered");
-    $this->db->from('cash_registers cr');
-    $this->db->join('users u', 'u.id = cr.user_id');
-    if($user_id == 'all') $user_condition = "";
-    else $user_condition = "AND u.id = $user_id";
-    $this->db->where("(cr.opening_date LIKE '%$search%' OR cr.closing_date LIKE '%$search%' 
-    OR  CONCAT_WS(' ', u.first_name, u.last_name) LIKE '%$search%') $user_condition");
-    $data['recordsFiltered'] = $this->db->get()->row()->recordsFiltered??0;
-    
     $manualInput = "IFNULL((
       SELECT SUM(IFNULL(mi.amount, 0)) 
       FROM manual_inputs mi
@@ -111,15 +102,26 @@ class Cashregister_m extends MY_Model {
       FROM loans l
       WHERE l.cash_register_id = cr.id
     ), 0)";
+
+    if($user_id == 'all') $user_condition = "";
+    else $user_condition = "AND u.id = $user_id";
+
+    $this->db->select("COUNT(IFNULL(cr.id, 0)) recordsFiltered");
+    $this->db->from('cash_registers cr');
+    $this->db->join('users u', 'u.id = cr.user_id');
+    $this->db->where("(cr.name LIKE '%$search%' OR cr.opening_date LIKE '%$search%' OR cr.closing_date LIKE '%$search%' 
+    OR  CONCAT_WS(' ', u.first_name, u.last_name) LIKE '%$search%' OR 
+    ( ($manualInput + $paymentsInputs) - ($manualOutputs + $loanOutputs) ) LIKE '%$search%') $user_condition");
+    $data['recordsFiltered'] = $this->db->get()->row()->recordsFiltered??0;
+    
     $this->db->select("cr.*, c.short_name,( ($manualInput + $paymentsInputs) - ($manualOutputs + $loanOutputs) )  total_amount, 
     CONCAT_WS(' ', u.first_name, u.last_name) user_name");
     $this->db->from('cash_registers cr');
     $this->db->join('users u', 'u.id = cr.user_id');
     $this->db->join('coins c', 'c.id = cr.coin_id', 'left');
-    if($user_id == 'all') $user_condition = "";
-    else $user_condition = "AND u.id = $user_id";
-    $this->db->where("(cr.opening_date LIKE '%$search%' OR cr.closing_date LIKE '%$search%' 
-    OR  CONCAT_WS(' ', u.first_name, u.last_name) LIKE '%$search%') $user_condition");
+    $this->db->where("(cr.name LIKE '%$search%' OR cr.opening_date LIKE '%$search%' OR cr.closing_date LIKE '%$search%' 
+    OR  CONCAT_WS(' ', u.first_name, u.last_name) LIKE '%$search%' OR
+    ( ($manualInput + $paymentsInputs) - ($manualOutputs + $loanOutputs) ) LIKE '%$search%') $user_condition");
     $this->db->limit($length, $start);
     if($order['column'] != 'name')
       $this->db->order_by($order['column'], $order['dir']);
