@@ -61,7 +61,8 @@ class Loans extends CI_Controller
 
       $this->form_validation->set_rules($rules);
 
-      if ($this->form_validation->run() == TRUE) {
+      if ($this->form_validation->run() == TRUE) 
+      {
         if ($this->input->post('payment_m') == 'diario')
           $p = 'P1D';
         if ($this->input->post('payment_m') == 'semanal')
@@ -86,24 +87,22 @@ class Loans extends CI_Controller
             $fomattedDate = $date->format('Y-m-d');
             $isSunday = true;
           }
-
           if ($isSunday) {
             $date->add(new DateInterval('P1D'));
             $fomattedDate = $date->format('Y-m-d');
           } else {
             $fomattedDate = $date->format('Y-m-d');
           }
-
           $items[] = array(
             'date' => $fomattedDate,
             'num_quota' => $num_quota++,
             'fee_amount' => $this->input->post('fee_amount')
           );
         }
-        $loan_data = $this->loans_m->array_from_post(['customer_id', 'credit_amount', 'interest_amount', 'num_fee', 'fee_amount', 'payment_m', 'coin_id', 'date']);
+        $loan_data = $this->loans_m->array_from_post(['customer_id', 'credit_amount', 'interest_amount', 'num_fee', 'fee_amount', 'payment_m', 'coin_id', 'cash_register_id', 'date']);
         $guarantors_list = $this->input->post('guarantors');
         $guarantors = [];
-        if ($guarantors_list != null) // validar que el cliete seleccionado no exista en la lista de garantes
+        if ($guarantors_list != null) // validar que el cliente seleccionado no exista en la lista de garantes
           for ($i = 0; $i < sizeof($guarantors_list); $i++) {
             if ($guarantors_list[$i] != $loan_data["customer_id"])
               $guarantors[$i] = $this->input->post('guarantors')[$i];
@@ -115,11 +114,16 @@ class Loans extends CI_Controller
             $customer = $this->customers_m->getCustomerById($this->user_id, $loan_data['customer_id']);
           if ($customer != null) {
             if ($this->guarantorsValidation($customer->user_id, $guarantors)) {
-              if ($this->formValidation($this->input)) {
-                if ($this->loans_m->addLoan($loan_data, $items, $guarantors)) {
-                  $this->session->set_flashdata('msg', 'Préstamo agregado correctamente');
-                } else {
-                  $this->session->set_flashdata('msg_error', 'Ocurrió un error al guardar, intente nuevamente');
+              if ($this->formValidation($this->input, $customer->user_id)) {
+                if($this->loans_m->getTotalInCashRegister($loan_data['cash_register_id']) >= $loan_data['credit_amount']) {
+                  if ($this->loans_m->addLoan($loan_data, $items, $guarantors)) {
+                    $this->session->set_flashdata('msg', 'Préstamo agregado correctamente');
+                    redirect('admin/loans');
+                  } else {
+                    $this->session->set_flashdata('msg_error', 'Ocurrió un error al guardar, intente nuevamente');
+                  }
+                } else{
+                  $this->session->set_flashdata('msg_error', 'La caja no contiene los recursos necesarios');
                 }
               } else {
                 $this->session->set_flashdata('msg_error', 'ERROR: ¡La información del formulario enviado no es consistente, intente nuevamente!');
@@ -133,8 +137,10 @@ class Loans extends CI_Controller
         } else {
           $this->session->set_flashdata('msg_error', '¡No se seleccionó un cliente!');
         }
-        redirect('admin/loans');
+        // redirect('admin/loans');
+        redirect('admin/loans/edit');
       } else {
+        $data['data'] = $this->loans_m->array_from_post(['customer_id', 'credit_amount', 'interest_amount', 'num_fee', 'fee_amount', 'payment_m', 'coin_id', 'cash_register_id', 'date']);
         $data['subview'] = 'admin/loans/edit';
         $this->load->view('admin/_main_layout', $data);
       }
@@ -147,7 +153,7 @@ class Loans extends CI_Controller
    * Valida los datos de entrada, para constatar de que el cálculo es correcto
    * Criterios de validación (num_fee, fee_amount)
    */
-  private function formValidation($input)
+  private function formValidation($input, $user_id)
   {
     $credit_amount = $input->post('credit_amount');
     $payment = $input->post('payment_m');
@@ -169,23 +175,12 @@ class Loans extends CI_Controller
     $I = $credit_amount * $i * $time;
     $monto_total = $I + $credit_amount;
     $cuota = round($monto_total / $num_fee, 2);
-    if ($cuota == $input->post('fee_amount') && $num_fee == $input->post('num_fee')) {
+    $isCashRegisterAuthor = $this->loans_m->existCashRegisterAuthor( $input->post('cash_register_id'), $user_id);
+    if ($cuota == $input->post('fee_amount') && $num_fee == $input->post('num_fee') && $isCashRegisterAuthor) {
       return true;
     } else {
       return false;
     }
-  }
-
-  function view($id)
-  {
-    if ($this->permission->getPermissionX([LOAN_READ, LOAN_ITEM_READ], FALSE)) {
-      $data['loan'] = $this->loans_m->getLoanInAll($id);
-      $data['items'] = $this->loans_m->getLoanItemsInAll($id);
-    } elseif ($this->permission->getPermissionX([AUTHOR_LOAN_READ, AUTHOR_LOAN_ITEM_READ], FALSE)) {
-      $data['loan'] = $this->loans_m->getLoan($this->session->userdata('user_id'), $id);
-      $data['items'] = $this->loans_m->getLoanItems($this->session->userdata('user_id'), $id);
-    }
-    $this->load->view('admin/loans/view', $data);
   }
 
   // Valida que todos los garantes sean del mismo asesor que el cliente
@@ -201,6 +196,26 @@ class Loans extends CI_Controller
         }
       }
     return $valid;
+  }
+
+  function view($id)
+  {
+    if ($this->permission->getPermissionX([LOAN_READ, LOAN_ITEM_READ], FALSE)) {
+      $data['loan'] = $this->loans_m->getLoanInAll($id);
+      $data['items'] = $this->loans_m->getLoanItemsInAll($id);
+    } elseif ($this->permission->getPermissionX([AUTHOR_LOAN_READ, AUTHOR_LOAN_ITEM_READ], FALSE)) {
+      $data['loan'] = $this->loans_m->getLoan($this->session->userdata('user_id'), $id);
+      $data['items'] = $this->loans_m->getLoanItems($this->session->userdata('user_id'), $id);
+    }
+    $this->load->view('admin/loans/view', $data);
+  }
+
+
+
+  public function ajax_get_cash_registers($user_id, $coin_id){
+    echo json_encode(
+      $this->loans_m->getCashRegisters($user_id, $coin_id)
+    );
   }
 
 }
