@@ -127,11 +127,10 @@ $(document).ready(function () {
           guarantorsItems.insertAdjacentHTML("beforeend", option);
         }
       });
-      getCashRegisters(selectCoin.value);
     }
   }
 
-  async function getCashRegisters(coin_id){
+  function getCashRegisters(coin_id){
     if(selectCoin.value != ''){
       fetch(`${base_url}admin/loans/ajax_get_cash_registers/${coin_id}`)
     .then(response => response.json()
@@ -159,6 +158,8 @@ cashRegisterUpdate.addEventListener('click', event =>{
   getCashRegisters(selectCoin.value);
 });
 
+
+
 function loanConfirmation(){
   cashRegister = cashRegisters.find(element => element.id == cashRegisterId.value);
   if(cashRegister != null )
@@ -169,3 +170,11 @@ function loanConfirmation(){
     }
   return false;
 }
+
+
+function autoLoad(){
+  if(selectCoin.value != '')
+    getCashRegisters(selectCoin.value);
+}
+autoLoad();
+
