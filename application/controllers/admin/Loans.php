@@ -83,12 +83,10 @@ class Loans extends CI_Controller
         
         foreach ($period as $date) {
           $isSunday = $date->format('N')==7?TRUE:FALSE;
-          if ($isSunday) {
+          if ($isSunday)
             $date->add(new DateInterval('P1D'));
-            $fomattedDate = $date->format('Y-m-d');
-          } else {
-            $fomattedDate = $date->format('Y-m-d');
-          }
+          $fomattedDate = $date->format('Y-m-d');
+          
           $items[] = array(
             'date' => $fomattedDate,
             'num_quota' => $num_quota++,
