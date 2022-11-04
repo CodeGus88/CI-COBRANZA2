@@ -53,7 +53,6 @@
     <div class="form-row">
       <div class="form-group col-12 col-md-12">
         <label class="small mb-1">Asesor de grupo</label>
-        <input class="form-control" id="user_id" type="text" readonly hidden>
         <input class="form-control" id="user_name" type="text" readonly>
       </div>
     </div>

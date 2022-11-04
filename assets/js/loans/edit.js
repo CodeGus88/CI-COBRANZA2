@@ -1,7 +1,6 @@
 const selectCustomer = document.getElementById('customer_id');
 const selectCashRegisters = document.getElementById('cash_register_id');
 const selectCoin = document.getElementById('coin_id');
-const userId = document.getElementById('user_id');
 const cashRegisterId = document.getElementById('cash_register_id');
 const creditAmount = document.getElementById('credit_amount');
 const cashRegisterUpdate = document.getElementById('cash_register_update');
@@ -13,55 +12,70 @@ $(document).ready(function () {
     $('#calcular').on('click', function () {
       // var define una variable global o local en una función sin importar el ámbito del bloque
       var contador = 0
-  
+      errors = '';
+      const focusables = new Array();
       if ($("#customer_id").val() == "0" || $("#customer_id").val() == "") {
-        contador = 1
-        alert("Selecciona un cliente")
-        $("#customer_id").focus()
-        return false;
+        contador ++;
+        error = `${errors==''?'':'\n'}- Selecciona un cliente`;
+        errors += error;
+        focusables.push($("#customer_id"));
       }
   
       if ($("#credit_amount").val() == "") {
-        contador = 1
-        alert("Ingresar monto")
-        $("#credit_amount").focus()
-        return false;
+        contador ++;
+        error = `${errors==''?'':'\n'}- Ingresar monto`;
+        errors += error;
+        focusables.push($("#credit_amount"));
       }
       if ($("#time").val() == "") {
-        contador = 1
-        alert("Ingresar tiempo")
-        $("#time").focus()
-        return false;
+        contador ++;
+        error = `${errors==''?'':'\n'}- Ingresar tiempo`;
+        errors += error;
+        focusables.push($("#time"));
       }
   
       if ($("#in_amount").val() == "") {
-        contador = 1
-        alert("Ingresar interés")
-        $("#in_amount").focus()
-        return false;
+        contador ++;
+        error = `${errors==''?'':'\n'}- Ingresar interés`;
+        errors += error;
+        focusables.push($("#in_amount"));
       }
-      if ($("#date").val() == "") {
-        contador = 1
-        alert("Ingresar fecha emisión")
-        return false;
-      }
-      // comparar caja
+      
       if ($("#cash_register_id").val() == "") {
-        contador = 1
-        alert("Selecciona una caja")
-        return false;
+        contador ++;
+        error = `${errors==''?'':'\n'}- Selecciona una caja`;
+        errors += error;
+        focusables.push($("#cash_register_id"));
       }
-
       cashRegister = cashRegisters.find(element => element.id == cashRegisterId.value);
       if(cashRegister != null){
-        if(Number.parseFloat(creditAmount.value) > Number.parseFloat(cashRegister.total_amount))
-          alert("La caja no contiene el monto requerido ");
+        if(Number.parseFloat(creditAmount.value) > Number.parseFloat(cashRegister.total_amount)){
+          error = `${errors==''?'':'\n'}- La caja no contiene el monto requerido`;
+          errors += error;
+          focusables.push($("#cash_register_id"));
+        }
       }
-      // fin comparar caja
-  
+
+      if ($("#date").val() == "") {
+        contador ++;
+        error = `${errors==''?'':'\n'}- Ingresar fecha emisión`;
+        errors += error;
+        focusables.push($("#date"));
+      }
+      
+      
+      if(focusables.length > 0) focusables[0].focus();
       if (contador == 0) {
         $('#register_loan').attr('disabled', false);
+      }else{
+        $('#register_loan').attr('disabled', true);
       }
+
+      if(errors != ''){
+        alert(errors);
+        return;
+      } 
+      
       let time = parseFloat($('#time').val()); // n meses
       let payment = $('#payment').val(); // mensual, quincenal, semanal, diario
       if (payment.toLowerCase() == 'mensual') {
@@ -102,34 +116,30 @@ $(document).ready(function () {
       guarantorsItems.removeChild(guarantorsItems.firstChild);
     };
     user_name = document.getElementById('user_name');
-    user_id = document.getElementById('user_id');
     user_name.value = '';
-    user_id.value = '';
     id = document.getElementById('customer_id').value;
     if (id != 0) {
       x = customerList.find(x => x.id == id);
       user_name.value = x.user_name;
-      user_id.value = x.user_id;
       customerList.forEach(element => {
         if (x.user_id == element.user_id && element.id != id) {
           let option = "<option value='" + element.id + "'>" + element.dni + " | " + element.fullname + "</option>";
           guarantorsItems.insertAdjacentHTML("beforeend", option);
         }
       });
-      getCashRegisters(userId.value, selectCoin.value);
+      getCashRegisters(selectCoin.value);
     }
   }
 
-  async function getCashRegisters(user_id, coin_id){
-    if(userId.value != '' && selectCoin.value != ''){
-      fetch(`${base_url}admin/loans/ajax_get_cash_registers/${user_id}/${coin_id}`)
+  async function getCashRegisters(coin_id){
+    if(selectCoin.value != ''){
+      fetch(`${base_url}admin/loans/ajax_get_cash_registers/${coin_id}`)
     .then(response => response.json()
     .then(json => {
       cashRegisters = json;
       while (cashRegisterId.firstChild) {
         cashRegisterId.removeChild(cashRegisterId.firstChild);
       };
-      // console.log(json);
       json.forEach(element =>{
         option = `<option value="${element.id}">${element.name + " | Saldo: "+ element.total_amount + " " + element.short_name +""}</option>`;
         cashRegisterId.insertAdjacentHTML("beforeend", option);
@@ -142,11 +152,11 @@ $(document).ready(function () {
 
 
 selectCoin.addEventListener('change', (event) => {
-  getCashRegisters(userId.value, selectCoin.value);
+  getCashRegisters(selectCoin.value);
 });
 
 cashRegisterUpdate.addEventListener('click', event =>{
-  getCashRegisters(userId.value, selectCoin.value);
+  getCashRegisters(selectCoin.value);
 });
 
 function loanConfirmation(){
