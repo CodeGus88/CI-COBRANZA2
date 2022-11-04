@@ -157,5 +157,5 @@ function loanConfirmation(){
     }else{
       return confirm(`Se procesará el préstamo de ${creditAmount.value + " " + coinId.options[coinId.selectedIndex].text}\n¿Quieres continuar?`);
     }
-  // return false;
+  return false;
 }
