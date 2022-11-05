@@ -2,7 +2,7 @@
   <div class="card-header py-3">Crear préstamo </div>
   <div class="card-body">
 
-  <?php if ($this->session->flashdata('msg_error')) : ?>
+    <?php if ($this->session->flashdata('msg_error')) : ?>
       <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
         <?= $this->session->flashdata('msg_error') ?>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -23,7 +23,7 @@
 
     <div class="form-row">
       <div class="form-group col-12 col-md-12">
-        <label class="small mb-1" >Cliente</label>
+        <label class="small mb-1">Cliente</label>
         <div class="input-group">
           <select class="form-control form-select" id="customer_id" name="customer_id" onchange="loadGuarantorsOptions()">
             <option value="0" selected="selected">...</option>
@@ -59,7 +59,7 @@
     <div class="form-row">
       <div class="form-group col-12 col-md-4">
         <label class="small mb-1">Monto préstamo (capital)</label>
-        <input class="form-control" id="credit_amount" type="number" name="credit_amount" step="none" min="1" value="<?=$credit_amount??''?>">
+        <input class="form-control" id="credit_amount" type="number" name="credit_amount" step="none" min="1" value="<?= $credit_amount ?? '' ?>">
       </div>
       <div class="form-group col-12 col-md-4">
         <label class="small mb-1">Tasa de interés %</label>
@@ -105,7 +105,7 @@
         <label class="small mb-1">Tipo moneda</label>
         <select class="form-control" id="coin_id" name="coin_id">
           <?php foreach ($coins as $coin) : ?>
-            <option <?php if(strtolower($coin->name)=='bolivianos') echo 'selected' ?> value="<?php echo $coin->id ?>"><?php echo $coin->short_name ?></option>
+            <option <?php if (strtolower($coin->name) == 'bolivianos') echo 'selected' ?> value="<?php echo $coin->id ?>"><?php echo $coin->short_name ?></option>
           <?php endforeach ?>
         </select>
       </div>
@@ -117,7 +117,7 @@
       </div>
       <div class="form-group col-12 col-md-4">
         <label class="small mb-1">Fecha emisión</label>
-        <input class="form-control" id="date" type="date" name="date" value="<?=$date??''?>">
+        <input class="form-control" id="date" type="date" name="date" value="<?= $date ?? '' ?>">
       </div>
     </div>
 

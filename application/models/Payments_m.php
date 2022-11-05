@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Payments_m extends CI_Model {
-  
+
   public function getPaymentsAll()
   {
     $this->db->select("li.id, c.dni, concat(c.first_name,' ',c.last_name) AS name_cst, l.id AS loan_id, li.pay_date, li.num_quota, li.fee_amount");
@@ -45,7 +45,7 @@ class Payments_m extends CI_Model {
 
   public function getLoanAll($customer_id)
   {
-    $this->db->select("l.id, l.customer_id, l.credit_amount, l.payment_m, co.name as coin_name, CONCAT(u.academic_degree, ' ', u.first_name, ' ', u.last_name) as user_name");
+    $this->db->select("l.id, l.customer_id, l.credit_amount, l.payment_m, co.name coin_name, l.coin_id, CONCAT(u.academic_degree, ' ', u.first_name, ' ', u.last_name) as user_name");
     $this->db->from('loans l');
     $this->db->join('customers c', 'c.id = l.customer_id', 'left');
     $this->db->join('users u', 'u.id = c.user_id', 'left');
@@ -54,9 +54,9 @@ class Payments_m extends CI_Model {
     return $this->db->get()->row();
   }
 
-  public function get_loan($user_id, $customer_id)
+  public function getLoan($user_id, $customer_id)
   {
-    $this->db->select("l.id, l.customer_id, l.credit_amount, l.payment_m, co.name as coin_name, CONCAT(u.academic_degree, ' ', u.first_name, ' ', u.last_name) as user_name");
+    $this->db->select("l.id, l.customer_id, l.credit_amount, l.payment_m, co.name as coin_name, l.coin_id, CONCAT(u.academic_degree, ' ', u.first_name, ' ', u.last_name) as user_name");
     $this->db->from('loans l');
     $this->db->join('customers c', 'c.id = l.customer_id', 'left');
     $this->db->join('users u', 'u.id = c.user_id', 'left');
@@ -144,8 +144,8 @@ class Payments_m extends CI_Model {
     }
   }
 
-  public function addDocumentPayment($user_id, $pay_date){
-    $this->db->insert('document_payments', ['user_id' => $user_id, 'pay_date' => $pay_date]);
+  public function addDocumentPayment($data){
+    $this->db->insert('document_payments', $data);
     return $this->db->insert_id();
   }
 

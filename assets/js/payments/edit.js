@@ -1,3 +1,5 @@
+cashRegisterId = document.getElementById('cash_register_id');
+
 // Si existe un cliente seleccionado por defecto, carga su préstamo
 function autoSearch() {
   select = document.getElementById('search');
@@ -10,14 +12,17 @@ window.onload = function () {
   autoSearch();
 }
 
+
+
+
 //  Funcion para cargar las cuotas de credito de un cliente al cobrar credito
 function loadLoan() {
   customer_id = document.getElementById("search").value
-  if (customer_id > 0) {
+  if (customer_id > 0){
     fetch(base_url + "admin/payments/ajax_get_loan/" + customer_id)
       .then(response => response.json())
       .then(data => {
-        // console.log(data);
+        console.log(data);
         if (data.loan != null) {
           $("#customer_id").val(data.loan.customer_id);
           $("#loan_id").val(data.loan.id);
@@ -28,6 +33,7 @@ function loadLoan() {
           $("#total_amount").val('');
           loadLoanItems(data.loan.id);
           loadGuarantors(data.loan.id);
+          getCashRegisters(data.loan.coin_id);
         }
         else {
           alert('No se encontró un préstamo asociado al cliente seleccionado');
@@ -41,6 +47,11 @@ function loadLoan() {
   }
 }
 
+function autoLoad() {
+  loadLoan();
+  // getCashRegisters();
+}
+
 function clearform() {
   $("#credit_amount").val('');
   $("#payment_m").val('');
@@ -52,7 +63,7 @@ function clearform() {
     "scrollY": '50vh',
     "scrollCollapse": true,
     "aaData": []
-  })
+  });
 }
 
 function loadLoanItems(loan_id) {
@@ -60,8 +71,6 @@ function loadLoanItems(loan_id) {
   fetch(base_url + "admin/payments/ajax_get_loan_items/" + loan_id)
     .then(responsex => responsex.json())
     .then(datax => {
-      // console.log("Datos:");
-      // console.log(datax);
       if (datax.quotas != null) { // Cargar tabla
         // cargar tabla de cuotas
         var x = new Array(datax.quotas.length);
@@ -83,8 +92,8 @@ function loadLoanItems(loan_id) {
             const num_quota = datax.quotas[i].num_quota;
             const date = datax.quotas[i].date;
             // const noDetailsPaid = (!status && datax.quotas[i].payed == null) ? true : false;
-            const payed = (!status)? 
-              fee_amount : (datax.quotas[i].payed != null)? datax.quotas[i].payed : 0;
+            const payed = (!status) ?
+              fee_amount : (datax.quotas[i].payed != null) ? datax.quotas[i].payed : 0;
             const surcharge = (datax.quotas[i].surcharge != null) ? datax.quotas[i].surcharge : 0;
             const stateStatus = status ? "" : 'disabled checked';
             const payable = (fee_amount - payed).toFixed(2);
@@ -162,7 +171,7 @@ function calculateTotal() {
   });
   $("#total_amount").val(total.toFixed(2));
   setTimeout(() => { // Ayuda a que no se envie el formulario con la tecla enter
-    if (total > 0)
+    if (total > 0 && $("#cash_register_id").val() != '')
       $("#register_loan").attr("disabled", false);
   }, 500);
 }
@@ -172,7 +181,6 @@ function loadGuarantors(loan_id) {
   fetch(base_url + "admin/payments/ajax_get_guarantors/" + loan_id)
     .then(response => response.json())
     .then(x => {
-      // console.log(x);
       if (x.guarantors != null) {
         var options = "";
         x.guarantors.forEach(element => {
@@ -238,4 +246,23 @@ function payConfirmation() {
     toastr["error"](e, 'ERROR');
     return false;
   }
+}
+
+/**
+ * Optiene las cajas con el tipo de moneda
+ */
+function getCashRegisters(coinId) {
+  fetch(`${base_url}admin/payments/ajax_get_cash_registers/${coinId}`)
+    .then(response => response.json()
+      .then(json => {
+        console.log(json);
+        cashRegisters = json;
+        while (cashRegisterId.firstChild) {
+          cashRegisterId.removeChild(cashRegisterId.firstChild);
+        };
+        json.forEach(element => {
+          option = `<option value="${element.id}">${element.name + " | Saldo: " + element.total_amount + " " + element.short_name + ""}</option>`;
+          cashRegisterId.insertAdjacentHTML("beforeend", option);
+        });
+      }));
 }

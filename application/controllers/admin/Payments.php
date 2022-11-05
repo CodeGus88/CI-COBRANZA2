@@ -12,6 +12,7 @@ class Payments extends CI_Controller
   {
     parent::__construct();
     $this->load->model('payments_m');
+    $this->load->model('cashregister_m');
     $this->load->model('permission_m');
     $this->load->library('form_validation');
     $this->load->library('session');
@@ -61,17 +62,17 @@ class Payments extends CI_Controller
     $this->load->view('admin/_main_layout', $data);
   }
 
-  function ajax_get_loan($customer_id)
+  public function ajax_get_loan($customer_id)
   {
     if ($this->permission->getPermissionX([LOAN_UPDATE, LOAN_ITEM_UPDATE], FALSE))
       $quota_data = $this->payments_m->getLoanAll($customer_id);
     elseif ($this->permission->getPermissionX([AUTHOR_LOAN_UPDATE, AUTHOR_LOAN_ITEM_UPDATE], FALSE))
-      $quota_data = $this->payments_m->get_loan($this->user_id, $customer_id);
+      $quota_data = $this->payments_m->getLoan($this->user_id, $customer_id);
     $search_data = ['loan' => $quota_data];
     echo json_encode($search_data); // datos leidos por javascript Ajax
   }
 
-  function ajax_get_loan_items($loan_id)
+  public function ajax_get_loan_items($loan_id)
   {
     $quota_data = array();
     if ($this->permission->getPermission([LOAN_UPDATE, LOAN_ITEM_UPDATE], FALSE))
@@ -82,7 +83,7 @@ class Payments extends CI_Controller
     echo json_encode($search_data); // datos leidos por javascript Ajax
   }
 
-  function ajax_get_guarantors($loan_id)
+  public function ajax_get_guarantors($loan_id)
   {
     $guarantors = array();
     if ($this->permission->getPermissionX([LOAN_UPDATE, LOAN_ITEM_UPDATE], FALSE))
@@ -96,7 +97,7 @@ class Payments extends CI_Controller
   /**
    * Pagar reemplaza funcionalidad de guardar de ticket
    */
-  function save_payment()
+  public function save_payment()
   {
     $LOAN_UPDATE = $this->permission->getPermission([LOAN_UPDATE], FALSE);
     $LOAN_ITEM_UPDATE = $this->permission->getPermission([LOAN_ITEM_UPDATE], FALSE);
@@ -109,30 +110,29 @@ class Payments extends CI_Controller
         $data['customerName'] = $this->payments_m->getCustomerByIdAll($customer_id);
       elseif ($AUTHOR_LOAN_UPDATE && $AUTHOR_LOAN_ITEM_UPDATE)
         $data['customerName'] = $this->payments_m->get_customer_by_id($this->user_id, $customer_id);
-
       $data['coin'] = $this->input->post('coin');
       $data['loan_id'] = $this->input->post('loan_id');
       $loan_id = $this->input->post('loan_id');
-      $quota_id = $this->input->post('quota_id');
+      $quota_id = $this->input->post('quota_id'); // array
+      $cash_register_id =  $this->input->post('cash_register_id');
       // cargar pagos
       $payments = [];
       if (isset($quota_id)) : if (sizeof($quota_id) > 0) :
           foreach ($quota_id as $id) {
             array_push($payments, [
-              'loan_item_id' => $id, 
-              'amount' => $this->input->post("amount_quota_$id"), 
-              'surcharge'=>$this->input->post("surcharge_$id")
+              'loan_item_id' => $id,
+              'amount' => $this->input->post("amount_quota_$id"),
+              'surcharge' => $this->input->post("surcharge_$id")
             ]);
           }
         endif;
       endif;
-      // echo json_encode($payments);return; 
       if ($LOAN_UPDATE && $LOAN_ITEM_UPDATE) {
-        $this->addPayment($loan_id, $quota_id, $payments, $customer_id, $data);
+        $this->addPayment($loan_id, $cash_register_id, $quota_id, $payments, $customer_id, $data);
       } elseif ($AUTHOR_LOAN_UPDATE && $AUTHOR_LOAN_ITEM_UPDATE) {
         $probable_user_id = $this->payments_m->get_loan_adviser_user_id($loan_id)->id;
         if (AuthUserData::isAuthor($probable_user_id)) {
-          $this->addPayment($loan_id, $quota_id, $payments, $customer_id, $data);
+          $this->addPayment($loan_id, $cash_register_id, $quota_id, $payments, $customer_id, $data);
         } else {
           echo PERMISSION_DENIED_MESSAGE;
         }
@@ -147,17 +147,18 @@ class Payments extends CI_Controller
   /**
    * Guarda los pagos
    */
-  private function addPayment($loan_id, $quota_id, $payments, $customer_id)
+  private function addPayment($loan_id, $cash_register_id, $quota_id, $payments, $customer_id)
   {
     $validate = $this->payments_m->paymentsOk($payments);
     $savePaymentsIsSuccess = FALSE;
-    try{
+    try {
       if ($validate->valid) {
-        
+        $this->cashRegisterValidation($loan_id, $this->user_id, $cash_register_id);
         $Object = new DateTime();
         $pay_date = $Object->format("Y-m-d h:i:s");
         $this->db->trans_begin(); // inicio de la transacción
-        $id = $this->payments_m->addDocumentPayment($this->user_id, $pay_date);
+
+        $id = $this->payments_m->addDocumentPayment(['user_id' => $this->user_id, 'cash_register_id' => $cash_register_id, 'pay_date' => $pay_date]);
         if ($id > 0) {
           for ($i = 0; $i < sizeof($payments); $i++) {
             $payments[$i]['document_payment_id'] = $id;
@@ -187,16 +188,39 @@ class Payments extends CI_Controller
           }
         } else {
           $this->db->trans_rollback();
-          echo loadErrorMessage('No existen cuotas para registrar');
+          $this->session->set_flashdata('msg_error', 'No existen cuotas para registrar');
         }
       } else {
         $this->db->trans_rollback();
-        echo loadErrorMessage('¡Ocurrió un error durante la transacción!');
+        $this->session->set_flashdata('msg_error', '¡Ocurrió un error durante la transacción!');
       }
-    }catch(Exception $ex){
+      redirect("admin/payments/edit");
+    } catch (Exception $ex) {
       $this->db->trans_rollback();
       echo loadErrorMessage($ex->getMessage());
     }
+  }
+
+  private function cashRegisterValidation($loan_id, $user_id, $cash_register_id)
+  {
+    $errors = [];
+    if ($this->cashregister_m->isAuthor($cash_register_id, $user_id)) {
+      $loanRequest = $this->db->get_where('loans', ['id' => $loan_id])->row();
+      $coin_id = $loanRequest->coin_id??0;
+      if (!$this->cashregister_m->isCoinType($cash_register_id, $coin_id))
+        array_push($errors, 'El tipo de moneda del préstamo, no coincide con el tipo de moneda de la caja');
+      if (!$this->cashregister_m->isOpen($cash_register_id))
+        array_push($errors, 'La caja está cerrada');
+    }else{
+      array_push($errors, 'El usuario no es autor de la caja o la caja no existe');
+    }
+    if(sizeof($errors) > 0){
+      $messages = '';
+      foreach($errors as $error)
+        $messages .= '<li>'.$error .'</li>';;
+      $this->session->set_flashdata('msg_error', $messages);
+      redirect("admin/payments/edit");
+    } 
   }
 
   public function document_payment($id)
@@ -253,6 +277,14 @@ class Payments extends CI_Controller
       $data['payable_next'] = null;
     }
     $this->load->view('admin/payments/quotes_week', $data);
+  }
+
+  public function ajax_get_cash_registers($coin_id)
+  {
+    if ($this->permission->getPermission([CASH_REGISTER_READ, AUTHOR_CASH_REGISTER_READ], FALSE))
+      echo json_encode($this->cashregister_m->getCashRegistersX($this->user_id, $coin_id));
+    else
+      echo json_encode([]);
   }
 }
 

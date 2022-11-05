@@ -13,6 +13,7 @@ class Loans extends CI_Controller
     parent::__construct();
     $this->load->model('loans_m');
     $this->load->model('customers_m');
+    $this->load->model('cashregister_m');
     $this->load->model('permission_m');
     $this->load->library('session');
     $this->load->library('form_validation');
@@ -110,16 +111,13 @@ class Loans extends CI_Controller
           if ($customer != null) {
             if ($this->guarantorsValidation($customer->user_id, $guarantors)) {
               if ($this->formValidation($this->input)) {
-                if($this->loans_m->getTotalInCashRegister($loan_data['cash_register_id']) >= $loan_data['credit_amount']) {
+                  $this->cashRegisterValidation($this->input, $this->user_id);
                   if ($this->loans_m->addLoan($loan_data, $items, $guarantors)) {
                     $this->session->set_flashdata('msg', 'Préstamo agregado correctamente');
                     redirect('admin/loans');
                   } else {
                     $this->session->set_flashdata('msg_error', 'Ocurrió un error al guardar, intente nuevamente');
                   }
-                } else{
-                  $this->session->set_flashdata('msg_error', 'La caja no contiene los recursos necesarios');
-                }
               } else {
                 $this->session->set_flashdata('msg_error', 'ERROR: ¡La información del formulario enviado no es consistente, intente nuevamente!');
               }
@@ -132,7 +130,6 @@ class Loans extends CI_Controller
         } else {
           $this->session->set_flashdata('msg_error', '¡No se seleccionó un cliente!');
         }
-        // redirect('admin/loans');
         redirect('admin/loans/edit');
       } else {
         $data['data'] = $this->loans_m->array_from_post(['customer_id', 'credit_amount', 'interest_amount', 'num_fee', 'fee_amount', 'payment_m', 'coin_id', 'cash_register_id', 'date']);
@@ -170,12 +167,36 @@ class Loans extends CI_Controller
     $I = $credit_amount * $i * $time;
     $monto_total = $I + $credit_amount;
     $cuota = round($monto_total / $num_fee, 2);
-    $isCashRegisterAuthor = $this->loans_m->existCashRegisterAuthor( $input->post('cash_register_id'), $this->user_id);
-    if ($cuota == $input->post('fee_amount') && $num_fee == $input->post('num_fee') && $isCashRegisterAuthor) {
+    if ($cuota == $input->post('fee_amount') && $num_fee == $input->post('num_fee')) {
       return true;
     } else {
       return false;
     }
+  }
+
+  private function cashRegisterValidation($input, $user_id)
+  {
+    $cash_register_id = $input->post('cash_register_id');
+    $coin_id = $input->post('coin_id');
+    $credit_amount = $input->post('credit_amount');
+    $errors = [];
+    if ($this->cashregister_m->isAuthor($cash_register_id, $user_id)) {
+      if (!$this->cashregister_m->isCoinType($cash_register_id, $coin_id))
+        array_push($errors, 'El tipo de moneda del préstamo, no coincide con el tipo de moneda de la caja');
+      if (!$this->cashregister_m->isOpen($cash_register_id))
+        array_push($errors, 'La caja está cerrada');
+      if(sizeof($errors) == 0 && ($this->cashregister_m->getTotal($cash_register_id) < $credit_amount))
+        array_push($errors, 'La caja no cuenta con el saldo sufuciente');
+    }else{
+      array_push($errors, 'El usuario no es autor de la caja o la caja no existe');
+    }
+    if(sizeof($errors) > 0){
+      $messages = '';
+      foreach($errors as $error)
+        $messages .= '<li>'.$error .'</li>';
+      $this->session->set_flashdata('msg_error', $messages);
+      redirect("admin/loans/edit");
+    } 
   }
 
   // Valida que todos los garantes sean del mismo asesor que el cliente
@@ -207,7 +228,7 @@ class Loans extends CI_Controller
 
   public function ajax_get_cash_registers($coin_id){
     if($this->permission->getPermission([CASH_REGISTER_READ, AUTHOR_CASH_REGISTER_READ], FALSE))
-      echo json_encode($this->loans_m->getCashRegisters($this->user_id, $coin_id));
+      echo json_encode($this->cashregister_m->getCashRegistersX($this->user_id, $coin_id));
     else
       echo json_encode([]);
   }

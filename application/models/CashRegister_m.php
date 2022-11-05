@@ -71,6 +71,23 @@ class Cashregister_m extends MY_Model {
     return $this->db->get()->row()->exist==1?TRUE:FALSE;
   }
 
+  public function isCoinType($cash_register_id, $coin_id)
+  {
+    $this->db->select("IF( EXISTS(
+      SELECT *
+      FROM cash_registers cr
+      WHERE cr.id = $cash_register_id AND cr.coin_id = $coin_id), 1, 0) exist");
+    return $this->db->get()->row()->exist==1?TRUE:FALSE;
+  }
+
+  public function isOpen($cash_register_id)
+  {
+    $this->db->select('cr.status');
+    $this->db->from('cash_registers cr');
+    $this->db->where('cr.id',  $cash_register_id);
+    return $this->db->get()->row()->status==1?TRUE:FALSE;
+  }
+
   public function cashRegisterIsOpen($cash_register_id)
   {
     $this->db->select("cr.status");
@@ -350,6 +367,71 @@ class Cashregister_m extends MY_Model {
     $this->db->where('id', $id);
     return $this->db->update('cash_registers cr', $data);
   }
+
+  // PARA LAS VISTAS DE CREDITOS Y PAGOS
+
+  public function getCashRegistersX($user_id, $coin_id)
+  {
+    $manualInput = "IFNULL((
+      SELECT SUM(IFNULL(mi.amount, 0)) 
+      FROM manual_inputs mi
+      WHERE mi.cash_register_id = cr.id
+    ), 0)";
+    $paymentsInputs = "IFNULL((
+      SELECT SUM( IFNULL(p.amount, 0) + IFNULL(p.surcharge, 0))
+      FROM document_payments dp
+      LEFT JOIN payments p ON dp.id = p.document_payment_id
+      WHERE dp.cash_register_id = cr.id
+    ), 0)";
+    $manualOutputs = "IFNULL((
+      SELECT SUM(IFNULL(mo.amount, 0)) 
+      FROM manual_outputs mo
+      WHERE mo.cash_register_id = cr.id
+    ), 0)";
+    $loanOutputs = "IFNULL((
+      SELECT SUM(IFNULL(l.credit_amount, 0)) 
+      FROM loans l
+      WHERE l.cash_register_id = cr.id
+    ), 0)";
+    
+    $this->db->select("cr.id, cr.name, c.short_name,( ($manualInput + $paymentsInputs) - ($manualOutputs + $loanOutputs) )  total_amount");
+    $this->db->from('cash_registers cr');
+    $this->db->join('coins c', 'c.id = cr.coin_id');
+    $this->db->where(['user_id' => $user_id, 'coin_id' => $coin_id, 'status' => 1]);
+   
+    return $this->db->get()->result()??[];
+  }
+
+  public function getTotalInCashRegisterX($cash_register_id){
+    $manualInput = "IFNULL((
+      SELECT SUM(IFNULL(mi.amount, 0)) 
+      FROM manual_inputs mi
+      WHERE mi.cash_register_id = cr.id
+    ), 0)";
+    $paymentsInputs = "IFNULL((
+      SELECT SUM( IFNULL(p.amount, 0) + IFNULL(p.surcharge, 0))
+      FROM document_payments dp
+      LEFT JOIN payments p ON dp.id = p.document_payment_id
+      WHERE dp.cash_register_id = cr.id
+    ), 0)";
+    $manualOutputs = "IFNULL((
+      SELECT SUM(IFNULL(mo.amount, 0)) 
+      FROM manual_outputs mo
+      WHERE mo.cash_register_id = cr.id
+    ), 0)";
+    $loanOutputs = "IFNULL((
+      SELECT SUM(IFNULL(l.credit_amount, 0)) 
+      FROM loans l
+      WHERE l.cash_register_id = cr.id
+    ), 0)";
+    
+    $this->db->select("( ($manualInput + $paymentsInputs) - ($manualOutputs + $loanOutputs) )  total_amount");
+    $this->db->from('cash_registers cr');
+    $this->db->where('cr.id', $cash_register_id);
+   
+    return $this->db->get()->row()->total_amount??0;
+  }
+
 
 }
 
