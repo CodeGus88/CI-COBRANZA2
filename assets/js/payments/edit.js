@@ -1,28 +1,27 @@
 cashRegisterId = document.getElementById('cash_register_id');
+cashRegisterUpdate = document.getElementById('cash_register_update');
+coinId = null;
 
 // Si existe un cliente seleccionado por defecto, carga su préstamo
-function autoSearch() {
+async function autoSearch() {
   select = document.getElementById('search');
   if (select.value != 0) {
-    loadLoan();
+    await loadLoan();
+    // await getCashRegisters(coinId);
   }
 }
 // Se ejecuta después de que termina de cargar la página
-window.onload = function () {
+window.onload = async function () {
   autoSearch();
 }
 
-
-
-
 //  Funcion para cargar las cuotas de credito de un cliente al cobrar credito
-function loadLoan() {
+async function loadLoan() {
   customer_id = document.getElementById("search").value
-  if (customer_id > 0){
-    fetch(base_url + "admin/payments/ajax_get_loan/" + customer_id)
+  if (customer_id > 0) {
+    await fetch(base_url + "admin/payments/ajax_get_loan/" + customer_id)
       .then(response => response.json())
       .then(data => {
-        console.log(data);
         if (data.loan != null) {
           $("#customer_id").val(data.loan.customer_id);
           $("#loan_id").val(data.loan.id);
@@ -33,7 +32,7 @@ function loadLoan() {
           $("#total_amount").val('');
           loadLoanItems(data.loan.id);
           loadGuarantors(data.loan.id);
-          getCashRegisters(data.loan.coin_id);
+          coinId = data.loan.coin_id;
         }
         else {
           alert('No se encontró un préstamo asociado al cliente seleccionado');
@@ -47,12 +46,13 @@ function loadLoan() {
   }
 }
 
-function autoLoad() {
-  loadLoan();
-  // getCashRegisters();
+async function autoLoad() {
+  await loadLoan();
+  await getCashRegisters(coinId);
 }
 
 function clearform() {
+  coinId = null;
   $("#credit_amount").val('');
   $("#payment_m").val('');
   $("#coin").val('');
@@ -251,18 +251,22 @@ function payConfirmation() {
 /**
  * Optiene las cajas con el tipo de moneda
  */
-function getCashRegisters(coinId) {
-  fetch(`${base_url}admin/payments/ajax_get_cash_registers/${coinId}`)
-    .then(response => response.json()
-      .then(json => {
-        console.log(json);
-        cashRegisters = json;
-        while (cashRegisterId.firstChild) {
-          cashRegisterId.removeChild(cashRegisterId.firstChild);
-        };
-        json.forEach(element => {
-          option = `<option value="${element.id}">${element.name + " | Saldo: " + element.total_amount + " " + element.short_name + ""}</option>`;
-          cashRegisterId.insertAdjacentHTML("beforeend", option);
-        });
-      }));
+async function getCashRegisters(coinId) {
+  try {
+    const resQuery = await fetch(`${base_url}admin/payments/ajax_get_cash_registers/${coinId}`);
+    const list = await resQuery.json();
+    while (cashRegisterId.firstChild) {
+      cashRegisterId.removeChild(cashRegisterId.firstChild);
+    };
+    list.forEach(element => {
+      option = `<option value="${element.id}">${element.name + " | Saldo: " + element.total_amount + " " + element.short_name + ""}</option>`;
+      cashRegisterId.insertAdjacentHTML("beforeend", option);
+    });
+  } catch (error) {
+    console.log(error);
+  }
 }
+
+cashRegisterUpdate.addEventListener('click', event =>{
+  getCashRegisters(coinId);
+});

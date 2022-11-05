@@ -87,7 +87,7 @@
       <div class="form-group col-12 col-md-12 text-center">
         <div class="form-row">
           <div class="form-group col-6 col-md-6 col-sm-12">
-            <label class="small mb-1" id="cash_register_update">Caja de destino</label>
+            <label id="cash_register_update" class="small mb-1" id="cash_register_update">Caja de destino</label>
             <select class="form-control" id="cash_register_id" name="cash_register_id"></select>
           </div>
           <div class="form-group col-6 col-md-6 col-sm-12">
