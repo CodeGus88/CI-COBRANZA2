@@ -62,38 +62,9 @@ class Loans extends CI_Controller
 
       $this->form_validation->set_rules($rules);
 
-      if ($this->form_validation->run() == TRUE) 
-      {
+      if ($this->form_validation->run() == TRUE) {
         // inicio fechas
-        if ($this->input->post('payment_m') == 'diario')
-          $p = 'P1D';
-        if ($this->input->post('payment_m') == 'semanal')
-          $p = 'P7D';
-        if ($this->input->post('payment_m') == 'quincenal')
-          $p = 'P14D';
-        if ($this->input->post('payment_m') == 'mensual')
-          $p = 'P1M';
-        // definir periodo de fechas
-        $period = new DatePeriod(
-          new DateTime($this->input->post('date')), // Donde empezamos a contar el periodo
-          new DateInterval($p), // Definimos el periodo a 1 día, 1mes
-          $this->input->post('num_fee'), // Aplicamos el numero de repeticiones
-          DatePeriod::EXCLUDE_START_DATE
-        );
-        $num_quota = 1;
-        
-        foreach ($period as $date) {
-          $isSunday = $date->format('N')==7?TRUE:FALSE;
-          if ($isSunday)
-            $date->add(new DateInterval('P1D'));
-          $fomattedDate = $date->format('Y-m-d');
-          
-          $items[] = array(
-            'date' => $fomattedDate,
-            'num_quota' => $num_quota++,
-            'fee_amount' => $this->input->post('fee_amount')
-          );
-        }
+        $items = $this->getTimelime($this->input->post('num_fee'), $this->input->post('payment_m'), $this->input->post('fee_amount'), $this->input->post('date'));
         // fin fechas
         $loan_data = $this->loans_m->array_from_post(['customer_id', 'credit_amount', 'interest_amount', 'num_fee', 'fee_amount', 'payment_m', 'coin_id', 'cash_register_id', 'date']);
         $guarantors_list = $this->input->post('guarantors');
@@ -111,13 +82,13 @@ class Loans extends CI_Controller
           if ($customer != null) {
             if ($this->guarantorsValidation($customer->user_id, $guarantors)) {
               if ($this->formValidation($this->input)) {
-                  $this->cashRegisterValidation($this->input, $this->user_id);
-                  if ($this->loans_m->addLoan($loan_data, $items, $guarantors)) {
-                    $this->session->set_flashdata('msg', 'Préstamo agregado correctamente');
-                    redirect('admin/loans');
-                  } else {
-                    $this->session->set_flashdata('msg_error', 'Ocurrió un error al guardar, intente nuevamente');
-                  }
+                $this->cashRegisterValidation($this->input, $this->user_id);
+                if ($this->loans_m->addLoan($loan_data, $items, $guarantors)) {
+                  $this->session->set_flashdata('msg', 'Préstamo agregado correctamente');
+                  redirect('admin/loans');
+                } else {
+                  $this->session->set_flashdata('msg_error', 'Ocurrió un error al guardar, intente nuevamente');
+                }
               } else {
                 $this->session->set_flashdata('msg_error', 'ERROR: ¡La información del formulario enviado no es consistente, intente nuevamente!');
               }
@@ -140,6 +111,8 @@ class Loans extends CI_Controller
       echo PERMISSION_DENIED_MESSAGE;
     }
   } // fin edit
+
+
 
   /**
    * Valida los datos de entrada, para constatar de que el cálculo es correcto
@@ -174,6 +147,48 @@ class Loans extends CI_Controller
     }
   }
 
+  public function get_timeline($num_fee, $payment_m, $fee_amount, $date)
+  { 
+    echo json_encode($this->getTimelime($num_fee, $payment_m, $fee_amount, $date));
+  }
+
+  private function getTimelime($num_fee, $payment_m, $fee_amount, $date)
+  {
+    $items = [];
+    if ($num_fee != null && $payment_m != null && $fee_amount != null) {
+      // inicio fechas
+      if ($payment_m == 'diario')
+        $p = 'P1D';
+      if ($payment_m == 'semanal')
+        $p = 'P7D';
+      if ($payment_m == 'quincenal')
+        $p = 'P14D';
+      if ($payment_m == 'mensual')
+        $p = 'P1M';
+      // definir periodo de fechas
+      $period = new DatePeriod(
+        new DateTime($date), // Donde empezamos a contar el periodo
+        new DateInterval($p), // Definimos el periodo a 1 día, 1mes
+        $num_fee, // Aplicamos el numero de repeticiones
+        DatePeriod::EXCLUDE_START_DATE
+      );
+      $num_quota = 1;
+      foreach ($period as $date) {
+        $isSunday = $date->format('N') == 7 ? TRUE : FALSE;
+        if ($isSunday)
+          $date->add(new DateInterval('P1D'));
+        $fomattedDate = $date->format('Y-m-d');
+
+        $items[] = array(
+          'date' => $fomattedDate,
+          'num_quota' => $num_quota++,
+          'fee_amount' => $fee_amount
+        );
+      }
+    }
+    return $items;
+  }
+
   private function cashRegisterValidation($input, $user_id)
   {
     $cash_register_id = $input->post('cash_register_id');
@@ -185,18 +200,18 @@ class Loans extends CI_Controller
         array_push($errors, 'El tipo de moneda del préstamo, no coincide con el tipo de moneda de la caja');
       if (!$this->cashregister_m->isOpen($cash_register_id))
         array_push($errors, 'La caja está cerrada');
-      if(sizeof($errors) == 0 && ($this->cashregister_m->getTotal($cash_register_id) < $credit_amount))
+      if (sizeof($errors) == 0 && ($this->cashregister_m->getTotal($cash_register_id) < $credit_amount))
         array_push($errors, 'La caja no cuenta con el saldo sufuciente');
-    }else{
+    } else {
       array_push($errors, 'El usuario no es autor de la caja o la caja no existe');
     }
-    if(sizeof($errors) > 0){
+    if (sizeof($errors) > 0) {
       $messages = '';
-      foreach($errors as $error)
-        $messages .= '<li>'.$error .'</li>';
+      foreach ($errors as $error)
+        $messages .= '<li>' . $error . '</li>';
       $this->session->set_flashdata('msg_error', $messages);
       redirect("admin/loans/edit");
-    } 
+    }
   }
 
   // Valida que todos los garantes sean del mismo asesor que el cliente
@@ -226,13 +241,13 @@ class Loans extends CI_Controller
     $this->load->view('admin/loans/view', $data);
   }
 
-  public function ajax_get_cash_registers($coin_id){
-    if($this->permission->getPermission([CASH_REGISTER_READ, AUTHOR_CASH_REGISTER_READ], FALSE))
+  public function ajax_get_cash_registers($coin_id)
+  {
+    if ($this->permission->getPermission([CASH_REGISTER_READ, AUTHOR_CASH_REGISTER_READ], FALSE))
       echo json_encode($this->cashregister_m->getCashRegistersX($this->user_id, $coin_id));
     else
       echo json_encode([]);
   }
-
 }
 
 /* End of file Loans.php */

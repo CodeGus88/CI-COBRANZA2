@@ -80,7 +80,7 @@
 
       <div class="form-group col-12 col-md-4">
         <label class="small mb-1">Modalidad de pago</label>
-        <select class="form-control" id="payment" name="payment_m">
+        <select class="form-control" id="payment_m" name="payment_m">
           <option value="diario">Diario</option>
           <option value="semanal">Semanal</option>
           <option value="quincenal" selected="selected">Quincenal</option>
@@ -98,7 +98,7 @@
 
       <div class="form-group col-12 col-md-4">
         <label class="small mb-1">Nro cuotas</label>
-        <input class="form-control" id="fee" type="number" name="num_fee" readonly="readonly">
+        <input class="form-control" id="num_fee" type="number" name="num_fee" readonly="readonly">
       </div>
 
       <div class="form-group col-12 col-md-4">
@@ -128,15 +128,31 @@
     <div class="form-row">
       <div class="form-group col-12 col-md-4">
         <label class="small mb-1">Importe de la cuenta</label>
-        <input class="form-control" id="valor_cuota" type="text" name="fee_amount" readonly>
+        <input class="form-control" id="fee_amount" type="text" name="fee_amount" readonly>
       </div>
       <div class="form-group col-12 col-md-4">
         <label class="small mb-1">Interés</label>
-        <input class="form-control" id="valor_interes" type="text" name="" disabled>
+        <input class="form-control" id="valor_interes" type="text" disabled>
       </div>
       <div class="form-group col-12 col-md-4">
         <label class="small mb-1">Monto total</label>
         <input class="form-control" id="monto_total" type="text" name="" disabled>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-12 col-md-12">
+        <table class="table table-bordered" id="quotas" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th class="col-md-1 text-center">#</th>
+              <th class="col-md-5 text-center">Monto</th>
+              <th class="col-md-6 text-center">Fecha</th>
+            </tr>
+          </thead>
+          <tbody id="tbody">
+          </tbody>
+        </table>
       </div>
     </div>
 
