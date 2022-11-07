@@ -204,23 +204,26 @@ class Payments extends CI_Controller
   private function cashRegisterValidation($loan_id, $user_id, $cash_register_id)
   {
     $errors = [];
+    if ($cash_register_id == null || $cash_register_id == '')
+      array_push($errors, 'No se identifico una caja de origen para el préstamo');
+    else
     if ($this->cashregister_m->isAuthor($cash_register_id, $user_id)) {
       $loanRequest = $this->db->get_where('loans', ['id' => $loan_id])->row();
-      $coin_id = $loanRequest->coin_id??0;
+      $coin_id = $loanRequest->coin_id ?? 0;
       if (!$this->cashregister_m->isCoinType($cash_register_id, $coin_id))
         array_push($errors, 'El tipo de moneda del préstamo, no coincide con el tipo de moneda de la caja');
       if (!$this->cashregister_m->isOpen($cash_register_id))
         array_push($errors, 'La caja está cerrada');
-    }else{
+    } else {
       array_push($errors, 'El usuario no es autor de la caja o la caja no existe');
     }
-    if(sizeof($errors) > 0){
+    if (sizeof($errors) > 0) {
       $messages = '';
-      foreach($errors as $error)
-        $messages .= '<li>'.$error .'</li>';;
+      foreach ($errors as $error)
+        $messages .= '<li>' . $error . '</li>';;
       $this->session->set_flashdata('msg_error', $messages);
       redirect("admin/payments/edit");
-    } 
+    }
   }
 
   public function document_payment($id)

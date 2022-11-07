@@ -16,41 +16,41 @@ $(document).ready(function () {
       const focusables = new Array();
       if ($("#customer_id").val() == "0" || $("#customer_id").val() == "") {
         contador ++;
-        error = `${errors==''?'':'\n'}- Selecciona un cliente`;
+        error = `${errors==''?'':'\n'}- Selecciona un cliente.`;
         errors += error;
         focusables.push($("#customer_id"));
       }
   
       if ($("#credit_amount").val() == "") {
         contador ++;
-        error = `${errors==''?'':'\n'}- Ingresar monto`;
+        error = `${errors==''?'':'\n'}- Ingresar monto.`;
         errors += error;
         focusables.push($("#credit_amount"));
       }
       if ($("#time").val() == "") {
         contador ++;
-        error = `${errors==''?'':'\n'}- Ingresar tiempo`;
+        error = `${errors==''?'':'\n'}- Ingresar tiempo.`;
         errors += error;
         focusables.push($("#time"));
       }
   
       if ($("#in_amount").val() == "") {
         contador ++;
-        error = `${errors==''?'':'\n'}- Ingresar interés`;
+        error = `${errors==''?'':'\n'}- Ingresar interés.`;
         errors += error;
         focusables.push($("#in_amount"));
       }
       
-      if ($("#cash_register_id").val() == "") {
+      if ($("#cash_register_id").val() == "" || $("#cash_register_id").val() == null) {
         contador ++;
-        error = `${errors==''?'':'\n'}- Selecciona una caja`;
+        error = `${errors==''?'':'\n'}- Selecciona una caja.`;
         errors += error;
         focusables.push($("#cash_register_id"));
       }
       cashRegister = cashRegisters.find(element => element.id == cashRegisterId.value);
       if(cashRegister != null){
         if(Number.parseFloat(creditAmount.value) > Number.parseFloat(cashRegister.total_amount)){
-          error = `${errors==''?'':'\n'}- La caja no contiene el monto requerido`;
+          error = `${errors==''?'':'\n'}- La caja no contiene el monto requerido.`;
           errors += error;
           focusables.push($("#cash_register_id"));
         }
@@ -58,7 +58,7 @@ $(document).ready(function () {
 
       if ($("#date").val() == "") {
         contador ++;
-        error = `${errors==''?'':'\n'}- Ingresar fecha emisión`;
+        error = `${errors==''?'':'\n'}- Ingresar fecha emisión.`;
         errors += error;
         focusables.push($("#date"));
       }
@@ -72,7 +72,7 @@ $(document).ready(function () {
       }
 
       if(errors != ''){
-        alert(errors);
+        alert('ERRORES:\n\n' + errors);
         return;
       } 
       
@@ -162,13 +162,18 @@ cashRegisterUpdate.addEventListener('click', event =>{
 
 function loanConfirmation(){
   cashRegister = cashRegisters.find(element => element.id == cashRegisterId.value);
-  if(cashRegister != null )
+  if(cashRegister != null ){
     if(Number.parseFloat(creditAmount.value) > Number.parseFloat(cashRegister.total_amount)){
       alert(`La caja '${cashRegister.name} | ${cashRegister.total_amount + ' ' + cashRegister.short_name}' no contiene el monto suficiente para realizar está acción`);
     }else{
       return confirm(`Se procesará el préstamo de ${creditAmount.value + " " + coinId.options[coinId.selectedIndex].text}\n¿Quieres continuar?`);
     }
-  return false;
+  }else{
+    alert(`Selecciona una caja`);
+    return false;
+  }
+    
+  
 }
 
 

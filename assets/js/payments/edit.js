@@ -203,6 +203,7 @@ function payConfirmation() {
     quotas = 0;
     formTotal = 0;
     quotasArray = new Array();
+    if(cashRegisterId.value == '' || cashRegisterId.value == null) errors += ((errors == '') ? '' : separator) + "- Selecciona una caja.";
     if (isNaN(total_amount)) {
       errors += ((errors == '') ? '' : separator) + "- Ingrese un monto válido.";
     } else { // si total_amount es un número
@@ -238,7 +239,7 @@ function payConfirmation() {
         `Número de cuotas: ${quotas}\n\n${strQuotas}\nTotal: ${total_amount}\n\n¿Continuar?`
       );
     } else {
-      alert("ERRORES\n\n" + errors);
+      alert("ERRORES:\n\n" + errors);
       return false;
     }
   } catch (e) {
