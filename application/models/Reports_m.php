@@ -242,6 +242,59 @@ class Reports_m extends CI_Model {
     return $this->db->get()->row();
   }
 
+  public function getDocumentPaymentItems($start, $length, $search, $order, $user_id){
+
+    $userCondition = ($user_id != 'all')?"AND user_id = $user_id":'';
+
+    $this->db->select("dp.id, SUM(IFNULL(p.amount, 0) + IFNULL(p.surcharge, 0)) total_amount, co.short_name,
+    CONCAT_WS(' ', c.first_name, c.last_name) customer_name, CONCAT_WS(' ', u.first_name, u.last_name) user_name, dp.pay_date, u.id user_id");
+    $this->db->from('document_payments dp');
+    $this->db->join('users u', 'u.id = dp.user_id');
+    $this->db->join('payments p', 'p.document_payment_id = dp.id');
+    $this->db->join('loan_items li', 'li.id = p.loan_item_id');
+    $this->db->join('loans l', 'l.id = li.loan_id');
+    $this->db->join('customers c', 'c.id = l.customer_id', 'left');
+    $this->db->join('coins co', 'co.id = l.coin_id', 'left');
+    $this->db->group_by('dp.id');
+    $this->db->having("(
+      id LIKE '%$search%' OR 
+      total_amount LIKE '%$search%' OR
+      short_name LIKE '%$search%' OR
+      customer_name LIKE '%$search%' OR
+      user_name LIKE '%$search%' OR
+      pay_date LIKE '%$search%'
+    ) $userCondition");
+    // $data['recordsFiltered'] = $this->db->get()->row()->recordsFiltered??0;
+    $data['recordsFiltered'] = $this->db->get()->num_rows()??0;
+
+    $this->db->select("dp.id, SUM(IFNULL(p.amount, 0) + IFNULL(p.surcharge, 0)) total_amount, co.short_name,
+    CONCAT_WS(' ', c.first_name, c.last_name) customer_name, CONCAT_WS(' ', u.first_name, u.last_name) user_name, dp.pay_date, u.id user_id");
+    $this->db->from('document_payments dp');
+    $this->db->join('users u', 'u.id = dp.user_id');
+    $this->db->join('payments p', 'p.document_payment_id = dp.id');
+    $this->db->join('loan_items li', 'li.id = p.loan_item_id');
+    $this->db->join('loans l', 'l.id = li.loan_id');
+    $this->db->join('customers c', 'c.id = l.customer_id', 'left');
+    $this->db->join('coins co', 'co.id = l.coin_id', 'left');
+    $this->db->group_by('dp.id');
+    $this->db->having("(
+      id LIKE '%$search%' OR 
+      total_amount LIKE '%$search%' OR
+      short_name LIKE '%$search%' OR
+      customer_name LIKE '%$search%' OR
+      user_name LIKE '%$search%' OR
+      pay_date LIKE '%$search%'
+    ) $userCondition");
+    $this->db->order_by($order['column'], $order['dir']);
+    $this->db->limit($length, $start);
+    $data['data'] = $this->db->get()->result()??[];
+  
+    
+    return $data;
+
+    
+  }
+
 }
 
 /* End of file Reports_m.php */

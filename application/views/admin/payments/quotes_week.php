@@ -1,9 +1,11 @@
-<div class="modal-dialog modal-lg">
+<script>const USER_NAME = "<?=$user_name??'report'?>";</script>
+<div class="modal-dialog modal-xl">
 
   <div class="modal-content">
     <div class="d-flex flex-row-reverse col-md-12" style="padding-top:10px;">
       <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="padding-left:10px;"><i class="fas fa-times fa-sm"></i></button>
-      <button type="button" class="close" onclick="printElementById('printable', 'COBROS PRÓXIMOS')"><i class="fas fa-print fa-sm"></i></button>
+      <button type="button" class="close" onclick="printElementById('printable', 'COBROS PRÓXIMOS')" style="padding-left:10px;"><i class="fas fa-print fa-sm"></i></button>
+      <!-- <button type="button" class="close" style="padding-left:10px;" onclick="exportExcel(this)"><i class="fas fa-file-excel fa-sm" ></i></button> -->
     </div>
     <div id="printable">
       <div class="modal-header">
@@ -55,14 +57,15 @@
               endif ?>
               <?php if ($items != null) : echo '<small>En la lista se muestran las cuotas con moras y las cuotas cobrables en los próximos 7 días</small>'; ?>
                 <div class="table-responsive">
-                  <table class="table table-striped table-condensed">
+                  <table id="table_content" border="1" class="table table-bordered">
                     <thead>
                       <tr class="active">
                         <th>CI</th>
-                        <th class="col-xs-2">Cliente</th>
-                        <th class="col-xs-2">Monto</th>
-                        <th class="col-xs-2 text-center">Fecha</th>
-                        <th>Estado</th>
+                        <th>Cliente</th>
+                        <th>$</th>
+                        <th>Monto</th>
+                        <th class="text-center">Fecha</th>
+                        <th class="">Estado</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -73,10 +76,11 @@
                           $payed = ($item->payed != null) ? $item->payed : 0;
                           $amount = $item->fee_amount - $payed;
                           echo '<tr title="Asesor: ' . $item->user_name . ' ">';
-                          echo '<td>' . $item->dni . '</td>';
-                          echo '<td>' . $item->customer_name . '</td>';
-                          echo "<td>$amount $item->coin_short_name</td>";
-                          echo '<td>' . $item->date . '</td>';
+                          echo "<td>$item->dni</td>";
+                          echo "<td>$item->customer_name</td>";
+                          echo "<td>$item->coin_short_name</td>";
+                          echo "<td>$amount</td>";
+                          echo "<td>$item->date</td>";
                           $pay_url = site_url("admin/payments/edit?customer_id=$item->id");
                           if ($item->date == date("Y-m-d")) {
                             echo '<td><center><a class="btn btn-sm btn-warning" href="' . $pay_url . '">' . 'HOY' . '</a></center></td>';
@@ -100,3 +104,7 @@
     </div>
   </div>
 </div>
+
+
+
+<script src="<?= site_url() . 'assets/js/payments/excel-export.js' ?>"></script>

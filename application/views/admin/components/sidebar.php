@@ -82,6 +82,7 @@
         <a class="collapse-item" href="<?php echo site_url('admin/reports'); ?>">Resumen General</a>
         <a class="collapse-item" href="<?php echo site_url('admin/reports/dates'); ?>">Entre Fechas</a>
         <a class="collapse-item" href="<?php echo site_url('admin/reports/customers'); ?>">General x cliente</a>
+        <a class="collapse-item" href="<?php echo site_url('admin/reports/document_payments'); ?>">Pagos</a>
       </div>
     </div>
   </li>

@@ -258,6 +258,55 @@ class Reports extends CI_Controller
     
     $pdf->Output('reporte_global_cliente.pdf', 'I');
   }
+
+  public function document_payments()
+  {
+    $DOCUMENT_PAYMENT_READ = $this->permission->getPermission([DOCUMENT_PAYMENT_READ], FALSE);
+    $AUTHOR_DOCUMENT_PAYMENT_READ = $this->permission->getPermission([AUTHOR_DOCUMENT_PAYMENT_READ], FALSE);
+    if ($DOCUMENT_PAYMENT_READ) $data['users'] = $this->db->get('users')->result();
+    else if($AUTHOR_DOCUMENT_PAYMENT_READ) $data['user_id'] = $this->user_id;
+    $data['coins'] = $this->coins_m->get();
+    $data['subview'] = 'admin/reports/document_payments';
+    $this->load->view('admin/_main_layout', $data);
+  }
+
+  public function ajax_document_payments($user_id = null)
+  {  
+    $DOCUMENT_PAYMENT_READ = $this->permission->getPermission([DOCUMENT_PAYMENT_READ], FALSE);
+    $AUTHOR_DOCUMENT_PAYMENT_READ = $this->permission->getPermission([AUTHOR_DOCUMENT_PAYMENT_READ], FALSE);
+    if(!$DOCUMENT_PAYMENT_READ) {
+      if($AUTHOR_DOCUMENT_PAYMENT_READ)
+        $user_id = $this->user_id;
+      else{
+        $json_data = array(
+          "draw"            => intval($this->input->post('draw')),
+          "recordsTotal"    => intval(0), // total registros para mostrar
+          "recordsFiltered" => intval(0), // total registro en base de datos
+          "data"            => [], // Registros 
+        );
+        echo json_encode($json_data);
+        return;
+      }
+    }
+    $start = $this->input->post('start');
+		$length = $this->input->post('length');
+		$search = $this->input->post('search')['value']??'';
+    $columns = ['id', 'cuatomer_id', 'user_name', 'short_name', 'total_amount', 'pay_date', null];
+    $columIndex = $this->input->post('order')['0']['column']??6;
+    $order['column'] = $columns[$columIndex]??'';
+    $order['dir'] = $this->input->post('order')['0']['dir']??'';
+    $query = $this->reports_m->getDocumentPaymentItems($start, $length, $search, $order, $user_id);
+    if(sizeof($query['data'])==0 && $start>0) $query = $this->reports_m->getDocumentPaymentItems(0, $length, $search, $order, $user_id);
+    $json_data = array(
+      "draw"            => intval($this->input->post('draw')),
+      "recordsTotal"    => intval(sizeof($query['data'])), // total registros para mostrar
+      "recordsFiltered" => intval($query['recordsFiltered']), // total registros en base de datos
+      "data"            => $query['data'], // Registros 
+    );
+    echo json_encode($json_data);
+  }
+
+
 }
 
 /* End of file Reports.php */

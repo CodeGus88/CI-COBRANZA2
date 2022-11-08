@@ -86,8 +86,6 @@
                                     <th class="col-3">Fecha</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -108,8 +106,6 @@
                                     <th class="col-3">Fecha</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -130,8 +126,6 @@
                                     <th class="col-3">Fecha</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -152,8 +146,6 @@
                                     <th class="col-3">Fecha</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                            </tbody>
                         </table>
                     </div>
                 </div>

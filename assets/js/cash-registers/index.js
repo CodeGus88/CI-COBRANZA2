@@ -20,7 +20,7 @@ function loadData() {
                 "type": "POST"
             },
             'columns': [
-                { data: 'name', 'sClass': 'dt-body-center' },
+                { data: 'name', 'sClass': 'text-center' },
                 { data: 'user_name' },
                 {'total_amount': true, 
                     render: function(data, type, row){
