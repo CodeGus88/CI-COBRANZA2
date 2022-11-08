@@ -1,30 +1,30 @@
 function exportExcel() {
-    let linkDescarga;
-    let tipoDatos = 'application/vnd.ms-excel';
-    let tablaDatos = document.getElementById('table_content');
-    let tablaHTML = tablaDatos.outerHTML.replace(/ /g, '%20');
+    let downloadLink;
+    let dataType = 'application/vnd.ms-excel';
+    let dataTable = document.getElementById('table_content');
+    let tableHTML = dataTable.outerHTML.replace(/ /g, '%20');
 
     // Nombre del archivo
     nombreArchivo = USER_NAME.split(" ").join("_").split(".").join("")  + '.xls';
 
     // Crear el link de descarga
-    linkDescarga = document.createElement("a");
+    downloadLink = document.createElement("a");
 
-    document.body.appendChild(linkDescarga);
+    document.body.appendChild(downloadLink);
 
     if (navigator.msSaveOrOpenBlob) {
-        let blob = new Blob(['\ufeff', tablaHTML], {
-            type: tipoDatos
+        let blob = new Blob(['\ufeff', tableHTML], {
+            type: dataType
         });
         navigator.msSaveOrOpenBlob(blob, nombreArchivo);
     } else {
         // Crear el link al archivo
-        linkDescarga.href = 'data:' + tipoDatos + ', ' + tablaHTML;
+        downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
 
         // Setear el nombre de archivo
-        linkDescarga.download = nombreArchivo;
+        downloadLink.download = nombreArchivo;
 
         //Ejecutar la función
-        linkDescarga.click();
+        downloadLink.click();
     }
 }
