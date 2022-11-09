@@ -114,9 +114,9 @@
         <span class="col-xs-12">
           <button onclick="window.print();" class="btn btn-block btn-primary">Imprimir</button></span>
 
-        <span class="col-xs-12">
+        <!-- <span class="col-xs-12">
           <a class="btn btn-block btn-success" href="<?php echo site_url('admin/payments/'); ?>">Listar Pagos</a>
-        </span>
+        </span> -->
         <div style="clear:both;"></div>
       </div>
     </div>

@@ -51,6 +51,8 @@
     </div>
   <?php endif ?>
 
+ 
+
     <div class="table-responsive">
       <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
         <thead>
@@ -85,5 +87,12 @@
   </div>
 </div>
 
+<?php if ($this->session->flashdata('document_payment_id')) : 
+  $url = site_url('admin/payments/document_payment/'.$this->session->flashdata('document_payment_id'));
+  echo "<script>
+    window.open('$url', '_blank');
+    window.focus();
+  </script>";
+endif ?>
 
 <div class="modal fade" id="myModal" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"></div>

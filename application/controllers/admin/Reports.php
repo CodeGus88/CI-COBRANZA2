@@ -2,6 +2,9 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 include(APPPATH . "/tools/UserPermission.php");
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 class Reports extends CI_Controller
 {
 
@@ -305,7 +308,6 @@ class Reports extends CI_Controller
     );
     echo json_encode($json_data);
   }
-
 
 }
 

@@ -1,4 +1,8 @@
 <?php
+
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 defined('BASEPATH') or exit('No direct script access allowed');
 include(APPPATH . "/tools/UserPermission.php");
 
@@ -180,12 +184,11 @@ class Payments extends CI_Controller
             $this->payments_m->update_cstLoan($loan_id, $customer_id);
           }
           $this->db->trans_commit();
-          if ($this->permission->getPermission([DOCUMENT_PAYMENT_READ, AUTHOR_DOCUMENT_PAYMENT_READ], FALSE))
-            redirect("admin/payments/document_payment/$id");
-          else {
-            $this->session->set_flashdata('msg', 'El pago se procesó con éxito');
-            redirect("admin/payments");
+          $this->session->set_flashdata('msg', 'El pago se procesó con éxito');
+          if ($this->permission->getPermission([DOCUMENT_PAYMENT_READ, AUTHOR_DOCUMENT_PAYMENT_READ], FALSE)){
+            $this->session->set_flashdata('document_payment_id', $id);
           }
+          redirect("admin/payments");
         } else {
           $this->db->trans_rollback();
           $this->session->set_flashdata('msg_error', 'No existen cuotas para registrar');
@@ -289,6 +292,19 @@ class Payments extends CI_Controller
     else
       echo json_encode([]);
   }
+
+
+    /**
+   * Crea el reporte en excel
+   */
+  public function week_excel(){
+    $phpExcel = new Spreadsheet();
+    $sheet = $phpExcel->getActiveSheet();
+    $sheet->setCellValue('A1', 'Hola a todos');
+    $writer = new Xlsx($phpExcel); // Guardar archivo excel
+    $writer->save('exaple.xslx');
+  }
+
 }
 
 /* End of file Payments.php */
