@@ -1,6 +1,11 @@
 <?php
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Color;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 defined('BASEPATH') or exit('No direct script access allowed');
@@ -185,7 +190,7 @@ class Payments extends CI_Controller
           }
           $this->db->trans_commit();
           $this->session->set_flashdata('msg', 'El pago se procesó con éxito');
-          if ($this->permission->getPermission([DOCUMENT_PAYMENT_READ, AUTHOR_DOCUMENT_PAYMENT_READ], FALSE)){
+          if ($this->permission->getPermission([DOCUMENT_PAYMENT_READ, AUTHOR_DOCUMENT_PAYMENT_READ], FALSE)) {
             $this->session->set_flashdata('document_payment_id', $id);
           }
           redirect("admin/payments");
@@ -244,12 +249,7 @@ class Payments extends CI_Controller
     echo loadErrorMessage('No tiene el permiso para leer el documento de impresión...');
   }
 
-  /**
-   * Muestra las cuotas proximas y las que ya están con mora
-   * https://www.delftstack.com/es/howto/php/how-to-get-the-current-date-and-time-in-php/
-   * https://www.php.net/manual/en/timezones.america.php
-   */
-  function quotes_week($user_id = 0)
+  private function get_week_data($user_id = 0)
   {
     $start_date = date("Y-m-d", time());
     $end_date = date("Y-m-d", strtotime($start_date . ' + 7 days'));
@@ -282,7 +282,17 @@ class Payments extends CI_Controller
       $data['payable_now'] = null;
       $data['payable_next'] = null;
     }
-    $this->load->view('admin/payments/quotes_week', $data);
+    return $data;
+  }
+
+  /**
+   * Muestra las cuotas proximas y las que ya están con mora
+   * https://www.delftstack.com/es/howto/php/how-to-get-the-current-date-and-time-in-php/
+   * https://www.php.net/manual/en/timezones.america.php
+   */
+  function quotes_week($user_id = 0)
+  {
+    $this->load->view('admin/payments/quotes_week', $this->get_week_data($user_id));
   }
 
   public function ajax_get_cash_registers($coin_id)
@@ -293,18 +303,149 @@ class Payments extends CI_Controller
       echo json_encode([]);
   }
 
-
-    /**
+  /**
    * Crea el reporte en excel
    */
-  public function week_excel(){
+  public function week_excel($user_id = 0)
+  {
+    $data = $this->get_week_data($user_id);
     $phpExcel = new Spreadsheet();
+    $phpExcel->getProperties()->setCreator('CrediChura Casa')->setTitle('Reporte');
     $sheet = $phpExcel->getActiveSheet();
-    $sheet->setCellValue('A1', 'Hola a todos');
-    $writer = new Xlsx($phpExcel); // Guardar archivo excel
-    $writer->save('exaple.xslx');
-  }
 
+    $drawing = new Drawing();
+    $drawing->setName('logo');
+    $drawing->setPath('assets/img/excel_report_logo.png');
+    $drawing->setHeight(100);
+    $drawing->setCoordinates('A1');
+    $drawing->setWorksheet($sheet);
+
+    $datatime = date('Y-m-d h:i:s');
+    $sheet->mergeCells('A1:N1');
+    $sheet->setCellValue('A1', $datatime);
+    $sheet->getStyle('A1')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+
+    $sheet->mergeCells('A3:N3');
+    $sheet->setCellValue('A3', "COBROS EN LOS PRÓXIMOS 7 DÍAS");
+    $sheet->getStyle('A3')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+    $sheet->getStyle('A3')->getFont()->setSize(14);
+    $sheet->getStyle('A3')->getFont()->setBold(TRUE);
+
+    // Estilo para el encabezado de las tablas
+    $primaryHeaderColor = 'e25006';
+    $sheet->getStyle("A3")->getFont()->getColor()->setARGB($primaryHeaderColor);
+    // Estilo para el curpo de las tablas
+    $tableBodyStyle = [
+      'borders' => [
+        'allBorders' =>[
+          'borderStyle' => Border::BORDER_MEDIUM,
+          'color' => ['rgb' => $primaryHeaderColor]
+        ]
+      ],
+    ];
+    // tabla totales
+    $row = 5;
+    $startRow = $row;
+    $coinItemsRow = [];
+    // Total contiene todos los tipos de moneda que tienen préstamo
+    // Table head
+    $sheet->setCellvalue("J$row", 'MONEDA');
+    $sheet->setCellvalue("K$row", 'MORA');
+    $sheet->setCellvalue("L$row", 'HOY');
+    $sheet->setCellvalue("M$row", 'CERCA');
+    $sheet->setCellvalue("N$row", 'TOTAL');
+    // Table body
+    $row++;
+    if (isset($data['payables'])) {
+      foreach ($data['payables'] as $item) { // pintar columna total ()
+        $coinItemsRow[$item->name] = $row;
+        $sheet->setCellvalue("J$row", $item->name);
+        $sheet->setCellValue("N$row", $item->total);
+        $row++;
+      }
+      if (isset($data['payable_expired']))
+        foreach ($data['payable_expired'] as $item) {
+          $sheet->setCellvalue('K' . $coinItemsRow[$item->name], $item->total);
+        }
+      if (isset($data['payable_now']))
+        foreach ($data['payable_now'] as $item) {
+          $sheet->setCellvalue('L' . $coinItemsRow[$item->name], $item->total);
+        }
+      if (isset($data['payable_next']))
+        foreach ($data['payable_next'] as $item) {
+          $sheet->setCellvalue('M' . $coinItemsRow[$item->name], $item->total);
+        }
+    }
+    // Estilos a la tabla
+    $sheet->getStyle("J$startRow:N$startRow")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+    $sheet->getStyle("J$startRow:N$startRow")->getFont()->setBold(TRUE);
+    $sheet->getStyle("J$startRow:N$startRow")->getFont()->getColor()->setARGB(Color::COLOR_WHITE);
+    $sheet->getStyle("J$startRow:N$startRow")->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB($primaryHeaderColor);
+    $sheet->getStyle("J$startRow:N" .($row - 1))->applyFromArray($tableBodyStyle);
+
+    // Table head content
+    $row ++;
+    $startRow = $row;
+    $sheet->setCellvalue("A$row", 'CI');
+    $sheet->mergeCells("B$row:E$row");
+    $sheet->setCellvalue("B$row", 'CLIENTE');
+    $sheet->mergeCells("F$row:I$row");
+    $sheet->setCellvalue("F$row", 'ASESOR');
+    $sheet->setCellvalue("J$row", 'MONEDA');
+    $sheet->setCellvalue("K$row", 'MONTO');
+    $sheet->mergeCells("L$row:M$row");
+    $sheet->setCellvalue("L$row", 'FECHA');
+    $sheet->setCellvalue("N$row", 'ESTADO');
+    // Table body content
+    if (isset($data['items'])) {
+      $row ++;
+      foreach ($data['items'] as $item) {
+        $sheet->setCellvalue("A$row", $item->dni);
+        $sheet->mergeCells("B$row:E$row");
+        $sheet->setCellvalue("B$row", $item->customer_name);
+        $sheet->mergeCells("F$row:I$row");
+        $sheet->setCellvalue("F$row", $item->user_name);
+        $sheet->setCellvalue("J$row", $item->coin_name);
+        $sheet->setCellvalue("K$row", $item->fee_amount - $item->payed);
+        $sheet->mergeCells("L$row:M$row");
+        $sheet->setCellvalue("L$row", $item->date);
+        $sheet->getStyle("L$row")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+        if ($item->date == date("Y-m-d")) {
+          $sheet->setCellvalue("N$row", 'HOY');
+          $sheet->getStyle("N$row")->getFont()->getColor()->setARGB(Color::COLOR_DARKYELLOW);
+        } elseif ($item->date < date("Y-m-d")) {
+          $sheet->setCellvalue("N$row", 'MORA');
+          $sheet->getStyle("N$row")->getFont()->getColor()->setARGB(Color::COLOR_DARKRED);
+        } else {
+          $sheet->setCellvalue("N$row", 'CERCA');
+          $sheet->getStyle("N$row")->getFont()->getColor()->setARGB(Color::COLOR_DARKGREEN);
+        }
+        $sheet->getStyle("N$row")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+        $row ++;
+      }
+    }
+    // Estilos a la tabla
+    $sheet->getStyle("A$startRow:N$startRow")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+    $sheet->getStyle("A$startRow:N$startRow")->getFont()->setBold(TRUE);
+    $sheet->getStyle("A$startRow:N$startRow")->getFont()->getColor()->setARGB(Color::COLOR_WHITE);
+    $sheet->getStyle("A$startRow:N$startRow")->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB($primaryHeaderColor);
+    $sheet->getStyle("A$startRow:N" .($row - 1))->applyFromArray($tableBodyStyle);
+    $sheet->getStyle("A$startRow:N$startRow")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+
+    $row ++;
+    $sheet->setCellvalue("A$row" , "FILTRO: ");
+    $sheet->mergeCells("B$row:N$row");
+    $sheet->setCellvalue("B$row", $data['user_name']);
+
+    $fileName = 'week_data.xlsx';
+    // Guardar excel
+    $writer = new Xlsx($phpExcel);
+    $writer->save('public/' . $fileName);
+
+    // download file
+    // $this->load->helper('download');
+    // force_download('public/'.$fileName, null);
+  }
 }
 
 /* End of file Payments.php */

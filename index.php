@@ -55,6 +55,12 @@
  */
 	define('ENVIRONMENT', 'development');
 
+
+/**
+ * autoload for composer -> Spreadsheet
+ */
+require 'vendor/autoload.php';
+
 /*
  *---------------------------------------------------------------
  * ERROR REPORTING
