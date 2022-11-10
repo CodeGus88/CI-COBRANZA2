@@ -1,7 +1,4 @@
 <div class="card shadow mb-4">
-
-  
-
   <div class="card-header d-flex align-items-center justify-content-between py-3">
     <h6 class="m-0 font-weight-bold text-primary">Lista de pagos</h6>
     <div>

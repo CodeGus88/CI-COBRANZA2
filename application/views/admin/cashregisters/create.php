@@ -26,7 +26,7 @@
           </div>
           <select class="custom-select" id="coin_id" name="coin_id" required>
             <?php foreach($coins as $coin) :?>
-              <option value="<?=$coin->id?>" selected><?=$coin->name.' ('.$coin->short_name.', '.$coin->symbol.')'?></option>
+              <option value="<?=$coin->id?>"><?=$coin->name.' ('.$coin->short_name.', '.$coin->symbol.')'?></option>
             <?php endforeach?>
           </select>
         </div>

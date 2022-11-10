@@ -292,7 +292,9 @@ class Payments extends CI_Controller
    */
   function quotes_week($user_id = 0)
   {
-    $this->load->view('admin/payments/quotes_week', $this->get_week_data($user_id));
+    $data = $this->get_week_data($user_id);
+    $data['user_id'] = $user_id;
+    $this->load->view('admin/payments/quotes_week', $data);
   }
 
   public function ajax_get_cash_registers($coin_id)
@@ -439,12 +441,17 @@ class Payments extends CI_Controller
 
     $fileName = 'week_data.xlsx';
     // Guardar excel
-    $writer = new Xlsx($phpExcel);
-    $writer->save('public/' . $fileName);
-
+    try{
+      $writer = new Xlsx($phpExcel);
+      $writer->save('public/' . $fileName);
+    }catch(Exception $e){
+      print_r($e->getMessage());
+      return;
+    }
+    
     // download file
-    // $this->load->helper('download');
-    // force_download('public/'.$fileName, null);
+    $this->load->helper('download');
+    force_download('public/'.$fileName, null);
   }
 }
 

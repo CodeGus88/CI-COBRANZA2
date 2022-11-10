@@ -72,8 +72,11 @@ $(document).ready(function () {
     }
 
     if (errors != '') {
+      toastr["warning"]("Verifica el formulario", 'ERROR');
       alert('ERRORES:\n\n' + errors);
       return;
+    }else{
+      toastr["success"]("Procesado", 'CALUCULAR');
     }
 
     let time = parseFloat($('#time').val()); // n meses
