@@ -5,13 +5,7 @@
   $COIN_READ = $ci->permission_m->getAuthorization($this->session->userdata('user_id'), COIN_READ);
  ?>
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-
-      <!-- Sidebar - Brand -->
-      <!-- C:\xampp\htdocs\ci-cobranza2\application\index.html -->
   <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
-    <!-- <div class="sidebar-brand-icon rotate-n-15">
-      <i class="fas fa-laugh-wink"></i>
-    </div> -->
         <img class="churacasa" src="<?php echo base_url();?>assets/img/logo.png" alt="logo" />
         <div class="sidebar-brand-text mx-2 text-style">
           <div class="text-style2">
