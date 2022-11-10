@@ -57,13 +57,13 @@
   <li class="nav-item">
     <a class="nav-link" href="<?php echo site_url('admin/loans'); ?>">
       <i class="fas fa-fw fa-money-bill"></i>
-      <span>Prestamos</span></a>
+      <span>Préstamos</span></a>
   </li>
 
   <li class="nav-item">
     <a class="nav-link" href="<?php echo site_url('admin/payments'); ?>">
       <i class="fas fa-fw fa-money-bill"></i>
-      <span>Cobranzas</span></a>
+      <span>Cobros</span></a>
   </li>
 
   <li class="nav-item">
@@ -84,7 +84,7 @@
   <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseConfiguracion" aria-expanded="false" aria-controls="collapseConfiguracion">
       <i class="fas fa-fw fa-user"></i>
-      <span>Configuracion</span>
+      <span>Configuración</span>
     </a>
     <div id="collapseConfiguracion" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar" style="">
       <div class="bg-white py-2 collapse-inner rounded">

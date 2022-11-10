@@ -75,8 +75,6 @@ $(document).ready(function () {
       toastr["warning"]("Verifica el formulario", 'ERROR');
       alert('ERRORES:\n\n' + errors);
       return;
-    }else{
-      toastr["success"]("Procesado", 'CALUCULAR');
     }
 
     let time = parseFloat($('#time').val()); // n meses
@@ -103,6 +101,7 @@ $(document).ready(function () {
     $('#valor_interes').val(I.toFixed(2));
     $('#monto_total').val(monto_total.toFixed(2));
     loadCuotasTimelime();
+    toastr["success"]("Procesado", 'CALCULAR');
   });
 
   $("#loan_form").submit(function () {
