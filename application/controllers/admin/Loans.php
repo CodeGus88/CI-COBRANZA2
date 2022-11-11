@@ -148,7 +148,7 @@ class Loans extends CI_Controller
   }
 
   public function get_timeline($num_fee, $payment_m, $fee_amount, $date)
-  { 
+  {
     echo json_encode($this->getTimelime($num_fee, $payment_m, $fee_amount, $date));
   }
 
@@ -195,7 +195,10 @@ class Loans extends CI_Controller
     $coin_id = $input->post('coin_id');
     $credit_amount = $input->post('credit_amount');
     $errors = [];
-    if ($this->cashregister_m->isAuthor($cash_register_id, $user_id)) {
+    if (
+      ($this->permission->getPermission([AUTHOR_CASH_REGISTER_UPDATE], FALSE) && $this->cashregister_m->isAuthor($cash_register_id, $user_id))
+      || $this->permission->getPermission([CASH_REGISTER_UPDATE], FALSE)
+    ) {
       if (!$this->cashregister_m->isCoinType($cash_register_id, $coin_id))
         array_push($errors, 'El tipo de moneda del préstamo, no coincide con el tipo de moneda de la caja');
       if (!$this->cashregister_m->isOpen($cash_register_id))
@@ -241,12 +244,19 @@ class Loans extends CI_Controller
     $this->load->view('admin/loans/view', $data);
   }
 
+  /**
+   * Sirven para actualizar caja mediante préstamos
+   */
   public function ajax_get_cash_registers($coin_id)
   {
-    if ($this->permission->getPermission([CASH_REGISTER_READ, AUTHOR_CASH_REGISTER_READ], FALSE))
-      echo json_encode($this->cashregister_m->getCashRegistersX($this->user_id, $coin_id));
-    else
-      echo json_encode([]);
+    if (!$this->permission->getPermission([CASH_REGISTER_UPDATE], FALSE)) {
+      if ($this->permission->getPermission([AUTHOR_CASH_REGISTER_UPDATE], FALSE))
+        echo json_encode($this->cashregister_m->getCashRegistersX($this->user_id, $coin_id));
+      else
+        echo json_encode([]);
+      return;
+    }
+    echo json_encode($this->cashregister_m->getCashRegistersX('all', $coin_id));
   }
 }
 

@@ -57,16 +57,20 @@ class Payments extends CI_Controller
   public function edit()
   {
     $customer_id = $this->input->get('customer_id') ?? NULL;
-    $this->permission->redirectIfFalse(
-      $this->permission->getPermissionX([AUTHOR_LOAN_UPDATE, AUTHOR_LOAN_ITEM_UPDATE], FALSE) || $this->permission->getPermissionX([LOAN_UPDATE, LOAN_ITEM_UPDATE], FALSE),
-      TRUE
-    );
     $data['default_selected_customer_id'] = $customer_id;
     $data['customers'] = array();
     if ($this->permission->getPermissionX([LOAN_UPDATE, LOAN_ITEM_UPDATE], FALSE))
       $data['customers'] = $this->payments_m->getCustomersAll();
-    elseif ($this->permission->getPermissionX([AUTHOR_LOAN_UPDATE, AUTHOR_LOAN_ITEM_UPDATE], FALSE))
+    elseif ($this->permission->getPermissionX([AUTHOR_LOAN_UPDATE, AUTHOR_LOAN_ITEM_UPDATE], FALSE)){
+      if($customer_id){
+        if(!$this->payments_m->isAdviser($customer_id, $this->user_id)){
+          echo PERMISSION_DENIED_MESSAGE;
+        }
+      }
       $data['customers'] = $this->payments_m->get_customers($this->user_id);
+    }
+    else
+      $this->permission->redirectIfFalse(FALSE, TRUE);
     $data['subview'] = 'admin/payments/edit';
     $this->load->view('admin/_main_layout', $data);
   }
@@ -215,7 +219,10 @@ class Payments extends CI_Controller
     if ($cash_register_id == null || $cash_register_id == '')
       array_push($errors, 'No se identifico una caja de origen para el préstamo');
     else
-    if ($this->cashregister_m->isAuthor($cash_register_id, $user_id)) {
+    if (
+      ($this->permission->getPermission([AUTHOR_CASH_REGISTER_UPDATE], FALSE) && $this->cashregister_m->isAuthor($cash_register_id, $user_id))
+      || $this->permission->getPermission([CASH_REGISTER_UPDATE], FALSE)
+    ) {
       $loanRequest = $this->db->get_where('loans', ['id' => $loan_id])->row();
       $coin_id = $loanRequest->coin_id ?? 0;
       if (!$this->cashregister_m->isCoinType($cash_register_id, $coin_id))
@@ -223,7 +230,7 @@ class Payments extends CI_Controller
       if (!$this->cashregister_m->isOpen($cash_register_id))
         array_push($errors, 'La caja está cerrada');
     } else {
-      array_push($errors, 'El usuario no es autor de la caja o la caja no existe');
+      array_push($errors, 'El usuario no tiene el permiso y no es autor de la caja o la caja no existe');
     }
     if (sizeof($errors) > 0) {
       $messages = '';
@@ -297,12 +304,19 @@ class Payments extends CI_Controller
     $this->load->view('admin/payments/quotes_week', $data);
   }
 
+  /**
+   * Sirven para actualizar caja mediante cobros
+   */
   public function ajax_get_cash_registers($coin_id)
   {
-    if ($this->permission->getPermission([CASH_REGISTER_READ, AUTHOR_CASH_REGISTER_READ], FALSE))
-      echo json_encode($this->cashregister_m->getCashRegistersX($this->user_id, $coin_id));
-    else
-      echo json_encode([]);
+    if (!$this->permission->getPermission([CASH_REGISTER_UPDATE], FALSE)) {
+      if ($this->permission->getPermission([AUTHOR_CASH_REGISTER_UPDATE], FALSE))
+        echo json_encode($this->cashregister_m->getCashRegistersX($this->user_id, $coin_id));
+      else
+        echo json_encode([]);
+      return;
+    }
+    echo json_encode($this->cashregister_m->getCashRegistersX('all', $coin_id));
   }
 
   /**
@@ -339,7 +353,7 @@ class Payments extends CI_Controller
     // Estilo para el curpo de las tablas
     $tableBodyStyle = [
       'borders' => [
-        'allBorders' =>[
+        'allBorders' => [
           'borderStyle' => Border::BORDER_MEDIUM,
           'color' => ['rgb' => $primaryHeaderColor]
         ]
@@ -383,10 +397,10 @@ class Payments extends CI_Controller
     $sheet->getStyle("J$startRow:N$startRow")->getFont()->setBold(TRUE);
     $sheet->getStyle("J$startRow:N$startRow")->getFont()->getColor()->setARGB(Color::COLOR_WHITE);
     $sheet->getStyle("J$startRow:N$startRow")->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB($primaryHeaderColor);
-    $sheet->getStyle("J$startRow:N" .($row - 1))->applyFromArray($tableBodyStyle);
+    $sheet->getStyle("J$startRow:N" . ($row - 1))->applyFromArray($tableBodyStyle);
 
     // Table head content
-    $row ++;
+    $row++;
     $startRow = $row;
     $sheet->setCellvalue("A$row", 'CI');
     $sheet->mergeCells("B$row:E$row");
@@ -400,7 +414,7 @@ class Payments extends CI_Controller
     $sheet->setCellvalue("N$row", 'ESTADO');
     // Table body content
     if (isset($data['items'])) {
-      $row ++;
+      $row++;
       foreach ($data['items'] as $item) {
         $sheet->setCellvalue("A$row", $item->dni);
         $sheet->mergeCells("B$row:E$row");
@@ -423,7 +437,7 @@ class Payments extends CI_Controller
           $sheet->getStyle("N$row")->getFont()->getColor()->setARGB(Color::COLOR_DARKGREEN);
         }
         $sheet->getStyle("N$row")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-        $row ++;
+        $row++;
       }
     }
     // Estilos a la tabla
@@ -431,27 +445,27 @@ class Payments extends CI_Controller
     $sheet->getStyle("A$startRow:N$startRow")->getFont()->setBold(TRUE);
     $sheet->getStyle("A$startRow:N$startRow")->getFont()->getColor()->setARGB(Color::COLOR_WHITE);
     $sheet->getStyle("A$startRow:N$startRow")->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB($primaryHeaderColor);
-    $sheet->getStyle("A$startRow:N" .($row - 1))->applyFromArray($tableBodyStyle);
+    $sheet->getStyle("A$startRow:N" . ($row - 1))->applyFromArray($tableBodyStyle);
     $sheet->getStyle("A$startRow:N$startRow")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
-    $row ++;
-    $sheet->setCellvalue("A$row" , "FILTRO: ");
+    $row++;
+    $sheet->setCellvalue("A$row", "FILTRO: ");
     $sheet->mergeCells("B$row:N$row");
     $sheet->setCellvalue("B$row", $data['user_name']);
 
     $fileName = 'week_data.xlsx';
     // Guardar excel
-    try{
+    try {
       $writer = new Xlsx($phpExcel);
       $writer->save('public/' . $fileName);
-    }catch(Exception $e){
+    } catch (Exception $e) {
       print_r($e->getMessage());
       return;
     }
-    
+
     // download file
     $this->load->helper('download');
-    force_download('public/'.$fileName, null);
+    force_download('public/' . $fileName, null);
   }
 }
 

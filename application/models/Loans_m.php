@@ -20,10 +20,6 @@ class Loans_m extends MY_Model {
       )
   );
 
-  // public function existCashRegisterAuthor($cash_register_id, $user_id){
-  //   $this->load->model('cashregister_m');
-  //   return $this->cashregister_m->existCashRegisterAuthor($cash_register_id, $user_id);
-  // }
 
   public function getLoansAll()
   {
@@ -146,17 +142,6 @@ class Loans_m extends MY_Model {
     $this->db->where("c.user_id = $user_id");
     return $this->db->get()->result();
   }
-
-  // public function getCashRegisters($user_id, $coin_id)
-  // {
-  //   $this->load->model('cashregister_m');
-  //   return $this->cashregister_m->getCashRegistersX($user_id, $coin_id);
-  // }
-
-  // public function getTotalInCashRegister($cash_register_id){
-  //   $this->load->model('cashregister_m');
-  //   return $this->cashregister_m->getTotalInCashRegisterX($cash_register_id);
-  // }
 
 }
 

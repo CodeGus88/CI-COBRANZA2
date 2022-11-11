@@ -1,14 +1,16 @@
-<div class="card shadow mb-4">
-    <div class="card-header d-flex align-items-center justify-content-between py-3">
-        <h6 class="m-0 font-weight-bold text-primary" id="cash_register_name"><?= $cash_register->name ?? 'undefined' ?></h6>
-        <div class="btn-group" role="group" aria-label="Basic example">
-        <?php if(($CASH_REGISTER_UPDATE || $AUTHOR_CASH_REGISTER_UPDATE) && $IS_OPEN) : if (isset($cash_register)) : ?>
-            <a type="button" class="btn btn-secondary" href="<?=site_url('admin/cashregisters/manual_input_create/'.$cash_register->id)?>">Entrada manual</a>
-            <a type="button" class="btn btn-secondary" href="<?=site_url('admin/cashregisters/manual_output_create/'.$cash_register->id)?>">Salida manual</a>
-        <?php endif ; endif ?>
+<?php if ($cash_register != null ): ?>
+    <div class="card shadow mb-4">
+        <div class="card-header d-flex align-items-center justify-content-between py-3">
+            <h6 class="m-0 font-weight-bold text-primary" id="cash_register_name"><?= $cash_register->name ?? 'undefined' ?></h6>
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <?php if (($CASH_REGISTER_UPDATE || $AUTHOR_CASH_REGISTER_UPDATE) && $IS_OPEN) : if (isset($cash_register)) : ?>
+                        <a type="button" class="btn btn-secondary" href="<?= site_url('admin/cashregisters/manual_input_create/' . $cash_register->id) ?>">Entrada manual</a>
+                        <a type="button" class="btn btn-secondary" href="<?= site_url('admin/cashregisters/manual_output_create/' . $cash_register->id) ?>">Salida manual</a>
+                <?php endif;
+                endif ?>
+            </div>
         </div>
-    </div>
-    <?php if (isset($cash_register)) : ?>
+
 
         <div class="card-body">
             <div class=" col-12 text-center">
@@ -16,12 +18,12 @@
             </div>
 
             <?php if ($this->session->flashdata('msg')) : ?>
-            <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
-                <?= $this->session->flashdata('msg') ?>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
+                <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+                    <?= $this->session->flashdata('msg') ?>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
             <?php endif ?>
             <div class="card">
                 <div class="card-header">
@@ -52,19 +54,19 @@
                         </div>
                         <div class="form-group col-md-4">
                             <label class="small mb-1">Estado</label>
-                            <?php 
-                                $url = $cash_register->status?site_url("admin/cashregisters/close_cash_register/$cash_register->id"):'#';
-                                if($cash_register->status) :
-                             ?>
-                             
-                            <a href="<?=site_url('admin/cashregisters/close_cash_register/'.$cash_register->id)?>" class="form-control btn btn-success" onclick="return confirm('Se cerrará esta caja, esta acción es irreversible\n¿Quieres continuar?')">
-                                ABIERTO
-                            </a>
-                            <?php else :?>
+                            <?php
+                            $url = $cash_register->status ? site_url("admin/cashregisters/close_cash_register/$cash_register->id") : '#';
+                            if ($cash_register->status) :
+                            ?>
+
+                                <a href="<?= site_url('admin/cashregisters/close_cash_register/' . $cash_register->id) ?>" class="form-control btn btn-success" onclick="return confirm('Se cerrará esta caja, esta acción es irreversible\n¿Quieres continuar?')">
+                                    ABIERTO
+                                </a>
+                            <?php else : ?>
                                 <a href="#" class="form-control btn btn-secondary">
-                                CERRADO
-                            </a>
-                            <?php endif?>
+                                    CERRADO
+                                </a>
+                            <?php endif ?>
                         </div>
                     </div>
 
@@ -199,7 +201,9 @@
                 </div>
             </div>
         </div>
-    <?php endif ?>
-</div>
+        <script src="<?= site_url() . 'assets/js/cash-registers/view.js' ?>"></script>
+    </div>
+<?php else: ?>
+    <script>alert('En existen datos')</script>
+<?php endif ?>
 <!-- <div class="modal fade" id="myModal" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"></div> -->
-<script src="<?= site_url() . 'assets/js/cash-registers/view.js' ?>"></script>

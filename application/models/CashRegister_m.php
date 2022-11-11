@@ -93,7 +93,8 @@ class Cashregister_m extends MY_Model {
     $this->db->select("cr.status");
     $this->db->from('cash_registers cr');
     $this->db->where('cr.id', $cash_register_id);
-    return $this->db->get()->row()->status==1?TRUE:FALSE;
+    $result = $this->db->get()->row()->status??1;
+    return $result == 1?TRUE:FALSE;
   }
 
   public function getCashRegisters($start, $length, $search, $order, $user_id)
@@ -369,7 +370,6 @@ class Cashregister_m extends MY_Model {
   }
 
   // PARA LAS VISTAS DE CREDITOS Y PAGOS
-
   public function getCashRegistersX($user_id, $coin_id)
   {
     $manualInput = "IFNULL((
@@ -397,8 +397,11 @@ class Cashregister_m extends MY_Model {
     $this->db->select("cr.id, cr.name, c.short_name,( ($manualInput + $paymentsInputs) - ($manualOutputs + $loanOutputs) )  total_amount");
     $this->db->from('cash_registers cr');
     $this->db->join('coins c', 'c.id = cr.coin_id');
-    $this->db->where(['user_id' => $user_id, 'coin_id' => $coin_id, 'status' => 1]);
-   
+    if($user_id == 'all')
+      $this->db->where(['coin_id' => $coin_id, 'status' => 1]);
+    else
+      $this->db->where(['user_id' => $user_id, 'coin_id' => $coin_id, 'status' => 1]);
+
     return $this->db->get()->result()??[];
   }
 

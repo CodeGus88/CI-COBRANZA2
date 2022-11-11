@@ -3,6 +3,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Payments_m extends CI_Model {
 
+  public function isAdviser($customer_id, $user_id)
+  {
+    $this->db->select("IF( EXISTS(
+      SELECT *
+      FROM users u
+      JOIN customers c ON c.user_id = u.id
+      WHERE u.id = $user_id AND c.id = $customer_id), 1, 0) exist");
+    return $this->db->get()->row()->exist==1?TRUE:FALSE;
+  }
+
   public function getPaymentsAll()
   {
     $this->db->select("li.id, c.dni, concat(c.first_name,' ',c.last_name) AS name_cst, l.id AS loan_id, li.pay_date, li.num_quota, li.fee_amount");

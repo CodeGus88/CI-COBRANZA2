@@ -147,7 +147,6 @@ function loadLoanItems(loan_id) {
     });
 }
 
-
 function calculateTotal() {
   $("#register_loan").attr("disabled", true);
   var total = 0;

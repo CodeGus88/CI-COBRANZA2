@@ -106,6 +106,4 @@
   </div>
 </div>
 
-
-
 <script src="<?= site_url() . 'assets/js/payments/excel-export.js' ?>"></script>

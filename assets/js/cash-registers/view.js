@@ -31,8 +31,8 @@ const manual_columns = [
     { data: 'date'}
 ];
 
-tableBuilder("manual-inputs", partialUrl.replace(method, 'ajax_manual_inputs'), manual_columns, lengthMenu);
-tableBuilder("manual-outputs", partialUrl.replace(method, 'ajax_manual_outputs'), manual_columns, lengthMenu);
+// tableBuilder("manual-inputs", partialUrl.replace(method, 'ajax_manual_inputs'), manual_columns, lengthMenu);
+// tableBuilder("manual-outputs", partialUrl.replace(method, 'ajax_manual_outputs'), manual_columns, lengthMenu);
 
 // operaciones;
 const document_payment_colums = [
@@ -51,6 +51,8 @@ const loan_columns = [
     { data: 'credit_amount'},
     { data: 'date'}
 ];
+
+
 tableBuilder("manual-inputs", partialUrl.replace(method, 'ajax_manual_inputs'), manual_columns, lengthMenu);
 tableBuilder("manual-outputs", partialUrl.replace(method, 'ajax_manual_outputs'), manual_columns, lengthMenu);
 tableBuilder("document-payment-inputs", partialUrl.replace(method, 'ajax_document_payments'), document_payment_colums, lengthMenu);
