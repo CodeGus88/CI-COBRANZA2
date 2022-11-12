@@ -40,7 +40,7 @@
         <thead>
           <tr>
             <th class="col-1">ID</th>
-            <th class="col-3">Customer</th>
+            <th class="col-3">Cliente</th>
             <th class="col-3">Usuario</th>
             <th class="col-1">$</th>
             <th class="col-2">Monto</th>

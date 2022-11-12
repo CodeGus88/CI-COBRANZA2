@@ -325,9 +325,11 @@ class Payments extends CI_Controller
   public function week_excel($user_id = 0)
   {
     $data = $this->get_week_data($user_id);
+    if($data == null) return;
     $phpExcel = new Spreadsheet();
     $phpExcel->getProperties()->setCreator('CrediChura Casa')->setTitle('Reporte');
     $sheet = $phpExcel->getActiveSheet();
+    $sheet->setTitle('REPORTE');
 
     $drawing = new Drawing();
     $drawing->setName('logo');
@@ -336,10 +338,19 @@ class Payments extends CI_Controller
     $drawing->setCoordinates('A1');
     $drawing->setWorksheet($sheet);
 
-    $datatime = date('Y-m-d h:i:s');
     $sheet->mergeCells('A1:N1');
-    $sheet->setCellValue('A1', $datatime);
+    $sheet->setCellValue('A1', 'USUARIO ' . $this->session->userdata('first_name') . ' ' . $this->session->userdata('last_name'));
     $sheet->getStyle('A1')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+
+    // encabezado y pie de página
+    $datatime = date('Y-m-d h:i:s');
+    $sheet->getHeaderFooter()
+    ->setOddHeader('&L' . $datatime .'&C&HCREDICHURA CASA&R'.$data['user_name']);
+    $sheet->getHeaderFooter()
+    ->setOddFooter('&RPage &P of &N');
+
+    // Area o escala a mostrar en hoja 73 %
+    $sheet->getPageSetup()->setScale(73); 
 
     $sheet->mergeCells('A3:N3');
     $sheet->setCellValue('A3', "COBROS EN LOS PRÓXIMOS 7 DÍAS");
