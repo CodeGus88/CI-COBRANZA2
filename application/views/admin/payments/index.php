@@ -87,8 +87,10 @@
 <?php if ($this->session->flashdata('document_payment_id')) : 
   $url = site_url('admin/payments/document_payment/'.$this->session->flashdata('document_payment_id'));
   echo "<script>
+  setTimeout(function(){
     window.open('$url', '_blank');
     window.focus();
+  }, 3000);
   </script>";
 endif ?>
 

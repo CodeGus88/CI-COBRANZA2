@@ -7,7 +7,7 @@ async function autoSearch() {
   select = document.getElementById('search');
   if (select.value != 0) {
     await loadLoan();
-    // await getCashRegisters(coinId);
+    await getCashRegisters(coinId);
   }
 }
 // Se ejecuta después de que termina de cargar la página
