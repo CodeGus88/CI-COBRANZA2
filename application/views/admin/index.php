@@ -23,7 +23,7 @@
         <div class="row no-gutters align-items-center">
           <div class="col mr-2">
             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-            Número Prestamos</div>
+            Número préstamos</div>
             <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo isset($qLoans->cantidad)?$qLoans->cantidad:0?></div>
           </div>
           <div class="col-auto">
@@ -40,7 +40,7 @@
       <div class="card-body">
         <div class="row no-gutters align-items-center">
           <div class="col mr-2">
-            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Número cobranzas
+            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Número cobros
             </div>
             <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php echo isset($qPaids->cantidad)?$qPaids->cantidad:0 ?></div>
           </div>
@@ -72,7 +72,7 @@
       </div>
     </div>
     <div class="card-body">
-      <p class="text-center h5 mb-4">Total de prestamos por tipo de moneda</p>
+      <p class="text-center h5 mb-4">Total préstamos por tipo de moneda</p>
       <canvas id="grafica"></canvas>
     </div>
 </div>
@@ -82,8 +82,6 @@
   //When receiving data from a web server, the data is always a string.
   //Parse the data with JSON.parse(), and the data becomes a JavaScript object.
   var cData = JSON.parse('<?php echo $countLC; ?>');
- 
-  console.log("datos", cData)
 
   // Obtener una referencia al elemento canvas del DOM
   const $grafica = document.querySelector("#grafica");

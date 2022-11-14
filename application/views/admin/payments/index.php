@@ -90,7 +90,7 @@
   setTimeout(function(){
     window.open('$url', '_blank');
     window.focus();
-  }, 3000);
+  }, 4000);
   </script>";
 endif ?>
 

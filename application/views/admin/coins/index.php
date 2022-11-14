@@ -4,7 +4,7 @@
     <a class="d-sm-inline-block btn btn-sm btn-success shadow-sm" href="<?php echo site_url('admin/coins/edit'); ?>"><i class="fas fa-plus-circle fa-sm"></i> Nueva moneda</a>
   </div>
   <div class="card-body">
-    <?php if ($this->session->flashdata('msg')): ?>
+    <?php if ($this->session->flashdata('msg')) : ?>
       <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
         <?= $this->session->flashdata('msg') ?>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -12,7 +12,7 @@
         </button>
       </div>
     <?php endif ?>
-    
+
     <?php if ($this->session->flashdata('msg_error')) : ?>
       <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
         <?= $this->session->flashdata('msg_error') ?>
@@ -34,20 +34,24 @@
           </tr>
         </thead>
         <tbody>
-          <?php if(count($coins)): foreach($coins as $coin): ?>
-            <tr>
-              <td><?php echo $coin->name ?></td>
-              <td><?php echo $coin->short_name ?></td>
-              <td><?php echo $coin->symbol ?></td>
-              <td><?php echo $coin->description ?></td>
-              <td>
-                <?php if($COIN_UPDATE) : ?>
-                <a href="<?php echo site_url('admin/coins/edit/'.$coin->id); ?>" class="btn btn-sm btn-info shadow-sm"><i class="fas fa-edit fa-sm"></i> Editar</a>
-                <?php endif ?>
-              </td>
-            </tr>
-          <?php endforeach; ?>
-          <?php else: ?>
+          <?php if (count($coins)) : foreach ($coins as $coin) : ?>
+              <tr>
+                <td class="col-4"><?php echo $coin->name ?></td>
+                <td class="col-1"><?php echo $coin->short_name ?></td>
+                <td class="col-1"><?php echo $coin->symbol ?></td>
+                <td class="col-4"><?php echo $coin->description ?></td>
+                <td class="col-1">
+                  <div class="container-fluid">
+                    <div class="row col-sm-12">
+                      <?php if ($COIN_UPDATE) : ?>
+                        <a href="<?php echo site_url('admin/coins/edit/' . $coin->id); ?>" class="btn btn-warning btn-circle btn-sm"><i class="fas fa-edit fa-sm" title="Editar"></i></a>
+                      <?php endif ?>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            <?php endforeach; ?>
+          <?php else : ?>
             <tr>
               <td colspan="5" class="text-center">No existen monedas para mostrar</td>
             </tr>

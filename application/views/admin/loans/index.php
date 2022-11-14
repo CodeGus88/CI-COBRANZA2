@@ -85,7 +85,7 @@
                 </td>
                 <td>
                   <?php if ($LOAN_ITEM_READ || ($AUTHOR_LOAN_ITEM_READ && $loan->user_id == $this->session->userdata('user_id'))) : ?>
-                    <a href="<?php echo site_url('admin/loans/view/' . $loan->id); ?>" class="btn btn-sm btn-secondary shadow-sm" data-toggle="ajax-modal"><i class="fas fa-eye fa-sm"></i> Ver pagos</a>
+                    <a href="<?php echo site_url('admin/loans/view/' . $loan->id); ?>" class="btn btn-info btn-circle btn-sm" data-toggle="ajax-modal"><i class="fas fa-info-circle"></i></a>
                   <?php else : ?>
                     Ninguno
                   <?php endif ?>
