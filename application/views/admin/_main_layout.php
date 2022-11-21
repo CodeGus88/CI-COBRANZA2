@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>CrediChura Casa</title>
+    <title>ECOMSOFT</title>
 	<link rel="shortcut icon" href="<?=site_url().'assets/img/logo.png'?>">
     <!-- Custom fonts for this template--> 
     <link href="<?php echo site_url() ?>assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">

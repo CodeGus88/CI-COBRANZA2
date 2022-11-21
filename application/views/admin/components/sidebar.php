@@ -11,7 +11,7 @@
           <div class="text-style2">
             Consultora:
           </div>
-          CrediChura Casa
+          ECOMSOFT
         </div>
   </a>
 

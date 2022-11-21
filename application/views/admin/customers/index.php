@@ -6,8 +6,8 @@
       if (isset($users)) :
         if (sizeof($users) > 0) :
           echo '<select class="custom-select-sm btn-outline-secondary" onchange="location = this.value;">';
-          $url = site_url('admin/customers');
-          $selected = (0 == $user->id) ? 'selected' : '';
+          $url = site_url('admin/customers/index/all');
+          $selected = ($user->id == 'all') ? 'selected' : '';
           echo "<option value='$url' $selected>TODOS</option>";
           foreach ($users as $user) :
             $url = site_url("admin/customers/index/$user->id");
@@ -18,12 +18,9 @@
         endif;
       endif;
       ?>
-      <!-- </div> -->
-      <!-- <div> -->
       <?php if ($CUSTOMER_CREATE || $AUTHOR_CUSTOMER_CREATE) : ?>
         <a class="d-sm-inline-block btn btn-sm btn-success shadow-sm" href="<?php echo site_url('admin/customers/edit'); ?>"><i class="fas fa-plus-circle fa-sm"></i> Nuevo cliente</a>
       <?php endif ?>
-      <!-- </div> -->
     </div>
   </div>
 

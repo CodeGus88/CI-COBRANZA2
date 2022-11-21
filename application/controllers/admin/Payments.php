@@ -327,7 +327,7 @@ class Payments extends CI_Controller
     $data = $this->get_week_data($user_id);
     if($data == null) return;
     $phpExcel = new Spreadsheet();
-    $phpExcel->getProperties()->setCreator('CrediChura Casa')->setTitle('Reporte');
+    $phpExcel->getProperties()->setCreator('ecomsoft')->setTitle('Reporte');
     $sheet = $phpExcel->getActiveSheet();
     $sheet->setTitle('REPORTE');
 
@@ -345,7 +345,7 @@ class Payments extends CI_Controller
     // encabezado y pie de página
     $datatime = date('Y-m-d h:i:s');
     $sheet->getHeaderFooter()
-    ->setOddHeader('&L' . $datatime .'&C&HCREDICHURA CASA&R'.$data['user_name']);
+    ->setOddHeader('&L' . $datatime .'&C&HECOMSOFT&R'.$data['user_name']);
     $sheet->getHeaderFooter()
     ->setOddFooter('&RPage &P of &N');
 

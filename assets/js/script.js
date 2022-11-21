@@ -31,7 +31,7 @@ function deleteConfirm(elementId, title, message) {
 function printElementById(name, title = 'REPORTE', secondaryTitle = null) {
   var printContents = document.getElementById(name)
   var ventana = window.open(' ', 'PRINT'); // 'height=400,width=600'
-  ventana.document.write('<html><head><title>CrediChura Casa - Reportes</title>');
+  ventana.document.write('<html><head><title>ECOMSOFT - Reportes</title>');
   ventana.document.write('<link rel="stylesheet" href="' + print_style + '">');
   ventana.document.write('</head><body>');
   if (title != null && title != '') {
