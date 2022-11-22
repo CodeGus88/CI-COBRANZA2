@@ -27,10 +27,28 @@ function deleteConfirm(elementId, title, message) {
   })
 }
 
+function deleteConfirmation(title, message, url) {
+  Swal.fire({
+    title: title,
+    text: message,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Sí, ¡Eliminar esto!',
+    cancelButtonText: 'Cancelar'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      window.location.href = url;
+    }
+  })
+  return false;
+}
+
 // imprimir
 function printElementById(name, title = 'REPORTE', secondaryTitle = null) {
   var printContents = document.getElementById(name)
-  var ventana = window.open(' ', 'PRINT'); // 'height=400,width=600'
+  var ventana = window.open(' ', 'PRINT');
   ventana.document.write('<html><head><title>ECOMSOFT - Reportes</title>');
   ventana.document.write('<link rel="stylesheet" href="' + print_style + '">');
   ventana.document.write('</head><body>');

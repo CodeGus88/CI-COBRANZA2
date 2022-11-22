@@ -50,8 +50,8 @@
         <!-- <img class="img-profile rounded-circle" src="https://cdn3.iconfinder.com/data/icons/cool-avatars-2/190/00-07-2-512.png"> -->
         <?php 
         if($this->session->userdata('avatar') != null)
-          $file =  site_url() .'assets/img/user-icons/' . $this->session->userdata('avatar');
-        else $file = site_url() .'assets/img/user-icons/employee_default.png';
+          $file =  site_url() .'assets/img/avatars/' . $this->session->userdata('avatar');
+        else $file = site_url() .'assets/img/avatars/employee_default.png';
         ?>
         <img class="img-profile rounded-circle" src="<?php echo $file ?>">
         

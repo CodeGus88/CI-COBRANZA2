@@ -1,6 +1,6 @@
 <div class="card shadow mb-4">
   <div class="card-header d-flex align-items-center justify-content-between py-3">
-    <h6 class="m-0 font-weight-bold text-primary">Cajas</h6>
+    <h6 class="m-0 font-weight-bold text-primary">Usuarios</h6>
     <div>
       <?php
       if (isset($users)) : if (sizeof($users) > 0) :
@@ -14,7 +14,7 @@
         endif;
       endif;
       ?>
-      <?php if($CASH_REGISTER_CREATE || $AUTHOR_CASH_REGISTER_CREATE) : ?>
+      <?php if($USER_CREATE) : ?>
       <a class="d-sm-inline-block btn btn-sm btn-success shadow-sm" href="<?= site_url('admin/users/create'); ?>"><i class="fas fa-plus-circle fa-sm"></i> Crear usuario</a>
       <?php endif ?>
     </div>
@@ -39,15 +39,14 @@
     <?php endif ?>
 
     <div class="table-responsive">
-      <table class="table table-bordered" id="cash-registers" width="100%" cellspacing="0">
+      <table class="table table-bordered" id="users" width="100%" cellspacing="0">
         <thead>
           <tr>
-            <th class="col-1">Caja</th>
-            <th class="col-4">Usuario</th>
-            <th class="col-2">Monto</th>
-            <th class="col-2">Fecha de apertura</th>
-            <th class="col-2">Fecha de cierre</th>
-            <th class="col-1">Estado</th>
+            <th class="col-0">ID</th>
+            <th class="col-4">Nombre completo</th>
+            <th class="col-3">Roles</th>
+            <th class="col-3">Email</th>
+            <th class="col-0">Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -57,4 +56,9 @@
   </div>
 </div>
 
-<script src="<?= site_url() . 'assets/js/cash-registers/index.js' ?>"></script>
+<script>
+  const USER_READ = <?=($USER_READ)?'true':'false'?>;
+  const USER_UPDATE = <?=($USER_UPDATE)?'true':'false'?>;
+  const USER_DELETE = <?=($USER_DELETE)?'true':'false'?>;
+</script>
+<script src="<?= site_url() . 'assets/js/users/index.js' ?>"></script>

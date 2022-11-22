@@ -78,8 +78,11 @@
         <input class="form-control"  hidden readonly=true  id="user_id" type="number" name="user_id" value="<?php echo set_value('user_id', $this->input->post('user_id') ? $this->input->post('user_id') : $customer->user_id); ?>">
       </div>
     </div>
-    <button class="btn btn-primary" type="submit">Registrar cliente</button>
-    <a href="<?php echo site_url('admin/customers/'); ?>" class="btn btn-dark">Cancelar</a>
+    <div class="float-right">
+      <a href="<?php echo site_url('admin/customers/'); ?>" class="btn btn-dark">Cancelar</a>
+      <button class="btn btn-primary" type="submit">Registrar cliente</button>
+    </div>
+    
     
     <?php echo form_close() ?>
   </div>
