@@ -15,7 +15,7 @@
       endif;
       ?>
       <?php if($CASH_REGISTER_CREATE || $AUTHOR_CASH_REGISTER_CREATE) : ?>
-      <a class="d-sm-inline-block btn btn-sm btn-success shadow-sm" href="<?= site_url('admin/users/create'); ?>"><i class="fas fa-plus-circle fa-sm"></i> Crear usuario</a>
+      <a class="d-sm-inline-block btn btn-sm btn-success shadow-sm" href="<?= site_url('admin/users/create') ?>"><i class="fas fa-plus-circle fa-sm"></i> Crear usuario</a>
       <?php endif ?>
     </div>
   </div>

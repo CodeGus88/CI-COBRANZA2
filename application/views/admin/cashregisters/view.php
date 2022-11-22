@@ -34,23 +34,23 @@
                     <div class="form-row">
                         <div class="form-group col-md-4">
                             <label class="small mb-1">Usuario</label>
-                            <input class="form-control" type="text" name="dni" value="<?= $cash_register->user_name ?>" readonly>
+                            <input class="form-control" type="text" value="<?= $cash_register->user_name ?>" readonly>
                         </div>
                         <div class="form-group col-md-4">
                             <label class="small mb-1">Fecha de apertura</label>
-                            <input class="form-control" style="text-transform:uppercase" type="text" name="first_name" value="<?= $cash_register->opening_date ?>" readonly>
+                            <input class="form-control" style="text-transform:uppercase" type="text"  value="<?= $cash_register->opening_date ?>" readonly>
                         </div>
                         <div class="form-group col-md-4">
                             <label class="small mb-1">Fecha de cierre</label>
-                            <input class="form-control" style="text-transform:uppercase" type="text" name="last_name" value="<?= $cash_register->closing_date ?>" readonly>
+                            <input class="form-control" style="text-transform:uppercase" type="text"  value="<?= $cash_register->closing_date ?>" readonly>
                         </div>
                         <div class="form-group col-md-4">
                             <label class="small mb-1">Identificador</label>
-                            <input class="form-control" id="id" style="text-transform:uppercase" type="text" name="last_name" value="<?= $cash_register->id ?>" readonly>
+                            <input class="form-control" id="id" style="text-transform:uppercase" type="text" value="<?= $cash_register->id ?>" readonly>
                         </div>
                         <div class="form-group col-md-4">
                             <label class="small mb-1">Tipo de moneda</label>
-                            <input class="form-control" style="text-transform:uppercase" type="text" name="last_name" value="<?= $cash_register->coin_name ?>" readonly>
+                            <input class="form-control" style="text-transform:uppercase" type="text" value="<?= $cash_register->coin_name ?>" readonly>
                         </div>
                         <div class="form-group col-md-4">
                             <label class="small mb-1">Estado</label>
@@ -58,7 +58,6 @@
                             $url = $cash_register->status ? site_url("admin/cashregisters/close_cash_register/$cash_register->id") : '#';
                             if ($cash_register->status) :
                             ?>
-
                                 <a href="<?= site_url('admin/cashregisters/close_cash_register/' . $cash_register->id) ?>" class="form-control btn btn-success" onclick="return confirm('Se cerrará esta caja, esta acción es irreversible\n¿Quieres continuar?')">
                                     ABIERTO
                                 </a>
@@ -204,6 +203,6 @@
         <script src="<?= site_url() . 'assets/js/cash-registers/view.js' ?>"></script>
     </div>
 <?php else: ?>
-    <script>alert('En existen datos')</script>
+    <script>alert('No existen datos')</script>
 <?php endif ?>
 <!-- <div class="modal fade" id="myModal" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"></div> -->

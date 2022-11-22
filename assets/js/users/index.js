@@ -45,7 +45,7 @@ function loadData() {
                     }
                 }
             ],
-            "order": [[3, "asc"]]
+            "order": [[0, "asc"]]
         });
     });
 

@@ -10,7 +10,7 @@
             </div>
         <?php } ?>
 
-        <?php echo form_open(); ?>
+        <?= form_open($post??''); ?>
 
         <div class="form-row">
             <div class="form-group col-md-4">
@@ -39,7 +39,7 @@
             </div>
 
             <div class="form-group col-md-4">
-                <label class="small mb-1">Selecciona un avatar</label>
+                <label class="small mb-1">Avatar</label>
                 <select class="form-control" id="avatar_selector" name="avatar" value="<?= $user->avatar ?>">
                     <?php foreach ($avatars as $avatar) : ?>
                         <option data-img_src="<?= site_url('assets/img/avatars/') . $avatar ?>" value="<?= $avatar ?>" <?= ($avatar == $user->avatar) ? 'selected' : '' ?>><?= str_replace('.png', '', $avatar) ?></option>
@@ -54,11 +54,12 @@
         </div>
 
         <div class="float-right">
-            <a href="<?php echo site_url('admin/users/'); ?>" class="btn btn-dark">Cancelar</a>
+            <?php $var = (isset($path))?'/'.$path:''?>
+            <a href="<?=site_url('admin/users'.$var)?>" class="btn btn-dark">Cancelar</a>
             <button class="btn btn-primary" type="submit">Guardar</button>
         </div>
 
-        <?php echo form_close() ?>
+        <?=form_close() ?>
     </div>
 </div>
 

@@ -150,6 +150,24 @@ class User_m extends MY_Model {
     return $this->db->get()->row()??null;
   }
 
+  public  function findUserRolesAndPermissions($id){
+    $this->db->select('r.id, r.name');
+    $this->db->from('roles r');
+    $this->db->join('users_roles ur', 'ur.role_id = r.id');
+    $this->db->where('ur.user_id', $id);
+    $this->db->order_by('r.name');
+    $roles = $this->db->get()->result()??[];
+    foreach($roles as $role){
+      $this->db->select('p.id, p.name');
+      $this->db->from('permissions p');
+      $this->db->join('roles_permissions rp', 'rp.permission_id = p.id', 'left');
+      $this->db->where('rp.role_id', $role->id);
+      $this->db->order_by('p.name');
+      $role->permissions = $this->db->get()->result()??[];
+    }
+    return $roles;
+  }
+
   public function deleteById($id){
     return $this->db->delete('users', array('id'=>$id));
   }

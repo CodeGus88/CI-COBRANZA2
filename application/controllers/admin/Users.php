@@ -90,6 +90,9 @@ class Users extends CI_Controller
 
     public function edit($id = null)
     {
+        $origin = $this->input->get('origin');
+        $path = $origin?"$origin/$id":'';
+        
         $this->permission->getPermission([USER_CREATE], TRUE);
         $this->form_validation->set_rules($this->user_m->rules);
         if ($this->form_validation->run() && $id != null) {
@@ -99,22 +102,23 @@ class Users extends CI_Controller
             $data['avatar'] = $data['avatar']?? AVATARS[0];
             $data['password'] = $this->user_m->hash($this->input->post('password'));
             if ($this->user_m->save($data, $id))
-                $this->session->set_flashdata('msg', 'Usuario agregado correctamente');
+                $this->session->set_flashdata('msg', 'Usuario editado correctamente');
             else
                 $this->session->set_flashdata('msg_error', 'Ocurrió un error al intentar guardar el usuario');
-            redirect('admin/users');
+                redirect("admin/users/$path");
         } elseif($id != null) {
             $data['user'] = $this->user_m->findById($id);
         }else{
             $this->session->set_flashdata('msg_error', 'No se especificó ningún usuario');
-            redirect('admin/users');
+            redirect("admin/users/$path");
         }
+        $data['post'] = $origin?site_url('admin/users/edit/') . $id."?origin=$origin":'';
+        $data['path'] = $path;
         $data['avatars'] = directory_map($this->dir);
         $data['degrees'] = $this->user_m->getDegrees();
         $data['subview'] = 'admin/users/edit';
         $this->load->view('admin/_main_layout', $data);
     }
-
 
     public function delete($id)
     {
@@ -123,6 +127,21 @@ class Users extends CI_Controller
             else $this->session->set_flashdata('msg_error', '!Ops, algo salió mal¡');
         } else $this->session->set_flashdata('msg_error', 'Permiso denegado...');
         redirect('admin/users');
+    }
+
+    public function view($id){
+        if($id){
+            $this->user_m->findUserRolesAndPermissions($id);
+            $data[USER_READ] = $this->permission->getPermission([USER_READ], FALSE);
+            $data[USER_UPDATE] = $this->permission->getPermission([USER_UPDATE], FALSE);
+            $data['user'] = $this->user_m->findById($id);
+            $data['rolesPermissions'] = $this->user_m->findUserRolesAndPermissions($id);;
+            $data['subview'] = 'admin/users/view';
+            $this->load->view('admin/_main_layout', $data);
+        }else{
+            echo "<script>window.history.back();<script>";
+        }
+        
     }
 }
 
