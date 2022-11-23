@@ -59,7 +59,7 @@
                         </div>
                         <div class="form-group col-md-4">
                             <label class="small mb-1">Avatar</label>
-                            <div class="form-control">
+                            <div class="form-control py-0 text-justify">
                                 <img src="<?= site_url('assets/img/avatars/') . $user->avatar ?>" alt="Avatar" width="35" height="35">
                                 <span><?= $user->avatar ?></span>
                             </div>

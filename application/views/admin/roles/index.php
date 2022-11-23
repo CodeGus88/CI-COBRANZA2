@@ -1,9 +1,9 @@
 <div class="card shadow mb-4">
   <div class="card-header d-flex align-items-center justify-content-between py-3">
-    <h6 class="m-0 font-weight-bold text-primary">Usuarios</h6>
+    <h6 class="m-0 font-weight-bold text-primary">Roles</h6>
     <div>
-      <?php if($USER_CREATE) : ?>
-      <a class="d-sm-inline-block btn btn-sm btn-success shadow-sm" href="<?= site_url('admin/users/create'); ?>"><i class="fas fa-plus-circle fa-sm"></i> Crear usuario</a>
+      <?php if($ROLE_CREATE) : ?>
+      <a class="d-sm-inline-block btn btn-sm btn-success shadow-sm" href="<?= site_url('admin/roles/create'); ?>"><i class="fas fa-plus-circle fa-sm"></i> Crear usuario</a>
       <?php endif ?>
     </div>
   </div>
@@ -27,14 +27,12 @@
     <?php endif ?>
 
     <div class="table-responsive">
-      <table class="table table-bordered" id="users" width="100%" cellspacing="0">
+      <table class="table table-bordered" id="roles" width="100%" cellspacing="0">
         <thead>
           <tr>
-            <th class="col-0">ID</th>
-            <th class="col-4">Nombre completo</th>
-            <th class="col-3">Roles</th>
-            <th class="col-3">Email</th>
-            <th class="col-0">Acciones</th>
+            <th class="col-1">ID</th>
+            <th class="col-9">Nombre del rol</th>
+            <th class="col-2">Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -45,8 +43,8 @@
 </div>
 
 <script>
-  const USER_READ = <?=($USER_READ)?'true':'false'?>;
-  const USER_UPDATE = <?=($USER_UPDATE)?'true':'false'?>;
-  const USER_DELETE = <?=($USER_DELETE)?'true':'false'?>;
+  const ROLE_READ = <?=($ROLE_READ)?'true':'false'?>;
+  const ROLE_UPDATE = <?=($ROLE_UPDATE)?'true':'false'?>;
+  const ROLE_DELETE = <?=($ROLE_DELETE)?'true':'false'?>;
 </script>
-<script src="<?= site_url() . 'assets/js/users/index.js' ?>"></script>
+<script src="<?= site_url() . 'assets/js/roles/index.js' ?>"></script>
