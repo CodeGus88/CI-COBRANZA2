@@ -79,7 +79,7 @@ class Users extends CI_Controller
             if($this->user_m->save($data))
                 $this->session->set_flashdata('msg', 'Usuario agregado correctamente');
             else
-                $this->session->set_flashdata('msg_error', 'Usuario agregado correctamente');
+                $this->session->set_flashdata('msg_error', 'Ocurrió un error durante el proceso');
             redirect('admin/users');
         }else {
             $data['user'] = $this->user_m->emptyModel($this->input);
