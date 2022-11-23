@@ -36,7 +36,7 @@ class Users extends CI_Controller
 
     public function ajax_users()
     {
-        $USER_READ = TRUE; // $this->permission->getPermission([USER_READ], FALSE);
+        $USER_READ = $this->permission->getPermission([USER_READ], FALSE);
         if (!$USER_READ) {
             $json_data = array(
                 "draw"            => intval($this->input->post('draw')),
@@ -49,13 +49,13 @@ class Users extends CI_Controller
         }
         $start = $this->input->post('start');
         $length = $this->input->post('length');
-        $search = $this->input->post('search')['value'] ?? '';
+        $search = $this->input->post('search')['value']?? '';
         $columns = ['id', 'full_name', 'roles', 'email', null];
-        $columIndex = $this->input->post('order')['0']['column'] ?? sizeof($columns) - 1;
+        $columIndex = $this->input->post('order')['0']['column'] ?? 0;
         $order['column'] = $columns[$columIndex] ?? '';
         $order['dir'] = $this->input->post('order')['0']['dir'] ?? '';
         $query = $this->user_m->findAll($start, $length, $search, $order);
-        if (sizeof($query['data']) == 0 && $start > 0) $query = $this->cashregister_m->findAll(0, $length, $search, $order);
+        if (sizeof($query['data']) == 0 && $start > 0) $query = $this->user_m->findAll(0, $length, $search, $order);
         $json_data = array(
             "draw"            => intval($this->input->post('draw')),
             "recordsTotal"    => intval(sizeof($query['data'])), // total registros para mostrar
@@ -76,11 +76,13 @@ class Users extends CI_Controller
             $data['last_name'] = strtoupper($data['last_name']);
             $data['avatar'] = $data['avatar']?? AVATARS[0];
             $data['password'] = $this->user_m->hash($this->input->post('password'));
-            $this->user_m->save($data);
-            $this->session->set_flashdata('msg', 'Usuario agregado correctamente');
+            if($this->user_m->save($data))
+                $this->session->set_flashdata('msg', 'Usuario agregado correctamente');
+            else
+                $this->session->set_flashdata('msg_error', 'Usuario agregado correctamente');
             redirect('admin/users');
-        } else {
-            $data['user'] = $this->user_m->emptyModel();
+        }else {
+            $data['user'] = $this->user_m->emptyModel($this->input);
         }
         $data['avatars'] = directory_map($this->dir);
         $data['degrees'] = $this->user_m->getDegrees();
@@ -94,13 +96,16 @@ class Users extends CI_Controller
         $path = $origin?"$origin/$id":'';
         
         $this->permission->getPermission([USER_CREATE], TRUE);
-        $this->form_validation->set_rules($this->user_m->rules);
+        unset($this->user_m->newUserRules['password']);
+        $rules = $this->user_m->newUserRules;
+        $this->form_validation->set_rules($rules);
         if ($this->form_validation->run() && $id != null) {
             $data = $this->user_m->array_from_post(['first_name', 'last_name', 'academic_degree', 'email', 'avatar', 'password']);
             $data['first_name'] = strtoupper($data['first_name']);
             $data['last_name'] = strtoupper($data['last_name']);
             $data['avatar'] = $data['avatar']?? AVATARS[0];
-            $data['password'] = $this->user_m->hash($this->input->post('password'));
+            if($this->input->post('password')) 
+                $data['password'] = $this->user_m->hash($this->input->post('password'));
             if ($this->user_m->save($data, $id))
                 $this->session->set_flashdata('msg', 'Usuario editado correctamente');
             else

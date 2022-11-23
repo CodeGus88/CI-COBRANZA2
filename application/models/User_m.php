@@ -46,15 +46,15 @@ class User_m extends MY_Model {
     )
   );
 
-  public function emptyModel(){
+  public function emptyModel($input){
     $user = new stdClass();
-    $user->id = '';
-    $user->first_name = '';
-    $user->last_name = '';
-    $user->email = '';
-    $user->password = '';
-    $user->avatar = '';
-    $user->academic_degree = '';
+    $user->id = $input->post('id')??'';
+    $user->first_name = $input->post('first_name')??'';
+    $user->last_name = $input->post('last_name')??'';
+    $user->email = $input->post('email')??'';
+    $user->password = $input->post('password')??'';
+    $user->avatar = $input->post('avatar')??'';
+    $user->academic_degree = $input->post('academic_degree')??'';
     return $user;
   }
 
@@ -110,17 +110,19 @@ class User_m extends MY_Model {
     return (bool) $this->session->userdata('loggedin');
   }
 
-  public function findAll($start, $length, $search, $order){
-
-    $this->db->select("COUNT(u.id) total");
+  public function findAll($start, $length, $search, $order)
+  {
+    // $this->db->select("COUNT(u.id) total");
+    $this->db->select("GROUP_CONCAT(r.name)");
     $this->db->from("users u");
     $this->db->join("users_roles ur", "ur.user_id = u.id", "left");
     $this->db->join("roles r", "r.id = ur.role_id", "left");
     $this->db->where("(u.id LIKE '%$search%' OR u.academic_degree LIKE '%$search%' OR u.first_name LIKE '%$search%' OR u.last_name LIKE '%$search%' 
-    OR  CONCAT_WS(' ',u.first_name, u.last_name) LIKE '%$search%' OR r.name LIKE '%$search%'
+    OR  CONCAT_WS(' ', u.first_name, u.last_name) LIKE '%$search%' OR r.name LIKE '%$search%'
     OR u.email LIKE '%$search%')");
-    $this->db->group_by('ur.user_id');
-    $data['recordsFiltered'] = $this->db->get()->row()->total??0;
+    $this->db->group_by('u.id');
+    // $data['recordsFiltered'] = $this->db->get()->row()->total??0;
+    $data['recordsFiltered'] = sizeof($this->db->get()->result()??[]);
 
     $this->db->select("u.id, u.academic_degree, u.first_name, u.last_name, u.email, GROUP_CONCAT(r.name SEPARATOR ',') roles");
     $this->db->from("users u");
@@ -136,7 +138,7 @@ class User_m extends MY_Model {
     }else{
       $this->db->order_by($order['column'], $order['dir']);
     }
-    $this->db->group_by('ur.user_id');
+    $this->db->group_by('u.id');
 
     $data['data'] = $this->db->get()->result()??[];
 
