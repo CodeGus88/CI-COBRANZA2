@@ -49,7 +49,7 @@ function deleteConfirmation(title, message, url) {
 function printElementById(name, title = 'REPORTE', secondaryTitle = null) {
   var printContents = document.getElementById(name)
   var ventana = window.open(' ', 'PRINT');
-  ventana.document.write('<html><head><title>ECOMSOFT - Reportes</title>');
+  ventana.document.write('<html><head><title>ECOMSOFT - REPORTES</title>');
   ventana.document.write('<link rel="stylesheet" href="' + print_style + '">');
   ventana.document.write('</head><body>');
   if (title != null && title != '') {

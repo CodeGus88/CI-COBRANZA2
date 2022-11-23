@@ -31,6 +31,8 @@
                     <h6 class="h6">Datos del usuario</h6>
                     <div class="btn-group">
                         <a class="btn btn-secondary btn-sm shadow-sm" href="<?= site_url('admin/users/edit/') . $user->id ?>?origin=view">Editar</a>
+                        <?php $deleteUrl = site_url('admin/users/delete/') . $user->id; ?>
+                        <button class="btn btn-danger btn-sm shadow-sm" onclick="deleteConfirmation('CONFIRMACIÓN', '¿Realmente desea eliminar este usuario?', '<?=$deleteUrl?>')">Eliminar</a>
                     </div>
                 </div>
                 <div class="card-body">
