@@ -20,7 +20,6 @@
       </div>
     <?php } ?>
     <?php echo form_open('admin/loans/edit', 'id="loan_form"'); ?>
-
     <div class="form-row">
       <div class="form-group col-12 col-md-12">
         <label class="small mb-1">Cliente</label>
@@ -77,7 +76,6 @@
           <option value="20">20%</option>
         </select>
       </div>
-
       <div class="form-group col-12 col-md-4">
         <label class="small mb-1">Modalidad de pago</label>
         <select class="form-control" id="payment_m" name="payment_m">
@@ -88,7 +86,6 @@
         </select>
       </div>
     </div>
-
     <div class="form-row">
 
       <div class="form-group col-12 col-md-4">

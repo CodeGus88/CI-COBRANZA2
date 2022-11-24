@@ -99,4 +99,3 @@
             alert('No existen datos');
         </script>
     <?php endif ?>
-    <!-- <div class="modal fade" id="myModal" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"></div> -->
