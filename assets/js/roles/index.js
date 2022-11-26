@@ -16,7 +16,7 @@ function loadData() {
                 "type": "POST"
             },
             'columns': [
-                { data: 'id', 'sClass': 'text-center' },
+                // { data: 'id', 'sClass': 'text-center'},
                 {data: 'name'},
                 {
                     'cell': true,

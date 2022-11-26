@@ -1,9 +1,13 @@
 <?php if ($user != null) : ?>
     <div class="card shadow mb-4">
         <div class="card-header d-flex align-items-center justify-content-between py-3">
-            <h6 class="m-0 font-weight-bold text-primary" id="user_name">USUARIO</h6>
+            <h6 class="m-0 font-weight-bold text-primary" id="user_name">Información sobre el usuario</h6>
             <div class="btn-group">
-                <!-- botones de encabezado -->
+                <div class="btn-group">
+                    <a class="btn btn-secondary btn-sm shadow-sm" href="<?= site_url('admin/users/edit/') . $user->id ?>?origin=view">Editar</a>
+                    <?php $deleteUrl = site_url('admin/users/delete/') . $user->id; ?>
+                    <button class="btn btn-danger btn-sm shadow-sm" onclick="deleteConfirmation('CONFIRMACIÓN', '¿Realmente desea eliminar este usuario?', '<?= $deleteUrl ?>')">Eliminar</a>
+                </div>
             </div>
         </div>
         <div class="card-body">
@@ -29,33 +33,28 @@
             <div class="card">
                 <div class="card-header d-flex align-items-center justify-content-between py-3">
                     <h6 class="h6">Datos del usuario</h6>
-                    <div class="btn-group">
-                        <a class="btn btn-secondary btn-sm shadow-sm" href="<?= site_url('admin/users/edit/') . $user->id ?>?origin=view">Editar</a>
-                        <?php $deleteUrl = site_url('admin/users/delete/') . $user->id; ?>
-                        <button class="btn btn-danger btn-sm shadow-sm" onclick="deleteConfirmation('CONFIRMACIÓN', '¿Realmente desea eliminar este usuario?', '<?=$deleteUrl?>')">Eliminar</a>
-                    </div>
                 </div>
                 <div class="card-body">
                     <div class="form-row">
                         <div class="form-group col-md-4">
                             <label class="small mb-1">Identificador</label>
-                            <input class="form-control" id="id" type="text" value="<?= $user->id ?>" readonly>
+                            <p class="form-control"><?= $user->id ?></p>
                         </div>
                         <div class="form-group col-md-4">
                             <label class="small mb-1">Nombre</label>
-                            <input class="form-control" type="text" value="<?= $user->first_name ?>" readonly>
+                            <p class="form-control"><?= $user->first_name ?></p>
                         </div>
                         <div class="form-group col-md-4">
                             <label class="small mb-1">Apellidos</label>
-                            <input class="form-control" type="text" value="<?= $user->last_name ?>" readonly>
+                            <p class="form-control"><?= $user->last_name ?></p>
                         </div>
                         <div class="form-group col-md-4">
                             <label class="small mb-1">Email</label>
-                            <input class="form-control" type="text" value="<?= $user->email ?>" readonly>
+                            <p class="form-control"><?= $user->email ?></p>
                         </div>
                         <div class="form-group col-md-4">
                             <label class="small mb-1">Grado</label>
-                            <input class="form-control" type="text" value="<?= $user->academic_degree ?>" readonly>
+                            <p class="form-control"><?= $user->academic_degree ?></p>
                         </div>
                         <div class="form-group col-md-4">
                             <label class="small mb-1">Avatar</label>
@@ -81,10 +80,10 @@
                             $rowSpan = sizeof($item->permissions) == 0 ? 1 : sizeof($item->permissions);
                         ?>
                             <tr class="text-center">
-                                <td class="align-middle"><input class="btn btn-outline-secondary" value="<?= $item->name ?>" readonly></td>
+                                <td class="align-middle"><input class="btn btn-outline-secondary btn-sm" value="<?= $item->name ?>" title="<?= $item->name ?>" readonly></td>
                                 <td class="align-middle">
                                     <?php foreach ($item->permissions as $subItem) : ?>
-                                        <input class="btn btn-outline-secondary" value="<?= $subItem->name ?>" ? readonly>
+                                        <input class="btn btn-outline-secondary btn-sm" value="<?= $subItem->name ?>" title="<?= $subItem->name ?>" readonly>
                                     <?php endforeach ?>
                                 </td>
                             </tr>

@@ -3,6 +3,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Permission_m extends CI_Model {
 
+    protected $_table_name = 'permissions';
+
     /** Verifica si el usuario  tiene el permmiso */
     public function getAuthorization($user_id, $permission){
         $this->db->select('COUNT(*) count');

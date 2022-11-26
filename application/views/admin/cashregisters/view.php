@@ -4,8 +4,8 @@
             <h6 class="m-0 font-weight-bold text-primary" id="cash_register_name"><?= $cash_register->name ?? 'undefined' ?></h6>
             <div class="btn-group" role="group" aria-label="Basic example">
                 <?php if (($CASH_REGISTER_UPDATE || $AUTHOR_CASH_REGISTER_UPDATE) && $IS_OPEN) : if (isset($cash_register)) : ?>
-                        <a type="button" class="btn btn-secondary" href="<?= site_url('admin/cashregisters/manual_input_create/' . $cash_register->id) ?>">Entrada manual</a>
-                        <a type="button" class="btn btn-secondary" href="<?= site_url('admin/cashregisters/manual_output_create/' . $cash_register->id) ?>">Salida manual</a>
+                        <a type="button" class="btn btn-secondary btn-sm" href="<?= site_url('admin/cashregisters/manual_input_create/' . $cash_register->id) ?>">Entrada manual</a>
+                        <a type="button" class="btn btn-secondary btn-sm" href="<?= site_url('admin/cashregisters/manual_output_create/' . $cash_register->id) ?>">Salida manual</a>
                 <?php endif;
                 endif ?>
             </div>
@@ -34,23 +34,23 @@
                     <div class="form-row">
                         <div class="form-group col-md-4">
                             <label class="small mb-1">Usuario</label>
-                            <input class="form-control" type="text" value="<?= $cash_register->user_name ?>" readonly>
+                            <p class="form-control"><?= $cash_register->user_name ?></p>
                         </div>
                         <div class="form-group col-md-4">
                             <label class="small mb-1">Fecha de apertura</label>
-                            <input class="form-control" style="text-transform:uppercase" type="text"  value="<?= $cash_register->opening_date ?>" readonly>
+                            <p class="form-control"><?= $cash_register->opening_date ?></p>
                         </div>
                         <div class="form-group col-md-4">
                             <label class="small mb-1">Fecha de cierre</label>
-                            <input class="form-control" style="text-transform:uppercase" type="text"  value="<?= $cash_register->closing_date ?>" readonly>
+                            <p class="form-control" style="text-transform:uppercase"><?= $cash_register->closing_date ?></p>
                         </div>
                         <div class="form-group col-md-4">
                             <label class="small mb-1">Identificador</label>
-                            <input class="form-control" id="id" style="text-transform:uppercase" type="text" value="<?= $cash_register->id ?>" readonly>
+                            <p class="form-control"><?= $cash_register->id ?></p>
                         </div>
                         <div class="form-group col-md-4">
                             <label class="small mb-1">Tipo de moneda</label>
-                            <input class="form-control" style="text-transform:uppercase" type="text" value="<?= $cash_register->coin_name ?>" readonly>
+                            <p class="form-control"><?= $cash_register->coin_name ?></p>
                         </div>
                         <div class="form-group col-md-4">
                             <label class="small mb-1">Estado</label>

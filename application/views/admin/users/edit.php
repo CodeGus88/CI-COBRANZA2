@@ -1,5 +1,5 @@
 <div class="card shadow mb-4">
-    <div class="card-header py-3"><?php echo empty($user->id) ? 'Nuevo usuario' : 'Editar usuario'; ?></div>
+    <div class="card-header py-3"><?= empty($user->id) ? 'Nuevo usuario' : 'Editar usuario'; ?></div>
     <div class="card-body">
         <?php if (validation_errors()) { ?>
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -10,7 +10,7 @@
             </div>
         <?php } ?>
 
-        <?= form_open($post??''); ?>
+        <?= form_open($post ?? ''); ?>
 
         <div class="form-row">
             <div class="form-group col-md-4">
@@ -25,19 +25,17 @@
                 <label class="small mb-1">Grado académico</label>
                 <select class="form-control" name="academic_degree" value="<?= $user->academic_degree ?>">
                     <option value="" selected>Selecciona el grado académico</option>
-                    <?php foreach($degrees as $degree) :?>
-                        <option value="<?=$degree[0]?>" <?=$degree[0] == $user->academic_degree?'selected':''?>><?=$degree[1]?></option>
-                    <?php endforeach?>
+                    <?php foreach ($degrees as $degree) : ?>
+                        <option value="<?= $degree[0] ?>" <?= $degree[0] == $user->academic_degree ? 'selected' : '' ?>><?= $degree[1] ?></option>
+                    <?php endforeach ?>
                 </select>
             </div>
         </div>
-
         <div class="form-row">
             <div class="form-group col-md-4">
                 <label class="small mb-1">Email</label>
                 <input class="form-control" id="email" type="email" name="email" value="<?= $user->email ?>" autocomplete="nope">
             </div>
-
             <div class="form-group col-md-4">
                 <label class="small mb-1">Avatar</label>
                 <select class="form-control" id="avatar_selector" name="avatar" value="<?= $user->avatar ?>">
@@ -46,20 +44,33 @@
                     <?php endforeach ?>
                 </select>
             </div>
-
             <div class="form-group col-md-4">
                 <label class="small mb-1">Contraseña</label>
                 <input class="form-control" id="password" type="password" name="password" autocomplete="new-password" value="">
             </div>
         </div>
-
+        <div class="form-group">
+            <label class="small mb-1">Roles</label>
+            <div class="row container">
+                <?php if ($roles) : foreach ($roles as $role) : ?>
+                    <?php $isSelected = isset($role->is_selected) ? (($role->is_selected) ? 'checked' : '') : '' ?>
+                        <div class="form-group col-md-3">
+                            <input class="form-check-input" type="checkbox" id="id<?=$role->id?>" type="checkbox" value="<?= $role->id ?>" name="role_ids[]" <?= $isSelected ?>>
+                            <label class="form-check-label" for="id<?=$role->id?>" title="<?= $role->name ?>">
+                                <?= $role->name ?>
+                            </label>
+                        </div>
+                <?php endforeach;
+                endif ?>
+            </div>
+        </div>
         <div class="float-right">
-            <?php $var = (isset($path))?'/'.$path:''?>
-            <a href="<?=site_url('admin/users'.$var)?>" class="btn btn-dark">Cancelar</a>
+            <?php $var = (isset($path)) ? '/' . $path : '' ?>
+            <a href="<?= site_url('admin/users' . $var) ?>" class="btn btn-dark">Cancelar</a>
             <button class="btn btn-primary" type="submit">Guardar</button>
         </div>
 
-        <?=form_close() ?>
+        <?= form_close() ?>
     </div>
 </div>
 

@@ -6,7 +6,7 @@
  ?>
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
   <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
-        <img class="churacasa" src="<?php echo base_url();?>assets/img/logo.png" alt="logo" />
+        <img class="page-logo" src="<?php echo base_url();?>assets/img/logo.png" alt="logo" />
         <div class="sidebar-brand-text mx-2 text-style">
           <div class="text-style2">
             Consultora:
