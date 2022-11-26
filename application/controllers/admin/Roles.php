@@ -90,6 +90,7 @@ class Roles extends CI_Controller {
     public function view($id){
         $this->permission->getPermission([ROLE_READ], TRUE);
         $data = $this->role_m->findById($id);
+        if(($data['role'] == null)) show_404();
         $data['subview'] = 'admin/roles/view';
         $this->load->view('admin/_main_layout', $data);
     }
@@ -120,7 +121,9 @@ class Roles extends CI_Controller {
         }else{
             $data['role'] = $this->db->get_where('roles', ['id'=>$id])->row()??null;
             $data['permissions'] = $this->role_m->getPermissionsState($id);
+            if(($data['role'] == null)) show_404();
         }
+        
         $data['post'] = $origin?site_url('admin/roles/edit/') . $id."?origin=$origin":'';
         $data['path'] = $path;
         $data['subview'] = 'admin/roles/edit';

@@ -164,18 +164,18 @@ class Cashregister_m extends MY_Model {
    */
   public function getCashRegister($cash_register_id)
   {
-    $manualInputsAmount = $this->getManualInputsByCashRegisterId($cash_register_id);
-    $manualOutputsAmount = $this->getManualOutputsByCashRegisterId($cash_register_id);
-    $loanOutputsAmount = $this->getLoanOutputsByCashRegisterId($cash_register_id);
-    $documentPaymentInputsAmount = $this->getDocumentPaymentInputsByCashRegisterId($cash_register_id);
-    $this->db->select("cr.*, c.name coin_name, c.short_name, c.symbol, CONCAT_WS(' ', u.academic_degree, u.first_name, u.last_name) user_name, 
-    ($manualInputsAmount) manual_inputs_amount, ($manualOutputsAmount) manual_outputs_amount, 
-    ($loanOutputsAmount) loan_outputs_amount, ($documentPaymentInputsAmount) document_payment_inputs_amount");
-    $this->db->from('cash_registers cr');
-    $this->db->join('users u', 'u.id = cr.user_id', 'left');
-    $this->db->join('coins c', 'c.id = cr.coin_id', 'left');
-    $this->db->where('cr.id', $cash_register_id);
-    return $this->db->get()->row()??[];
+      $manualInputsAmount = $this->getManualInputsByCashRegisterId($cash_register_id);
+      $manualOutputsAmount = $this->getManualOutputsByCashRegisterId($cash_register_id);
+      $loanOutputsAmount = $this->getLoanOutputsByCashRegisterId($cash_register_id);
+      $documentPaymentInputsAmount = $this->getDocumentPaymentInputsByCashRegisterId($cash_register_id);
+      $this->db->select("cr.*, c.name coin_name, c.short_name, c.symbol, CONCAT_WS(' ', u.academic_degree, u.first_name, u.last_name) user_name, 
+      ($manualInputsAmount) manual_inputs_amount, ($manualOutputsAmount) manual_outputs_amount, 
+      ($loanOutputsAmount) loan_outputs_amount, ($documentPaymentInputsAmount) document_payment_inputs_amount");
+      $this->db->from('cash_registers cr');
+      $this->db->join('users u', 'u.id = cr.user_id', 'left');
+      $this->db->join('coins c', 'c.id = cr.coin_id', 'left');
+      $this->db->where('cr.id', $cash_register_id);
+      return $this->db->get()->row()??null;
   }
 
   /**

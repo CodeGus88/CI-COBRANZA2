@@ -120,7 +120,7 @@ class Users extends CI_Controller
             $data['roles'] = $this->user_m->getRolesState($id);
         } else {
             $this->session->set_flashdata('msg_error', 'No se especificó ningún usuario');
-            redirect("admin/users/$path");
+            redirect('admin/users' .$path);
         }
         $data['post'] = $origin ? site_url('admin/users/edit/') . $id . "?origin=$origin" : '';
         $data['path'] = $path;
@@ -132,7 +132,6 @@ class Users extends CI_Controller
         }else{
             $data['subview'] = 'admin/users/edit';
         }
-            
         $this->load->view('admin/_main_layout', $data);
     }
 
@@ -152,6 +151,7 @@ class Users extends CI_Controller
             $data[USER_READ] = $this->permission->getPermission([USER_READ], FALSE);
             $data[USER_UPDATE] = $this->permission->getPermission([USER_UPDATE], FALSE);
             $data['user'] = $this->user_m->findById($id);
+            if(($data['user'] == null)) show_404();
             $data['rolesPermissions'] = $this->user_m->findUserRolesAndPermissions($id);;
             $data['subview'] = 'admin/users/view';
             $this->load->view('admin/_main_layout', $data);

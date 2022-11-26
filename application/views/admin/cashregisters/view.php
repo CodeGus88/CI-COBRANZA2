@@ -1,4 +1,3 @@
-<?php if ($cash_register != null ): ?>
     <div class="card shadow mb-4">
         <div class="card-header d-flex align-items-center justify-content-between py-3">
             <h6 class="m-0 font-weight-bold text-primary" id="cash_register_name"><?= $cash_register->name ?? 'undefined' ?></h6>
@@ -202,7 +201,3 @@
         </div>
         <script src="<?= site_url() . 'assets/js/cash-registers/view.js' ?>"></script>
     </div>
-<?php else: ?>
-    <script>alert('No existen datos')</script>
-<?php endif ?>
-<!-- <div class="modal fade" id="myModal" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"></div> -->

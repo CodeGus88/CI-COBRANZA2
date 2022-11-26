@@ -115,6 +115,7 @@ class Cashregisters extends CI_Controller {
     $data[AUTHOR_CASH_REGISTER_UPDATE] = $this->permission->getPermission([AUTHOR_CASH_REGISTER_UPDATE], FALSE) && $this->cashregister_m->isAuthor($cash_register_id, $this->user_id);
     $data['IS_OPEN'] = $IS_OPEN;
     $data['cash_register'] = $this->cashregister_m->getCashRegister($cash_register_id);
+    if(($data['cash_register'] == null)) show_404();
     $data['subview'] = 'admin/cashregisters/view';
     $this->load->view('admin/_main_layout', $data);
   }
