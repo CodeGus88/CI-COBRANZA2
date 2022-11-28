@@ -3,8 +3,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class User extends CI_Controller {
 
-  private $permission;
-
   public function __construct()
   {
     parent::__construct();
@@ -24,7 +22,6 @@ class User extends CI_Controller {
     if ($this->form_validation->run() == TRUE) {
       
       if ($this->user_m->login() == TRUE) {
-        // $this->session->set_flashdata('msg_error', null);
         redirect($dashboard);
       }else{
         $this->session->set_flashdata('msg_error', 'Escriba correctamente su email y/o password');
