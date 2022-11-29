@@ -36,7 +36,7 @@
       </div>
     <?php endif ?>
     <div class="table-responsive">
-      <table class="table table-bordered" id="table" width="100%" cellspacing="0">
+      <table class="table table-bordered" id="customersTable" width="100%" cellspacing="0">
         <thead>
           <tr>
             <th class="col-0">CI</th>

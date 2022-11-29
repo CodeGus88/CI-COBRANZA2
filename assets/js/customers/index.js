@@ -6,10 +6,8 @@ function loadData() {
             user_id = document.getElementById('user_id').value != null?'/'+document.getElementById('user_id').value:'';
         else
             user_id = '';
-
-        console.log('Seleccionaste: ' + user_id);
-        $("#table").dataTable().fnDestroy();
-        $('#table').dataTable({
+        $("#customersTable").dataTable().fnDestroy();
+        $('#customersTable').dataTable({
             "lengthMenu": [[10, 25, 50, 75, 100], [10, 25, 50, 75, 100]],
             'paging': true,
             'info': true,
