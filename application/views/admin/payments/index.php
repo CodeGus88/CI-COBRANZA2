@@ -18,7 +18,7 @@
         endif;
       endif;
       ?>
-      <?php if ($LOAN_ITEM_READ || $AUTHOR_LOAN_ITEM_READ) : 
+      <?php if ($LOAN_READ || $AUTHOR_LOAN_READ || $LOAN_ITEM_READ || $AUTHOR_LOAN_ITEM_READ) : 
         $parameter = (isset($selected_user_id))?(($selected_user_id != 0)?$selected_user_id:''):'';  
       ?>
         <a href="<?php echo site_url("admin/payments/quotes_week/$parameter") ?>" class="btn btn-sm btn-info shadow-sm" data-toggle="ajax-modal"><i class="fas fa-eye fa-sm"></i> Semana</a>
@@ -38,7 +38,6 @@
       </button>
     </div>
   <?php endif ?>
-
   <?php if ($this->session->flashdata('msg_error')) : ?>
     <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
       <?= $this->session->flashdata('msg_error') ?>
@@ -47,9 +46,6 @@
       </button>
     </div>
   <?php endif ?>
-
- 
-
     <div class="table-responsive">
       <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
         <thead>

@@ -36,6 +36,8 @@ class Payments extends CI_Controller
     // $data[LOAN_ITEM_UPDATE] = $this->permission->getPermission([LOAN_ITEM_UPDATE], FALSE);
     $data[AUTHOR_PAYMENT_CREATE] =  $this->permission->getPermission([AUTHOR_PAYMENT_CREATE], FALSE);
     // $data[AUTHOR_LOAN_ITEM_UPDATE] = $this->permission->getPermission([AUTHOR_LOAN_ITEM_UPDATE], FALSE);
+    $data[LOAN_READ] = $this->permission->getPermission([LOAN_READ], FALSE);
+    $data[AUTHOR_LOAN_READ] = $this->permission->getPermission([AUTHOR_LOAN_READ], FALSE);
     $data[LOAN_ITEM_READ] = $this->permission->getPermission([LOAN_ITEM_READ], FALSE);
     $data[AUTHOR_LOAN_ITEM_READ] = $this->permission->getPermission([AUTHOR_LOAN_ITEM_READ], FALSE);
     $data['payments'] = array();
