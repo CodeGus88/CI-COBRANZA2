@@ -14,23 +14,23 @@
       
       <div class="form-row">
         <div class="form-group col-md-6">
-          <label class="small mb-1" for="inputUsername">Ingresar moneda</label>
-          <input class="form-control" id="inputUsername" type="text" name="name" value="<?php echo set_value('name', $this->input->post('name') ? $this->input->post('name') : $coin->name); ?>" placeholder="Ejm: Dolar">
+          <label class="small mb-1" for="name">Ingresar moneda</label>
+          <input class="form-control" id="name" type="text" name="name" value="<?php echo set_value('name', $this->input->post('name') ? $this->input->post('name') : $coin->name); ?>" placeholder="Ejm: Dolar">
         </div>
         <div class="form-group col-md-6">
-          <label class="small mb-1" for="inputUsername">Ingresar abreviatura</label>
-          <input class="form-control" style="text-transform:uppercase;" id="inputUsername" type="text" name="short_name" value="<?php echo set_value('short_name', $this->input->post('short_name') ? $this->input->post('short_name') : $coin->short_name); ?>" placeholder="Ejm: USD">
+          <label class="small mb-1" for="short_name">Ingresar abreviatura</label>
+          <input class="form-control" style="text-transform:uppercase;" id="short_name" type="text" name="short_name" value="<?php echo set_value('short_name', $this->input->post('short_name') ? $this->input->post('short_name') : $coin->short_name); ?>" placeholder="Ejm: USD">
         </div>
       </div>
 
       <div class="form-row">
         <div class="form-group col-md-6">
-          <label class="small mb-1" for="inputUsername">Ingresar simbolo</label>
-          <input class="form-control" style="text-transform:uppercase;" id="inputUsername" type="text" name="symbol" value="<?php echo set_value('symbol', $this->input->post('symbol') ? $this->input->post('symbol') : $coin->symbol); ?>" placeholder="Ejm: $">
+          <label class="small mb-1" for="symbol">Ingresar simbolo</label>
+          <input class="form-control" style="text-transform:uppercase;" id="symbol" type="text" name="symbol" value="<?php echo set_value('symbol', $this->input->post('symbol') ? $this->input->post('symbol') : $coin->symbol); ?>" placeholder="Ejm: $">
         </div>
         <div class="form-group col-md-6">
-          <label class="small mb-1" for="exampleFormControlTextarea1">Ingresar descripcion</label>
-          <input class="form-control" id="inputUsername" type="text" name="description" value="<?php echo set_value('description', $this->input->post('description') ? $this->input->post('description') : $coin->description); ?>" placeholder="Ejm: Dolar estadounidense">
+          <label class="small mb-1" for="description">Ingresar descripcion</label>
+          <input class="form-control" id="description" type="text" name="description" value="<?php echo set_value('description', $this->input->post('description') ? $this->input->post('description') : $coin->description); ?>" placeholder="Ejm: Dolar estadounidense">
         </div>
       </div>
 

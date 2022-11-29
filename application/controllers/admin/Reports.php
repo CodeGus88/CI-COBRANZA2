@@ -2,8 +2,8 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 include(APPPATH . "/tools/UserPermission.php");
 
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+// use PhpOffice\PhpSpreadsheet\Spreadsheet;
+// use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class Reports extends CI_Controller
 {
@@ -147,7 +147,7 @@ class Reports extends CI_Controller
 
   public function customers($user_id = 0)
   {
-    if ($this->permission->getPermissionX([LOAN_READ, LOAN_ITEM_READ], FALSE)) {
+    if ($this->permission->getPermission([LOAN_READ], FALSE)) {
       $data['users'] = $this->db->order_by('id')->get('users')->result();
       if ($user_id == 0) {
         $data['customers'] = $this->reports_m->get_reportCstsAll();
@@ -155,7 +155,7 @@ class Reports extends CI_Controller
         $data['customers'] = $this->reports_m->get_reportCsts($user_id);
         $data['selected_user_id'] = $user_id;
       }
-    } else if ($this->permission->getPermissionX([AUTHOR_LOAN_READ, AUTHOR_LOAN_ITEM_READ], FALSE)) {
+    } else if ($this->permission->getPermission([AUTHOR_LOAN_READ], FALSE)) {
       $data['customers'] = $this->reports_m->get_reportCsts($this->session->userdata('user_id'));
     } else {
       $this->permission->getPermissionX([], TRUE);
@@ -168,10 +168,13 @@ class Reports extends CI_Controller
   {
     require_once APPPATH . 'third_party/fpdf183/html_table.php';
 
+    $LOAN_READ = $this->permission->getPermissionX([LOAN_READ], FALSE);
+    $AUTHOR_LOAN_READ = $this->permission->getPermission([AUTHOR_LOAN_READ], FALSE);
+
     $reportCst = [];
-    if ($this->permission->getPermissionX([LOAN_READ, LOAN_ITEM_READ], FALSE)) {
+    if ($LOAN_READ) {
       $reportCst = $this->reports_m->getReportLCAll($customer_id);
-    } else if ($this->permission->getPermission([AUTHOR_LOAN_READ, AUTHOR_LOAN_ITEM_READ], FALSE)) {
+    } else if ($AUTHOR_LOAN_READ) {
       $reportCst = $this->reports_m->getReportLC($this->user_id, $customer_id);
     } else {
       $this->permission->getPermissionX([], TRUE);
@@ -220,9 +223,9 @@ class Reports extends CI_Controller
       $html1 = '<table border="1">';
       $html1 .= $tableTab . '<tr><td width="50" height="30"><b>Cuota</b></td><td width="110" height="30"><b>Fecha pago</b></td><td width="110" height="30"><b>Cuota</b></td><td width="110" height="30"><b>Pagado</b></td><td width="110" height="30"><b>Recargo</b></td><td width="110" height="30"><b>Por pagar</b></td><td width="110" height="30"><b>Estado</b></td></tr>';
 
-      if ($this->permission->getPermission([LOAN_ITEM_READ], FALSE)) {
+      if ($LOAN_READ) {
         $loanItems = $this->reports_m->getReportLIAll($rc->id);
-      } elseif ($this->permission->getPermission([AUTHOR_LOAN_ITEM_READ], FALSE)) {
+      } elseif ($AUTHOR_LOAN_READ) {
         $loanItems = $this->reports_m->getReportLI($this->session->userdata('user_id'), $rc->id);
       }
       // print_r(json_encode($loanItems) );
@@ -238,9 +241,9 @@ class Reports extends CI_Controller
       $pdf->WriteHTML(utf8_decode($html1));
 
       // Inicio garantes
-      if ($this->permission->getPermissionX([LOAN_READ, LOAN_ITEM_READ], FALSE)) {
+      if ($LOAN_READ) {
         $guarantors = $this->reports_m->get_guarantorsAll($rc->id);
-      } elseif ($this->permission->getPermissionX([AUTHOR_LOAN_READ, AUTHOR_LOAN_ITEM_READ], TRUE)) {
+      } elseif ($AUTHOR_LOAN_READ) {
         $guarantors = $this->reports_m->get_guarantors($this->user_id, $rc->id);
       }
       if ($guarantors != null) {
