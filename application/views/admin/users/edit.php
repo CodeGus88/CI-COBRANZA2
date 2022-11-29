@@ -65,7 +65,7 @@
             </div>
         </div>
         <div class="float-right">
-            <?php $var = (isset($path)) ? '/' . $path : '' ?>
+            <?php $var = (isset($path)) ? $path : '' ?>
             <a href="<?= site_url('admin/users' . $var) ?>" class="btn btn-dark">Cancelar</a>
             <button class="btn btn-primary" type="submit">Guardar</button>
         </div>

@@ -77,7 +77,7 @@
                           $payed = ($item->payed != null) ? $item->payed : 0;
                           $amount = $item->fee_amount - $payed;
                           echo '<tr title="Asesor: ' . $item->user_name . ' ">';
-                          echo "<td>$item->dni</td>";
+                          echo "<td>$item->ci</td>";
                           echo "<td>$item->customer_name</td>";
                           echo "<td>$item->coin_short_name</td>";
                           echo "<td>$amount</td>";

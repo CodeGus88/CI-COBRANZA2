@@ -65,7 +65,7 @@
                     </table>
                 </div>
             </div>
-            <?php $var = (isset($path))?'/'.$path:''?>
+            <?php $var = (isset($path))?$path:''?>
             <a class="btn btn-secondary px-3" type="submit" href="<?= site_url('admin/roles' . $var) ?>">Cancelar</a>
             <button class="btn btn-primary px-3" type="submit">Guardar</button>
         <?= form_close() ?>

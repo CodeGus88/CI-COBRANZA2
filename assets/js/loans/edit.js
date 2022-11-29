@@ -125,7 +125,7 @@ function loadGuarantorsOptions() {
     user_name.value = x.user_name;
     customerList.forEach(element => {
       if (x.user_id == element.user_id && element.id != id) {
-        let option = "<option value='" + element.id + "'>" + element.dni + " | " + element.fullname + "</option>";
+        let option = "<option value='" + element.id + "'>" + element.ci + " | " + element.fullname + "</option>";
         guarantorsItems.insertAdjacentHTML("beforeend", option);
       }
     });

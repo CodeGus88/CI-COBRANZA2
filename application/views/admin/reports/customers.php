@@ -33,7 +33,7 @@
         <tbody>
           <?php if (isset($customers)) : foreach ($customers as $ct) : ?>
               <tr>
-                <td><?php echo $ct->dni ?></td>
+                <td><?php echo $ct->ci ?></td>
                 <td><?php echo $ct->customer ?></td>
                 <td>
                   <a href="<?php echo site_url('admin/reports/customer_pdf/' . $ct->id); ?>" target="_blank" class="btn btn-sm btn-secondary shadow-sm"><i class="fas fa-eye fa-sm"></i> Ver préstamos</a>

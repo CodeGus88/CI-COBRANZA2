@@ -15,7 +15,7 @@ class Payments_m extends CI_Model {
 
   public function getPaymentsAll()
   {
-    $this->db->select("li.id, c.dni, concat(c.first_name,' ',c.last_name) AS name_cst, l.id AS loan_id, li.pay_date, li.num_quota, li.fee_amount");
+    $this->db->select("li.id, c.ci, concat(c.first_name,' ',c.last_name) AS name_cst, l.id AS loan_id, li.pay_date, li.num_quota, li.fee_amount");
     $this->db->from('loan_items li');
     $this->db->join('loans l', 'l.id = li.loan_id', 'left');
     $this->db->join('customers c', 'c.id = l.customer_id', 'left');
@@ -27,7 +27,7 @@ class Payments_m extends CI_Model {
 
   public function getPayments($user_id)
   {
-    $this->db->select("li.id, c.dni, concat(c.first_name,' ',c.last_name) AS name_cst, l.id AS loan_id, li.pay_date, li.num_quota, li.fee_amount");
+    $this->db->select("li.id, c.ci, concat(c.first_name,' ',c.last_name) AS name_cst, l.id AS loan_id, li.pay_date, li.num_quota, li.fee_amount");
     $this->db->from('loan_items li');
     $this->db->join('loans l', 'l.id = li.loan_id', 'left');
     $this->db->join('customers c', 'c.id = l.customer_id', 'left');
@@ -39,14 +39,14 @@ class Payments_m extends CI_Model {
   }
 
   public function getCustomersAll(){
-    $this->db->select("c.id, c.dni, CONCAT(c.first_name, ' ', c.last_name) as fullname");
+    $this->db->select("c.id, c.ci, CONCAT(c.first_name, ' ', c.last_name) as fullname");
     $this->db->from('customers c');
     $this->db->where("c.loan_status = TRUE");
     return $this->db->get()->result();
   }
 
   public function get_customers($user_id){
-    $this->db->select("c.id, c.dni, CONCAT(c.first_name, ' ', c.last_name) as fullname");
+    $this->db->select("c.id, c.ci, CONCAT(c.first_name, ' ', c.last_name) as fullname");
     $this->db->from('customers c');
     $this->db->where("c.user_id = $user_id");
     $this->db->where("c.loan_status = TRUE");
@@ -186,7 +186,7 @@ class Payments_m extends CI_Model {
   }
 
   public function getGuarantorsAll($loan_id){
-    $this->db->select("g.id, c.dni ci, CONCAT(c.first_name, ' ', c.last_name) guarantor_name");
+    $this->db->select("g.id, c.ci ci, CONCAT(c.first_name, ' ', c.last_name) guarantor_name");
     $this->db->from('customers c');
     $this->db->join('guarantors g', 'g.customer_id = c.id');
     $this->db->where(['g.loan_id'=>$loan_id]);
@@ -194,7 +194,7 @@ class Payments_m extends CI_Model {
   }
 
   public function get_guarantors($user_id, $loan_id){
-    $this->db->select("g.id, c.dni ci, CONCAT(c.first_name, ' ', c.last_name) guarantor_name");
+    $this->db->select("g.id, c.ci ci, CONCAT(c.first_name, ' ', c.last_name) guarantor_name");
     $this->db->from('customers c');
     $this->db->join('guarantors g', 'g.customer_id = c.id');
     $this->db->where(['g.loan_id'=>$loan_id, 'c.user_id'=>$user_id]);
@@ -315,7 +315,7 @@ class Payments_m extends CI_Model {
    */
   public function quotesWeekAll($start_date, $end_date)
   {
-    $this->db->select('c.id, c.dni, CONCAT(c.first_name, " " , c.last_name) customer_name, 
+    $this->db->select('c.id, c.ci, CONCAT(c.first_name, " " , c.last_name) customer_name, 
     CONCAT(u.academic_degree, " ", u.first_name, " " , u.last_name) user_name, 
     li.date, co.name as coin_name, co.short_name as coin_short_name, li.fee_amount,
     (SELECT SUM(p.amount) FROM payments p WHERE p.loan_item_id = li.id) payed');
@@ -374,7 +374,7 @@ class Payments_m extends CI_Model {
    */
   public function quotesWeek($user_id, $start_date, $end_date)
   {
-    $this->db->select('c.id, c.dni, CONCAT(c.first_name, " " , c.last_name) customer_name, 
+    $this->db->select('c.id, c.ci, CONCAT(c.first_name, " " , c.last_name) customer_name, 
     CONCAT(u.academic_degree, " ", u.first_name, " " , u.last_name) user_name, 
     li.date, , co.name as coin_name, co.short_name as coin_short_name, li.fee_amount,
     (SELECT SUM(p.amount) FROM payments p WHERE p.loan_item_id = li.id) payed');

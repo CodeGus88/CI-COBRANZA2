@@ -17,7 +17,7 @@
           echo "</select>";
       endif; endif ?>
       
-      <?php if (($LOAN_CREATE && $LOAN_ITEM_CREATE) || ($AUTHOR_LOAN_CREATE && $AUTHOR_LOAN_ITEM_CREATE)) : ?>
+      <?php if ($LOAN_CREATE || $AUTHOR_LOAN_CREATE) : ?>
         <a class="d-sm-inline-block btn btn-sm btn-success shadow-sm" href="<?php echo site_url('admin/loans/edit'); ?>"><i class="fas fa-plus-circle fa-sm"></i> Nuevo préstamo</a>
       <?php endif ?>
     </div>
@@ -84,11 +84,7 @@
                   <button type="button" class="btn btn-sm <?php echo $loan->status ? 'btn-outline-danger' : 'btn-outline-success' ?> status-check"><?php echo $loan->status ? 'Pendiente' : 'Pagado' ?></button>
                 </td>
                 <td>
-                  <?php if ($LOAN_ITEM_READ || ($AUTHOR_LOAN_ITEM_READ && $loan->user_id == $this->session->userdata('user_id'))) : ?>
-                    <a href="<?php echo site_url('admin/loans/view/' . $loan->id); ?>" class="btn btn-info btn-circle btn-sm" data-toggle="ajax-modal"><i class="fas fa-info-circle"></i></a>
-                  <?php else : ?>
-                    Ninguno
-                  <?php endif ?>
+                  <a href="<?php echo site_url('admin/loans/view/' . $loan->id); ?>" class="btn btn-info btn-circle btn-sm" data-toggle="ajax-modal"><i class="fas fa-info-circle"></i></a>
                 </td>
               </tr>
             <?php endforeach; ?>

@@ -73,7 +73,7 @@ INSERT INTO `coins` (`id`, `name`, `short_name`, `symbol`, `description`) VALUES
 
 CREATE TABLE `customers` (
   `id` int(11) NOT NULL,
-  `dni` varchar(20) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL COMMENT 'ci',
+  `ci` varchar(20) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL COMMENT 'ci',
   `first_name` varchar(150) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
   `last_name` varchar(150) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
   `gender` enum('masculino','femenino','','') CHARACTER SET utf8 COLLATE utf8_spanish2_ci DEFAULT NULL,
@@ -91,7 +91,7 @@ CREATE TABLE `customers` (
 -- Volcado de datos para la tabla `customers`
 --
 
-INSERT INTO `customers` (`id`, `dni`, `first_name`, `last_name`, `gender`, `address`, `mobile`, `phone`, `business_name`, `ruc`, `company`, `loan_status`, `user_id`) VALUES
+INSERT INTO `customers` (`id`, `ci`, `first_name`, `last_name`, `gender`, `address`, `mobile`, `phone`, `business_name`, `ruc`, `company`, `loan_status`, `user_id`) VALUES
 (1, '5817517', 'MARIA FATIMA', 'DIAZ YURQUINA', 'femenino', 'BARRIO MENDEZ ARCOS', '74408809', '76185843', '', '', '', 1, 3),
 (3, '10709331', 'MARIA JULIA', 'JURADO RODRIGUEZ', 'femenino', 'BARRIO 27 DE MAYO ', '68688249', '', '', '', '', 0, 3),
 (4, '5044555', 'EDULIO', 'CARI APARICIO', 'masculino', 'b/luis de fuentes', '77873321', '', 'propio', '5044555', 'taxi', 0, 4),
@@ -2888,7 +2888,7 @@ ALTER TABLE `coins`
 --
 ALTER TABLE `customers`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `dni` (`dni`),
+  ADD UNIQUE KEY `ci` (`ci`),
   ADD KEY `FK_customers_users` (`user_id`);
 
 --

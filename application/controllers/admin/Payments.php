@@ -32,14 +32,14 @@ class Payments extends CI_Controller
 
   public function index($user_id = 0)
   {
-    $data[LOAN_UPDATE] = $this->permission->getPermission([LOAN_UPDATE], FALSE);
-    $data[LOAN_ITEM_UPDATE] = $this->permission->getPermission([LOAN_ITEM_UPDATE], FALSE);
-    $data[AUTHOR_LOAN_UPDATE] =  $this->permission->getPermission([AUTHOR_LOAN_UPDATE], FALSE);
-    $data[AUTHOR_LOAN_ITEM_UPDATE] = $this->permission->getPermission([AUTHOR_LOAN_ITEM_UPDATE], FALSE);
+    $data[PAYMENT_CREATE] = $this->permission->getPermission([PAYMENT_CREATE], FALSE);
+    // $data[LOAN_ITEM_UPDATE] = $this->permission->getPermission([LOAN_ITEM_UPDATE], FALSE);
+    $data[AUTHOR_PAYMENT_CREATE] =  $this->permission->getPermission([AUTHOR_PAYMENT_CREATE], FALSE);
+    // $data[AUTHOR_LOAN_ITEM_UPDATE] = $this->permission->getPermission([AUTHOR_LOAN_ITEM_UPDATE], FALSE);
     $data[LOAN_ITEM_READ] = $this->permission->getPermission([LOAN_ITEM_READ], FALSE);
     $data[AUTHOR_LOAN_ITEM_READ] = $this->permission->getPermission([AUTHOR_LOAN_ITEM_READ], FALSE);
     $data['payments'] = array();
-    if ($this->permission->getPermissionX([LOAN_READ, LOAN_ITEM_READ], FALSE)) {
+    if ($this->permission->getPermissionX([LOAN_ITEM_READ], FALSE)) {
       $data['users'] = $this->db->get('users')->result();
       $data['selected_user_id'] = $user_id;
       if ($user_id == 0) {
@@ -47,7 +47,7 @@ class Payments extends CI_Controller
       } else {
         $data['payments'] = $this->payments_m->getPayments($user_id);
       }
-    } elseif ($this->permission->getPermissionx([AUTHOR_LOAN_READ, AUTHOR_LOAN_ITEM_READ], FALSE)) {
+    } elseif ($this->permission->getPermissionx([AUTHOR_LOAN_ITEM_READ], FALSE)) {
       $data['payments'] = $this->payments_m->getPayments($this->user_id);
     }
     $data['subview'] = 'admin/payments/index';
@@ -59,12 +59,13 @@ class Payments extends CI_Controller
     $customer_id = $this->input->get('customer_id') ?? NULL;
     $data['default_selected_customer_id'] = $customer_id;
     $data['customers'] = array();
-    if ($this->permission->getPermissionX([LOAN_UPDATE, LOAN_ITEM_UPDATE], FALSE))
+    if ($this->permission->getPermission([PAYMENT_CREATE], FALSE))
       $data['customers'] = $this->payments_m->getCustomersAll();
-    elseif ($this->permission->getPermissionX([AUTHOR_LOAN_UPDATE, AUTHOR_LOAN_ITEM_UPDATE], FALSE)){
+    elseif ($this->permission->getPermission([AUTHOR_PAYMENT_CREATE], FALSE)){
       if($customer_id){
         if(!$this->payments_m->isAdviser($customer_id, $this->user_id)){
           echo PERMISSION_DENIED_MESSAGE;
+          return;
         }
       }
       $data['customers'] = $this->payments_m->get_customers($this->user_id);
@@ -77,9 +78,9 @@ class Payments extends CI_Controller
 
   public function ajax_get_loan($customer_id)
   {
-    if ($this->permission->getPermissionX([LOAN_UPDATE, LOAN_ITEM_UPDATE], FALSE))
+    if ($this->permission->getPermissionX([PAYMENT_CREATE], FALSE))
       $quota_data = $this->payments_m->getLoanAll($customer_id);
-    elseif ($this->permission->getPermissionX([AUTHOR_LOAN_UPDATE, AUTHOR_LOAN_ITEM_UPDATE], FALSE))
+    elseif ($this->permission->getPermissionX([AUTHOR_PAYMENT_CREATE], FALSE))
       $quota_data = $this->payments_m->getLoan($this->user_id, $customer_id);
     $search_data = ['loan' => $quota_data];
     echo json_encode($search_data); // datos leidos por javascript Ajax
@@ -88,9 +89,9 @@ class Payments extends CI_Controller
   public function ajax_get_loan_items($loan_id)
   {
     $quota_data = array();
-    if ($this->permission->getPermission([LOAN_UPDATE, LOAN_ITEM_UPDATE], FALSE))
+    if ($this->permission->getPermission([PAYMENT_CREATE], FALSE))
       $quota_data = $this->payments_m->getLoanItemsAll($loan_id);
-    elseif ($this->permission->getPermissionX([AUTHOR_LOAN_UPDATE, AUTHOR_LOAN_ITEM_UPDATE], FALSE))
+    elseif ($this->permission->getPermission([AUTHOR_PAYMENT_CREATE], FALSE))
       $quota_data = $this->payments_m->getLoanItems($this->user_id, $loan_id);
     $search_data = ['quotas' => $quota_data];
     echo json_encode($search_data); // datos leidos por javascript Ajax
@@ -99,9 +100,9 @@ class Payments extends CI_Controller
   public function ajax_get_guarantors($loan_id)
   {
     $guarantors = array();
-    if ($this->permission->getPermissionX([LOAN_UPDATE, LOAN_ITEM_UPDATE], FALSE))
+    if ($this->permission->getPermissionX([PAYMENT_CREATE], FALSE))
       $guarantors = $this->payments_m->getGuarantorsAll($loan_id);
-    elseif ($this->permission->getPermissionX([AUTHOR_LOAN_UPDATE, AUTHOR_LOAN_ITEM_UPDATE], FALSE))
+    elseif ($this->permission->getPermissionX([AUTHOR_PAYMENT_CREATE], FALSE))
       $guarantors = $this->payments_m->get_guarantors($this->user_id, $loan_id);
     $search_datax = ['guarantors' => $guarantors];
     echo json_encode($search_datax); // datos leidos por javascript Ajax
@@ -112,16 +113,16 @@ class Payments extends CI_Controller
    */
   public function save_payment()
   {
-    $LOAN_UPDATE = $this->permission->getPermission([LOAN_UPDATE], FALSE);
-    $LOAN_ITEM_UPDATE = $this->permission->getPermission([LOAN_ITEM_UPDATE], FALSE);
-    $AUTHOR_LOAN_UPDATE = $this->permission->getPermission([AUTHOR_LOAN_UPDATE], FALSE);
-    $AUTHOR_LOAN_ITEM_UPDATE = $this->permission->getPermission([AUTHOR_LOAN_ITEM_UPDATE], FALSE);
+    // $LOAN_UPDATE = $this->permission->getPermission([LOAN_UPDATE], FALSE);
+    // $AUTHOR_LOAN_UPDATE = $this->permission->getPermission([AUTHOR_LOAN_UPDATE], FALSE);
+    $PAYMENT_CREATE = $this->permission->getPermission([PAYMENT_CREATE], FALSE);
+    $AUTHOR_PAYMENT_CREATE = $this->permission->getPermission([AUTHOR_PAYMENT_CREATE], FALSE);
     // Guardar
     $customer_id = $this->input->post('customer_id');
     if ($customer_id != null) { // valida que no se acceda desde la url sin datos de entrada
-      if ($LOAN_UPDATE && $LOAN_ITEM_UPDATE)
+      if ($AUTHOR_PAYMENT_CREATE)
         $data['customerName'] = $this->payments_m->getCustomerByIdAll($customer_id);
-      elseif ($AUTHOR_LOAN_UPDATE && $AUTHOR_LOAN_ITEM_UPDATE)
+      elseif ($AUTHOR_PAYMENT_CREATE)
         $data['customerName'] = $this->payments_m->get_customer_by_id($this->user_id, $customer_id);
       $data['coin'] = $this->input->post('coin');
       $data['loan_id'] = $this->input->post('loan_id');
@@ -140,9 +141,9 @@ class Payments extends CI_Controller
           }
         endif;
       endif;
-      if ($LOAN_UPDATE && $LOAN_ITEM_UPDATE) {
+      if ($PAYMENT_CREATE) {
         $this->addPayment($loan_id, $cash_register_id, $quota_id, $payments, $customer_id, $data);
-      } elseif ($AUTHOR_LOAN_UPDATE && $AUTHOR_LOAN_ITEM_UPDATE) {
+      } elseif ($AUTHOR_PAYMENT_CREATE) {
         $probable_user_id = $this->payments_m->get_loan_adviser_user_id($loan_id)->id;
         if (AuthUserData::isAuthor($probable_user_id)) {
           $this->addPayment($loan_id, $cash_register_id, $quota_id, $payments, $customer_id, $data);
@@ -260,7 +261,7 @@ class Payments extends CI_Controller
   {
     $start_date = date("Y-m-d", time());
     $end_date = date("Y-m-d", strtotime($start_date . ' + 7 days'));
-    if ($this->permission->getPermission([LOAN_ITEM_READ], FALSE)) {
+    if ($this->permission->getPermission([LOAN_READ, LOAN_ITEM_READ], FALSE)) {
       if ($user_id == 0) {
         $data['user_name'] = "TODOS";
         $request = $this->payments_m->quotesWeekAll($start_date, $end_date);
@@ -273,7 +274,7 @@ class Payments extends CI_Controller
       $data['payable_expired'] = $request['payable_expired'];
       $data['payable_now'] = $request['payable_now'];
       $data['payable_next'] = $request['payable_next'];
-    } elseif ($this->permission->getPermission([AUTHOR_LOAN_ITEM_READ], FALSE)) {
+    } elseif ($this->permission->getPermission([AUTHOR_LOAN_READ, AUTHOR_LOAN_ITEM_READ], FALSE)) {
       $request = $this->payments_m->quotesWeek($this->user_id, $start_date, $end_date);
       $data['user_name'] = $this->payments_m->getUser($this->user_id)->user_name;
       $data['items'] = $request['items'];
@@ -427,7 +428,7 @@ class Payments extends CI_Controller
     if (isset($data['items'])) {
       $row++;
       foreach ($data['items'] as $item) {
-        $sheet->setCellvalue("A$row", $item->dni);
+        $sheet->setCellvalue("A$row", $item->ci);
         $sheet->mergeCells("B$row:E$row");
         $sheet->setCellvalue("B$row", $item->customer_name);
         $sheet->mergeCells("F$row:I$row");

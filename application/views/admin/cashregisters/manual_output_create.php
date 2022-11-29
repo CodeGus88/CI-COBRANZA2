@@ -25,12 +25,12 @@
         <div class="container py-3">
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label class="small mb-1">Monto en <?= $coin_short_name ?? '' ?></label>
-                    <input class="form-control" type="number" name="amount" value="<?= $amount ?>">
+                    <label class="small mb-1" for="amount">Monto en <?= $coin_short_name ?? '' ?></label>
+                    <input class="form-control" type="id" id="amount" name="amount" value="<?= $amount ?>">
                 </div>
                 <div class="form-group col-md-6">
-                    <label class="small mb-1">Descripción</label>
-                    <input class="form-control" type="text" name="description" maxlength="200" value="<?= $description ?>">
+                    <label class="small mb-1" for="description">Descripción</label>
+                    <input class="form-control" type="text" id="description" name="description" maxlength="200" value="<?= $description ?>">
                 </div>
             </div>
             <a class="btn btn-secondary pull-xs-right" type="submit" href="<?= site_url('admin/cashregisters/view/' . $cash_register_id) ?>">Cancelar</a>

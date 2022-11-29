@@ -57,7 +57,7 @@
         <tbody>
           <?php if (count($customers)) : foreach ($customers as $ct) : ?>
               <tr>
-                <td><?php echo $ct->dni ?></td>
+                <td><?php echo $ct->ci ?></td>
                 <td><?php echo $ct->first_name . " " . $ct->last_name ?></td>
                 <td><?php echo $ct->gender ?></td>
                 <td><?php echo $ct->mobile ?></td>
@@ -74,7 +74,7 @@
                         </a>
                       <?php endif ?>
                       <?php if ($CUSTOMER_DELETE || ($AUTHOR_CUSTOMER_DELETE && $ct->user_id == $this->session->userdata('user_id'))) : ?>
-                        <a onclick="return deleteConfirm(<?= $ct->id ?>, '¿Estas seguro?','¡No podrás revertir esto!  Eliminar cliente: (<?php echo $ct->dni ?>) <?php echo $ct->first_name . ' ' . $ct->last_name ?>')" class="btn btn-danger btn-circle btn-sm">
+                        <a onclick="return deleteConfirm(<?= $ct->id ?>, '¿Estas seguro?','¡No podrás revertir esto!  Eliminar cliente: (<?php echo $ct->ci ?>) <?php echo $ct->first_name . ' ' . $ct->last_name ?>')" class="btn btn-danger btn-circle btn-sm">
                           <i class="fas fa-trash" title="Eliminar"></i>
                           <a href="<?php echo site_url('admin/customers/delete/' . $ct->id); ?>" id="delete<?php echo $ct->id ?>" hidden></a>
                         </a>

@@ -24,7 +24,7 @@ class Cashregister_m extends MY_Model {
     array(
       'field' => 'description',
       'label' => 'Descripción del monto',
-      'rules' => 'required',
+      'rules' => 'required|max_length[200]',
     )
   );
 
@@ -37,7 +37,7 @@ class Cashregister_m extends MY_Model {
     array(
       'field' => 'description',
       'label' => 'descripción',
-      'rules' => 'required',
+      'rules' => 'required|max_length[200]',
     )
   );
 
@@ -50,7 +50,7 @@ class Cashregister_m extends MY_Model {
     array(
       'field' => 'description',
       'label' => 'descripción',
-      'rules' => 'required',
+      'rules' => 'required|max_length[200]',
     )
   );
 

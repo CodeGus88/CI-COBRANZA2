@@ -25,11 +25,7 @@ class Loans extends CI_Controller
   public function index($user_id = 0)
   {
     $data[LOAN_CREATE] = $this->permission->getPermission([LOAN_CREATE], FALSE);
-    $data[LOAN_ITEM_CREATE] = $this->permission->getPermission([LOAN_ITEM_CREATE], FALSE);
     $data[AUTHOR_LOAN_CREATE] = $this->permission->getPermission([AUTHOR_LOAN_CREATE], FALSE);
-    $data[AUTHOR_LOAN_ITEM_CREATE] = $this->permission->getPermission([AUTHOR_LOAN_ITEM_CREATE], FALSE);
-    $data[LOAN_ITEM_READ] = $this->permission->getPermission([LOAN_ITEM_READ], FALSE);
-    $data[AUTHOR_LOAN_ITEM_READ] = $this->permission->getPermission([AUTHOR_LOAN_ITEM_READ], FALSE);
     $data['loans'] = array();
     if ($this->permission->getPermission([LOAN_READ], FALSE)) {
       $data['users'] = $this->db->order_by('id')->get('users')->result();
@@ -48,11 +44,11 @@ class Loans extends CI_Controller
   public function edit()
   {
     if (
-      $this->permission->getPermissionX([AUTHOR_LOAN_CREATE, AUTHOR_LOAN_ITEM_CREATE], FALSE) ||
-      $this->permission->getPermissionX([LOAN_CREATE, LOAN_ITEM_CREATE], FALSE)
+      $this->permission->getPermission([AUTHOR_LOAN_CREATE], FALSE) ||
+      $this->permission->getPermission([LOAN_CREATE], FALSE)
     ) {
       $data['coins'] = $this->loans_m->getCoins();
-      if ($this->permission->getPermissionX([LOAN_CREATE, LOAN_ITEM_CREATE], FALSE)) {
+      if ($this->permission->getPermissionX([LOAN_CREATE], FALSE)) {
         $data['customers'] = $this->loans_m->getCustomersAll();
       } else {
         $data['customers'] = $this->loans_m->getCustomers($this->user_id);
@@ -75,9 +71,9 @@ class Loans extends CI_Controller
               $guarantors[$i] = $this->input->post('guarantors')[$i];
           }
         if ($loan_data['customer_id'] > 0) {
-          if ($this->permission->getPermissionX([LOAN_CREATE, LOAN_ITEM_CREATE], FALSE))
+          if ($this->permission->getPermission([LOAN_CREATE], FALSE))
             $customer = $this->customers_m->getCustomerByIdInAll($loan_data['customer_id']);
-          elseif ($this->permission->getPermissionX([AUTHOR_LOAN_CREATE, AUTHOR_LOAN_ITEM_CREATE], FALSE))
+          elseif ($this->permission->getPermissionX([AUTHOR_LOAN_CREATE], FALSE))
             $customer = $this->customers_m->getCustomerById($this->user_id, $loan_data['customer_id']);
           if ($customer != null) {
             if ($this->guarantorsValidation($customer->user_id, $guarantors)) {
@@ -111,8 +107,6 @@ class Loans extends CI_Controller
       echo PERMISSION_DENIED_MESSAGE;
     }
   } // fin edit
-
-
 
   /**
    * Valida los datos de entrada, para constatar de que el cálculo es correcto
@@ -234,10 +228,10 @@ class Loans extends CI_Controller
 
   function view($id)
   {
-    if ($this->permission->getPermissionX([LOAN_READ, LOAN_ITEM_READ], FALSE)) {
+    if ($this->permission->getPermissionX([LOAN_READ], FALSE)) {
       $data['loan'] = $this->loans_m->getLoanInAll($id);
       $data['items'] = $this->loans_m->getLoanItemsInAll($id);
-    } elseif ($this->permission->getPermissionX([AUTHOR_LOAN_READ, AUTHOR_LOAN_ITEM_READ], FALSE)) {
+    } elseif ($this->permission->getPermissionX([AUTHOR_LOAN_READ], FALSE)) {
       $data['loan'] = $this->loans_m->getLoan($this->session->userdata('user_id'), $id);
       $data['items'] = $this->loans_m->getLoanItems($this->session->userdata('user_id'), $id);
     }

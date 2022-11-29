@@ -15,14 +15,14 @@
 
     <div class="form-row">
       <div class="form-group col-6">
-        <label class="small mb-1" for="inputUsername">Nombre de la caja</label>
+        <label class="small mb-1" for="name">Nombre de la caja</label>
         <input class="form-control" id="name" type="text" name="name" placeholder="Nombre de la caja" value="<?=$name??"caja"?>" required readonly="readonly">
       </div>
       <div class="form-group col-md-6">
       <label class="small mb-1" for="inputUsername">Selecciona una moneda</label>
         <div class="input-group mb-6">
           <div class="input-group-prepend">
-            <label class="input-group-text" for="inputGroupSelect01">$</label>
+            <label class="input-group-text" for="coin_id">$</label>
           </div>
           <select class="custom-select" id="coin_id" name="coin_id" required>
             <?php foreach($coins as $coin) :?>
@@ -36,11 +36,11 @@
     <div class="form-row">
 
       <div class="form-group col-md-6">
-        <label class="small mb-1" for="inputUsername">Monto de apertura</label>
+        <label class="small mb-1" for="amount">Monto de apertura</label>
         <input class="form-control" id="amount" type="number" name="amount" min="1" required>
       </div>
       <div class="form-group col-md-6">
-        <label class="small mb-1" for="exampleFormControlTextarea1">Descripción del monto</label>
+        <label class="small mb-1" for="description">Descripción del monto</label>
         <input class="form-control" id="description" type="text" name="description" value="Por apertura de caja" required>
       </div>
     </div>

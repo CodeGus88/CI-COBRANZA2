@@ -22,7 +22,7 @@
     <?php echo form_open('admin/loans/edit', 'id="loan_form"'); ?>
     <div class="form-row">
       <div class="form-group col-12 col-md-12">
-        <label class="small mb-1">Cliente</label>
+        <label class="small mb-1" for="customer_id">Cliente</label>
         <div class="input-group">
           <select class="form-control form-select" id="customer_id" name="customer_id" onchange="loadGuarantorsOptions()">
             <option value="0" selected="selected">...</option>
@@ -30,7 +30,7 @@
               <?php if ($customer->loan_status == FALSE) : ?>
                 <option value="<?php echo $customer->id ?>">
                   <?php
-                  echo  $customer->dni . " | " . $customer->fullname ?>
+                  echo  $customer->ci . " | " . $customer->fullname ?>
                 </option>
               <?php endif ?>
             <?php endforeach ?>
@@ -41,7 +41,7 @@
     </div>
     <div class="form-row">
       <div class="form-group col-12 col-md-12">
-        <label class="small mb-1">Garantes</label>
+        <label class="small mb-1" for="guarantors">Garantes</label>
         <div class="input-group">
           <select id="guarantors" class="form-control form-select" name="guarantors[]" multiple="multiple">
           </select>
@@ -57,11 +57,11 @@
     </div>
     <div class="form-row">
       <div class="form-group col-12 col-md-4">
-        <label class="small mb-1">Monto préstamo (capital)</label>
+        <label class="small mb-1" for="credit_amount">Monto préstamo (capital)</label>
         <input class="form-control" id="credit_amount" type="number" name="credit_amount" step="none" min="1" value="<?= $credit_amount ?? '' ?>">
       </div>
       <div class="form-group col-12 col-md-4">
-        <label class="small mb-1">Tasa de interés %</label>
+        <label class="small mb-1" for="in_amount">Tasa de interés %</label>
         <select class="form-control" type="number" id="in_amount" name="interest_amount">
           <option value="10">10%</option>
           <option value="11">11%</option>
@@ -77,7 +77,7 @@
         </select>
       </div>
       <div class="form-group col-12 col-md-4">
-        <label class="small mb-1">Modalidad de pago</label>
+        <label class="small mb-1" for="payment_m">Modalidad de pago</label>
         <select class="form-control" id="payment_m" name="payment_m">
           <option value="diario">Diario</option>
           <option value="semanal">Semanal</option>
@@ -89,17 +89,17 @@
     <div class="form-row">
 
       <div class="form-group col-12 col-md-4">
-        <label class="small mb-1">Tiempo (meses)</label>
+        <label class="small mb-1" for="time">Tiempo (meses)</label>
         <input class="form-control" min="1" id="time" type="number" name="time">
       </div>
 
       <div class="form-group col-12 col-md-4">
-        <label class="small mb-1">Nro cuotas</label>
+        <label class="small mb-1" for="num_fee">Nro cuotas</label>
         <input class="form-control" id="num_fee" type="number" name="num_fee" readonly="readonly">
       </div>
 
       <div class="form-group col-12 col-md-4">
-        <label class="small mb-1">Tipo moneda</label>
+        <label class="small mb-1" for="coin_id">Tipo moneda</label>
         <select class="form-control" id="coin_id" name="coin_id">
           <?php foreach ($coins as $coin) : ?>
             <option <?php if (strtolower($coin->name) == 'bolivianos') echo 'selected' ?> value="<?php echo $coin->id ?>"><?php echo $coin->short_name ?></option>
@@ -108,12 +108,12 @@
       </div>
 
       <div class="form-group col-12 col-md-4">
-        <label class="small mb-1" id="cash_register_update">Caja de extracción</label>
+        <label class="small mb-1" id="cash_register_update" for="cash_register_id">Caja de extracción</label>
         <select class="form-control" id="cash_register_id" name="cash_register_id">
         </select>
       </div>
       <div class="form-group col-12 col-md-4">
-        <label class="small mb-1">Fecha emisión</label>
+        <label class="small mb-1" for="date">Fecha emisión</label>
         <input class="form-control" id="date" type="date" name="date" value="<?= $date ?? '' ?>">
       </div>
     </div>

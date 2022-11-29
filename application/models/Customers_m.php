@@ -12,44 +12,44 @@ class Customers_m extends MY_Model implements IAuthor {
 
   public $customer_rules = array(
     array(
-      'field' => 'dni',
+      'field' => 'ci',
       'label' => 'CI',
-      'rules' => 'trim|required|is_unique[customers.dni]',
+      'rules' => 'trim|required|is_unique[customers.ci]|max_length[20]',
     ),
     array(
       'field' => 'first_name',
       'label' => 'nombre(s)',
-      'rules' => 'trim|required'
+      'rules' => 'trim|required|max_length[150]'
     ),
     array(
       'field' => 'last_name',
       'label' => 'apellido(s)',
-      'rules' => 'trim|required'
+      'rules' => 'trim|required|max_length[150]'
     )
   );
 
   public $customer_rules_x = array(
     array(
-      'field' => 'dni',
+      'field' => 'ci',
       'label' => 'CI',
-      'rules' => 'trim|required',
+      'rules' => 'trim|required|max_length[20]',
     ),
     array(
       'field' => 'first_name',
       'label' => 'nombre(s)',
-      'rules' => 'trim|required'
+      'rules' => 'trim|required|max_length[150]'
     ),
     array(
       'field' => 'last_name',
       'label' => 'apellido(s)',
-      'rules' => 'trim|required'
+      'rules' => 'trim|required|max_length[150]'
     )
   );
 
   public function get_new()
   {
     $customer = new stdClass(); //clase vacia
-    $customer->dni = '';
+    $customer->ci = '';
     $customer->first_name = '';
     $customer->last_name = '';
     $customer->gender = 'none';
@@ -57,7 +57,7 @@ class Customers_m extends MY_Model implements IAuthor {
     $customer->mobile = '';
     $customer->phone = '';
     $customer->business_name = '';
-    $customer->ruc = '';
+    $customer->nit = '';
     $customer->company = '';
     $customer->user_id = '';
     return $customer;

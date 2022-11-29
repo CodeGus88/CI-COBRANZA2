@@ -22,7 +22,7 @@
               <?php foreach ($customers as $customer) : ?>
                 <?php $selected = ($customer->id == $default_selected_customer_id) ? 'selected' : ''; ?>
                 <option value="<?php echo $customer->id ?>" <?= $selected ?>>
-                  <?php echo  $customer->dni . " | " . $customer->fullname ?>
+                  <?php echo  $customer->ci . " | " . $customer->fullname ?>
                 </option>
               <?php endforeach ?>
             </select>

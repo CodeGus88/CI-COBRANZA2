@@ -18,12 +18,12 @@
         endif;
       endif;
       ?>
-      <?php if (($LOAN_ITEM_READ) || ($AUTHOR_LOAN_ITEM_READ)) : 
+      <?php if ($LOAN_ITEM_READ || $AUTHOR_LOAN_ITEM_READ) : 
         $parameter = (isset($selected_user_id))?(($selected_user_id != 0)?$selected_user_id:''):'';  
       ?>
         <a href="<?php echo site_url("admin/payments/quotes_week/$parameter") ?>" class="btn btn-sm btn-info shadow-sm" data-toggle="ajax-modal"><i class="fas fa-eye fa-sm"></i> Semana</a>
       <?php endif ?>
-      <?php if (($AUTHOR_LOAN_UPDATE && $AUTHOR_LOAN_ITEM_UPDATE) || ($LOAN_UPDATE && $LOAN_ITEM_UPDATE)) : ?>
+      <?php if ($PAYMENT_CREATE || $AUTHOR_PAYMENT_CREATE) : ?>
         <a class="d-sm-inline-block btn btn-sm btn-success shadow-sm" href="<?php echo site_url('admin/payments/edit'); ?>"><i class="fas fa-plus-circle fa-sm"></i> Realizar Pago</a>
       <?php endif ?>
     </div>
@@ -65,12 +65,12 @@
         <tbody>
           <?php if (count($payments)) : foreach ($payments as $py) : ?>
               <tr>
-                <td><?php echo $py->dni ?></td>
-                <td><?php echo $py->name_cst ?></td>
-                <td><?php echo $py->loan_id ?></td>
-                <td><?php echo $py->num_quota ?></td>
-                <td><?php echo $py->fee_amount ?></td>
-                <td><?php echo $py->pay_date ?></td>
+                <td><?= $py->ci ?></td>
+                <td><?= $py->name_cst ?></td>
+                <td><?= $py->loan_id ?></td>
+                <td><?= $py->num_quota ?></td>
+                <td><?= $py->fee_amount ?></td>
+                <td><?= $py->pay_date ?></td>
               </tr>
             <?php endforeach; ?>
           <?php else : ?>
