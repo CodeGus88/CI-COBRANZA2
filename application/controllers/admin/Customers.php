@@ -21,7 +21,7 @@ class Customers extends CI_Controller
     $this->permission = new Permission($this->permission_m, $this->user_id);
   }
 
-  public function index($user_id = null)
+  public function index()
   {
     // permisos del usuario [para la vista]
     $data[CUSTOMER_UPDATE] = $this->permission->getPermission([CUSTOMER_UPDATE], FALSE);
@@ -31,20 +31,46 @@ class Customers extends CI_Controller
     $data[AUTHOR_CUSTOMER_DELETE] = $this->permission->getPermission([AUTHOR_CUSTOMER_DELETE], FALSE);
     $data[AUTHOR_CUSTOMER_CREATE] = $this->permission->getPermission([AUTHOR_CUSTOMER_CREATE], FALSE);
     // fin permisos del usuario [para la vista]
-    $data['customers'] = Array();
-    if($this->permission->getPermission([CUSTOMER_READ], FALSE)){
+    if($this->permission->getPermission([CUSTOMER_READ], FALSE))
       $data['users'] = $this->db->order_by('id')->get('users')->result();
-      $data['selected_user_id'] = $user_id;
-      if($user_id=='all'){
-        $data['customers'] = $this->customers_m->getCustomers();
-      }else{
-        $data['customers'] = $this->customers_m->getCustomers($user_id);
-      }
-    }elseif($this->permission->getPermission([AUTHOR_CUSTOMER_READ], FALSE)){
-      $data['customers'] = $this->customers_m->getCustomers($this->user_id);
-    }
     $data['subview'] = 'admin/customers/index';
     $this->load->view('admin/_main_layout', $data);
+  }
+
+  public function ajax_customers($user_id = null)
+  {
+    $CUSTOMER_READ = $this->permission->getPermission([CUSTOMER_READ], FALSE);
+    $AUTHOR_CUSTOMER_READ = $this->permission->getPermission([AUTHOR_CUSTOMER_READ], FALSE);
+    if(!$CUSTOMER_READ) {
+      if(!$AUTHOR_CUSTOMER_READ)
+      { $json_data = array(
+          "draw"            => intval($this->input->post('draw')),
+          "recordsTotal"    => intval(0),
+          "recordsFiltered" => intval(0),
+          "data"            => [], 
+        );
+        echo json_encode($this->json_data);
+        return;
+      }else{
+        $user_id = $this->user_id;
+      }
+    }
+    $start = $this->input->post('start');
+		$length = $this->input->post('length');
+		$search = $this->input->post('search')['value']??'';
+    $columns = ['ci', 'name', 'mobile', 'company', 'loan_status', 'id'];
+    $columIndex = $this->input->post('order')['0']['column']??5;
+    $order['column'] = $columns[$columIndex]??'';
+    $order['dir'] = $this->input->post('order')['0']['dir']??'';
+    $query = $this->customers_m->getCustomers($start, $length, $search, $order, $user_id);
+    if(sizeof($query['data'])==0 && $start>0) $query = $this->customers_m->getCustomers(0, $length, $search, $order, $user_id);
+    $json_data = array(
+      "draw"            => intval($this->input->post('draw')),
+      "recordsTotal"    => intval(sizeof($query['data'])),
+      "recordsFiltered" => intval($query['recordsFiltered']),
+      "data"            => $query['data']
+    );
+    echo json_encode($json_data);
   }
 
   public function edit($id = NULL)

@@ -63,12 +63,39 @@ class Customers_m extends MY_Model implements IAuthor {
     return $customer;
   }
 
-  public function getCustomers($user_id = null){
-    $this->db->select('*');
+  // public function getCustomers($user_id = null){
+  //   $this->db->select('*');
+  //   $this->db->from('customers c');
+  //   if($user_id != 'all' && $user_id != null)
+  //     $this->db->where('c.user_id', $user_id);
+  //   return $this->db->get()->result();
+  // }
+
+  public function getCustomers($start, $length, $search, $order, $user_id)
+  {
+    $this->db->select("COUNT(c.id) recordsFiltered");
     $this->db->from('customers c');
+    $this->db->where("(c.ci LIKE '%$search%' OR CONCAT_WS('', c.first_name, c.last_name) LIKE '%$search%' OR
+    c.company LIKE '%$search%' OR c.mobile LIKE '%$search%' OR c.loan_status LIKE '%$search%')");
     if($user_id != 'all' && $user_id != null)
       $this->db->where('c.user_id', $user_id);
-    return $this->db->get()->result();
+    $data['recordsFiltered'] = $this->db->get()->row()->recordsFiltered??0;
+
+    $this->db->select("c.id, c.ci, c.first_name, c.last_name, c.mobile, c.company, c.loan_status, c.user_id");
+    $this->db->from('customers c');
+    $this->db->where("(c.ci LIKE '%$search%' OR CONCAT_WS(' ', c.first_name, c.last_name) LIKE '%$search%' OR
+    c.company LIKE '%$search%' OR c.mobile LIKE '%$search%' OR c.loan_status LIKE '%$search%')");
+    if($user_id != 'all' && $user_id != null)
+      $this->db->where('c.user_id', $user_id);
+    if($order['column'] == 'name')
+    {
+      $this->db->order_by('c.first_name', $order['dir']);
+      $this->db->order_by('c.last_name', $order['dir']);
+    } else
+      $this->db->order_by($order['column'], $order['dir']);
+    $this->db->limit($length, $start);
+    $data['data'] = $this->db->get()->result()??[];
+    return $data;
   }
 
   public function getCustomerByIdInAll($customer_id){

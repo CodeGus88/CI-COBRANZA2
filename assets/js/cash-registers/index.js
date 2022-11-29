@@ -16,7 +16,7 @@ function loadData() {
             'processing': true,
             'serverSide': true,
             'ajax': {
-                "url": base_url + "admin/cashregisters/ajax_cash_registers/" + user_id,
+                "url": base_url + "admin/cashregisters/ajax_cash_registers" + user_id,
                 "type": "POST"
             },
             'columns': [

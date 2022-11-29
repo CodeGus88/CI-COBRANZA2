@@ -76,7 +76,7 @@
     </div>
     <div class="float-right">
       <a href="<?php echo site_url('admin/customers/'); ?>" class="btn btn-dark">Cancelar</a>
-      <button class="btn btn-primary" type="submit">Registrar cliente</button>
+      <button class="btn btn-primary" type="submit">Guardar</button>
     </div>
     <?= form_close() ?>
   </div>
