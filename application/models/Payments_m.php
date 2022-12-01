@@ -38,6 +38,36 @@ class Payments_m extends CI_Model {
     return $this->db->get()->result();
   }
 
+  public function findPayedLoanItems($start, $length, $search, $order, $user_id)
+  {
+    $this->db->select("COUNT(li.id) recordsFiltered");
+    $this->db->from('loan_items li');
+    $this->db->join('loans l', 'l.id = li.loan_id', 'left');
+    $this->db->join('customers c', 'c.id = l.customer_id', 'left');
+    $this->db->join('users u', 'u.id = c.user_id', 'left');
+    $this->db->where("(c.ci LIKE '%$search%' OR CONCAT(c.first_name,' ',  c.last_name) LIKE '%$search%' OR
+    l.id LIKE '%$search%' OR li.num_quota LIKE '%$search%' OR li.fee_amount LIKE '%$search%' OR li.pay_date LIKE '%$search%')");
+    $this->db->where('li.status', 0);
+    if($user_id != 'all' && $user_id != null)
+      $this->db->where('c.user_id', $user_id);
+    $data['recordsFiltered'] = $this->db->get()->row()->recordsFiltered??0;
+
+    $this->db->select("li.id, c.ci, CONCAT(c.first_name,' ',c.last_name) AS name_cst, l.id AS loan_id, li.pay_date, li.num_quota, li.fee_amount");
+    $this->db->from('loan_items li');
+    $this->db->join('loans l', 'l.id = li.loan_id', 'left');
+    $this->db->join('customers c', 'c.id = l.customer_id', 'left');
+    $this->db->join('users u', 'u.id = c.user_id', 'left');
+    $this->db->where("(c.ci LIKE '%$search%' OR CONCAT(c.first_name,' ',  c.last_name) LIKE '%$search%' OR
+    l.id LIKE '%$search%' OR li.num_quota LIKE '%$search%' OR li.fee_amount LIKE '%$search%' OR li.pay_date LIKE '%$search%')");
+    $this->db->where('li.status', 0);
+    if($user_id != 'all' && $user_id != null)
+      $this->db->where('c.user_id', $user_id);
+    $this->db->order_by($order['column'], $order['dir']);
+    $this->db->limit($length, $start);
+    $data['data'] = $this->db->get()->result()??[];
+    return $data;
+  }
+
   public function getCustomersAll(){
     $this->db->select("c.id, c.ci, CONCAT(c.first_name, ' ', c.last_name) as fullname");
     $this->db->from('customers c');

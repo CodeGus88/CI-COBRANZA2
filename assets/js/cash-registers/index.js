@@ -3,9 +3,9 @@ function loadData() {
     $(document).ready(function () {
         // Consultar cuotas del préstamo
         if(document.getElementById( "userSelector" ))
-            user_id = document.getElementById('userSelector').value != 'all'?'/'+document.getElementById('userSelector').value:'';
+            user_id = document.getElementById('userSelector').value != null?'/'+document.getElementById('userSelector').value:'';
         else
-            user_id = null;
+            user_id = '';
         $("#cash-registers").dataTable().fnDestroy();
         $('#cash-registers').dataTable({
             "lengthMenu": [[10, 25, 50, 75, 100], [10, 25, 50, 75, 100]],

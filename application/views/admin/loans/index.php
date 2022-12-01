@@ -3,20 +3,17 @@
   <div class="card-header d-flex align-items-center justify-content-between py-3">
     <h6 class="m-0 font-weight-bold text-primary">Lista de préstamos</h6>
     <div>
-      <?php if (isset($users)) : if (sizeof($users) > 0) :
-          echo "<select class='custom-select-sm btn-outline-secondary' onchange='location = this.value;'>";
-            $url = site_url('admin/loans');
-            $selected = ($selected_user_id == 0)?'selected':'';
-            echo "<option value='$url' $selected>TODOS</option>";
-            foreach($users as $user){
-              $url = site_url("admin/loans/index/$user->id");
-              $selected = ($selected_user_id == $user->id)?'selected':'';
-              $user_name = "$user->academic_degree $user->first_name $user->last_name";
-              echo "<option value='$url' $selected>$user_name</option>";
-            }
-          echo "</select>";
-      endif; endif ?>
-      
+      <?php
+      if (isset($users)) : ?>
+        <select class="custom-select-sm btn-outline-secondary" id="user_id">
+          <option value="all" selected>TODOS</option>
+          <?php foreach ($users as $user) : ?>
+            <option value="<?= $user->id ?>" <?=($this->session->userdata('user_id') == $user->id)?'selected':''?>>
+              <?= "$user->academic_degree $user->first_name $user->last_name" ?>
+            </option>
+          <?php endforeach ?>
+        </select>
+      <?php endif ?>
       <?php if ($LOAN_CREATE || $AUTHOR_LOAN_CREATE) : ?>
         <a class="d-sm-inline-block btn btn-sm btn-success shadow-sm" href="<?php echo site_url('admin/loans/edit'); ?>"><i class="fas fa-plus-circle fa-sm"></i> Nuevo préstamo</a>
       <?php endif ?>
@@ -40,13 +37,12 @@
         </button>
       </div>
     <?php endif ?>
-
     <div class="table-responsive">
-      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+      <table class="table table-bordered" id="loansTable" width="100%" cellspacing="0">
         <thead>
           <tr>
             <th>N° Prest.</th>
-            <th>cliente</th>
+            <th class="col-5">Cliente</th>
             <th>Monto credito</th>
             <th>Monto interes</th>
             <th>Monto total</th>
@@ -55,48 +51,12 @@
             <th>Acciones</th>
           </tr>
         </thead>
-        <tbody>
-          <?php if (count($loans)) : foreach ($loans as $loan) : ?>
-              <tr>
-                <?php
-                $time = 0; // en meses
-                if (strtolower($loan->payment_m) == 'mensual') {
-                  $time = $loan->num_fee / 1;
-                } else if (strtolower($loan->payment_m) == 'quincenal') {
-                  $time = $loan->num_fee / 2;
-                } else if (strtolower($loan->payment_m) == 'semanal') {
-                  $time = $loan->num_fee / 4;
-                } else if (strtolower($loan->payment_m) == 'diario') {
-                  $time = $loan->num_fee / 30;
-                }
-                $I = $loan->credit_amount * ($loan->interest_amount / 100) * $time;
-                $total = $loan->credit_amount + $I;
-                ?>
-                <td><?php echo $loan->id ?></td>
-                <td><?php echo $loan->customer ?></td>
-                <td><?php echo round($loan->credit_amount, 2) ?></td>
-                <td>
-                  <?php echo round($I, 2); ?>
-                </td>
-                <td><?php echo round($total, 2); ?></td>
-                <td style="text-transform:uppercase;"><?php echo $loan->short_name ?></td>
-                <td>
-                  <button type="button" class="btn btn-sm <?php echo $loan->status ? 'btn-outline-danger' : 'btn-outline-success' ?> status-check"><?php echo $loan->status ? 'Pendiente' : 'Pagado' ?></button>
-                </td>
-                <td>
-                  <a href="<?php echo site_url('admin/loans/view/' . $loan->id); ?>" class="btn btn-info btn-circle btn-sm" data-toggle="ajax-modal"><i class="fas fa-info-circle"></i></a>
-                </td>
-              </tr>
-            <?php endforeach; ?>
-          <?php else : ?>
-            <tr>
-              <td colspan="8" class="text-center">No existen prestamos para mostrar</td>
-            </tr>
-          <?php endif; ?>
-        </tbody>
+        <tbody></tbody>
       </table>
     </div>
   </div>
 </div>
 
 <div class="modal fade" id="myModal" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"></div>
+
+<script src="<?= site_url('assets/js/loans/index.js') ?>"></script>

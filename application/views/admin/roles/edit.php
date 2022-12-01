@@ -14,12 +14,12 @@
         <?= form_open($post??'') ?>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label class="small mb-1">Nombre del rol</label>
-                    <input class="form-control" type="text" name="name" value="<?= $role->name?? '' ?>" minlength="1" maxlength="30">
+                    <label class="small mb-1" for="name">Nombre del rol</label>
+                    <input class="form-control" type="text" id="name" name="name" value="<?= $role->name?? '' ?>" minlength="1" maxlength="30">
                 </div>
                 <div class="form-group col-md-6">
-                    <label class="small mb-1">Descripción</label>
-                    <input class="form-control" type="text" name="description" value="<?= $role->description?? '' ?>" maxlength="250">
+                    <label class="small mb-1" for="description">Descripción</label>
+                    <input class="form-control" type="text" id="description" name="description" value="<?= $role->description?? '' ?>" maxlength="250">
                 </div>
             </div>
 

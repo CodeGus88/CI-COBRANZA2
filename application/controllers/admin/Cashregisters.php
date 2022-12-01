@@ -21,7 +21,10 @@ class Cashregisters extends CI_Controller {
 
   public function index()
   {
-    if($this->permission->getPermission([CASH_REGISTER_READ], FALSE))
+    $CASH_REGISTER_READ = $this->permission->getPermission([CASH_REGISTER_READ], FALSE);
+    $AUTHOR_CASH_REGISTER_READ = $this->permission->getPermission([AUTHOR_CASH_REGISTER_READ], FALSE);
+    if(!$CASH_REGISTER_READ && !$AUTHOR_CASH_REGISTER_READ) show_error("You don't have access to this site", 403, 'DENIED ACCESS');
+    if($CASH_REGISTER_READ)
       $data['users'] = $this->db->order_by('id')->get('users')->result();
     $data['subview'] = 'admin/cashregisters/index';
     $data[CASH_REGISTER_CREATE] = $this->permission->getPermission([CASH_REGISTER_CREATE], FALSE);
@@ -29,7 +32,7 @@ class Cashregisters extends CI_Controller {
     $this->load->view('admin/_main_layout', $data);
   }
 
-  public function ajax_cash_registers($user_id = 'all')
+  public function ajax_cash_registers($user_id = null)
   {
     $CASH_REGISTER_READ = $this->permission->getPermission([CASH_REGISTER_READ], FALSE);
     $AUTHOR_CASH_REGISTER_READ = $this->permission->getPermission([AUTHOR_CASH_REGISTER_READ], FALSE);
@@ -39,9 +42,9 @@ class Cashregisters extends CI_Controller {
       else{
         $json_data = array(
           "draw"            => intval($this->input->post('draw')),
-          "recordsTotal"    => intval(0), // total registros para mostrar
-          "recordsFiltered" => intval(0), // total registro en base de datos
-          "data"            => [], // Registros 
+          "recordsTotal"    => intval(0),
+          "recordsFiltered" => intval(0),
+          "data"            => [],
         );
         echo json_encode($json_data);
         return;
@@ -50,7 +53,7 @@ class Cashregisters extends CI_Controller {
     $start = $this->input->post('start');
 		$length = $this->input->post('length');
 		$search = $this->input->post('search')['value']??'';
-    $columns = ['name', 'user_name', 'total_amount', 'opening_date', 'closing_date', 'status', null];
+    $columns = ['name', 'user_name', 'total_amount', 'opening_date', 'closing_date', 'status', ''];
     $columIndex = $this->input->post('order')['0']['column']??6;
     $order['column'] = $columns[$columIndex]??'';
     $order['dir'] = $this->input->post('order')['0']['dir']??'';
@@ -68,8 +71,9 @@ class Cashregisters extends CI_Controller {
   /**
    * Muestra el formulario
    */
-  public function create(){
-    $this->permission->getPermission([CASH_REGISTER_CREATE, AUTHOR_CASH_REGISTER_CREATE], TRUE);
+  public function create()
+  {
+    if(!$this->permission->getPermission([CASH_REGISTER_CREATE, AUTHOR_CASH_REGISTER_CREATE], FALSE)) show_error("You don't have access to this site", 403, 'DENIED ACCESS');
     $this->form_validation->set_rules($this->cashregister_m->rules);
     if ($this->form_validation->run() == TRUE) {
       $data['name'] = $this->input->post('name');
@@ -106,6 +110,7 @@ class Cashregisters extends CI_Controller {
   public function view($cash_register_id){
     $CASH_REGISTER_READ = $this->permission->getPermission([CASH_REGISTER_READ], FALSE);
     $AUTHOR_CASH_REGISTER_READ = $this->permission->getPermission([AUTHOR_CASH_REGISTER_READ], FALSE);
+    if(!$CASH_REGISTER_READ && !$AUTHOR_CASH_REGISTER_READ) show_error("You don't have access to this site", 403, 'DENIED ACCESS');
     $IS_OPEN = $this->cashregister_m->cashRegisterIsOpen($cash_register_id);
     if(!$CASH_REGISTER_READ) {
       if(!($AUTHOR_CASH_REGISTER_READ && $this->cashregister_m->isAuthor($cash_register_id, $this->user_id)))
@@ -283,7 +288,7 @@ class Cashregisters extends CI_Controller {
         $this->load->view('admin/_main_layout', $data);
       }
     }else{
-      echo PERMISSION_DENIED_MESSAGE;
+      show_error("You don't have access to this site", 403, 'DENIED ACCESS');
     }
       
   }
@@ -324,7 +329,7 @@ class Cashregisters extends CI_Controller {
       }
 
     }else{
-      echo loadErrorMessage("Permiso denegado");
+      show_error("You don't have access to this site", 403, 'DENIED ACCESS');
     }
   }
 
@@ -338,7 +343,7 @@ class Cashregisters extends CI_Controller {
       $this->cashregister_m->closeCashRegister($cash_register_id, $data);
       redirect("admin/cashregisters/view/$cash_register_id");
     }else{
-      echo PERMISSION_DENIED_MESSAGE;
+      show_error("You don't have access to this site", 403, 'DENIED ACCESS');
     }
   }
 }

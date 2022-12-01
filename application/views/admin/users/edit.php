@@ -14,16 +14,16 @@
 
         <div class="form-row">
             <div class="form-group col-md-4">
-                <label class="small mb-1">Ingresar Nombre</label>
-                <input class="form-control" id="inputUsername" style="text-transform:uppercase" type="text" name="first_name" value="<?= $user->first_name ?>">
+                <label class="small mb-1" for="first_name">Ingresar Nombre</label>
+                <input class="form-control" id="first_name" style="text-transform:uppercase" type="text" name="first_name" value="<?= $user->first_name ?>">
             </div>
             <div class="form-group col-md-4">
-                <label class="small mb-1">Ingresar Apellidos</label>
-                <input class="form-control" id="inputUsername" style="text-transform:uppercase" type="text" name="last_name" value="<?= $user->last_name ?>">
+                <label class="small mb-1" for="last_name">Ingresar Apellidos</label>
+                <input class="form-control" id="last_name" style="text-transform:uppercase" type="text" name="last_name" value="<?= $user->last_name ?>">
             </div>
             <div class="form-group col-md-4">
-                <label class="small mb-1">Grado académico</label>
-                <select class="form-control" name="academic_degree" value="<?= $user->academic_degree ?>">
+                <label class="small mb-1" for="academic_degree">Grado académico</label>
+                <select class="form-control" id="academic_degree" name="academic_degree" value="<?= $user->academic_degree ?>">
                     <option value="" selected>Selecciona el grado académico</option>
                     <?php foreach ($degrees as $degree) : ?>
                         <option value="<?= $degree[0] ?>" <?= $degree[0] == $user->academic_degree ? 'selected' : '' ?>><?= $degree[1] ?></option>
@@ -33,19 +33,19 @@
         </div>
         <div class="form-row">
             <div class="form-group col-md-4">
-                <label class="small mb-1">Email</label>
+                <label class="small mb-1" for="email">Email</label>
                 <input class="form-control" id="email" type="email" name="email" value="<?= $user->email ?>" autocomplete="nope">
             </div>
             <div class="form-group col-md-4">
-                <label class="small mb-1">Avatar</label>
-                <select class="form-control" id="avatar_selector" name="avatar" value="<?= $user->avatar ?>">
+                <label class="small mb-1" for="avatar">Avatar</label>
+                <select class="form-control" id="avatar" name="avatar" value="<?= $user->avatar ?>">
                     <?php foreach ($avatars as $avatar) : ?>
                         <option data-img_src="<?= site_url('assets/img/avatars/') . $avatar ?>" value="<?= $avatar ?>" <?= ($avatar == $user->avatar) ? 'selected' : '' ?>><?= str_replace('.png', '', $avatar) ?></option>
                     <?php endforeach ?>
                 </select>
             </div>
             <div class="form-group col-md-4">
-                <label class="small mb-1">Contraseña</label>
+                <label class="small mb-1" for="password">Contraseña</label>
                 <input class="form-control" id="password" type="password" name="password" autocomplete="new-password" value="">
             </div>
         </div>

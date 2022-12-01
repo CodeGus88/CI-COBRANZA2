@@ -32,7 +32,7 @@ class Customers extends CI_Controller
     $data[AUTHOR_CUSTOMER_CREATE] = $this->permission->getPermission([AUTHOR_CUSTOMER_CREATE], FALSE);
     // fin permisos del usuario [para la vista]
     if($this->permission->getPermission([CUSTOMER_READ], FALSE))
-      $data['users'] = $this->db->order_by('id')->get('users')->result();
+      $data['users'] = $this->db->order_by('id')->get('users')->result()??[];
     $data['subview'] = 'admin/customers/index';
     $this->load->view('admin/_main_layout', $data);
   }

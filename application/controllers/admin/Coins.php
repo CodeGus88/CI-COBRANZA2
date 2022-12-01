@@ -21,7 +21,7 @@ class Coins extends CI_Controller {
 
   public function index()
   {
-    $this->permission->getPermission([COIN_READ], TRUE);
+    if(!$this->permission->getPermission([COIN_READ], FALSE)) show_error("You don't have access to this site", 403, 'DENIED ACCESS');
     $data[COIN_UPDATE] = $this->permission->getPermission([COIN_UPDATE], FALSE);
     $data['coins'] = $this->coins_m->get();
     $data['subview'] = 'admin/coins/index';

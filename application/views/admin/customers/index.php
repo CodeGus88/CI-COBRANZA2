@@ -3,11 +3,12 @@
     <h6 class="m-0 font-weight-bold text-primary">Lista de clientes</h6>
     <div>
       <?php
-      if (isset($users)) : ?>
-        <select class="custom-select-sm btn-outline-secondary" name="user_id" id="user_id">
+      if (isset($users)) : echo "hola a todos";?>
+      
+        <select class="custom-select-sm btn-outline-secondary" id="user_id">
           <option value="all" selected>TODOS</option>
           <?php foreach ($users as $user) : ?>
-            <option value="<?=$user->id?>">
+            <option value="<?=$user->id?>" <?=($this->session->userdata('user_id') == $user->id)?'selected':''?>>
             <?="$user->academic_degree $user->first_name $user->last_name"?>
             </option>
           <?php endforeach ?>
@@ -51,7 +52,6 @@
     </div>
   </div>
 </div>
-
 <script >
   const CUSTOMER_UPDATE = <?=$CUSTOMER_UPDATE?'true':'false';?>;
   const CUSTOMER_DELETE = <?=$CUSTOMER_DELETE?'true':'false';?>;

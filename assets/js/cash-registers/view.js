@@ -18,21 +18,18 @@ function tableBuilder(tableName, url, columns, lengthMenu) {
     });
 }
 
-const cash_register_id = document.getElementById('id').value;
+const cash_register_id = document.getElementById('id').value??0;
 const lengthMenu = [2, 5, 10, 20, 50, 100];
 const method = "${method}";
 const partialUrl = base_url + `admin/cashregisters/${method}/${cash_register_id}`;
 
 // Para las tablas manualInputs y manualOutputs
 const manual_columns = [
-    { data: 'id', 'sClass': 'text-center'},
+    { data: 'id', sClass: 'text-center'},
     { data: 'amount'},
     { data: 'description'},
     { data: 'date'}
 ];
-
-// tableBuilder("manual-inputs", partialUrl.replace(method, 'ajax_manual_inputs'), manual_columns, lengthMenu);
-// tableBuilder("manual-outputs", partialUrl.replace(method, 'ajax_manual_outputs'), manual_columns, lengthMenu);
 
 // operaciones;
 const document_payment_colums = [

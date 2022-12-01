@@ -8,7 +8,8 @@
           echo "<option value='all'>TODOS</option>";
           foreach ($users as $user) :
             $user_name = "$user->academic_degree $user->first_name $user->last_name";
-            echo "<option value='$user->id'>$user_name</option>";
+            $selected = ($this->session->userdata('user_id') == $user->id)?'selected':'';
+            echo "<option value='$user->id' $selected>$user_name</option>";
           endforeach;
           echo "</select>";
         endif;

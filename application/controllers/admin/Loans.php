@@ -4,7 +4,6 @@ include(APPPATH . "/tools/UserPermission.php");
 
 class Loans extends CI_Controller
 {
-
   private $permission;
   private $user_id;
 
@@ -22,24 +21,53 @@ class Loans extends CI_Controller
     $this->permission = new Permission($this->permission_m, $this->user_id);
   }
 
-  public function index($user_id = 0)
+  public function index()
   {
     $data[LOAN_CREATE] = $this->permission->getPermission([LOAN_CREATE], FALSE);
     $data[AUTHOR_LOAN_CREATE] = $this->permission->getPermission([AUTHOR_LOAN_CREATE], FALSE);
-    $data['loans'] = array();
-    if ($this->permission->getPermission([LOAN_READ], FALSE)) {
+    if ($this->permission->getPermission([LOAN_READ], FALSE))
       $data['users'] = $this->db->order_by('id')->get('users')->result();
-      $data['selected_user_id'] = $user_id;
-      if ($user_id == 0)
-        $data['loans'] = $this->loans_m->getLoansAll();
-      else
-        $data['loans'] = $this->loans_m->getLoans($user_id);
-    } elseif ($this->permission->getPermission([AUTHOR_LOAN_READ], FALSE)) {
-      $data['loans'] = $this->loans_m->getLoans($this->user_id);
-    }
+    if(!$data[LOAN_CREATE] && !$data[AUTHOR_LOAN_CREATE])
+      show_error("You don't have access to this site", 403, 'DENIED ACCESS');
     $data['subview'] = 'admin/loans/index';
     $this->load->view('admin/_main_layout', $data);
   }
+
+  public function ajax_loans($user_id = null){
+    $LOAN_READ = $this->permission->getPermission([LOAN_READ], FALSE);
+    $AUTHOR_LOAN_READ = $this->permission->getPermission([AUTHOR_LOAN_READ], FALSE);
+    if(!$LOAN_READ) {
+      if(!$AUTHOR_LOAN_READ)
+      { $json_data = array(
+          "draw"            => intval($this->input->post('draw')),
+          "recordsTotal"    => intval(0),
+          "recordsFiltered" => intval(0),
+          "data"            => [], 
+        );
+        echo json_encode($this->json_data);
+        return;
+      }else{
+        $user_id = $this->user_id;
+      }
+    }
+    $start = $this->input->post('start');
+		$length = $this->input->post('length');
+		$search = $this->input->post('search')['value']??'';
+    $columns = ['id', 'customer', 'credit_amount', 'interest', 'total', 'coin_short_name', 'status', ''];
+    $columIndex = $this->input->post('order')['0']['column']??7;
+    $order['column'] = $columns[$columIndex]??'';
+    $order['dir'] = $this->input->post('order')['0']['dir']??'';
+    $query = $this->loans_m->findAll($start, $length, $search, $order, $user_id);
+    if(sizeof($query['data'])==0 && $start>0) $query = $this->loans_m->findAll(0, $length, $search, $order, $user_id);
+    $json_data = array(
+      "draw"            => intval($this->input->post('draw')),
+      "recordsTotal"    => intval(sizeof($query['data'])),
+      "recordsFiltered" => intval($query['recordsFiltered']),
+      "data"            => $query['data']
+    );
+    echo json_encode($json_data);
+  }
+
 
   public function edit()
   {
@@ -226,7 +254,7 @@ class Loans extends CI_Controller
     return $valid;
   }
 
-  function view($id)
+  public function view($id)
   {
     if ($this->permission->getPermissionX([LOAN_READ], FALSE)) {
       $data['loan'] = $this->loans_m->getLoanInAll($id);

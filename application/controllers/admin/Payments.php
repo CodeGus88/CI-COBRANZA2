@@ -30,30 +30,59 @@ class Payments extends CI_Controller
     $this->permission = new Permission($this->permission_m, $this->user_id);
   }
 
-  public function index($user_id = 0)
+  public function index()
   {
     $data[PAYMENT_CREATE] = $this->permission->getPermission([PAYMENT_CREATE], FALSE);
-    // $data[LOAN_ITEM_UPDATE] = $this->permission->getPermission([LOAN_ITEM_UPDATE], FALSE);
     $data[AUTHOR_PAYMENT_CREATE] =  $this->permission->getPermission([AUTHOR_PAYMENT_CREATE], FALSE);
-    // $data[AUTHOR_LOAN_ITEM_UPDATE] = $this->permission->getPermission([AUTHOR_LOAN_ITEM_UPDATE], FALSE);
     $data[LOAN_READ] = $this->permission->getPermission([LOAN_READ], FALSE);
     $data[AUTHOR_LOAN_READ] = $this->permission->getPermission([AUTHOR_LOAN_READ], FALSE);
     $data[LOAN_ITEM_READ] = $this->permission->getPermission([LOAN_ITEM_READ], FALSE);
     $data[AUTHOR_LOAN_ITEM_READ] = $this->permission->getPermission([AUTHOR_LOAN_ITEM_READ], FALSE);
     $data['payments'] = array();
-    if ($this->permission->getPermissionX([LOAN_ITEM_READ], FALSE)) {
+    if ($this->permission->getPermission([LOAN_READ, LOAN_ITEM_READ], FALSE)) {
       $data['users'] = $this->db->get('users')->result();
-      $data['selected_user_id'] = $user_id;
-      if ($user_id == 0) {
-        $data['payments'] = $this->payments_m->getPaymentsAll();
-      } else {
-        $data['payments'] = $this->payments_m->getPayments($user_id);
-      }
-    } elseif ($this->permission->getPermissionx([AUTHOR_LOAN_ITEM_READ], FALSE)) {
+      $data['payments'] = $this->payments_m->getPaymentsAll();
+    } elseif ($this->permission->getPermission([AUTHOR_LOAN_READ, AUTHOR_LOAN_ITEM_READ], FALSE)) {
       $data['payments'] = $this->payments_m->getPayments($this->user_id);
     }
     $data['subview'] = 'admin/payments/index';
     $this->load->view('admin/_main_layout', $data);
+  }
+
+  public function ajax_payed_loan_items($user_id = null)
+  {
+    $LOAN_READ = $this->permission->getPermission([CUSTOMER_READ], FALSE);
+    $AUTHOR_LOAN_READ = $this->permission->getPermission([AUTHOR_CUSTOMER_READ], FALSE);
+    if(!$LOAN_READ) {
+      if(!$AUTHOR_LOAN_READ)
+      { $json_data = array(
+          "draw"            => intval($this->input->post('draw')),
+          "recordsTotal"    => intval(0),
+          "recordsFiltered" => intval(0),
+          "data"            => [], 
+        );
+        echo json_encode($this->json_data);
+        return;
+      }else{
+        $user_id = $this->user_id;
+      }
+    }
+    $start = $this->input->post('start');
+		$length = $this->input->post('length');
+		$search = $this->input->post('search')['value']??'';
+    $columns = ['ci', 'name_cst', 'loan_id', 'num_quota', 'fee_amount', 'pay_date', ''];
+    $columIndex = $this->input->post('order')['0']['column']??6;
+    $order['column'] = $columns[$columIndex]??'';
+    $order['dir'] = $this->input->post('order')['0']['dir']??'';
+    $query = $this->payments_m->findPayedLoanItems($start, $length, $search, $order, $user_id);
+    if(sizeof($query['data'])==0 && $start>0) $query = $this->payments_m->findPayedLoanItems(0, $length, $search, $order, $user_id);
+    $json_data = array(
+      "draw"            => intval($this->input->post('draw')),
+      "recordsTotal"    => intval(sizeof($query['data'])),
+      "recordsFiltered" => intval($query['recordsFiltered']),
+      "data"            => $query['data']
+    );
+    echo json_encode($json_data);
   }
 
   public function edit()
