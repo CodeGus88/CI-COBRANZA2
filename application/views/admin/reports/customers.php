@@ -1,6 +1,6 @@
 <div class="card shadow mb-4">
   <div class="card-header d-flex align-items-center justify-content-between py-3">
-    <h6 class="m-0 font-weight-bold text-primary">Reporte global por clientes</h6>
+    <h6 class="m-0 font-weight-bold text-primary">Reporte general por clientes</h6>
     <div class="row">
       <?php
       if (isset($users)) : if (sizeof($users) > 0) :
@@ -21,32 +21,23 @@
   </div>
 
   <div class="card-body">
+
+
+
     <div class="table-responsive">
-      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+      <table class="table table-bordered" id="customerGeneralReportTable" width="100%" cellspacing="0">
         <thead>
           <tr>
+            <th>ID</th>
             <th>CI</th>
-            <th>Nombre completo</th>
+            <th class="col-7">Cliente</th>
             <th>Acciones</th>
           </tr>
         </thead>
-        <tbody>
-          <?php if (isset($customers)) : foreach ($customers as $ct) : ?>
-              <tr>
-                <td><?php echo $ct->ci ?></td>
-                <td><?php echo $ct->customer ?></td>
-                <td>
-                  <a href="<?php echo site_url('admin/reports/customer_pdf/' . $ct->id); ?>" target="_blank" class="btn btn-sm btn-secondary shadow-sm"><i class="fas fa-eye fa-sm"></i> Ver préstamos</a>
-                </td>
-              </tr>
-            <?php endforeach; ?>
-          <?php else : ?>
-            <tr>
-              <td colspan="7" class="text-center">No existen clientes con préstamo para mostrar</td>
-            </tr>
-          <?php endif ?>
-        </tbody>
       </table>
     </div>
+
   </div>
 </div>
+
+<script src="<?= site_url() . 'assets/js/reports/customer-general-report.js' ?>"></script>

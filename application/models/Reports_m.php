@@ -167,6 +167,32 @@ class Reports_m extends CI_Model {
     return $this->db->get()->result(); 
   }
 
+  public function findCustomerReportItems($start, $length, $search, $order, $user_id)
+  {
+    $this->db->select("COUNT(c.id) recordsFiltered");
+    $this->db->from('customers c');
+    $this->db->join('users u', 'u.id = c.user_id');
+    $this->db->where("(c.id LIKE '%$search%' OR c.ci  LIKE '%$search%' OR CONCAT_WS(' ', c.first_name, c.last_name) LIKE '%$search%')");
+    $this->db->where('loan_status', 1);
+    if($user_id != 'all' && $user_id != null)
+      $this->db->where('c.user_id', $user_id);
+    $data['recordsFiltered'] = $this->db->get()->row()->recordsFiltered??0;
+
+    $this->db->select("c.id, c.ci, CONCAT(c.first_name, ' ',c.last_name) AS customer");
+    $this->db->from('customers c');
+    $this->db->join('users u', 'u.id = c.user_id');
+    $this->db->where("(c.id LIKE '%$search%' OR c.ci  LIKE '%$search%' OR CONCAT_WS(' ', c.first_name, c.last_name) LIKE '%$search%')");
+    $this->db->where('loan_status', 1);
+    if($user_id != 'all' && $user_id != null)
+      $this->db->where('c.user_id', $user_id);
+    $this->db->order_by($order['column'], $order['dir']);
+    $this->db->limit($length, $start);
+    $data['data'] = $this->db->get()->result()??[];
+
+    return $data;
+
+  }
+
   public function getReportLCAll($customer_id)
   {
     $this->db->select("l.*, CONCAT(c.first_name, ' ', c.last_name) AS customer_name, co.short_name, co.name,

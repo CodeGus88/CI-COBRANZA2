@@ -2,9 +2,6 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 include(APPPATH . "/tools/UserPermission.php");
 
-// use PhpOffice\PhpSpreadsheet\Spreadsheet;
-// use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-
 class Reports extends CI_Controller
 {
 
@@ -145,7 +142,7 @@ class Reports extends CI_Controller
     $pdf->Output('reporteFechas.pdf', 'I');
   }
 
-  public function customers($user_id = 0)
+  public function customers($user_id = null)
   {
     if ($this->permission->getPermission([LOAN_READ], FALSE)) {
       $data['users'] = $this->db->order_by('id')->get('users')->result();
@@ -162,6 +159,44 @@ class Reports extends CI_Controller
     }
     $data['subview'] = 'admin/reports/customers';
     $this->load->view('admin/_main_layout', $data);
+  }
+
+  public function ajax_report_by_customers($user_id = null)
+  {
+    $LOAN_READ = $this->permission->getPermission([CUSTOMER_READ], FALSE);
+    $AUTHOR_LOAN_READ = $this->permission->getPermission([AUTHOR_CUSTOMER_READ], FALSE);
+    if(!$LOAN_READ) {
+      if(!$AUTHOR_LOAN_READ)
+      { $json_data = array(
+          "draw"            => intval($this->input->post('draw')),
+          "recordsTotal"    => intval(0),
+          "recordsFiltered" => intval(0),
+          "data"            => [], 
+        );
+        echo json_encode($this->json_data);
+        return;
+      }else{
+        $user_id = $this->user_id;
+      }
+    }
+    $start = $this->input->post('start');
+		$length = $this->input->post('length');
+		$search = $this->input->post('search')['value']??'';
+    $columns = ['id', 'ci', 'customer',''];
+    $columIndex = $this->input->post('order')['0']['column']??3;
+    $order['column'] = $columns[$columIndex]??'';
+    $order['dir'] = $this->input->post('order')['0']['dir']??'';
+    $query = $this->reports_m->findCustomerReportItems($start, $length, $search, $order, $user_id);
+    if(sizeof($query['data'])==0 && $start>0) $query = $this->reports_m->findCustomerReportItems(0, $length, $search, $order, $user_id);
+    $json_data = array(
+      "draw"            => intval($this->input->post('draw')),
+      "recordsTotal"    => intval(sizeof($query['data'])),
+      "recordsFiltered" => intval($query['recordsFiltered']),
+      "data"            => $query['data']
+    );
+    echo json_encode($json_data);
+
+
   }
 
   public function customer_pdf($customer_id)
