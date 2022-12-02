@@ -30,9 +30,9 @@
       <table class="table table-bordered" id="roles" width="100%" cellspacing="0">
         <thead>
           <tr>
-            <th class= hidden>ID</th>
+            <th>ID</th>
             <th class="col-10">Rol</th>
-            <th class="col-2">Acciones</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>

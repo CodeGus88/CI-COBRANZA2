@@ -17,6 +17,10 @@
             </div>
         <?php } ?>
         <div class="form-row">
+        <div class="form-group col-md-12">
+                <label class="small mb-1">Identificador</label>
+                <p class="form-control"><?= $role->id ?? '' ?></p>
+            </div>
             <div class="form-group col-md-12">
                 <label class="small mb-1">Nombre del rol</label>
                 <p class="form-control"><?= $role->name ?? '' ?></p>

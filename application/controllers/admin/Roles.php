@@ -48,7 +48,7 @@ class Roles extends CI_Controller {
         $start = $this->input->post('start');
         $length = $this->input->post('length');
         $search = $this->input->post('search')['value']?? '';
-        $columns = [/*'id', */'name', 'description', null];
+        $columns = ['id', 'name', 'description', null];
         $columIndex = $this->input->post('order')['0']['column'] ?? 0;
         $order['column'] = $columns[$columIndex] ?? '';
         $order['dir'] = $this->input->post('order')['0']['dir'] ?? '';
@@ -56,9 +56,9 @@ class Roles extends CI_Controller {
         if (sizeof($query['data']) == 0 && $start > 0) $query = $this->role_m->findAll(0, $length, $search, $order);
         $json_data = array(
             "draw"            => intval($this->input->post('draw')),
-            "recordsTotal"    => intval(sizeof($query['data'])), // total registros para mostrar
-            "recordsFiltered" => intval($query['recordsFiltered']), // total registro en base de datos
-            "data"            => $query['data'], // Registros 
+            "recordsTotal"    => intval(sizeof($query['data'])),
+            "recordsFiltered" => intval($query['recordsFiltered']),
+            "data"            => $query['data'],
         );
         echo json_encode($json_data);
     }
