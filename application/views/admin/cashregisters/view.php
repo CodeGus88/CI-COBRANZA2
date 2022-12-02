@@ -57,7 +57,7 @@
                             $url = $cash_register->status ? site_url("admin/cashregisters/close_cash_register/$cash_register->id") : '#';
                             if ($cash_register->status) :
                             ?>
-                                <a href="<?= site_url('admin/cashregisters/close_cash_register/' . $cash_register->id) ?>" class="form-control btn btn-success" onclick="return confirm('Se cerrará esta caja, esta acción es irreversible\n¿Quieres continuar?')">
+                                <a href="<?= site_url('admin/cashregisters/close_cash_register/' . $cash_register->id) ?>" class="form-control btn btn-primary" onclick="return confirm('Se cerrará esta caja, esta acción es irreversible\n¿Quieres continuar?')">
                                     ABIERTO
                                 </a>
                             <?php else : ?>

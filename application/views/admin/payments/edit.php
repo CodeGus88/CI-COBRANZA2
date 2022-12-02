@@ -103,7 +103,7 @@
             <a href="<?php echo site_url('admin/payments/'); ?>" class="btn btn-dark btn-block">Cancelar</a>
           </div>
           <div class="col-6">
-            <button class="btn btn-success btn-block" id="register_loan" type="submit" onclick="return payConfirmation();" disabled>Registrar Pago</button>
+            <button class="btn btn-primary btn-block" id="register_loan" type="submit" onclick="return payConfirmation();" disabled>Registrar Pago</button>
           </div>
         </div>
       </div>

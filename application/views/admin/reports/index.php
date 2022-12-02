@@ -92,7 +92,7 @@
     </div>
     <div class="form-row col-md-12">
       <div class="col-md-12">
-        <a class="btn btn-success shadow-sm col-md-3 float-right" href="#" onclick="printElementById('imp1', report_title, date_range);"><i class="fas fa-print fa-sm"></i> Imprimir tabla</a>
+        <a class="btn btn-primary shadow-sm col-md-3 float-right" href="#" onclick="printElementById('imp1', report_title, date_range);"><i class="fas fa-print fa-sm"></i> Imprimir tabla</a>
       </div>
     </div>
   </div>

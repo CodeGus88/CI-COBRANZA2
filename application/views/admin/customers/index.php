@@ -1,10 +1,9 @@
 <div class="card shadow mb-4">
   <div class="card-header d-flex align-items-center justify-content-between py-3">
-    <h6 class="m-0 font-weight-bold text-primary">Lista de clientes</h6>
+    <h6 class="m-0 font-weight-bold text-primary">Clientes</h6>
     <div>
       <?php
-      if (isset($users)) : echo "hola a todos";?>
-      
+      if (isset($users)) :?>
         <select class="custom-select-sm btn-outline-secondary" id="user_id">
           <option value="all" selected>TODOS</option>
           <?php foreach ($users as $user) : ?>
@@ -15,7 +14,7 @@
         </select>
       <?php endif ?>
       <?php if ($CUSTOMER_CREATE || $AUTHOR_CUSTOMER_CREATE) : ?>
-        <a class="d-sm-inline-block btn btn-sm btn-success shadow-sm" href="<?php echo site_url('admin/customers/edit'); ?>"><i class="fas fa-plus-circle fa-sm"></i> Nuevo cliente</a>
+        <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" href="<?php echo site_url('admin/customers/edit'); ?>"><i class="fas fa-plus-circle fa-sm"></i> Nuevo cliente</a>
       <?php endif ?>
     </div>
   </div>

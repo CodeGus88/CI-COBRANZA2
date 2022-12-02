@@ -16,7 +16,7 @@ function loadData() {
                 "type": "POST"
             },
             'columns': [
-                { data: 'id', 'sClass': 'text-center' },
+                { data: 'id', sClass: 'text-center'},
                 { data: 'customer_name' },
                 { data: 'user_name' },
                 { data: 'short_name' },
@@ -26,7 +26,7 @@ function loadData() {
                     'actions': true,
                     render: function (data, type, row) {
                         return `<a href="${base_url}admin/payments/document_payment/${row.id}" class="btn btn-success btn-sm" target="_blank">VER</a>`;
-                    }
+                    }, sClass: 'text-center'
                 }
             ],
             "order": [[0, "desc"]]
@@ -42,6 +42,5 @@ if (document.getElementById("userSelector")) {
         loadData();
     });
 }
-
 
 loadData();

@@ -43,7 +43,7 @@
       </div>
 
       <div class="form-group col-md-3 d-flex justify-content-end align-items-end">
-        <a class="btn btn-success shadow-sm" href="javascript:reportPDF()"><i class="fas fa-print fa-sm"></i> Imprimir</a>
+        <a class="btn btn-primary shadow-sm" href="javascript:reportPDF()"><i class="fas fa-print fa-sm"></i> Imprimir</a>
       </div>
 
     </div>

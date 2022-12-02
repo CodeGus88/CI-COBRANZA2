@@ -142,21 +142,14 @@ class Reports extends CI_Controller
     $pdf->Output('reporteFechas.pdf', 'I');
   }
 
-  public function customers($user_id = null)
+  public function customers()
   {
     if ($this->permission->getPermission([LOAN_READ], FALSE)) {
       $data['users'] = $this->db->order_by('id')->get('users')->result();
-      if ($user_id == 0) {
-        $data['customers'] = $this->reports_m->get_reportCstsAll();
-      } else {
-        $data['customers'] = $this->reports_m->get_reportCsts($user_id);
-        $data['selected_user_id'] = $user_id;
-      }
-    } else if ($this->permission->getPermission([AUTHOR_LOAN_READ], FALSE)) {
-      $data['customers'] = $this->reports_m->get_reportCsts($this->session->userdata('user_id'));
-    } else {
-      $this->permission->getPermissionX([], TRUE);
     }
+    // Validar que tenga los permisos
+    if(!$this->permission->getPermission([AUTHOR_LOAN_READ, LOAN_READ], FALSE))
+      show_error("You don't have access to this site", 403, 'DENIED ACCESS');
     $data['subview'] = 'admin/reports/customers';
     $this->load->view('admin/_main_layout', $data);
   }

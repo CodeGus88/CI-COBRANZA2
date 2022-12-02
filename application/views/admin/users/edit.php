@@ -89,7 +89,7 @@
         'templateSelection': custom_template,
         'templateResult': custom_template,
     }
-    $('#avatar_selector').select2(options);
+    $('#avatar').select2(options);
     $('.select2-container--default .select2-selection--single').css({
         'height': '37px'
     });

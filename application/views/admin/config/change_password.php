@@ -32,8 +32,10 @@
           <input class="form-control" id="inputUsername" type="password" name="confirm_password">
         </div>
       </div>
-      <button class="btn btn-primary" type="submit">Cambiar contraseña</button>
-      <a href="<?php echo site_url('admin/dashboard/'); ?>" class="btn btn-dark">Cancelar</a>
+      <div class="float-right">
+        <a href="<?php echo site_url('admin/dashboard/'); ?>" class="btn btn-dark">Cancelar</a>
+        <button class="btn btn-primary" type="submit">Cambiar contraseña</button>
+    </div>
     <?php echo form_close() ?>
   </div>
 </div>

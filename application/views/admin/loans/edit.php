@@ -106,7 +106,6 @@
           <?php endforeach ?>
         </select>
       </div>
-
       <div class="form-group col-12 col-md-4">
         <label class="small mb-1" id="cash_register_update" for="cash_register_id">Caja de extracción</label>
         <select class="form-control" id="cash_register_id" name="cash_register_id">
@@ -116,11 +115,17 @@
         <label class="small mb-1" for="date">Fecha emisión</label>
         <input class="form-control" id="date" type="date" name="date" value="<?= $date ?? '' ?>">
       </div>
+      <div class="form-group col-12 col-md-4">
+        <label class="small mb-1">Acción</label>
+        <button class="btn btn-primary form-control" type="button" id="calcular">Calcular</button>
+      </div>
     </div>
-
+    <!-- <div>
     <div class="form-group">
-      <button class="btn btn-success" type="button" id="calcular">Calcular</button>
+      <button class="btn btn-primary" type="button" id="calcular">Calcular</button>
     </div>
+    </div> -->
+    
 
     <div class="form-row">
       <div class="form-group col-12 col-md-4">
@@ -152,10 +157,10 @@
         </table>
       </div>
     </div>
-
-    <button class="btn btn-primary" id="register_loan" type="submit" disabled onclick="return loanConfirmation()">Registrar Préstamo</button>
-    <a href="<?php echo site_url('admin/loans/'); ?>" class="btn btn-dark">Cancelar</a>
-
+    <div class="float-right">
+      <a href="<?php echo site_url('admin/loans/'); ?>" class="btn btn-dark">Cancelar</a>
+      <button class="btn btn-primary" id="register_loan" type="submit" disabled onclick="return loanConfirmation()">Registrar Préstamo</button>
+    </div>
     <?php echo form_close() ?>
 
   </div>

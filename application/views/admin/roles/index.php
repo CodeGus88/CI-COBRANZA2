@@ -3,7 +3,7 @@
     <h6 class="m-0 font-weight-bold text-primary">Roles</h6>
     <div>
       <?php if($ROLE_CREATE) : ?>
-      <a class="d-sm-inline-block btn btn-sm btn-success shadow-sm" href="<?= site_url('admin/roles/create'); ?>"><i class="fas fa-plus-circle fa-sm"></i> Crear rol</a>
+      <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" href="<?= site_url('admin/roles/create'); ?>"><i class="fas fa-plus-circle fa-sm"></i> Crear rol</a>
       <?php endif ?>
     </div>
   </div>

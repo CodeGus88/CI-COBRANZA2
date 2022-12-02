@@ -33,8 +33,10 @@
                     <input class="form-control" type="text" id="description" name="description" maxlength="200" value="<?= $description ?>">
                 </div>
             </div>
-            <a class="btn btn-secondary pull-xs-right" type="submit" href="<?= site_url('admin/cashregisters/view/' . $cash_register_id) ?>">Cancelar</a>
-            <button class="btn btn-primary pull-xs-right" type="submit">Agregar</button>
+            <div class="float-right">
+                <a class="btn btn-secondary pull-xs-right" type="submit" href="<?= site_url('admin/cashregisters/view/' . $cash_register_id) ?>">Cancelar</a>
+                <button class="btn btn-primary pull-xs-right" type="submit">Agregar</button>
+            </div>
         </div>
         <?= form_close() ?>
     </div>

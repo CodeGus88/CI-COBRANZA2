@@ -1,7 +1,7 @@
 <div class="card shadow mb-4">
 
   <div class="card-header d-flex align-items-center justify-content-between py-3">
-    <h6 class="m-0 font-weight-bold text-primary">Lista de préstamos</h6>
+    <h6 class="m-0 font-weight-bold text-primary">Préstamos</h6>
     <div>
       <?php
       if (isset($users)) : ?>
@@ -15,7 +15,7 @@
         </select>
       <?php endif ?>
       <?php if ($LOAN_CREATE || $AUTHOR_LOAN_CREATE) : ?>
-        <a class="d-sm-inline-block btn btn-sm btn-success shadow-sm" href="<?php echo site_url('admin/loans/edit'); ?>"><i class="fas fa-plus-circle fa-sm"></i> Nuevo préstamo</a>
+        <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" href="<?php echo site_url('admin/loans/edit'); ?>"><i class="fas fa-plus-circle fa-sm"></i> Nuevo préstamo</a>
       <?php endif ?>
     </div>
   </div>

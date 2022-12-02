@@ -15,10 +15,10 @@
       <?php if ($LOAN_READ || $AUTHOR_LOAN_READ || $LOAN_ITEM_READ || $AUTHOR_LOAN_ITEM_READ) :
         $parameter = (isset($selected_user_id)) ? (($selected_user_id != 0) ? $selected_user_id : '') : '';
       ?>
-        <a href="<?php echo site_url("admin/payments/quotes_week/$parameter") ?>" class="btn btn-sm btn-info shadow-sm" data-toggle="ajax-modal"><i class="fas fa-eye fa-sm"></i> Semana</a>
+        <a href="<?php echo site_url("admin/payments/quotes_week/$parameter") ?>" class="btn btn-sm btn-primary shadow-sm" data-toggle="ajax-modal"><i class="fas fa-eye fa-sm"></i> Semana</a>
       <?php endif ?>
       <?php if ($PAYMENT_CREATE || $AUTHOR_PAYMENT_CREATE) : ?>
-        <a class="d-sm-inline-block btn btn-sm btn-success shadow-sm" href="<?php echo site_url('admin/payments/edit'); ?>"><i class="fas fa-plus-circle fa-sm"></i> Realizar Pago</a>
+        <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" href="<?php echo site_url('admin/payments/edit'); ?>"><i class="fas fa-plus-circle fa-sm"></i> Realizar Pago</a>
       <?php endif ?>
     </div>
   </div>

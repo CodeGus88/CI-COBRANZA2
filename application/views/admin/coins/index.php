@@ -1,7 +1,7 @@
 <div class="card shadow mb-4">
   <div class="card-header d-flex align-items-center justify-content-between py-3">
-    <h6 class="m-0 font-weight-bold text-primary">Lista de monedas</h6>
-    <a class="d-sm-inline-block btn btn-sm btn-success shadow-sm" href="<?php echo site_url('admin/coins/edit'); ?>"><i class="fas fa-plus-circle fa-sm"></i> Nueva moneda</a>
+    <h6 class="m-0 font-weight-bold text-primary">Monedas</h6>
+    <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" href="<?php echo site_url('admin/coins/edit'); ?>"><i class="fas fa-plus-circle fa-sm"></i> Nueva moneda</a>
   </div>
   <div class="card-body">
     <?php if ($this->session->flashdata('msg')) : ?>

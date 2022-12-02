@@ -70,7 +70,6 @@ function loadData() {
                         ${btnDelete}
                     `;  
                     }, sClass: 'text-center'
-                    
                 },
             ],
             "order": [[5, "asc"]]
