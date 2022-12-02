@@ -114,7 +114,7 @@ class Cashregisters extends CI_Controller {
     $IS_OPEN = $this->cashregister_m->cashRegisterIsOpen($cash_register_id);
     if(!$CASH_REGISTER_READ) {
       if(!($AUTHOR_CASH_REGISTER_READ && $this->cashregister_m->isAuthor($cash_register_id, $this->user_id)))
-        echo PERMISSION_DENIED_MESSAGE;
+        show_error("You don't have access to this site", 403, 'DENIED ACCESS');
     }
     $data[CASH_REGISTER_UPDATE] = $this->permission->getPermission([CASH_REGISTER_UPDATE], FALSE);
     $data[AUTHOR_CASH_REGISTER_UPDATE] = $this->permission->getPermission([AUTHOR_CASH_REGISTER_UPDATE], FALSE) && $this->cashregister_m->isAuthor($cash_register_id, $this->user_id);

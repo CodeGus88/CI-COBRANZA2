@@ -95,8 +95,7 @@ class Payments extends CI_Controller
     elseif ($this->permission->getPermission([AUTHOR_PAYMENT_CREATE], FALSE)){
       if($customer_id){
         if(!$this->payments_m->isAdviser($customer_id, $this->user_id)){
-          echo PERMISSION_DENIED_MESSAGE;
-          return;
+          show_error("You don't have access to this site", 403, 'DENIED ACCESS');
         }
       }
       $data['customers'] = $this->payments_m->get_customers($this->user_id);
@@ -179,10 +178,10 @@ class Payments extends CI_Controller
         if (AuthUserData::isAuthor($probable_user_id)) {
           $this->addPayment($loan_id, $cash_register_id, $quota_id, $payments, $customer_id, $data);
         } else {
-          echo PERMISSION_DENIED_MESSAGE;
+          show_error("You don't have access to this site", 403, 'DENIED ACCESS');
         }
       } else {
-        echo PERMISSION_DENIED_MESSAGE;
+        show_error("You don't have access to this site", 403, 'DENIED ACCESS');
       }
     } else {
       echo loadErrorMessage('¡Imposible acceder a está página, faltan datos de entrada para la transacción!');

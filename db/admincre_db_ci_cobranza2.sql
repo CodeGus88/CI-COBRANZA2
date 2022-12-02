@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-11-2022 a las 19:08:15
+-- Tiempo de generación: 02-12-2022 a las 17:26:07
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.5
 
@@ -63,7 +63,7 @@ CREATE TABLE `coins` (
 --
 
 INSERT INTO `coins` (`id`, `name`, `short_name`, `symbol`, `description`) VALUES
-(1, 'Bolivianos', 'Bs', 'BO', 'Moneda nacional');
+(1, 'Bolivianos', 'Bs', 'BOB', 'Moneda nacional');
 
 -- --------------------------------------------------------
 
@@ -81,7 +81,7 @@ CREATE TABLE `customers` (
   `mobile` varchar(32) CHARACTER SET utf8 COLLATE utf8_spanish2_ci DEFAULT NULL,
   `phone` varchar(20) CHARACTER SET utf8 COLLATE utf8_spanish2_ci DEFAULT NULL,
   `business_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_spanish2_ci DEFAULT NULL,
-  `ruc` varchar(20) CHARACTER SET utf8 COLLATE utf8_spanish2_ci DEFAULT NULL COMMENT 'nit',
+  `nit` varchar(20) CHARACTER SET utf8 COLLATE utf8_spanish2_ci DEFAULT NULL COMMENT 'nit',
   `company` varchar(150) CHARACTER SET utf8 COLLATE utf8_spanish2_ci DEFAULT NULL,
   `loan_status` int(11) NOT NULL DEFAULT 0,
   `user_id` int(11) DEFAULT NULL COMMENT 'adviser_id'
@@ -91,7 +91,7 @@ CREATE TABLE `customers` (
 -- Volcado de datos para la tabla `customers`
 --
 
-INSERT INTO `customers` (`id`, `ci`, `first_name`, `last_name`, `gender`, `address`, `mobile`, `phone`, `business_name`, `ruc`, `company`, `loan_status`, `user_id`) VALUES
+INSERT INTO `customers` (`id`, `ci`, `first_name`, `last_name`, `gender`, `address`, `mobile`, `phone`, `business_name`, `nit`, `company`, `loan_status`, `user_id`) VALUES
 (1, '5817517', 'MARIA FATIMA', 'DIAZ YURQUINA', 'femenino', 'BARRIO MENDEZ ARCOS', '74408809', '76185843', '', '', '', 1, 3),
 (3, '10709331', 'MARIA JULIA', 'JURADO RODRIGUEZ', 'femenino', 'BARRIO 27 DE MAYO ', '68688249', '', '', '', '', 0, 3),
 (4, '5044555', 'EDULIO', 'CARI APARICIO', 'masculino', 'b/luis de fuentes', '77873321', '', 'propio', '5044555', 'taxi', 0, 4),
@@ -336,7 +336,8 @@ INSERT INTO `customers` (`id`, `ci`, `first_name`, `last_name`, `gender`, `addre
 (323, '7144066', 'CINTHYA LORENA', 'HILAQUITA RUFINO', 'femenino', 'AV. GASODUCTO E/JUAN XXIII Y JACINTO DELFIN YACUIBA', '77195189', 'NO REGISTRA', '', '', 'YACUIBA', 1, 6),
 (324, '5056661', 'SANDRA ISABEL', 'ALARCON RIVERA', 'femenino', 'C/PERU E/CUBA Y CHILE B. LOS PARAISOS YACUIBA', '75161079', 'NO REGISTRA', '', '', 'YACUIBA', 0, 6),
 (325, '10645173', 'JULIO CESAR', 'CATOIRA BLANCO', 'masculino', '', '75143172', '', '', '', 'PERSONAL TJA', 0, 4),
-(326, '4157590', 'MARIZOL', 'MARTINEZ COCA', 'femenino', 'B/NARCISO CAMPERO C/GAMONEDA Y FELIX SOTO ', '71873693', '', '', '', '', 1, 5);
+(326, '4157590', 'MARIZOL', 'MARTINEZ COCA', 'femenino', 'B/NARCISO CAMPERO C/GAMONEDA Y FELIX SOTO ', '71873693', '', '', '', '', 1, 5),
+(328, '454221', 'FERNANDO', 'NABARRO', 'masculino', 'Calle x', '79635241', '4521365', '', '005654785445', '', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -2694,7 +2695,6 @@ CREATE TABLE `roles_permissions` (
 
 INSERT INTO `roles_permissions` (`id`, `role_id`, `permission_id`) VALUES
 (1, 1, 21),
-(2, 1, 22),
 (3, 1, 23),
 (4, 1, 24),
 (5, 1, 25),
@@ -2713,7 +2713,6 @@ INSERT INTO `roles_permissions` (`id`, `role_id`, `permission_id`) VALUES
 (19, 1, 39),
 (20, 1, 40),
 (21, 1, 41),
-(22, 1, 42),
 (23, 1, 43),
 (24, 1, 44),
 (25, 3, 21),
@@ -2765,18 +2764,13 @@ INSERT INTO `roles_permissions` (`id`, `role_id`, `permission_id`) VALUES
 (72, 1, 78),
 (73, 2, 78),
 (74, 3, 78),
-(75, 1, 89),
-(76, 1, 90),
-(77, 1, 91),
 (78, 2, 89),
 (79, 2, 90),
 (80, 2, 87),
 (81, 3, 89),
 (82, 3, 90),
 (83, 3, 91),
-(85, 1, 85),
 (86, 2, 85),
-(87, 1, 87),
 (88, 1, 83),
 (89, 2, 86),
 (90, 2, 88),
@@ -2799,7 +2793,15 @@ INSERT INTO `roles_permissions` (`id`, `role_id`, `permission_id`) VALUES
 (140, 4, 87),
 (142, 5, 19),
 (143, 5, 18),
-(144, 1, 27);
+(144, 1, 27),
+(145, 1, 69),
+(146, 1, 2),
+(147, 1, 3),
+(148, 1, 72),
+(149, 1, 47),
+(150, 1, 46),
+(151, 1, 22),
+(152, 1, 42);
 
 -- --------------------------------------------------------
 
@@ -2847,23 +2849,23 @@ CREATE TABLE `users_roles` (
 --
 
 INSERT INTO `users_roles` (`id`, `user_id`, `role_id`) VALUES
-(1, 1, 1),
 (2, 2, 2),
 (3, 3, 1),
 (5, 5, 1),
 (6, 6, 2),
 (7, 7, 2),
-(9, 1, 4),
 (10, 2, 4),
 (11, 3, 4),
 (13, 5, 4),
 (14, 6, 4),
 (15, 7, 4),
-(17, 1, 5),
-(18, 1, 6),
 (27, 4, 2),
 (28, 4, 4),
-(29, 4, 5);
+(29, 4, 5),
+(30, 1, 4),
+(31, 1, 5),
+(32, 1, 1),
+(33, 1, 6);
 
 --
 -- Índices para tablas volcadas
@@ -2888,7 +2890,7 @@ ALTER TABLE `coins`
 --
 ALTER TABLE `customers`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `ci` (`ci`),
+  ADD UNIQUE KEY `dni` (`ci`),
   ADD KEY `FK_customers_users` (`user_id`);
 
 --
@@ -2999,7 +3001,7 @@ ALTER TABLE `coins`
 -- AUTO_INCREMENT de la tabla `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=328;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=332;
 
 --
 -- AUTO_INCREMENT de la tabla `document_payments`
@@ -3059,7 +3061,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT de la tabla `roles_permissions`
 --
 ALTER TABLE `roles_permissions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=145;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=153;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
@@ -3071,7 +3073,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `users_roles`
 --
 ALTER TABLE `users_roles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- Restricciones para tablas volcadas

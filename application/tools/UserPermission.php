@@ -42,8 +42,7 @@ class Permission {
     private function denyAndRedirect($redirect, $permit){
         if($redirect){
             if(!$permit){
-                echo PERMISSION_DENIED_MESSAGE;
-                redirect('/admin/dashboard','refresh');
+                show_error("You don't have access to this site", 403, 'DENIED ACCESS');
             }else{
                 return $permit;
             }

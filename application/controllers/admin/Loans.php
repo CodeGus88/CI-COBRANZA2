@@ -132,7 +132,7 @@ class Loans extends CI_Controller
         $this->load->view('admin/_main_layout', $data);
       }
     } else {
-      echo PERMISSION_DENIED_MESSAGE;
+      show_error("You don't have access to this site", 403, 'DENIED ACCESS');
     }
   } // fin edit
 
