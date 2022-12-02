@@ -41,8 +41,8 @@
       </div>
     </div>
     <div class="float-right">
-      <button class="btn btn-primary" type="submit">Editar datos</button>
       <a href="<?php echo site_url('admin/dashboard/'); ?>" class="btn btn-dark">Cancelar</a>
+      <button class="btn btn-primary" type="submit">Editar datos</button>
     </div>
     <?php echo form_close() ?>
   </div>
