@@ -23,6 +23,8 @@ class Customers extends CI_Controller
 
   public function index()
   {
+    if(!$this->permission->getPermission([CUSTOMER_READ, AUTHOR_CUSTOMER_READ], FALSE))
+      show_error("You don't have access to this site", 403, 'DENIED ACCESS');
     // permisos del usuario [para la vista]
     $data[CUSTOMER_UPDATE] = $this->permission->getPermission([CUSTOMER_UPDATE], FALSE);
     $data[CUSTOMER_DELETE] = $this->permission->getPermission([CUSTOMER_DELETE], FALSE);
@@ -105,7 +107,7 @@ class Customers extends CI_Controller
               $isSuccessfull = $this->customers_m->save($cst_data, $id);
             }
         } else {
-          $this->session->set_flashdata('msg_error', 'Permiso denegado...');
+          show_error("You don't have access to this site", 403, 'DENIED ACCESS');
         }
       } else { // NUEVO REGISTRO
         if ($this->permission->getPermission([AUTHOR_CUSTOMER_CREATE, CUSTOMER_CREATE], FALSE)) {
@@ -116,7 +118,7 @@ class Customers extends CI_Controller
             $isSuccessfull = $this->customers_m->save($cst_data, $id);
           }
         } else {
-          $this->session->set_flashdata('msg_error', 'Permiso denegado...');
+          show_error("You don't have access to this site", 403, 'DENIED ACCESS');
         }
       }
 
@@ -129,7 +131,6 @@ class Customers extends CI_Controller
       } else {
         $this->session->set_flashdata('msg_error', 'Hubo un problema al procesar los datos, intente nuevamente...');
       }
-
       redirect('admin/customers');
     }
 
@@ -147,9 +148,9 @@ class Customers extends CI_Controller
         if ($this->customers_m->delete($id)==TRUE) $this->session->set_flashdata('msg', 'Se eliminó correctamente');
         else $this->session->set_flashdata('msg_error', '!Ops, algo salió mal¡');
       } else {
-        $this->session->set_flashdata('msg_error', 'Persmiso denegado...');
+        show_error("You don't have access to this site", 403, 'DENIED ACCESS');
       }
-    } else $this->session->set_flashdata('msg_error', 'Persmiso denegado...');
+    } else show_error("You don't have access to this site", 403, 'DENIED ACCESS');
     redirect('admin/customers');
   }
 }

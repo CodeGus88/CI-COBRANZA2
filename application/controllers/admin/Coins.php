@@ -31,7 +31,8 @@ class Coins extends CI_Controller {
 
   public function edit($id = NULL)
   {
-    $this->permission->getPermission([COIN_READ, COIN_CREATE], TRUE);
+    if(!$this->permission->getPermission([COIN_READ, COIN_CREATE], TRUE))
+      show_error("You don't have access to this site", 403, 'DENIED ACCESS');
     if ($id) {
       $data['coin'] = $this->coins_m->get($id);
     } else {
@@ -61,11 +62,8 @@ class Coins extends CI_Controller {
       }else{
         $this->session->set_flashdata('msg_error', '¡No tiene permiso para crear monedas!');
       }
-      
       redirect('admin/coins');
-
     }
-
     $data['subview'] = 'admin/coins/edit';
     $this->load->view('admin/_main_layout', $data);
   }

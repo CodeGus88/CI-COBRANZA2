@@ -189,7 +189,6 @@ class Reports extends CI_Controller
     );
     echo json_encode($json_data);
 
-
   }
 
   public function customer_pdf($customer_id)
@@ -205,7 +204,7 @@ class Reports extends CI_Controller
     } else if ($AUTHOR_LOAN_READ) {
       $reportCst = $this->reports_m->getReportLC($this->user_id, $customer_id);
     } else {
-      $this->permission->getPermissionX([], TRUE);
+      show_error("You don't have access to this site", 403, 'DENIED ACCESS');
     }
 
     $pdf = new PDF();

@@ -314,11 +314,8 @@ class Reports_m extends CI_Model {
     $this->db->order_by($order['column'], $order['dir']);
     $this->db->limit($length, $start);
     $data['data'] = $this->db->get()->result()??[];
-  
-    
-    return $data;
 
-    
+    return $data;
   }
 
 }

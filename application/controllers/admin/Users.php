@@ -25,7 +25,8 @@ class Users extends CI_Controller
 
     public function index()
     {
-        $this->permission->getPermission([USER_READ], TRUE);
+        if(!$this->permission->getPermission([USER_READ], FALSE))
+            show_error("You don't have access to this site", 403, 'DENIED ACCESS');
         $data[USER_CREATE] = $this->permission->getPermission([USER_CREATE], FALSE);
         $data[USER_READ] = $this->permission->getPermission([USER_READ], FALSE);
         $data[USER_UPDATE] = $this->permission->getPermission([USER_UPDATE], FALSE);
@@ -67,7 +68,8 @@ class Users extends CI_Controller
 
     public function create()
     {
-        $this->permission->getPermission([USER_CREATE], TRUE);
+        if(!$this->permission->getPermission([USER_CREATE], FALSE))
+            show_error("You don't have access to this site", 403, 'DENIED ACCESS');
         $this->form_validation->set_rules($this->user_m->newUserRules);
         if ($this->form_validation->run()) {
             // Guardar
@@ -97,7 +99,8 @@ class Users extends CI_Controller
         $origin = $this->input->get('origin');
         $path = $origin ? "/$origin/$id" : '';
 
-        $this->permission->getPermission([USER_CREATE], TRUE);
+        if(!$this->permission->getPermission([USER_CREATE], FALSE))
+            show_error("You don't have access to this site", 403, 'DENIED ACCESS');
         unset($this->user_m->newUserRules['password']);
         $rules = $this->user_m->newUserRules;
         $this->form_validation->set_rules($rules);
@@ -140,13 +143,15 @@ class Users extends CI_Controller
         if ($this->permission->getPermission([USER_DELETE], FALSE)) {
             if ($this->user_m->deleteById($id) == TRUE) $this->session->set_flashdata('msg', 'Se eliminó correctamente');
             else $this->session->set_flashdata('msg_error', '!Ops, algo salió mal¡');
-        } else $this->session->set_flashdata('msg_error', 'Permiso denegado...');
+        } else show_error("You don't have access to this site", 403, 'DENIED ACCESS');
         redirect('admin/users');
     }
 
     public function view($id)
     {
         if ($id) {
+            if(!$this->permission->getPermission([USER_READ], FALSE))
+                show_error("You don't have access to this site", 403, 'DENIED ACCESS');
             $this->user_m->findUserRolesAndPermissions($id);
             $data[USER_READ] = $this->permission->getPermission([USER_READ], FALSE);
             $data[USER_UPDATE] = $this->permission->getPermission([USER_UPDATE], FALSE);

@@ -11,7 +11,6 @@
         <?php } ?>
 
         <?= form_open($post ?? ''); ?>
-
         <div class="form-row">
             <div class="form-group col-md-4">
                 <label class="small mb-1" for="first_name">Ingresar Nombre</label>
@@ -73,8 +72,6 @@
         <?= form_close() ?>
     </div>
 </div>
-
-
 <script type="text/javascript">
     function custom_template(obj) {
         var data = $(obj.element).data();

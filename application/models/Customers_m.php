@@ -63,14 +63,6 @@ class Customers_m extends MY_Model implements IAuthor {
     return $customer;
   }
 
-  // public function getCustomers($user_id = null){
-  //   $this->db->select('*');
-  //   $this->db->from('customers c');
-  //   if($user_id != 'all' && $user_id != null)
-  //     $this->db->where('c.user_id', $user_id);
-  //   return $this->db->get()->result();
-  // }
-
   public function getCustomers($start, $length, $search, $order, $user_id)
   {
     $this->db->select("COUNT(c.id) recordsFiltered");

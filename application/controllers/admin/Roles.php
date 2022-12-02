@@ -20,7 +20,8 @@ class Roles extends CI_Controller {
     }
 
     public function index(){
-        $this->permission->getPermission([ROLE_READ], TRUE);
+        if(!$this->permission->getPermission([ROLE_READ], FALSE))
+            show_error("You don't have access to this site", 403, 'DENIED ACCESS');
         $data[ROLE_CREATE] = $this->permission->getPermission([ROLE_CREATE], FALSE);
         $data[ROLE_READ] = $this->permission->getPermission([ROLE_READ], FALSE);
         $data[ROLE_UPDATE] = $this->permission->getPermission([ROLE_UPDATE], FALSE);
@@ -64,7 +65,8 @@ class Roles extends CI_Controller {
 
     public function create()
     {
-        $this->permission->getPermission([ROLE_CREATE], TRUE);
+        if(!$this->permission->getPermission([ROLE_CREATE], FALSE))
+            show_error("You don't have access to this site", 403, 'DENIED ACCESS');
         $this->form_validation->set_rules($this->role_m->rules);
         if ($this->form_validation->run()) {
             // Cargar rol y permisos
@@ -97,7 +99,8 @@ class Roles extends CI_Controller {
 
     public function edit($id)
     {
-        $this->permission->getPermission([ROLE_UPDATE], TRUE);
+        if(!$this->permission->getPermission([ROLE_UPDATE], FALSE)) 
+            show_error("You don't have access to this site", 403, 'DENIED ACCESS');
         $origin = $this->input->get('origin');
         $path = $origin?"/$origin/$id":'';
         $this->form_validation->set_rules($this->role_m->rules);
@@ -131,7 +134,8 @@ class Roles extends CI_Controller {
     }
 
     public function delete($id){
-        $this->permission->getPermission([ROLE_DELETE], TRUE);
+        if(!$this->permission->getPermission([ROLE_DELETE], FALSE))
+            show_error("You don't have access to this site", 403, 'DENIED ACCESS');
         if($this->role_m->deleteById($id))
             $this->session->set_flashdata('msg', 'El rol se eliminó correctamente');
         else

@@ -30,39 +30,19 @@
         <div class="form-row">
             <div class="form-group col-12 col-md-12 table-responsive">
                 <table class="table table-bordered table-striped table-hover" id="permissions" width="100%" cellspacing="0">
-                    <?php $colums = 1; ?>
                     <thead>
                         <tr>
-                            <th colspan="<?= $colums ?>">Permisos</th>
+                            <th>Permisos</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php
-                        if ($permissions) :
-                            for ($i = 0; $i < sizeof($permissions); $i++) :
-                        ?>
-                                <?php
-                                for ($j = 0; $j < $colums; $j++) :
-                                    if ($i + $j < sizeof($permissions)) :
-                                ?>
-                                        <td class="col-<? $colums / 12 ?> col-lg-<? $colums / 12 ?>">
-                                            <div class="form-check">
-                                                <label class="form-check-label small" for="flexCheckDefault" title="<?= $permissions[$i + $j]->name ?>">
-                                                    <?= $permissions[$i + $j]->name ?>
-                                                </label>
-                                            </div>
-                                        </td>
-                                <?php
-                                    endif;
-                                endfor;
-                                $i += $colums - 1;
-                                ?>
-
-                                </tr>
-                        <?php
-                            endfor;
-                        endif
-                        ?>
+                        <tr>
+                            <td>
+                                <?php foreach($permissions as $permission) :?>
+                                    <input title="<?=$permission->name?>" class="btn btn-outline-secondary btn-sm" value="<?=$permission->name?>" readonly>
+                                <?php endforeach ?>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
