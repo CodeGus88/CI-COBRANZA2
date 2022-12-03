@@ -1,3 +1,16 @@
+const search = document.getElementById('search');
+search.addEventListener("keyup", function (event) {
+  if(event.keyCode === 13) {
+    if(!find(search.value)){
+      text = search.value;
+      search.value = '';
+      search.value = text;
+      find(search.value);
+    }
+  }
+});
+
+
 
 $(document).ready(function () {
   $(document).on("click", '[data-toggle="ajax-modal"]', function (t) {
@@ -9,23 +22,6 @@ $(document).ready(function () {
   })
 })
 
-function deleteConfirm(elementId, title, message) {
-  Swal.fire({
-    title: title,
-    text: message,
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Sí, ¡Eliminar esto!',
-    cancelButtonText: 'Cancelar'
-  }).then((result) => {
-    if (result.isConfirmed) {
-      btndelete = document.getElementById('delete' + elementId);
-      btndelete.click();
-    }
-  })
-}
 
 function deleteConfirmation(title, message, url) {
   Swal.fire({
