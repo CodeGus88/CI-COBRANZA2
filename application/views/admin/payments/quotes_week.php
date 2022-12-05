@@ -1,11 +1,10 @@
-<script>const USER_NAME = "<?=$user_name??'report'?>";</script>
+
 <div class="modal-dialog modal-xl">
 
   <div class="modal-content">
     <div class="d-flex flex-row-reverse col-md-12" style="padding-top:10px;">
       <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="padding-left:10px;"><i class="fas fa-times fa-sm"></i></button>
       <button type="button" class="close" onclick="printElementById('printable', 'COBROS PRÓXIMOS')" style="padding-left:10px;"><i class="fas fa-print fa-sm"></i></button>
-      <!-- <button type="button" class="close" style="padding-left:10px;" onclick="exportExcel(this)">EX</button> -->
       <a type="button" class="close" style="padding-left:10px;" href="<?=site_url('admin/payments/week_excel/'.$user_id)?>"><i class="fas fa-file-excel fa-sm"></i></a>
     </div>
     <div id="printable">
