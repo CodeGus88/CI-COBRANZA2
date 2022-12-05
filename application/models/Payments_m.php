@@ -460,7 +460,11 @@ class Payments_m extends CI_Model {
   }
 
   public function getUser($user_id){
-    return $this->db->select("CONCAT_WS(' ', u.academic_degree, u.first_name, u.last_name) user_name")->get_where('users u', ['id'=>$user_id])->row();
+    $this->db->select("CONCAT_WS(' ', u.academic_degree, u.first_name, u.last_name) user_name");
+    $this->db->from('users u');
+    if($user_id != "all" && $user_id != null)
+      $this->db->where('u.id', $user_id);
+    return $this->db->get()->row()??null;
   }
 
 }

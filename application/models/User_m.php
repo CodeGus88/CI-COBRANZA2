@@ -165,7 +165,7 @@ class User_m extends MY_Model
     $this->db->order_by('r.name');
     $roles = $this->db->get()->result() ?? [];
     foreach ($roles as $role) {
-      $this->db->select('p.id, p.name');
+      $this->db->select('p.id, p.name, p.description');
       $this->db->from('permissions p');
       $this->db->join('roles_permissions rp', 'rp.permission_id = p.id', 'left');
       $this->db->where('rp.role_id', $role->id);

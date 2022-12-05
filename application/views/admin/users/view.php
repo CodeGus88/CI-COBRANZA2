@@ -83,7 +83,7 @@
                                 <td class="align-middle"><input class="btn btn-outline-secondary btn-sm" value="<?= $item->name ?>" title="<?= $item->name ?>" readonly></td>
                                 <td class="align-middle">
                                     <?php foreach ($item->permissions as $subItem) : ?>
-                                        <input class="btn btn-outline-secondary btn-sm" value="<?= $subItem->name ?>" title="<?= $subItem->name ?>" readonly>
+                                        <input class="btn btn-outline-secondary btn-sm" value="<?= $subItem->name ?>" title="<?= $subItem->description ?>" readonly>
                                     <?php endforeach ?>
                                 </td>
                             </tr>

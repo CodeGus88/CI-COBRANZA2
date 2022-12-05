@@ -6,6 +6,7 @@ function loadData() {
             user_id = document.getElementById('user_id').value != null?'/'+document.getElementById('user_id').value:'';
         else
             user_id = '';
+        document.getElementById("week").href = base_url + 'admin/payments/quotes_week/' + document.getElementById('user_id').value;
         $("#loanItemsPayedTable").dataTable().fnDestroy();
         $('#loanItemsPayedTable').dataTable({
             "lengthMenu": [entriesOptions, entriesOptions],
@@ -37,6 +38,7 @@ if(document.getElementById( "user_id" )){
     const userSelector = document.getElementById('user_id');
     userSelector.addEventListener('change', (event) => {
         loadData();
+        
     });
 }
 
