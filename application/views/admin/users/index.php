@@ -31,9 +31,9 @@
         <thead>
           <tr>
             <th class="col-0">ID</th>
-            <th class="col-4">Nombre completo</th>
+            <th class="col-3">Nombre completo</th>
             <th class="col-3">Roles</th>
-            <th class="col-3">Email</th>
+            <th class="col-2">Email</th>
             <th class="col-0">Acciones</th>
           </tr>
         </thead>

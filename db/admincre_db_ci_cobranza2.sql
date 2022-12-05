@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 02-12-2022 a las 18:15:13
+-- Tiempo de generación: 05-12-2022 a las 14:30:58
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.5
 
@@ -2822,10 +2822,10 @@ INSERT INTO `users_roles` (`id`, `user_id`, `role_id`) VALUES
 (27, 4, 2),
 (28, 4, 4),
 (29, 4, 5),
-(30, 1, 4),
 (31, 1, 5),
 (32, 1, 1),
-(33, 1, 6);
+(33, 1, 6),
+(34, 1, 4);
 
 --
 -- Índices para tablas volcadas
@@ -3033,7 +3033,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `users_roles`
 --
 ALTER TABLE `users_roles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- Restricciones para tablas volcadas

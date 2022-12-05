@@ -1,16 +1,19 @@
-const search = document.getElementById('search');
+const search = document.getElementById('general-search');
 search.addEventListener("keyup", function (event) {
-  if(event.keyCode === 13) {
-    if(!find(search.value)){
-      text = search.value;
-      search.value = '';
-      search.value = text;
-      find(search.value);
+  if (event.keyCode === 13) {
+    if (!find(search.value)) {
+      window.find(
+        search.value /*cadena */,
+        false/* distinguir may, min */,
+        false /* inversa */,
+        true /*vuelta*/,
+        false /*palabra completa */,
+        false/*búsqueda en marcos */,
+        true/*cuadro de diálogo Mostrar */
+      )
     }
   }
 });
-
-
 
 $(document).ready(function () {
   $(document).on("click", '[data-toggle="ajax-modal"]', function (t) {
@@ -21,7 +24,6 @@ $(document).ready(function () {
     })
   })
 })
-
 
 function deleteConfirmation(title, message, url) {
   Swal.fire({
@@ -63,5 +65,3 @@ function printElementById(name, title = 'REPORTE', secondaryTitle = null) {
     ventana.close();
   };
 }
-
-

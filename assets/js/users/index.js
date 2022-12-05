@@ -16,7 +16,7 @@ function loadData() {
                 "type": "POST"
             },
             'columns': [
-                { data: 'id', 'sClass': 'text-center' },
+                { data: 'id', sClass: 'text-center' },
                 { 
                     'cell': true,
                     render: function (data, type, row) {
@@ -42,7 +42,7 @@ function loadData() {
                         ${BTN_UPDATE}
                         ${BTN_DELETE}
                     `;  
-                    }
+                    }, sClass: 'text-center'
                 }
             ],
             "order": [[0, "asc"]]
