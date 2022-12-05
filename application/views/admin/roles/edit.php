@@ -48,6 +48,7 @@
                                                     <label class="form-check-label small" for="id<?=$permissions[$i+$j]->id?>" title="<?= $permissions[$i+$j]->name ?>">
                                                       <?= $permissions[$i+$j]->name ?>
                                                     </label>
+                                                    <div><small><?=$permissions[$i+$j]->description?></small></div>
                                                 </div>
                                             </td>
                                     <?php

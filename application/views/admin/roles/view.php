@@ -41,9 +41,9 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>
+                            <td class="text-center">
                                 <?php foreach($permissions as $permission) :?>
-                                    <input title="<?=$permission->name?>" class="btn btn-outline-secondary btn-sm" value="<?=$permission->name?>" readonly>
+                                    <input title="<?=$permission->description?>" class="btn btn-outline-secondary btn-sm" value="<?=$permission->name?>" readonly>
                                 <?php endforeach ?>
                             </td>
                         </tr>
