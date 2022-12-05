@@ -200,8 +200,7 @@ class Payments extends CI_Controller
         $this->cashRegisterValidation($loan_id, $this->user_id, $cash_register_id);
         $Object = new DateTime();
         $pay_date = $Object->format("Y-m-d h:i:s");
-        $this->db->trans_begin(); // inicio de la transacción
-
+        $this->db->trans_begin();
         $id = $this->payments_m->addDocumentPayment(['user_id' => $this->user_id, 'cash_register_id' => $cash_register_id, 'pay_date' => $pay_date]);
         if ($id > 0) {
           for ($i = 0; $i < sizeof($payments); $i++) {
@@ -287,12 +286,12 @@ class Payments extends CI_Controller
     echo loadErrorMessage('No tiene el permiso para leer el documento de impresión...');
   }
 
-  private function get_week_data($user_id = 0)
+  private function get_week_data($user_id)
   {
     $start_date = date("Y-m-d", time());
     $end_date = date("Y-m-d", strtotime($start_date . ' + 7 days'));
     if ($this->permission->getPermission([LOAN_READ, LOAN_ITEM_READ], FALSE)) {
-      if ($user_id == 0) {
+      if ($user_id == 'all') {
         $data['user_name'] = "TODOS";
         $request = $this->payments_m->quotesWeekAll($start_date, $end_date);
       } else {
@@ -328,7 +327,7 @@ class Payments extends CI_Controller
    * https://www.delftstack.com/es/howto/php/how-to-get-the-current-date-and-time-in-php/
    * https://www.php.net/manual/en/timezones.america.php
    */
-  function quotes_week($user_id = 0)
+  function quotes_week($user_id)
   {
     $data = $this->get_week_data($user_id);
     $data['user_id'] = $user_id;
@@ -353,7 +352,7 @@ class Payments extends CI_Controller
   /**
    * Crea el reporte en excel
    */
-  public function week_excel($user_id = 0)
+  public function week_excel($user_id)
   {
     $data = $this->get_week_data($user_id);
     if($data == null) return;
