@@ -63,6 +63,13 @@
       <div class="form-group col-12 col-md-4">
         <label class="small mb-1" for="in_amount">Tasa de interés %</label>
         <select class="form-control" type="number" id="in_amount" name="interest_amount">
+        <option value="3">3%</option>
+        <option value="4">4%</option>
+        <option value="5">5%</option>
+        <option value="6">6%</option>
+        <option value="7">7%</option>
+        <option value="8">8%</option>
+        <option value="9">9%</option>
           <option value="10">10%</option>
           <option value="11">11%</option>
           <option value="12">12%</option>
@@ -120,13 +127,7 @@
         <button class="btn btn-primary form-control" type="button" id="calcular">Calcular</button>
       </div>
     </div>
-    <!-- <div>
-    <div class="form-group">
-      <button class="btn btn-primary" type="button" id="calcular">Calcular</button>
-    </div>
-    </div> -->
     
-
     <div class="form-row">
       <div class="form-group col-12 col-md-4">
         <label class="small mb-1">Importe de la cuenta</label>

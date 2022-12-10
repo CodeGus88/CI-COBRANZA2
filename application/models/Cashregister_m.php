@@ -23,7 +23,7 @@ class Cashregister_m extends MY_Model {
     ),
     array(
       'field' => 'description',
-      'label' => 'Descripción del monto',
+      'label' => 'descripción del monto',
       'rules' => 'required|max_length[200]',
     )
   );

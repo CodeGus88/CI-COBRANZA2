@@ -2,7 +2,8 @@
 
 include(APPPATH."/controllers/User.php");
 
-class AuthUserData{
+class AuthUserData
+{
 
     private static function getData($data){
         $propertie = null;

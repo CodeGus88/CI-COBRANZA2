@@ -32,7 +32,7 @@ class Customers_m extends MY_Model implements IAuthor {
     array(
       'field' => 'ci',
       'label' => 'CI',
-      'rules' => 'trim|required|max_length[20]',
+      'rules' => 'trim|required|max_length[20]'
     ),
     array(
       'field' => 'first_name',

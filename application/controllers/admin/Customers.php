@@ -49,7 +49,7 @@ class Customers extends CI_Controller
           "draw"            => intval($this->input->post('draw')),
           "recordsTotal"    => intval(0),
           "recordsFiltered" => intval(0),
-          "data"            => [], 
+          "data"            => [],
         );
         echo json_encode($this->json_data);
         return;
@@ -86,13 +86,13 @@ class Customers extends CI_Controller
         $data['customer'] = $row;
       else
         $data['customer'] = $this->customers_m->get_new();
-    }else {
+    } else {
       $data['customer'] = $this->customers_m->get_new();
     }
     $this->form_validation->set_rules($this->customers_m->customer_rules_x);
     if ($this->form_validation->run()) {
       $cst_data = $this->customers_m->array_from_post(['ci', 'first_name', 'last_name', 'gender', 'mobile', 'address', 'phone', 'business_name', 'nit', 'company', 'user_id']);
-      $isSuccessfull = false;
+      $isSuccessfull = FALSE;
       $cst_data['first_name'] = strtoupper($cst_data['first_name']);
       $cst_data['last_name'] = strtoupper($cst_data['last_name']);
       if ($cst_data['user_id']) { // EDITAR REGISTRO
@@ -133,7 +133,6 @@ class Customers extends CI_Controller
       }
       redirect('admin/customers');
     }
-
     $data['subview'] = 'admin/customers/edit';
     $this->load->view('admin/_main_layout', $data);
   }

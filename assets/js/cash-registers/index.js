@@ -1,7 +1,6 @@
 // Cargar lista paginable
 function loadData() {
     $(document).ready(function () {
-        // Consultar cuotas del préstamo
         if(document.getElementById( "userSelector" ))
             user_id = document.getElementById('userSelector').value != null?'/'+document.getElementById('userSelector').value:'';
         else

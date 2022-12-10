@@ -45,7 +45,7 @@
                         </div>
                         <div class="form-group col-md-4">
                             <label class="small mb-1">Identificador</label>
-                            <p class="form-control" id = 'id'><?= $cash_register->id ?></p>
+                            <input class="form-control" id='id' value="<?= $cash_register->id ?>" disabled>
                         </div>
                         <div class="form-group col-md-4">
                             <label class="small mb-1">Tipo de moneda</label>

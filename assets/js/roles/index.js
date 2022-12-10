@@ -1,7 +1,6 @@
 // Cargar lista paginable
 function loadData() {
     $(document).ready(function () {
-        // Consultar cuotas del préstamo
         $("#roles").dataTable().fnDestroy();
         $('#roles').dataTable({
             "lengthMenu": [[10, 25, 50, 75, 100], [10, 25, 50, 75, 100]],

@@ -55,3 +55,4 @@ tableBuilder("manual-outputs", partialUrl.replace(method, 'ajax_manual_outputs')
 tableBuilder("document-payment-inputs", partialUrl.replace(method, 'ajax_document_payments'), document_payment_colums, lengthMenu);
 tableBuilder("loan-outputs", partialUrl.replace(method, 'ajax_loans'), loan_columns, lengthMenu);
 
+alert(cash_register_id)

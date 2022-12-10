@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-12-2022 a las 21:38:05
+-- Tiempo de generación: 06-12-2022 a las 14:23:34
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.5
 
@@ -339,7 +339,8 @@ INSERT INTO `customers` (`id`, `ci`, `first_name`, `last_name`, `gender`, `addre
 (330, '7142097', 'PAULINA', 'ARAMAYO SORUCO', 'femenino', 'B/PEDRO ANTONIO FLORES ', '', '', 'GARANTE', '', 'GARANTE', 0, 5),
 (331, '5807444', 'ARTHUR COSME', 'MAITA FERNANDEZ', 'masculino', 'B/SAN MARCOS ', '76196369', '', '', '', '', 1, 5),
 (332, '7120125', 'KAREN ESTHER', 'CORDERO MORALES', 'femenino', 'B/ SENAC', '', '', '', '', '', 1, 5),
-(333, '5000621', 'ANGEL FABIAN', 'CASTELLON DA COSTA', 'masculino', 'BARIO NARCISO CAMPERO ', '63518202', '', 'PROPIO', '', 'ABOGADO ', 1, 4);
+(333, '5000621', 'ANGEL FABIAN', 'CASTELLON DA COSTA', 'masculino', 'BARIO NARCISO CAMPERO ', '63518202', '', 'PROPIO', '', 'ABOGADO ', 1, 4),
+(334, '5654512', 'FERNANDO', 'GONZALES', 'masculino', 'calle x', '', '', '', '', '', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -3247,7 +3248,7 @@ ALTER TABLE `coins`
 -- AUTO_INCREMENT de la tabla `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=334;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=335;
 
 --
 -- AUTO_INCREMENT de la tabla `document_payments`

@@ -132,9 +132,9 @@ class Cashregisters extends CI_Controller {
       if(!($AUTHOR_CASH_REGISTER_READ && $this->cashregister_m->isAuthor($cash_register_id, $this->user_id)))
       { $json_data = array(
           "draw"            => intval($this->input->post('draw')),
-          "recordsTotal"    => intval(0), // total registros para mostrar
-          "recordsFiltered" => intval(0), // total registro en base de datos
-          "data"            => [], // Registros 
+          "recordsTotal"    => intval(0),
+          "recordsFiltered" => intval(0),
+          "data"            => [], 
         );
         echo json_encode($this->json_data);
         return;

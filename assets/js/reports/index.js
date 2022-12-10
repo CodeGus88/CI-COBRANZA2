@@ -18,7 +18,6 @@ function loadGeneralReport() {
   $.get(base_url + "admin/reports/ajaxGetCredits/" + coin_id + "/" + start_d + "/" + end_d + ((user_id != '') ? "/" + user_id : ''), function (data) {
 
     data = JSON.parse(data);
-    // console.log('con parse', data)
 
     if (data.credits[0].sum_credit == null) {
       var sum_credit = '0.00 ' + symbol
