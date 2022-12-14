@@ -1,19 +1,20 @@
-<?php 
-  $ci = &get_instance();
-  $ci->load->model("permission_m");
-  $COIN_READ = $ci->permission_m->getAuthorization($this->session->userdata('user_id'), COIN_READ);
-  $USER_READ = $ci->permission_m->getAuthorization($this->session->userdata('user_id'), USER_READ);
-  $ROLE_READ = $ci->permission_m->getAuthorization($this->session->userdata('user_id'), ROLE_READ);
- ?>
+<?php
+$ci = &get_instance();
+$ci->load->model("permission_m");
+$COIN_READ = $ci->permission_m->getAuthorization($this->session->userdata('user_id'), COIN_READ);
+$USER_READ = $ci->permission_m->getAuthorization($this->session->userdata('user_id'), USER_READ);
+$ROLE_READ = $ci->permission_m->getAuthorization($this->session->userdata('user_id'), ROLE_READ);
+$LEGAL_PROCESS_READ = $ci->permission_m->getAuthorization($this->session->userdata('user_id'), LEGAL_PROCESS_READ);
+?>
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
   <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
-        <img class="page-logo" src="<?php echo base_url();?>assets/img/logo.png" alt="logo" />
-        <div class="sidebar-brand-text mx-2 text-style">
-          <div class="text-style2">
-            Consultora:
-          </div>
-          ECOMSOFT
-        </div>
+    <img class="page-logo" src="<?php echo base_url(); ?>assets/img/logo.png" alt="logo" />
+    <div class="sidebar-brand-text mx-2 text-style">
+      <div class="text-style2">
+        Consultora:
+      </div>
+      ECOMSOFT
+    </div>
   </a>
 
   <!-- Divider -->
@@ -36,18 +37,18 @@
   </li>
 
   <?php
-    $ci = &get_instance();
-    if( $COIN_READ ) :
-    ?>
-      <li class="nav-item">
+  $ci = &get_instance();
+  if ($COIN_READ) :
+  ?>
+    <li class="nav-item">
       <a class="nav-link" href="<?php echo site_url('admin/coins'); ?>">
         <i class="fas fa-fw fa-money-bill"></i>
         <span>Monedas</span></a>
     </li>
-    <?php endif?>
-  
-  
-    <li class="nav-item">
+  <?php endif ?>
+
+
+  <li class="nav-item">
     <a class="nav-link" href="<?php echo site_url('admin/cashregisters'); ?>">
       <i class="fas fa-fw fa-cash-register"></i>
       <span>Cajas</span></a>
@@ -65,7 +66,13 @@
       <i class="fas fa-fw fa-money-bill"></i>
       <span>Cobros</span></a>
   </li>
-
+  <?php if ($LEGAL_PROCESS_READ) : ?>
+    <li class="nav-item">
+      <a class="nav-link" href="<?php echo site_url('admin/legal_processes'); ?>">
+        <i class="fas fa-fw fa-money-bill"></i>
+        <span>Procesos legales</span></a>
+    </li>
+  <?php endif ?>
   <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReports" aria-expanded="false" aria-controls="collapseReports">
       <i class="fas fa-fw fa-info-circle"></i>
@@ -95,7 +102,7 @@
   </li>
 
 
-  <?php if( $USER_READ || $ROLE_READ) : ?>
+  <?php if ($USER_READ || $ROLE_READ) : ?>
     <li class="nav-item">
       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAdmin" aria-expanded="false" aria-controls="collapseAdmin">
         <i class="fas fa-fw fa-toolbox"></i>
@@ -103,12 +110,12 @@
       </a>
       <div id="collapseAdmin" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
-          <?php if( $USER_READ) : ?>
+          <?php if ($USER_READ) : ?>
             <a class="collapse-item" href="<?php echo site_url('admin/users'); ?>">Gertor de usuarios</a>
           <?php endif ?>
-          <?php if( $ROLE_READ) : ?>
-          <a class="collapse-item" href="<?php echo site_url('admin/roles'); ?>">Gestor de roles</a>
-          <?php endif?>
+          <?php if ($ROLE_READ) : ?>
+            <a class="collapse-item" href="<?php echo site_url('admin/roles'); ?>">Gestor de roles</a>
+          <?php endif ?>
         </div>
       </div>
     </li>
@@ -124,5 +131,3 @@
   </div>
 
 </ul>
-
-

@@ -18,7 +18,20 @@ class Legal_Process_m extends MY_Model
         ),
         array(
             'field' => 'start_date',
-            'label' => 'Fecha de inicio',
+            'label' => 'fecha de inicio',
+            'rules' => 'required'
+        )
+    );
+
+    public $rules_edit = array(
+        array(
+            'field' => 'observations',
+            'label' => 'observaciones',
+            'rules' => 'required|max_length[5000]'
+        ),
+        array(
+            'field' => 'start_date',
+            'label' => 'fecha de inicio',
             'rules' => 'required'
         )
     );
@@ -64,7 +77,7 @@ class Legal_Process_m extends MY_Model
      */
     public function findById($id)
     {
-        $this->db->select("lp.id, CONCAT(c.first_name, ' ', c.last_name) customer, lp.observations, lp.start_date");
+        $this->db->select("lp.id, lp.customer_id,  CONCAT(c.first_name, ' ', c.last_name) customer, lp.observations, lp.start_date");
         $this->db->from('legal_processes lp');
         $this->db->join('customers c', 'c.id = lp.customer_id');
         $this->db->where('lp.id', $id);
@@ -87,4 +100,44 @@ class Legal_Process_m extends MY_Model
         }
         return true;
     }
+
+    /**
+     * Elimina el proceso legal y los egistros  de sus archivos
+     */
+    public function deleteById($id){
+        return $this->db->delete('legal_processes', ['id' => $id]);
+    }
+
+    /**
+     * id del proceso legal
+     */
+    public function update($id, $data)
+    {
+        $this->db->where('id', $id);
+        return $this->db->update('legal_processes', $data);
+    }
+
+    public function findFileById($imageId)
+    {
+        return $this->db->get_where('files', ['id' => $imageId])->row()??null;
+    }
+
+    public function deleteFileById($id){
+        return $this->db->delete('files', array('id' => $id));
+    }
+
+    public function findLoansWithExpiredLoanItems($customer_id)
+    {
+        $this->db->select("l.id, l.credit_amount, l.date, c.short_name");
+        $this->db->from("loans l");
+        $this->db->join("loan_items li", "li.loan_id = l.id");
+        $this->db->join("coins c", "c.id = l.coin_id");
+        $now = Date('Y-m-d');
+        $this->db->where("li.date < '{$now}'");
+        $this->db->where("li.status = 1");
+        $this->db->where("l.customer_id = $customer_id");
+        $this->db->group_by("l.id");
+        return $this->db->get()->result()??[];
+    }
+        
 }

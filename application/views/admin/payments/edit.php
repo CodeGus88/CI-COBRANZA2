@@ -52,7 +52,7 @@
     <div class="form-row">
       <div class="form-group col-12 col-md-4">
         <input type="hidden" name="loan_id" id="loan_id">
-        <label class="small mb-1" for="inputUsername">Monto prestado</label>
+        <label class="small mb-1" for="inputUsername">Monto préstado</label>
         <input class="form-control" id="credit_amount" type="text" readonly>
       </div>
       <div class="form-group col-12 col-md-4">

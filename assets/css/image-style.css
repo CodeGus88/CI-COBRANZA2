@@ -2,7 +2,7 @@
 
 body {font-family: Arial, Helvetica, sans-serif;}
 
-#myImg {
+.img-select {
   border-radius: 5px;
   cursor: pointer;
   transition: 0.3s;
@@ -11,7 +11,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 #myImg:hover {opacity: 0.7;}
 
 /* The Modal (background) */
-.modal {
+.modalx {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
@@ -26,7 +26,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 }
 
 /* Modal Content (image) */
-.modal-content {
+.modal-contentx {
   margin: auto;
   display: block;
   width: 80%;
@@ -46,7 +46,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 }
 
 /* Add Animation */
-.modal-content, #caption {  
+.modal-contentx, #caption {  
   -webkit-animation-name: zoom;
   -webkit-animation-duration: 0.6s;
   animation-name: zoom;
@@ -64,7 +64,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 }
 
 /* The Close Button */
-.close {
+.closex {
   position: absolute;
   top: 15px;
   right: 35px;
@@ -74,8 +74,8 @@ body {font-family: Arial, Helvetica, sans-serif;}
   transition: 0.3s;
 }
 
-.close:hover,
-.close:focus {
+.closex:hover,
+.closex:focus {
   color: #bbb;
   text-decoration: none;
   cursor: pointer;
@@ -83,7 +83,11 @@ body {font-family: Arial, Helvetica, sans-serif;}
 
 /* 100% Image Width on Smaller Screens */
 @media only screen and (max-width: 700px){
-  .modal-content {
+  .modal-contentx {
     width: 100%;
   }
 }
+
+
+
+

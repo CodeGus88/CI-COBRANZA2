@@ -4,12 +4,12 @@ search.addEventListener("keyup", function (event) {
     if (!find(search.value)) {
       window.find(
         search.value /*cadena */,
-        false/* distinguir may, min */,
+        false /* distinguir may, min */,
         false /* inversa */,
         true /*vuelta*/,
         false /*palabra completa */,
-        false/*búsqueda en marcos */,
-        true/*cuadro de diálogo Mostrar */
+        false /*búsqueda en marcos */,
+        true /*cuadro de diálogo Mostrar */
       )
     }
   }

@@ -3,10 +3,8 @@
   <div class="modal-content">
 
     <div class="col-md-12" style="padding-top:10px;">
-      
       <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="padding-left:10px;"><i class="fas fa-times fa-sm"></i></button>
       <button type="button"  class="close" onclick="printElementById('printable', 'PAGOS')" ><i class="fas fa-print fa-sm"></i></button>
-
     </div>
     <div id="printable">
       <div class="modal-header">
