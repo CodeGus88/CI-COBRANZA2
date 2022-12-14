@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 06-12-2022 a las 14:23:34
+-- Tiempo de generación: 14-12-2022 a las 22:22:45
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.5
 
@@ -136,7 +136,7 @@ INSERT INTO `customers` (`id`, `ci`, `first_name`, `last_name`, `gender`, `addre
 (53, '7143371', 'NOEMI LILA', 'LOPEZ CANEDO', 'femenino', 'BA/ LA PAMPA AV/ POTOSI ', '67991999', '', '', '', '', 1, 1),
 (54, '4134360', 'ZAIDA ANAHI', 'MIRANDA RUIZ', 'femenino', 'ZONA PALMARCITO C. JOSE ELECTO', '72992767', '', '', '', '', 0, 3),
 (55, '7127438', 'PAUL MIKI', 'GARNICA MEZZA', 'masculino', 'BA/ SAN ROQUE C/ GENERAL TRIGO ', '72955787', '', '', '', '', 1, 1),
-(56, '5797560', 'LIMBER RAYNARD', 'GARNICA MEZZA', 'masculino', 'BA/ ANDALUSIA C/ FINAL RUILOBA ', '', '', '', '', '', 0, 1),
+(56, '5797560', 'LIMBER RAYNARD', 'GARNICA MEZZA', 'masculino', 'BA/ ANDALUSIA C/ FINAL RUILOBA ', '', '', '', '', '', 1, 1),
 (57, '10651336', 'PAOLA RAQUEL', 'PIMENTEL ROMERO', '', 'BA/ JUAN XXIII C/ GODOFREDO ARNOLD ', '77879502', '', '', '', '', 1, 1),
 (58, '7229068', 'JOSE MANUEL', 'OJEDA MARTINEZ', 'masculino', 'BA/ FATIMA ', '60274386', '', '', '', '', 0, 1),
 (59, '5784463', 'EVA TERESA', 'SANDOVAL', 'femenino', 'B/ ALTO SENAC ', '78225155', '', '', '', '', 1, 2),
@@ -145,9 +145,9 @@ INSERT INTO `customers` (`id`, `ci`, `first_name`, `last_name`, `gender`, `addre
 (66, '5787275', 'POLONIA', 'JEREZ RUEDA', 'femenino', 'BA/ AEROPUERTO ', '71332395', '', '', '', '', 1, 1),
 (67, '5675379', 'ELIANA GRACIELA', 'SARAVIA CARDOZO', 'femenino', 'B/ OSCAR ALFARO ', '68703121', '', '', '', '', 1, 2),
 (68, '1787751', 'ELENA', 'CARDOZO YEBARA', 'femenino', 'B/ IV CENTENARIO', '', '', '', '', '', 0, 2),
-(70, '7247912', 'LISELDA MILENIA', 'ROMERO ALARCON', 'femenino', 'COMUNIDAD DE SAN DIEGO NORTE ', '72943345', '', '', '', '', 0, 1),
+(70, '7247912', 'LISELDA MILENIA', 'ROMERO ALARCON', 'femenino', 'COMUNIDAD DE SAN DIEGO NORTE ', '72943345', '', '', '', '', 1, 1),
 (71, '5684823', 'SOLEDAD DOMINGA', 'VASQUEZ FERNANDEZ', 'femenino', 'AV/ LOS CEIBOS BA SENAC ', '73484466', '', '', '', '', 1, 1),
-(72, '5032867', 'JUANA ANGELICA', 'MENDIETA CARDONA', 'femenino', 'Z/ VILLA FATIMA C/ ESPAÑA ', '78244484', '', '', '', '', 0, 1),
+(72, '5032867', 'JUANA ANGELICA', 'MENDIETA CARDONA', 'femenino', 'Z/ VILLA FATIMA C/ ESPAÑA ', '78244484', '', '', '', '', 1, 1),
 (73, '7162716', 'SERGIO', 'ROCHA ALARCON', 'masculino', 'BA/ AVAROA C/ BALLIVIAN ', '63405477', '', '', '', '', 1, 1),
 (74, '1899092', 'TATIANA', 'TRUJILLO VASQUEZ', 'femenino', 'BA/ SENAC AV/ HEROES DE LA INDEPENDENCIA ', '70211763', '', '', '', '', 1, 1),
 (75, '5006333', 'GABRIELA PATRICIA', 'CASTILLO TOLABA', 'femenino', 'B/ SAN MARCOS', '78704333', '', '', '', '', 1, 2),
@@ -339,8 +339,7 @@ INSERT INTO `customers` (`id`, `ci`, `first_name`, `last_name`, `gender`, `addre
 (330, '7142097', 'PAULINA', 'ARAMAYO SORUCO', 'femenino', 'B/PEDRO ANTONIO FLORES ', '', '', 'GARANTE', '', 'GARANTE', 0, 5),
 (331, '5807444', 'ARTHUR COSME', 'MAITA FERNANDEZ', 'masculino', 'B/SAN MARCOS ', '76196369', '', '', '', '', 1, 5),
 (332, '7120125', 'KAREN ESTHER', 'CORDERO MORALES', 'femenino', 'B/ SENAC', '', '', '', '', '', 1, 5),
-(333, '5000621', 'ANGEL FABIAN', 'CASTELLON DA COSTA', 'masculino', 'BARIO NARCISO CAMPERO ', '63518202', '', 'PROPIO', '', 'ABOGADO ', 1, 4),
-(334, '5654512', 'FERNANDO', 'GONZALES', 'masculino', 'calle x', '', '', '', '', '', 0, 1);
+(333, '5000621', 'ANGEL FABIAN', 'CASTELLON DA COSTA', 'masculino', 'BARIO NARCISO CAMPERO ', '63518202', '', 'PROPIO', '', 'ABOGADO ', 1, 4);
 
 -- --------------------------------------------------------
 
@@ -694,7 +693,37 @@ INSERT INTO `document_payments` (`id`, `user_id`, `cash_register_id`, `pay_date`
 (358, 6, 1, '2022-12-02 04:00:34'),
 (359, 5, 1, '2022-12-02 04:39:10'),
 (360, 6, 1, '2022-12-02 05:23:23'),
-(361, 3, 1, '2022-12-03 12:09:40');
+(361, 3, 1, '2022-12-03 12:09:40'),
+(362, 3, 1, '2022-12-05 10:21:43'),
+(363, 5, 1, '2022-12-05 03:39:46'),
+(364, 5, 1, '2022-12-05 05:56:49'),
+(365, 6, 1, '2022-12-05 06:32:55'),
+(366, 1, 1, '2022-12-07 11:21:52');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `files`
+--
+
+CREATE TABLE `files` (
+  `id` bigint(25) NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_spanish_ci NOT NULL,
+  `legal_process_id` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci COMMENT='imagenes de los procesos legales';
+
+--
+-- Volcado de datos para la tabla `files`
+--
+
+INSERT INTO `files` (`id`, `name`, `legal_process_id`) VALUES
+(30, '202212141045256399e18527849.png', 16),
+(31, '202212141045256399e185278491.png', 16),
+(32, '202212141045256399e185278492.png', 16),
+(35, '202212141117406399e9149a282.jpg', 16),
+(36, '20221214141737639a134176733.jpg', 16),
+(37, '20221214150007639a1d37ede73.jpg', 17),
+(38, '20221214150037639a1d554cfb1.jpg', 17);
 
 -- --------------------------------------------------------
 
@@ -848,7 +877,35 @@ INSERT INTO `guarantors` (`id`, `loan_id`, `customer_id`) VALUES
 (154, 208, 239),
 (155, 209, 167),
 (156, 210, 77),
-(157, 215, 23);
+(157, 216, 16),
+(158, 216, 51),
+(159, 216, 53),
+(160, 217, 16),
+(161, 217, 26),
+(162, 217, 51),
+(163, 219, 23),
+(164, 219, 49);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `legal_processes`
+--
+
+CREATE TABLE `legal_processes` (
+  `id` bigint(20) NOT NULL,
+  `observations` varchar(5000) COLLATE utf8mb4_spanish_ci DEFAULT '0',
+  `start_date` date NOT NULL,
+  `customer_id` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci COMMENT='Procesos legales';
+
+--
+-- Volcado de datos para la tabla `legal_processes`
+--
+
+INSERT INTO `legal_processes` (`id`, `observations`, `start_date`, `customer_id`) VALUES
+(16, 'Observaciones\r\nMás observaciones\r\n\r\nTercera observación', '2022-12-14', 104),
+(17, 'Este es un nuevo proceso legal', '2022-12-14', 123);
 
 -- --------------------------------------------------------
 
@@ -896,7 +953,7 @@ INSERT INTO `loans` (`id`, `customer_id`, `coin_id`, `cash_register_id`, `credit
 (25, 40, 1, NULL, '1302.00', '18.00', 4, '442.70', 'quincenal', '2022-04-28', b'0'),
 (26, 41, 1, NULL, '500.00', '15.00', 6, '120.80', 'quincenal', '2022-06-18', b'1'),
 (27, 42, 1, NULL, '1500.00', '18.00', 6, '385.00', 'quincenal', '2022-05-17', b'0'),
-(29, 45, 1, NULL, '1500.00', '18.00', 6, '385.00', 'quincenal', '2022-07-25', b'1'),
+(29, 45, 1, NULL, '1500.00', '18.00', 6, '385.00', 'quincenal', '2022-07-25', b'0'),
 (31, 44, 1, NULL, '3500.00', '18.00', 10, '665.00', 'quincenal', '2022-02-08', b'1'),
 (32, 49, 1, NULL, '3710.00', '18.00', 6, '952.20', 'quincenal', '2022-06-13', b'0'),
 (33, 50, 1, NULL, '4000.00', '15.00', 10, '700.00', 'quincenal', '2022-05-05', b'0'),
@@ -1054,7 +1111,11 @@ INSERT INTO `loans` (`id`, `customer_id`, `coin_id`, `cash_register_id`, `credit
 (211, 204, 1, 1, '500.00', '20.00', 4, '150.00', 'semanal', '2022-11-26', b'1'),
 (213, 332, 1, 1, '1500.00', '16.00', 6, '370.00', 'quincenal', '2022-11-28', b'1'),
 (214, 333, 1, 1, '100.00', '18.00', 2, '59.00', 'quincenal', '2022-12-01', b'1'),
-(215, 16, 1, 1, '1500.00', '14.00', 4, '480.00', 'quincenal', '2022-12-05', b'1');
+(215, 45, 1, 1, '2025.00', '18.00', 6, '519.75', 'quincenal', '2022-12-05', b'1'),
+(216, 72, 1, 1, '2000.00', '14.00', 8, '390.00', 'quincenal', '2022-12-07', b'1'),
+(217, 70, 1, 1, '25000.00', '14.00', 4, '8000.00', 'quincenal', '2022-12-08', b'1'),
+(218, 56, 1, 1, '1000.00', '14.00', 4, '320.00', 'quincenal', '2022-12-08', b'1'),
+(219, 16, 1, 1, '100.00', '14.00', 2, '57.00', 'quincenal', '2022-12-08', b'1');
 
 -- --------------------------------------------------------
 
@@ -1195,11 +1256,11 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (148, 27, '2022-08-02', 5, '385.00', '2022-09-20 22:22:00', b'0'),
 (149, 27, '2022-08-15', 6, '385.00', '2022-09-20 22:22:00', b'0'),
 (152, 29, '2022-08-09', 1, '385.00', '2022-09-14 15:45:41', b'0'),
-(153, 29, '2022-08-24', 2, '385.00', '2022-09-01 13:28:58', b'1'),
-(154, 29, '2022-09-08', 3, '385.00', '2022-09-01 13:28:58', b'1'),
-(155, 29, '2022-09-23', 4, '385.00', '2022-09-01 13:28:58', b'1'),
-(156, 29, '2022-10-08', 5, '385.00', '2022-09-01 13:28:58', b'1'),
-(157, 29, '2022-10-25', 6, '385.00', '2022-09-01 13:28:58', b'1'),
+(153, 29, '2022-08-24', 2, '385.00', '2022-12-05 21:56:49', b'0'),
+(154, 29, '2022-09-08', 3, '385.00', '2022-12-05 21:56:49', b'0'),
+(155, 29, '2022-09-23', 4, '385.00', '2022-12-05 21:56:49', b'0'),
+(156, 29, '2022-10-08', 5, '385.00', '2022-12-05 21:56:49', b'0'),
+(157, 29, '2022-10-25', 6, '385.00', '2022-12-05 21:56:49', b'0'),
 (166, 31, '2022-02-23', 1, '665.00', '2022-09-14 14:41:46', b'0'),
 (167, 31, '2022-03-10', 2, '665.00', '2022-09-14 14:41:46', b'0'),
 (168, 31, '2022-03-25', 3, '665.00', '2022-09-14 14:41:46', b'0'),
@@ -1483,8 +1544,8 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (510, 76, '2022-02-28', 2, '475.00', '2022-09-14 20:00:49', b'0'),
 (511, 76, '2022-03-15', 3, '475.00', '2022-09-14 20:00:49', b'0'),
 (512, 76, '2022-03-30', 4, '475.00', '2022-09-26 20:28:30', b'0'),
-(513, 76, '2022-04-14', 5, '475.00', '2022-09-02 13:25:22', b'1'),
-(514, 76, '2022-04-29', 6, '475.00', '2022-09-02 13:25:22', b'1'),
+(513, 76, '2022-04-14', 5, '475.00', '2022-12-08 03:21:52', b'0'),
+(514, 76, '2022-04-29', 6, '475.00', '2022-12-08 03:21:52', b'0'),
 (515, 76, '2022-05-14', 7, '475.00', '2022-09-02 13:25:22', b'1'),
 (516, 76, '2022-05-31', 8, '475.00', '2022-09-02 13:25:22', b'1'),
 (517, 76, '2022-06-13', 9, '475.00', '2022-09-02 13:25:22', b'1'),
@@ -1987,7 +2048,7 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (1100, 169, '2022-11-23', 6, '1726.67', '2022-10-12 21:55:24', b'1'),
 (1101, 170, '2022-10-28', 1, '590.00', '2022-10-13 12:56:49', b'1'),
 (1102, 170, '2022-11-12', 2, '590.00', '2022-10-13 12:56:49', b'1'),
-(1103, 171, '2022-10-28', 1, '300.00', '2022-10-13 15:33:15', b'1'),
+(1103, 171, '2022-10-28', 1, '300.00', '2022-12-05 19:39:46', b'0'),
 (1104, 171, '2022-11-12', 2, '300.00', '2022-10-13 15:33:15', b'1'),
 (1105, 172, '2022-10-28', 1, '1480.00', '2022-10-31 15:55:17', b'0'),
 (1106, 172, '2022-11-12', 2, '1480.00', '2022-11-22 14:24:08', b'0'),
@@ -2313,10 +2374,30 @@ INSERT INTO `loan_items` (`id`, `loan_id`, `date`, `num_quota`, `fee_amount`, `p
 (1448, 213, '2023-02-20', 6, '370.00', '2022-11-26 16:17:31', b'1'),
 (1449, 214, '2022-12-15', 1, '59.00', '2022-12-01 15:46:20', b'1'),
 (1450, 214, '2022-12-29', 2, '59.00', '2022-12-01 15:46:20', b'1'),
-(1451, 215, '2022-12-19', 1, '480.00', '2022-12-05 14:18:45', b'1'),
-(1452, 215, '2023-01-02', 2, '480.00', '2022-12-05 14:18:45', b'1'),
-(1453, 215, '2023-01-16', 3, '480.00', '2022-12-05 14:18:45', b'1'),
-(1454, 215, '2023-01-30', 4, '480.00', '2022-12-05 14:18:45', b'1');
+(1451, 215, '2022-12-19', 1, '519.75', '2022-12-05 21:58:09', b'1'),
+(1452, 215, '2023-01-02', 2, '519.75', '2022-12-05 21:58:09', b'1'),
+(1453, 215, '2023-01-16', 3, '519.75', '2022-12-05 21:58:09', b'1'),
+(1454, 215, '2023-01-30', 4, '519.75', '2022-12-05 21:58:09', b'1'),
+(1455, 215, '2023-02-13', 5, '519.75', '2022-12-05 21:58:09', b'1'),
+(1456, 215, '2023-02-27', 6, '519.75', '2022-12-05 21:58:09', b'1'),
+(1457, 216, '2022-12-21', 1, '390.00', '2022-12-08 03:19:43', b'1'),
+(1458, 216, '2023-01-04', 2, '390.00', '2022-12-08 03:19:43', b'1'),
+(1459, 216, '2023-01-18', 3, '390.00', '2022-12-08 03:19:43', b'1'),
+(1460, 216, '2023-02-01', 4, '390.00', '2022-12-08 03:19:43', b'1'),
+(1461, 216, '2023-02-15', 5, '390.00', '2022-12-08 03:19:43', b'1'),
+(1462, 216, '2023-03-01', 6, '390.00', '2022-12-08 03:19:43', b'1'),
+(1463, 216, '2023-03-15', 7, '390.00', '2022-12-08 03:19:43', b'1'),
+(1464, 216, '2023-03-29', 8, '390.00', '2022-12-08 03:19:43', b'1'),
+(1465, 217, '2022-12-22', 1, '8000.00', '2022-12-08 18:07:17', b'1'),
+(1466, 217, '2023-01-05', 2, '8000.00', '2022-12-08 18:07:17', b'1'),
+(1467, 217, '2023-01-19', 3, '8000.00', '2022-12-08 18:07:17', b'1'),
+(1468, 217, '2023-02-02', 4, '8000.00', '2022-12-08 18:07:17', b'1'),
+(1469, 218, '2022-12-22', 1, '320.00', '2022-12-08 18:11:28', b'1'),
+(1470, 218, '2023-01-05', 2, '320.00', '2022-12-08 18:11:28', b'1'),
+(1471, 218, '2023-01-19', 3, '320.00', '2022-12-08 18:11:28', b'1'),
+(1472, 218, '2023-02-02', 4, '320.00', '2022-12-08 18:11:28', b'1'),
+(1473, 219, '2022-12-22', 1, '57.00', '2022-12-08 18:14:22', b'1'),
+(1474, 219, '2023-01-05', 2, '57.00', '2022-12-08 18:14:22', b'1');
 
 -- --------------------------------------------------------
 
@@ -2846,7 +2927,17 @@ INSERT INTO `payments` (`id`, `loan_item_id`, `amount`, `document_payment_id`, `
 (520, 1131, '1000.00', 359, '0.00'),
 (521, 1303, '39.30', 360, '0.00'),
 (522, 1304, '39.30', 360, '0.00'),
-(523, 1361, '150.00', 361, '0.00');
+(523, 1361, '150.00', 361, '0.00'),
+(524, 457, '100.00', 362, '0.00'),
+(525, 1103, '300.00', 363, '0.00'),
+(526, 153, '370.00', 364, '0.00'),
+(527, 154, '385.00', 364, '0.00'),
+(528, 155, '385.00', 364, '0.00'),
+(529, 156, '385.00', 364, '0.00'),
+(530, 157, '385.00', 364, '0.00'),
+(531, 925, '247.00', 365, '0.00'),
+(532, 513, '50.00', 366, '20.00'),
+(533, 514, '475.00', 366, '0.00');
 
 -- --------------------------------------------------------
 
@@ -2887,33 +2978,33 @@ INSERT INTO `permissions` (`id`, `name`, `description`) VALUES
 (32, 'LOAN_ITEM_DELETE', 'Eliminar cuota'),
 (41, 'COIN_CREATE', 'Crear moneda'),
 (42, 'COIN_READ', 'Leer moneda'),
-(43, 'COIN_UPDATE', 'Actualizar moneda'),
+(43, 'COIN_UPDATE', 'Actualziar moneda'),
 (44, 'COIN_DELETE', 'Eliminar moneda'),
-(45, 'AUTHOR_CUSTOMER_CREATE', 'Crear cliente para el a\r\nautor'),
+(45, 'AUTHOR_CUSTOMER_CREATE', 'Crear cliente para el autor'),
 (46, 'AUTHOR_CUSTOMER_READ', 'Leer cliente del autor'),
 (47, 'AUTHOR_CUSTOMER_UPDATE', 'Actualizar cliente del autor'),
 (48, 'AUTHOR_CUSTOMER_DELETE', 'Eliminar cliente del autor'),
-(49, 'AUTHOR_LOAN_CREATE', 'Crear préstamos para el autor'),
-(50, 'AUTHOR_LOAN_READ', 'Leer préstamos del Autor'),
-(51, 'AUTHOR_LOAN_UPDATE', 'Actualizar préstamo del autor'),
+(49, 'AUTHOR_LOAN_CREATE', 'Crear préstamo con el autor'),
+(50, 'AUTHOR_LOAN_READ', 'Leer préstamos del autor'),
+(51, 'AUTHOR_LOAN_UPDATE', 'Actualizar prestamo del autor'),
 (52, 'AUTHOR_LOAN_DELETE', 'Eliminar préstamo del autor'),
-(53, 'AUTHOR_LOAN_ITEM_CREATE', 'Crear cuota para el autor'),
-(54, 'AUTHOR_LOAN_ITEM_READ', 'Leer cuotas del autor'),
-(55, 'AUTHOR_LOAN_ITEM_UPDATE', 'Actualizar cuotas del autor'),
-(56, 'AUTHOR_LOAN_ITEM_DELETE', 'Eliminar cuotas del autor'),
+(53, 'AUTHOR_LOAN_ITEM_CREATE', 'Crear cuota como autor'),
+(54, 'AUTHOR_LOAN_ITEM_READ', 'Leer cuota del autor'),
+(55, 'AUTHOR_LOAN_ITEM_UPDATE', 'Actualizar cuota del autor'),
+(56, 'AUTHOR_LOAN_ITEM_DELETE', 'Eliminar cuota del autor'),
 (69, 'PAYMENT_CREATE', 'Crear pago'),
 (70, 'PAYMENT_READ', 'Leer pago'),
 (71, 'PAYMENT_UPDATE', 'Actualizar pago'),
 (72, 'PAYMENT_DELETE', 'Eliminar pago'),
-(73, 'AUTHOR_PAYMENT_CREATE', 'Crear pago del autor'),
-(74, 'AUTHOR_PAYMENT_READ', 'Leer pago del autor'),
+(73, 'AUTHOR_PAYMENT_CREATE', 'Crear pago para el autor'),
+(74, 'AUTHOR_PAYMENT_READ', 'Leer pagos del autor'),
 (75, 'AUTHOR_PAYMENT_UPDATE', 'Actualizar pago del autor'),
 (76, 'AUTHOR_PAYMENT_DELETE', 'Eliminar pago del autor'),
 (77, 'DOCUMENT_PAYMENT_CREATE', 'Crear documento de pago'),
-(78, 'DOCUMENT_PAYMENT_READ', 'Leer documento de pago'),
+(78, 'DOCUMENT_PAYMENT_READ', 'leer documento de pago'),
 (79, 'DOCUMENT_PAYMENT_UPDATE', 'Actualizar documento de pago'),
 (80, 'DOCUMENT_PAYMENT_DELETE', 'Eliminar documento de pago'),
-(81, 'AUTHOR_DOCUMENT_PAYMENT_CREATE', 'Crear documento de pago del autor'),
+(81, 'AUTHOR_DOCUMENT_PAYMENT_CREATE', 'Crear documento de pago para el autor'),
 (82, 'AUTHOR_DOCUMENT_PAYMENT_READ', 'Leer documento de pago del autor'),
 (83, 'AUTHOR_DOCUMENT_PAYMENT_UPDATE', 'Actualizar documento de pago del autor'),
 (84, 'AUTHOR_DOCUMENT_PAYMENT_DELETE', 'Eliminar documento de pago del autor'),
@@ -2924,7 +3015,11 @@ INSERT INTO `permissions` (`id`, `name`, `description`) VALUES
 (89, 'AUTHOR_CASH_REGISTER_CREATE', 'Crear caja para el autor'),
 (90, 'AUTHOR_CASH_REGISTER_READ', 'Leer caja del autor'),
 (91, 'AUTHOR_CASH_REGISTER_UPDATE', 'Actualizar caja del autor'),
-(92, 'AUTHOR_CASH_REGISTER_DELETE', 'Eliminar caja del autor');
+(92, 'AUTHOR_CASH_REGISTER_DELETE', 'Eliminar caja del autor'),
+(93, 'LEGAL_PROCESS_CREATE', 'Crear proceso legal'),
+(94, 'LEGAL_PROCESS_READ', 'Leer proceso legal'),
+(95, 'LEGAL_PROCESS_UPDATE', 'Actualizar proceso legal'),
+(96, 'LEGAL_PROCESS_DELETE', 'Eliminar proceso legal');
 
 -- --------------------------------------------------------
 
@@ -2943,12 +3038,13 @@ CREATE TABLE `roles` (
 --
 
 INSERT INTO `roles` (`id`, `name`, `description`) VALUES
-(1, 'ADMIN', NULL),
+(1, 'ADMIN', ''),
 (2, 'ADMIN_ADVISER', ''),
 (3, 'AUX', NULL),
 (4, 'ADMIN_CASH_REGISTERS', NULL),
-(5, 'USERS_ADMIN', 'Gestiona los usuarios'),
-(6, 'ROLES_ADMIN', 'Gestiona los roles');
+(5, 'USER ADMINISTARTOR', 'Gestor de usuarios\r\n'),
+(6, 'ROLE ADMINISTRATOR', 'Gestor de roles'),
+(7, 'ADMINISTRATIVO', 'gdfdfdfd');
 
 -- --------------------------------------------------------
 
@@ -3016,11 +3112,9 @@ INSERT INTO `roles_permissions` (`id`, `role_id`, `permission_id`) VALUES
 (72, 1, 78),
 (73, 2, 78),
 (74, 3, 78),
-(75, 1, 89),
-(76, 1, 90),
-(77, 1, 91),
 (78, 2, 89),
 (79, 2, 90),
+(80, 2, 87),
 (81, 3, 89),
 (82, 3, 90),
 (83, 3, 91),
@@ -3028,8 +3122,11 @@ INSERT INTO `roles_permissions` (`id`, `role_id`, `permission_id`) VALUES
 (86, 2, 85),
 (87, 1, 87),
 (88, 1, 83),
+(89, 2, 86),
 (90, 2, 88),
 (91, 3, 86),
+(92, 2, 86),
+(93, 2, 87),
 (94, 3, 87),
 (95, 3, 85),
 (96, 3, 91),
@@ -3046,10 +3143,23 @@ INSERT INTO `roles_permissions` (`id`, `role_id`, `permission_id`) VALUES
 (107, 6, 12),
 (108, 6, 10),
 (109, 6, 11),
-(110, 1, 69),
-(111, 2, 73),
-(112, 2, 86),
-(113, 2, 87);
+(110, 1, 77),
+(111, 1, 69),
+(112, 2, 69),
+(113, 7, 9),
+(114, 7, 10),
+(115, 7, 11),
+(116, 7, 12),
+(117, 7, 17),
+(118, 7, 18),
+(119, 7, 19),
+(120, 7, 20),
+(121, 1, 88),
+(122, 1, 86),
+(123, 1, 94),
+(125, 1, 95),
+(126, 1, 96),
+(127, 1, 93);
 
 -- --------------------------------------------------------
 
@@ -3149,12 +3259,26 @@ ALTER TABLE `document_payments`
   ADD KEY `Índice 3` (`cash_register_id`) USING BTREE;
 
 --
+-- Indices de la tabla `files`
+--
+ALTER TABLE `files`
+  ADD PRIMARY KEY (`id`) USING BTREE,
+  ADD KEY `Índice 2` (`legal_process_id`);
+
+--
 -- Indices de la tabla `guarantors`
 --
 ALTER TABLE `guarantors`
   ADD PRIMARY KEY (`id`) USING BTREE,
   ADD KEY `FK_guarantors_customers` (`customer_id`),
   ADD KEY `FK_guarantors_loans` (`loan_id`);
+
+--
+-- Indices de la tabla `legal_processes`
+--
+ALTER TABLE `legal_processes`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `Índice 2` (`customer_id`);
 
 --
 -- Indices de la tabla `loans`
@@ -3248,31 +3372,43 @@ ALTER TABLE `coins`
 -- AUTO_INCREMENT de la tabla `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=335;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=339;
 
 --
 -- AUTO_INCREMENT de la tabla `document_payments`
 --
 ALTER TABLE `document_payments`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=362;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=367;
+
+--
+-- AUTO_INCREMENT de la tabla `files`
+--
+ALTER TABLE `files`
+  MODIFY `id` bigint(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT de la tabla `guarantors`
 --
 ALTER TABLE `guarantors`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=158;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=165;
+
+--
+-- AUTO_INCREMENT de la tabla `legal_processes`
+--
+ALTER TABLE `legal_processes`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT de la tabla `loans`
 --
 ALTER TABLE `loans`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=216;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=220;
 
 --
 -- AUTO_INCREMENT de la tabla `loan_items`
 --
 ALTER TABLE `loan_items`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1455;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1475;
 
 --
 -- AUTO_INCREMENT de la tabla `manual_inputs`
@@ -3290,37 +3426,37 @@ ALTER TABLE `manual_outputs`
 -- AUTO_INCREMENT de la tabla `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=524;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=534;
 
 --
 -- AUTO_INCREMENT de la tabla `permissions`
 --
 ALTER TABLE `permissions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `roles_permissions`
 --
 ALTER TABLE `roles_permissions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=114;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=128;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `users_roles`
 --
 ALTER TABLE `users_roles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- Restricciones para tablas volcadas
@@ -3347,11 +3483,23 @@ ALTER TABLE `document_payments`
   ADD CONSTRAINT `FK_document_payments_cash_registers` FOREIGN KEY (`cash_register_id`) REFERENCES `cash_registers` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
+-- Filtros para la tabla `files`
+--
+ALTER TABLE `files`
+  ADD CONSTRAINT `FK_images_legal_processes` FOREIGN KEY (`legal_process_id`) REFERENCES `legal_processes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Filtros para la tabla `guarantors`
 --
 ALTER TABLE `guarantors`
   ADD CONSTRAINT `FK_guarantors_customers` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_guarantors_loans` FOREIGN KEY (`loan_id`) REFERENCES `loans` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `legal_processes`
+--
+ALTER TABLE `legal_processes`
+  ADD CONSTRAINT `FK__customers` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `loans`
