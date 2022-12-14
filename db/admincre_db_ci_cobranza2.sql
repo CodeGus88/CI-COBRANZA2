@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 14-12-2022 a las 22:22:45
+-- Tiempo de generación: 14-12-2022 a las 22:27:46
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.5
 
@@ -717,9 +717,6 @@ CREATE TABLE `files` (
 --
 
 INSERT INTO `files` (`id`, `name`, `legal_process_id`) VALUES
-(30, '202212141045256399e18527849.png', 16),
-(31, '202212141045256399e185278491.png', 16),
-(32, '202212141045256399e185278492.png', 16),
 (35, '202212141117406399e9149a282.jpg', 16),
 (36, '20221214141737639a134176733.jpg', 16),
 (37, '20221214150007639a1d37ede73.jpg', 17),
