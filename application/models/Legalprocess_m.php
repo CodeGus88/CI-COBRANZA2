@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Legal_Process_m extends MY_Model
+class Legalprocess_m extends MY_Model
 {
     protected $_table_name = 'legal_processes';
 

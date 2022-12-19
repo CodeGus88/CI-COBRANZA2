@@ -2,7 +2,7 @@
   <div class="card-header d-flex align-items-center justify-content-between py-3">
     <h6 class="m-0 font-weight-bold text-primary">Procesos legales</h6>
     <?php if($LEGAL_PROCESS_CREATE) : ?>
-    <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" href="<?= site_url('admin/legal_processes/create'); ?>"><i class="fas fa-plus-circle fa-sm"></i> Nuevo proceso legal</a>
+    <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" href="<?= site_url('admin/legalprocesses/create'); ?>"><i class="fas fa-plus-circle fa-sm"></i> Nuevo proceso legal</a>
     <?php endif ?>
   </div>
   <div class="card-body">

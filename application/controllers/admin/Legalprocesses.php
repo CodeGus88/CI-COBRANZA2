@@ -3,7 +3,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 include(APPPATH . "/tools/UserPermission.php");
 
 
-class Legal_Processes extends CI_Controller
+class Legalprocesses extends CI_Controller
 {
 
   private $user_id;
@@ -12,7 +12,7 @@ class Legal_Processes extends CI_Controller
   public function __construct()
   {
     parent::__construct();
-    $this->load->model('legal_process_m');
+    $this->load->model('legalprocess_m');
     $this->load->model('permission_m');
     $this->load->library('session');
     $this->load->library('form_validation');
@@ -28,7 +28,7 @@ class Legal_Processes extends CI_Controller
     $data['LEGAL_PROCESS_CREATE'] = $this->permission->getPermission([LEGAL_PROCESS_CREATE], FALSE);
     $data['LEGAL_PROCESS_READ'] = $LEGAL_PROCESS_READ;
     $data['LEGAL_PROCESS_DELETE'] =     $data['LEGAL_PROCESS_READ'] = $this->permission->getPermission([LEGAL_PROCESS_DELETE], FALSE);
-    $data['subview'] = 'admin/legal-processes/index';
+    $data['subview'] = 'admin/legalprocesses/index';
     $this->load->view('admin/_main_layout', $data);
   }
 
@@ -52,8 +52,8 @@ class Legal_Processes extends CI_Controller
     $columIndex = $this->input->post('order')['0']['column'] ?? 3;
     $order['column'] = $columns[$columIndex] ?? '';
     $order['dir'] = $this->input->post('order')['0']['dir'] ?? '';
-    $query = $this->legal_process_m->findAll($start, $length, $search, $order);
-    if (sizeof($query['data']) == 0 && $start > 0) $query = $this->legal_process_m->findAll(0, $length, $search, $order);
+    $query = $this->legalprocess_m->findAll($start, $length, $search, $order);
+    if (sizeof($query['data']) == 0 && $start > 0) $query = $this->legalprocess_m->findAll(0, $length, $search, $order);
     $json_data = array(
       "draw"            => intval($this->input->post('draw')),
       "recordsTotal"    => intval(sizeof($query['data'])),
@@ -67,7 +67,7 @@ class Legal_Processes extends CI_Controller
   {
     $LEGAL_PROCESS_CREATE = $this->permission->getPermission([LEGAL_PROCESS_CREATE], FALSE);
     if (!$LEGAL_PROCESS_CREATE) show_error("You don't have access to this site", 403, 'DENIED ACCESS');
-    $this->form_validation->set_rules($this->legal_process_m->rules);
+    $this->form_validation->set_rules($this->legalprocess_m->rules);
     if ($this->form_validation->run()) {
       $data = [
         'customer_id' => $this->input->post('customer_id'),
@@ -76,7 +76,7 @@ class Legal_Processes extends CI_Controller
 
       ];
 
-      $legal_process_id = $this->legal_process_m->add($data);
+      $legal_process_id = $this->legalprocess_m->add($data);
 
       if ($legal_process_id) {
         // Guardar archivos
@@ -87,9 +87,9 @@ class Legal_Processes extends CI_Controller
             array_push($files, ['legal_process_id' => $legal_process_id, 'name' => $obj['file_name']]);
         }
         // Registrar archivos en la base de datos
-        $this->legal_process_m->addFiles($files);
+        $this->legalprocess_m->addFiles($files);
         $this->session->set_flashdata('msg', 'Se creó el proceso correctamente');
-        redirect('/admin/legal_processes');
+        redirect('/admin/legalprocesses');
       } else $this->session->set_flashdata('msg_error', 'Algo salió mal...');
     } else {
       $form = new stdClass();
@@ -98,8 +98,8 @@ class Legal_Processes extends CI_Controller
       $form->start_date = $this->input->post('start_date') ?? null;
       $data['form_state'] = $form;
     };
-    $data['customers'] = $this->legal_process_m->findLateDebtorCustomers();
-    $data['subview'] = 'admin/legal-processes/create';
+    $data['customers'] = $this->legalprocess_m->findLateDebtorCustomers();
+    $data['subview'] = 'admin/legalprocesses/create';
     return $this->load->view('admin/_main_layout', $data);
   }
 
@@ -109,7 +109,7 @@ class Legal_Processes extends CI_Controller
       show_error("You don't have access to this site", 403, 'DENIED ACCESS');
     
     $data['legal_process_id'] = $legal_process_id;
-    $data['subview'] = 'admin/legal-processes/file_create';
+    $data['subview'] = 'admin/legalprocesses/file_create';
     return $this->load->view('admin/_main_layout', $data);
   }
 
@@ -119,7 +119,7 @@ class Legal_Processes extends CI_Controller
       show_error("You don't have access to this site", 403, 'DENIED ACCESS');
     $obj = $this->saveFile("image");
     if ($obj) {
-      if ($this->legal_process_m->addFiles(
+      if ($this->legalprocess_m->addFiles(
         [
           ['legal_process_id' => $legal_process_id, 'name' => $obj['file_name']]
         ]
@@ -129,9 +129,9 @@ class Legal_Processes extends CI_Controller
         $this->session->set_flashdata('msg_error', 'Ocurrió un error al realizar el proceso...');
     }else{
       $this->session->set_flashdata('msg_error', 'Algo salió mal, no se encontraon datos sobre el arhivo');
-      redirect("admin/legal_processes/create_file/$legal_process_id");
+      redirect("admin/legalprocesses/create_file/$legal_process_id");
     }
-    redirect("admin/legal_processes/view/$legal_process_id");
+    redirect("admin/legalprocesses/view/$legal_process_id");
   }
 
   private function saveFile($inputName)
@@ -157,17 +157,17 @@ class Legal_Processes extends CI_Controller
   {
     $LEGAL_PROCESS_UPDATE = $this->permission->getPermission([LEGAL_PROCESS_UPDATE], FALSE);
     if (!$LEGAL_PROCESS_UPDATE) show_error("You don't have access to this site", 403, 'DENIED ACCESS');
-    $this->form_validation->set_rules($this->legal_process_m->rules_edit);
+    $this->form_validation->set_rules($this->legalprocess_m->rules_edit);
     if ($this->form_validation->run()) {
       $data = [
         'observations' => $this->input->post('observations'),
         'start_date' => $this->input->post('start_date')
       ];
-      if ($this->legal_process_m->update($id, $data))
+      if ($this->legalprocess_m->update($id, $data))
         $this->session->set_flashdata('msg', 'Se creó el proceso correctamente');
       else
         $this->session->set_flashdata('msg_error', 'Ocurrió un error al realizar el proceso...');
-      redirect("admin/legal_processes/view/$id");
+      redirect("admin/legalprocesses/view/$id");
     } else {
       $form = new stdClass();
       if ($this->input->post('customer_id')) {
@@ -176,11 +176,11 @@ class Legal_Processes extends CI_Controller
         $form->start_date = $this->input->post('start_date') ?? null;
         $data['legal_process'] = $form;
       } else {
-        $data['legal_process'] = $this->legal_process_m->findById($id);
+        $data['legal_process'] = $this->legalprocess_m->findById($id);
       }
     }
 
-    $data['subview'] = 'admin/legal-processes/edit';
+    $data['subview'] = 'admin/legalprocesses/edit';
     return $this->load->view('admin/_main_layout', $data);
   }
 
@@ -188,10 +188,10 @@ class Legal_Processes extends CI_Controller
   {
     $LEGAL_PROCESS_READ = $this->permission->getPermission([LEGAL_PROCESS_READ], FALSE);
     if (!$LEGAL_PROCESS_READ) show_error("You don't have access to this site", 403, 'DENIED ACCESS');
-    $data['legal_process'] = $this->legal_process_m->findById($id);
+    $data['legal_process'] = $this->legalprocess_m->findById($id);
     if($data['legal_process'])
-      $data['loans'] = $this->legal_process_m->findLoansWithExpiredLoanItems($data['legal_process']->customer_id);
-    $data['subview'] = 'admin/legal-processes/view';
+      $data['loans'] = $this->legalprocess_m->findLoansWithExpiredLoanItems($data['legal_process']->customer_id);
+    $data['subview'] = 'admin/legalprocesses/view';
     return $this->load->view('admin/_main_layout', $data);
   }
 
@@ -203,7 +203,7 @@ class Legal_Processes extends CI_Controller
     if (!$this->permission->getPermission([LEGAL_PROCESS_DELETE], FALSE))
       show_error("You don't have access to this site", 403, 'DENIED ACCESS');
     // Eliminar archivos
-    $legal_process = $this->legal_process_m->findById($id);
+    $legal_process = $this->legalprocess_m->findById($id);
     foreach ($legal_process->files as $file) {
       try {
         unlink("././uploads/$file->name");
@@ -212,11 +212,11 @@ class Legal_Processes extends CI_Controller
       }
     }
     // Eliminar registro
-    if ($this->legal_process_m->deleteById($id))
+    if ($this->legalprocess_m->deleteById($id))
       $this->session->set_flashdata('msg', 'Se eliminó el proceso legal');
     else
       $this->session->set_flashdata('msg_error', 'Ocurrió un error al realizar el proceso...');
-    redirect("admin/legal_processes");
+    redirect("admin/legalprocesses");
   }
 
   /***
@@ -226,18 +226,18 @@ class Legal_Processes extends CI_Controller
   {
     if (!$this->permission->getPermission([LEGAL_PROCESS_UPDATE], FALSE))
       show_error("You don't have access to this site", 403, 'DENIED ACCESS');
-    $file = $this->legal_process_m->findFileById($file_id);
+    $file = $this->legalprocess_m->findFileById($file_id);
     if ($file != null) {
       try {
         unlink("././uploads/$file->name");
       } catch (Exception $e) {
         echo $e->getMessage();
       }
-      if ($this->legal_process_m->deleteFileById($file_id)) {
+      if ($this->legalprocess_m->deleteFileById($file_id)) {
         $this->session->set_flashdata('msg', 'Se eliminó el archivo');
       } else
         $this->session->set_flashdata('msg_error', 'Ocurrió un error al realizar el proceso...');
-      redirect("admin/legal_processes/view/$id");
+      redirect("admin/legalprocesses/view/$id");
       echo "El id es: " . $id . "  El file_id es: " . $file_id;
     }
   }

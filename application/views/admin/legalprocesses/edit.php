@@ -37,7 +37,7 @@
         </div>
 
         <div class="float-right">
-            <a href="<?= site_url("admin/legal_processes/view/$legal_process->id") ?>" class="btn btn-dark">Cancelar</a>
+            <a href="<?= site_url("admin/legalprocesses/view/$legal_process->id") ?>" class="btn btn-dark">Cancelar</a>
             <button class="btn btn-primary" type="submit">Actualizar</button>
         </div>
         <?= form_close() ?>

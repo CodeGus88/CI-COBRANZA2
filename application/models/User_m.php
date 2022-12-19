@@ -158,7 +158,7 @@ class User_m extends MY_Model
 
   public  function findUserRolesAndPermissions($id)
   {
-    $this->db->select('r.id, r.name');
+    $this->db->select('r.id, r.name, r.description');
     $this->db->from('roles r');
     $this->db->join('users_roles ur', 'ur.role_id = r.id');
     $this->db->where('ur.user_id', $id);

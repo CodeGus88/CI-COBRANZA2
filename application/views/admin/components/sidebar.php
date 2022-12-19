@@ -68,7 +68,7 @@ $LEGAL_PROCESS_READ = $ci->permission_m->getAuthorization($this->session->userda
   </li>
   <?php if ($LEGAL_PROCESS_READ) : ?>
     <li class="nav-item">
-      <a class="nav-link" href="<?php echo site_url('admin/legal_processes'); ?>">
+      <a class="nav-link" href="<?php echo site_url('admin/legalprocesses'); ?>">
         <i class="fas fa-fw fa-file"></i>
         <span>Procesos legales</span></a>
     </li>

@@ -10,7 +10,7 @@
             </div>
         <?php endif ?>
         <div class="form-group col-12">
-            <?= form_open_multipart("admin/legal_processes/add_file/$legal_process_id") ?>
+            <?= form_open_multipart("admin/legalprocesses/add_file/$legal_process_id") ?>
             <div class="form-row">
                 <div class="form-group col-12">
                     <div>
@@ -20,7 +20,7 @@
                 </div>
             </div>
             <div class="float-right">
-                <a href="<?= site_url("admin/legal_processes/view/$legal_process_id") ?>" class="btn btn-dark">Cancelar</a>
+                <a href="<?= site_url("admin/legalprocesses/view/$legal_process_id") ?>" class="btn btn-dark">Cancelar</a>
                 <button class="btn btn-primary" type="submit">Agregar</button>
             </div>
             <?= form_close() ?>

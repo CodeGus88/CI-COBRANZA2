@@ -12,8 +12,8 @@
         <h6 class="m-0 font-weight-bold text-primary">Proceso legal</h6>
         <div class="btn-group">
             <div class="btn-group">
-                <a class="btn btn-secondary btn-sm shadow-sm" href="<?= site_url("admin/legal_processes/edit/$legal_process->id")?>">Editar</a>
-                <?php $deleteUrl = site_url("admin/legal_processes/delete/$legal_process->id") ?>
+                <a class="btn btn-secondary btn-sm shadow-sm" href="<?= site_url("admin/legalprocesses/edit/$legal_process->id")?>">Editar</a>
+                <?php $deleteUrl = site_url("admin/legalprocesses/delete/$legal_process->id") ?>
                 <button class="btn btn-danger btn-sm shadow-sm" onclick="deleteConfirmation('CONFIRMACIÓN', '¿Realmente desea eliminar este proceso legal?', '<?= $deleteUrl ?>')">Eliminar</a>
             </div>
         </div>
@@ -82,7 +82,7 @@
         <div class="form-row">
             <div class="form-group col-12">
                 <div class="justify-content-between py-3">
-                    <a href="<?= site_url("admin/legal_processes/create_file/$legal_process->id") ?>" class="btn btn-primary btn-icon-split btn-sm">
+                    <a href="<?= site_url("admin/legalprocesses/create_file/$legal_process->id") ?>" class="btn btn-primary btn-icon-split btn-sm">
                         <span class="icon text-white-50">
                             <i class="fas fa-flag"></i>
                         </span>
@@ -96,7 +96,7 @@
                         <div class=" card">
                             <img id="img<?= $i ?>" src="<?= site_url('uploads/' . $file->name) ?>" class="card-img-top img-select" alt="<?= $file->name ?>">
                             <div class="card-body">
-                                <button onClick="return deleteConfirmation('CONFIRMACIÓN', 'Se eliminará esta imagen', '<?= site_url("admin/legal_processes/file_remover/$legal_process->id/$file->id") ?>')" class="btn btn-danger btn-sm">
+                                <button onClick="return deleteConfirmation('CONFIRMACIÓN', 'Se eliminará esta imagen', '<?= site_url("admin/legalprocesses/file_remover/$legal_process->id/$file->id") ?>')" class="btn btn-danger btn-sm">
                                     Eliminar
                                 </button>
                             </div>
